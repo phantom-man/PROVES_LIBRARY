@@ -1,0 +1,47 @@
+# PROVES Library Documentation Site
+# GitHub Pages Configuration
+
+title: "PROVES Library - Trial Dependency Mapping"
+description: "Comprehensive dependency analysis demonstrating knowledge graph capabilities for CubeSat mission safety"
+theme: jekyll-theme-cayman
+baseurl: "/PROVES_LIBRARY"
+url: "https://lizO5.github.io"
+
+# Mermaid diagram support
+mermaid:
+  version: "10.6.1"
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Dependency Overview
+    url: /diagrams/overview
+  - title: Cross-System Dependencies
+    url: /diagrams/cross-system
+  - title: Transitive Chains
+    url: /diagrams/transitive-chains
+  - title: Knowledge Gaps
+    url: /diagrams/knowledge-gaps
+  - title: Team Boundaries
+    url: /diagrams/team-boundaries
+
+# GitHub repository
+repository: LizO5/PROVES_LIBRARY
+
+# Markdown settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Exclude files from site
+exclude:
+  - README.md
+  - CONTRIBUTING.md
+  - LICENSE
+  - .gitignore
+  - scripts/
+  - mcp-server/
+  - .venv/
+  - trial_docs/

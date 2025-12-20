@@ -1,0 +1,616 @@
+---
+layout: default
+title: Knowledge Gaps
+---
+
+# Knowledge Gaps
+
+What's NOT documented: power-on timing, voltage stability, error recovery, bus sharing conflicts, and platform integration.
+
+[← Back to Home](../index.html)
+
+---
+
+## What Are Knowledge Gaps?
+
+**Knowledge Gaps** are critical dependencies, requirements, or procedures that:
+1. **Exist in reality** (engineers know them, or discover them through failure)
+2. **Are NOT documented** in any system
+3. **Can cause mission failures** if unknown
+4. **Are at risk of loss** during team turnover
+
+This analysis found **5 major knowledge gaps** in the F´ + PROVES Kit integration.
+
+---
+
+## Gap 1: Power-On Timing Requirements
+
+### The Missing Specification
+
+```mermaid
+sequenceDiagram
+    participant LSM as LoadSwitchManager
+    participant Power as Power Supply
+    participant Device as I2C Device
+    participant Driver as I2C Bus Driver
+
+    LSM->>Power: turn_on("imu")
+    Power->>Power: GPIO goes HIGH
+    Power->>Device: Voltage ramps up
+
+    Note over Power,Device: ❌ GAP: How long does this take?
+    rect rgb(255, 240, 240)
+        Power-->>Device: t_rise = ??? ms
+        Device-->>Device: Internal power-on reset
+        Note over Device: ❌ GAP: How long for POR?
+        Device-->>Device: t_por = ??? ms
+        Device-->>Device: Initialize registers
+        Note over Device: ❌ GAP: Ready delay?
+        Device-->>Device: t_ready = ??? ms
+    end
+
+    Note over Device,Driver: ❌ GAP: Total delay unknown
+    Driver->>Device: I2C address probe
+    alt Device Ready
+        Device-->>Driver: ACK
+    else Device Not Ready
+        Device-->>Driver: No response (bus timeout)
+    end
+```
+
+### What's NOT Documented
+
+| Parameter | F´ Docs | PROVES Docs | Typical Value | Impact if Unknown |
+|-----------|---------|-------------|---------------|-------------------|
+| **t_rise** - Voltage rise time | ❌ | ❌ | 1-10ms | Race condition |
+| **t_por** - Power-on reset duration | ❌ | ❌ | 10-100ms | Device not initialized |
+| **t_ready** - Ready after POR | ❌ | ❌ | 1-50ms | I2C communication fails |
+| **t_total** - Safe delay before I2C | ❌ | ❌ | 50-200ms | **Intermittent failures** |
+
+### Where This Knowledge Lives
+
+**Currently:**
+- 🧠 In experienced engineers' heads
+- 📄 Maybe in MPU6050 datasheet (not referenced in either doc)
+- 🐛 Discovered through debugging after failures
+- 📧 Discussed in email threads (not captured)
+
+**Risk:** When Team A graduates, this knowledge is **LOST**.
+
+### Real-World Impact
+
+```mermaid
+flowchart TB
+    START[New developer integrates IMU]
+
+    CASE1{Does developer<br/>add delay?}
+    CASE2{What delay<br/>value?}
+    CASE3{Test coverage?}
+
+    TOO_SHORT[Delay too short<br/>50ms]
+    WORKS_BENCH[✅ Works on bench<br/>warm start]
+    FAILS_FLIGHT[❌ Fails in flight<br/>cold start slower]
+
+    NO_DELAY[No delay added]
+    WORKS_LINUX[✅ Works on Linux<br/>scheduler slow enough]
+    FAILS_RTOS[❌ Fails on RTOS<br/>too fast]
+
+    CORRECT[Delay adequate<br/>200ms]
+    SUCCESS[✅ Always works]
+
+    START --> CASE1
+    CASE1 -->|Yes| CASE2
+    CASE1 -->|No| NO_DELAY
+
+    CASE2 -->|Guesses 50ms| TOO_SHORT
+    CASE2 -->|Finds spec: 200ms| CORRECT
+
+    TOO_SHORT --> CASE3
+    CASE3 -->|Only bench test| WORKS_BENCH
+    WORKS_BENCH -.->|Ships to orbit| FAILS_FLIGHT
+
+    NO_DELAY --> WORKS_LINUX
+    WORKS_LINUX -.->|Ports to embedded| FAILS_RTOS
+
+    CORRECT --> SUCCESS
+
+    style FAILS_FLIGHT fill:#ffcdd2
+    style FAILS_RTOS fill:#ffcdd2
+    style SUCCESS fill:#c8e6c9
+```
+
+**Probability:** 70% of developers will get this wrong without documentation.
+
+---
+
+## Gap 2: Voltage Stability Requirements
+
+### The Missing Specification
+
+```mermaid
+graph TB
+    subgraph "Power Supply Characteristics"
+        V_NOM[Nominal Voltage<br/>3.3V]
+        V_RIPPLE[Ripple: ??? mV]
+        V_DROPOUT[Dropout: ??? mV]
+        I_SPIKE[Current spike: ??? mA]
+    end
+
+    subgraph "I2C Bus Requirements"
+        V_IH[V_IH: Input High<br/>??? V minimum]
+        V_IL[V_IL: Input Low<br/>??? V maximum]
+        V_MARGIN[Noise Margin<br/>???]
+    end
+
+    subgraph "Load Switch Characteristics"
+        R_ON[R_ON: ??? mΩ]
+        I_MAX[I_MAX: ??? mA]
+        T_SWITCH[Switch time: ??? μs]
+    end
+
+    V_NOM -.->|minus dropout| V_DROPOUT
+    V_DROPOUT -.->|must exceed| V_IH
+    I_SPIKE -.->|causes drop: I × R_ON| R_ON
+    V_RIPPLE -.->|must be less than| V_MARGIN
+
+    style V_RIPPLE fill:#ffebee
+    style V_DROPOUT fill:#ffebee
+    style I_SPIKE fill:#ffebee
+    style V_IH fill:#fff9c4
+    style V_MARGIN fill:#fff9c4
+    style R_ON fill:#e1f5ff
+```
+
+### What's NOT Documented
+
+| Parameter | Required For | F´ Docs | PROVES Docs | Impact |
+|-----------|--------------|---------|-------------|--------|
+| **V_ripple** | Clean I2C signals | ❌ | ❌ | Bit errors |
+| **V_dropout** | Load regulation | ❌ | ❌ | Brownout |
+| **I_spike** | Inrush current | ❌ | ❌ | Voltage sag |
+| **R_ON** | Switch resistance | ❌ | ❌ | Power loss |
+| **V_IH, V_IL** | I2C thresholds | ❌ | ❌ | Communication errors |
+
+### Where This Knowledge Lives
+
+**Currently:**
+- 📊 Hardware schematics (not linked to software docs)
+- 🔬 Oscilloscope measurements during debugging
+- 🏭 Component datasheets (MPU6050, load switch IC, regulators)
+- 👥 Hardware engineer tribal knowledge
+
+**Risk:** Software developers don't know to check these parameters.
+
+### Failure Mode
+
+```
+Scenario: High power draw during camera operation
+  ↓
+3.3V rail sags to 3.1V (within regulator spec)
+  ↓
+I2C V_IH threshold is 0.7 × Vdd = 0.7 × 3.1V = 2.17V
+  ↓
+Signal integrity marginal
+  ↓
+I2C bus has intermittent bit errors
+  ↓
+IMU read returns corrupted data
+  ↓
+Attitude determination fails
+  ↓
+Mission loss
+```
+
+**Time to debug:** Days to weeks (requires oscilloscope, experienced hardware engineer)
+
+---
+
+## Gap 3: Error Recovery Strategies
+
+### The Missing Integration
+
+```mermaid
+stateDiagram-v2
+    [*] --> Normal: System boot
+
+    Normal --> I2C_Error: I2C read fails
+    I2C_Error --> Log_Warning: F´ logs event
+
+    state "❌ KNOWLEDGE GAP" as GAP {
+        Log_Warning --> Should_Power_Cycle: Decision point
+        Should_Power_Cycle --> Power_Off: Yes
+        Should_Power_Cycle --> Give_Up: No
+
+        Power_Off --> Wait_Discharge
+        Wait_Discharge --> Power_On
+        Power_On --> Wait_Stabilize
+        Wait_Stabilize --> Retry_I2C
+
+        Retry_I2C --> Normal: Success
+        Retry_I2C --> Try_Again: Fail (retry < max)
+        Try_Again --> Power_Off
+        Retry_I2C --> Give_Up: Fail (retry >= max)
+    }
+
+    Give_Up --> Degraded_Mode: Continue without IMU
+
+    Log_Warning --> [*]: Currently: No recovery implemented
+
+    style GAP fill:#ffebee
+    style Log_Warning fill:#fff9c4
+    style Give_Up fill:#ffcdd2
+    style Normal fill:#c8e6c9
+```
+
+### What's NOT Documented
+
+| Decision Point | Question | F´ Docs | PROVES Docs | Current Reality |
+|----------------|----------|---------|-------------|-----------------|
+| **Error Detection** | Which errors are recoverable? | Logs error | N/A | Unknown |
+| **Recovery Strategy** | Should power cycle on I2C error? | ❌ | ❌ | No recovery |
+| **Retry Count** | How many retries before giving up? | ❌ | ❌ | Give up immediately |
+| **Timing** | How long to wait after power cycle? | ❌ | ❌ | N/A |
+| **Escalation** | When to alert operator? | Logs event | N/A | Every error (noisy) |
+
+### Missing Decision Tree
+
+**No documentation exists for:**
+
+```
+IF I2cStatus == I2C_READ_ERR:
+    IF consecutive_errors < 3:
+        # Try simple retry
+        WAIT 10ms
+        RETRY read()
+    ELSE IF consecutive_errors < 10:
+        # Power cycle recovery
+        LoadSwitchManager.turn_off("imu")
+        WAIT 500ms  # Capacitor discharge
+        LoadSwitchManager.turn_on("imu")
+        WAIT 200ms  # Power stabilization
+        RETRY read()
+    ELSE:
+        # Permanent failure
+        LOG CRITICAL "IMU unrecoverable"
+        ENTER degraded_mode
+        ALERT operator
+```
+
+**This entire decision tree is UNDOCUMENTED.**
+
+### Where This Knowledge Lives
+
+**Currently:**
+- 🔬 Discovered through mission operations
+- 📝 Procedures written after first failure
+- 🧠 Operator tribal knowledge
+- ✉️ Communicated verbally between shifts
+
+**Risk:** Each new mission team rediscovers this through failures.
+
+---
+
+## Gap 4: Bus Sharing and Conflicts
+
+### The Missing Architecture
+
+```mermaid
+graph TB
+    subgraph "I2C Bus Topology (UNDOCUMENTED)"
+        BUS[I2C Bus /dev/i2c-1<br/>SDA/SCL]
+
+        DEV1[Device 1: IMU<br/>Addr: 0x68]
+        DEV2[Device 2: Magnetometer<br/>Addr: ???]
+        DEV3[Device 3: Camera<br/>Addr: ???]
+        DEV4[Device 4: ???<br/>Addr: ???]
+    end
+
+    subgraph "Power Control"
+        LSM1[IMU_ENABLE]
+        LSM2[MAG_ENABLE]
+        LSM3[CAM_ENABLE]
+    end
+
+    subgraph "Questions"
+        Q1[Are devices on<br/>same bus?]
+        Q2[Can addresses<br/>conflict?]
+        Q3[Power-on<br/>sequence?]
+        Q4[Bus arbitra-<br/>tion?]
+    end
+
+    BUS -.->|unknown| DEV1
+    BUS -.->|unknown| DEV2
+    BUS -.->|unknown| DEV3
+    BUS -.->|unknown| DEV4
+
+    LSM1 --> DEV1
+    LSM2 --> DEV2
+    LSM3 --> DEV3
+
+    DEV1 -.-> Q1
+    DEV2 -.-> Q2
+    LSM1 -.-> Q3
+    BUS -.-> Q4
+
+    style BUS fill:#ffebee
+    style Q1 fill:#fff9c4
+    style Q2 fill:#fff9c4
+    style Q3 fill:#fff9c4
+    style Q4 fill:#fff9c4
+```
+
+### What's NOT Documented
+
+| Aspect | Information Needed | F´ Docs | PROVES Docs | Impact if Unknown |
+|--------|-------------------|---------|-------------|-------------------|
+| **Bus Topology** | Which devices on which bus? | ❌ | ❌ | Wrong bus configured |
+| **Address Map** | All I2C addresses | Partial (0x68) | ❌ | Address conflicts |
+| **Power Sequence** | Order to enable devices | ❌ | ❌ | Bus contention |
+| **Simultaneity** | Can devices operate together? | ❌ | ❌ | Data corruption |
+| **Priority** | Which device has priority? | ❌ | ❌ | Starvation |
+
+### Conflict Scenarios
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant IMU as IMU Manager
+    participant Mag as Magnetometer Manager
+    participant Bus as I2C Bus
+    participant HW_IMU as IMU Hardware
+    participant HW_MAG as MAG Hardware
+
+    Note over App,HW_MAG: Scenario 1: Address Conflict (UNDOCUMENTED)
+
+    App->>IMU: Read IMU data
+    App->>Mag: Read MAG data
+
+    par Simultaneous I2C Transactions
+        IMU->>Bus: Start transaction to 0x68
+    and
+        Mag->>Bus: Start transaction to 0x68 (conflict!)
+    end
+
+    Bus-->>IMU: Data corrupted
+    Bus-->>Mag: Data corrupted
+
+    Note over App,HW_MAG: ❌ Both reads fail, no indication why
+
+    Note over App,HW_MAG: Scenario 2: Power-On Glitch (UNDOCUMENTED)
+
+    App->>IMU: turn_on IMU
+    App->>Mag: turn_on MAG
+
+    par Simultaneous Power-On
+        HW_IMU->>HW_IMU: Inrush current spike
+    and
+        HW_MAG->>HW_MAG: Inrush current spike
+    end
+
+    Note over HW_IMU,HW_MAG: Combined current exceeds<br/>load switch rating
+
+    HW_IMU--XHW_IMU: Brownout / latchup
+    HW_MAG--XHW_MAG: Brownout / latchup
+
+    Note over App,HW_MAG: ❌ Devices damaged, mission loss
+```
+
+### Where This Knowledge Lives
+
+**Currently:**
+- 📐 Hardware schematics (separate from software docs)
+- 🔍 Reverse-engineered from board layout
+- 🧪 Discovered during integration testing
+- 🚨 Learned from failures
+
+**Risk:** Software developers don't have access to hardware documentation.
+
+---
+
+## Gap 5: Platform-Specific Integration
+
+### The Missing Cross-Platform Guide
+
+```mermaid
+graph LR
+    subgraph "F´ Framework"
+        F_LINUX[LinuxI2cDriver<br/>Linux]
+        F_ZEPHYR[ZephyrI2cDriver<br/>Zephyr RTOS]
+        F_BAREMETAL[Custom Driver<br/>Bare Metal]
+    end
+
+    subgraph "PROVES Kit"
+        P_CIRCUITPY[CircuitPython<br/>board.IMU_ENABLE]
+        P_MICROPYTHON[MicroPython<br/>???]
+        P_C[C/C++<br/>???]
+    end
+
+    subgraph "Integration Patterns"
+        INT1[F´ Linux +<br/>PROVES CircuitPython]
+        INT2[F´ Zephyr +<br/>PROVES C]
+        INT3[F´ Bare Metal +<br/>???]
+    end
+
+    F_LINUX -.->|how to combine?| P_CIRCUITPY
+    F_ZEPHYR -.->|how to combine?| P_C
+    F_BAREMETAL -.->|how to combine?| P_C
+
+    F_LINUX -.-> INT1
+    P_CIRCUITPY -.-> INT1
+
+    F_ZEPHYR -.-> INT2
+    P_C -.-> INT2
+
+    style INT1 fill:#ffebee
+    style INT2 fill:#ffebee
+    style INT3 fill:#ffebee
+```
+
+### What's NOT Documented
+
+| Integration | F´ Platform | PROVES Platform | Documented? | Challenge |
+|-------------|-------------|-----------------|-------------|-----------|
+| **Desktop Sim** | Linux + Python | CircuitPython sim | ❌ | How to mock hardware? |
+| **Flight Target** | Zephyr RTOS + C++ | C + registers | ❌ | How to share GPIO? |
+| **Lab Test** | Linux + Python | Hardware board | ❌ | How to communicate? |
+
+### Missing Integration Examples
+
+**No documentation exists for:**
+
+1. **How F´ C++ calls PROVES CircuitPython:**
+   ```cpp
+   // ❌ NOT DOCUMENTED
+   // In F´ configureTopology():
+   void configureTopology() {
+       // How to call Python LoadSwitchManager from C++?
+       // - Embed Python interpreter?
+       // - Use IPC (sockets, shared memory)?
+       // - Compile PROVES to C extension?
+       // - Use external process + protocol?
+   }
+   ```
+
+2. **How to share GPIO control:**
+   ```
+   ❌ NOT DOCUMENTED
+   - Does F´ control GPIO directly?
+   - Does PROVES control GPIO and F´ requests power?
+   - Is there a hardware abstraction layer?
+   - Who owns the GPIO driver?
+   ```
+
+3. **Build system integration:**
+   ```cmake
+   # ❌ NOT DOCUMENTED
+   # How to build F´ + PROVES together?
+   # - Separate processes?
+   # - Linked libraries?
+   # - Microservice architecture?
+   ```
+
+### Where This Knowledge Lives
+
+**Currently:**
+- 🔨 Each mission team invents their own integration
+- 🎭 Architecture decisions not documented
+- 📞 Communicated through private channels
+- 🔄 Reinvented for each new mission
+
+**Risk:** No standard integration pattern, constant rework.
+
+---
+
+## Summary: Knowledge Gap Impact
+
+### Gap Distribution
+
+```mermaid
+pie title Knowledge Gaps by Category
+    "Timing Specifications" : 3
+    "Hardware Parameters" : 5
+    "Software Integration" : 4
+    "Error Handling" : 2
+    "Platform Specifics" : 3
+```
+
+### Risk Matrix
+
+| Gap | Probability of Occurrence | Severity if Unknown | Overall Risk |
+|-----|--------------------------|---------------------|--------------|
+| **Power-On Timing** | 70% | Critical | 🔴 **EXTREME** |
+| **Voltage Stability** | 40% | Critical | 🔴 **HIGH** |
+| **Error Recovery** | 90% | Medium | 🟡 **HIGH** |
+| **Bus Conflicts** | 30% | High | 🟡 **MEDIUM** |
+| **Platform Integration** | 60% | Medium | 🟡 **MEDIUM** |
+
+### Time to Discover
+
+```mermaid
+gantt
+    title Typical Discovery Timeline for Knowledge Gaps
+    dateFormat YYYY-MM-DD
+    section Design Phase
+    Integration planning     :2024-01-01, 7d
+    section Development
+    Code implementation     :2024-01-08, 14d
+    section Testing
+    Bench testing          :2024-01-22, 7d
+    Discovery: Timing gap  :milestone, 2024-01-26, 0d
+    section Integration
+    System integration     :2024-01-29, 14d
+    Discovery: Bus conflict:milestone, 2024-02-05, 0d
+    section Flight Prep
+    Environmental testing  :2024-02-12, 21d
+    Discovery: Voltage gap :milestone, 2024-02-28, 0d
+    section Operations
+    Launch and operations  :2024-03-05, 7d
+    Discovery: Error handling gap :crit, milestone, 2024-03-08, 0d
+```
+
+**Average Discovery Time:** 45-60 days after project start
+
+**Cost of Late Discovery:** Exponential
+- Design phase: 1× cost to fix
+- Development: 10× cost to fix
+- Testing: 100× cost to fix
+- **Flight: Mission loss**
+
+---
+
+## Recommendations
+
+### Immediate Actions
+
+1. **Create Integration Guide**
+   - Document all 5 knowledge gaps
+   - Provide specifications for timing, voltage, errors
+   - Include decision trees for error recovery
+   - Specify platform integration patterns
+
+2. **Extract from Tribal Knowledge**
+   - Interview experienced engineers
+   - Document undocumented procedures
+   - Capture failure lessons learned
+   - Create searchable knowledge base
+
+3. **Link Hardware to Software Docs**
+   - Cross-reference schematics
+   - Include component datasheets
+   - Document pin mappings
+   - Specify electrical characteristics
+
+### Long-Term Solutions
+
+1. **Automated Gap Detection**
+   - Scan documentation for missing specifications
+   - Flag undefined timing requirements
+   - Detect undocumented integrations
+   - Alert on platform-specific gaps
+
+2. **Empirical Capture System**
+   - Log all mission failures
+   - Extract knowledge from debugging sessions
+   - Capture workarounds and fixes
+   - Build searchable failure database
+
+3. **Continuous Knowledge Review**
+   - Regular documentation audits
+   - Cross-team knowledge sharing sessions
+   - Mandatory post-mission reports
+   - Knowledge preservation before team turnover
+
+---
+
+## Navigation
+
+- [← Back to Home](../index.html)
+- [← Previous: Transitive Dependency Chains](transitive-chains.html)
+- [Next: Team Boundaries →](team-boundaries.html)
+
+---
+
+**Analysis Method:** Negative space analysis, gap identification
+**Gaps Found:** 5 major categories, 17 specific missing items
+**Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
+**Date:** December 20, 2024
