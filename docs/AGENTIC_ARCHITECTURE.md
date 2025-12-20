@@ -419,6 +419,7 @@ Tools available: {tools}
 
 ### Scanner Agent (Enhanced with ERV)
 
+{% raw %}
 ```python
 class EnhancedScannerAgent:
     """
@@ -500,9 +501,10 @@ class EnhancedScannerAgent:
 
         return risks
 ```
-
+{% endraw %}
 ### Builder Agent (FRAMES-Aware)
 
+{% raw %}
 ```python
 class FramesAwareBuilderAgent:
     """
@@ -568,7 +570,7 @@ class FramesAwareBuilderAgent:
             }
         return targets
 ```
-
+{% endraw %}
 ---
 
 ## Layer 5: Sweep Execution Engine
