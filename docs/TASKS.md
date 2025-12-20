@@ -2,6 +2,72 @@
 
 This document breaks down the work needed to build the PROVES Library system.
 
+## Implementation Phases Overview
+
+```mermaid
+graph LR
+    P1[Phase 1<br/>Foundation]
+    P2[Phase 2<br/>Core Functionality]
+    P3[Phase 3<br/>Integration]
+    P4[Phase 4<br/>Agentic Systems]
+
+    P1 -->|Complete| P2
+    P2 -->|MCP + Scanner Ready| P3
+    P3 -->|Production System| P4
+
+    style P1 fill:#6BCB77
+    style P2 fill:#FFD93D
+    style P3 fill:#4D96FF
+    style P4 fill:#E8AA42
+```
+
+## Phase Dependencies
+
+```mermaid
+graph TB
+    subgraph Phase1[Phase 1 - Foundation]
+        P1A[Library Structure]
+        P1B[Documentation]
+        P1C[Entry Schema]
+    end
+
+    subgraph Phase2[Phase 2 - Core]
+        P2A[MCP Server]
+        P2B[Risk Scanner]
+        P2C[Library Indexing]
+    end
+
+    subgraph Phase3[Phase 3 - Integration]
+        P3A[VS Code Extension]
+        P3B[Push/Pull Workflow]
+        P3C[Review Process]
+    end
+
+    subgraph Phase4[Phase 4 - Agents]
+        P4A[Curator Agent]
+        P4B[Builder Agent]
+    end
+
+    P1A --> P1C
+    P1C --> P2A
+    P1C --> P2B
+    P1A --> P2C
+
+    P2A --> P3A
+    P2B --> P3B
+    P2A --> P3B
+    P2C --> P2A
+
+    P3A --> P4A
+    P3B --> P4A
+    P2A --> P4B
+    P2C --> P4B
+
+    style P1A fill:#90EE90
+    style P1B fill:#90EE90
+    style P1C fill:#90EE90
+```
+
 ## Phase 1: Foundation ✓
 
 ### Library Structure
