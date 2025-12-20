@@ -1,41 +1,112 @@
-# PROVES Library Documentation Site
-# GitHub Pages Configuration
+# PROVES Library Documentation Site - TeXt Theme Configuration
 
-title: "PROVES Library - Trial Dependency Mapping"
-description: "Comprehensive dependency analysis demonstrating knowledge graph capabilities for CubeSat mission safety"
-theme: jekyll-theme-cayman
-baseurl: "/PROVES_LIBRARY"
-url: "https://lizO5.github.io"
+## => Site Settings
+##############################
+text_skin: dark
+highlight_theme: tomorrow-night
+url: https://lizo-roadtown.github.io
+baseurl: /PROVES_LIBRARY
+title: PROVES Library
+description: >
+  Trial Dependency Mapping - Comprehensive analysis demonstrating
+  knowledge graph capabilities for CubeSat mission safety
 
-# Mermaid diagram support
-mermaid:
-  version: "10.6.1"
+## => Language and Timezone
+##############################
+lang: en
+timezone: America/Los_Angeles
 
-# Navigation
+## => Author and Social
+##############################
+author:
+  type: person
+  name: Elizabeth Osborn
+  url: https://lizo-roadtown.github.io/PROVES_LIBRARY
+  bio: Researcher developing agentic knowledge systems for mission safety
+  email: eosborn@cpp.edu
+  github: Lizo-RoadTown
+
+## => GitHub Repository
+##############################
+repository: Lizo-RoadTown/PROVES_LIBRARY
+repository_tree: master
+
+## => Paths
+##############################
+paths:
+  root: /
+  home: /
+  archive: /archive.html
+  rss: /feed.xml
+
+## => Navigation
+##############################
+header:
+  theme: dark
 navigation:
-  - title: Home
-    url: /
-  - title: Dependency Overview
-    url: /diagrams/overview
-  - title: Cross-System Dependencies
-    url: /diagrams/cross-system
-  - title: Transitive Chains
-    url: /diagrams/transitive-chains
-  - title: Knowledge Gaps
-    url: /diagrams/knowledge-gaps
-  - title: Team Boundaries
-    url: /diagrams/team-boundaries
+  - url: /PROVES_LIBRARY/
+    title: Home
+  - url: /PROVES_LIBRARY/diagrams/overview.html
+    title: Overview
+  - url: /PROVES_LIBRARY/diagrams/cross-system.html
+    title: Cross-System
+  - url: /PROVES_LIBRARY/diagrams/transitive-chains.html
+    title: Transitive
+  - url: /PROVES_LIBRARY/diagrams/knowledge-gaps.html
+    title: Gaps
+  - url: /PROVES_LIBRARY/diagrams/team-boundaries.html
+    title: Teams
 
-# GitHub repository
-repository: LizO5/PROVES_LIBRARY
+## => Post
+##############################
+excerpt_separator: <!--more-->
+license: CC-BY-NC-4.0
 
-# Markdown settings
+## TOC
+toc:
+  selectors: "h1,h2,h3"
+
+## => Markdown Enhancements
+##############################
+mathjax: false
+mermaid: false  # Using custom Mermaid v10 in head/custom.html
+chart: false
+
+## => Paginate
+##############################
+paginate: 8
+paginate_path: /page:num
+
+## => Sources
+##############################
+sources: unpkg
+
+## => Sharing
+##############################
+sharing:
+  provider: false
+
+## => Comments
+##############################
+comments:
+  provider: false
+
+## => Pageview
+##############################
+pageview:
+  provider: false
+
+## => Search
+##############################
+search:
+  provider: default
+
+## => Build
+##############################
 markdown: kramdown
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
+highlighter: rouge
+permalink: date
 
-# Exclude files from site
 exclude:
   - README.md
   - CONTRIBUTING.md
@@ -48,3 +119,30 @@ exclude:
   - vendor/
   - Gemfile
   - Gemfile.lock
+  - gulpfile.js
+  - package-lock.json
+  - package.json
+  - /node_modules
+  - /test
+  - "*.ps1"
+  - "*.bat"
+  - fix_liquid.py
+
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: article
+      aside:
+        toc: true
+      show_edit_on_github: false
+      show_author_profile: false
+
+## => Plugins
+##############################
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-seo-tag

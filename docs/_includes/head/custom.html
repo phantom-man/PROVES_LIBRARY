@@ -1,0 +1,127 @@
+<!-- start custom head snippets -->
+
+<!-- Mermaid Diagrams -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+      themeVariables: {
+        primaryColor: 'transparent',
+        primaryTextColor: '#ffffff',
+        primaryBorderColor: '#fc6423',
+        lineColor: '#fc6423',
+        secondaryColor: 'transparent',
+        tertiaryColor: 'transparent',
+        background: 'transparent',
+        mainBkg: 'transparent',
+        secondBkg: 'transparent',
+        nodeBorder: '#fc6423',
+        clusterBkg: 'transparent',
+        clusterBorder: '#fc6423',
+        titleColor: '#ffffff',
+        edgeLabelBackground: 'transparent',
+        textColor: '#ffffff',
+        nodeTextColor: '#ffffff'
+      }
+    });
+    // Find all mermaid code blocks and render them
+    document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
+      var container = document.createElement('div');
+      container.className = 'mermaid';
+      container.textContent = el.textContent;
+      el.parentElement.replaceWith(container);
+    });
+  });
+</script>
+
+<!-- Custom centering styles -->
+<style>
+  .article__content {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .mermaid {
+    text-align: center;
+    margin: 2rem 0;
+    background: transparent;
+  }
+  .mermaid svg {
+    max-width: 100%;
+    background: transparent;
+  }
+  /* Override mermaid colors - orange accents, white text, transparent backgrounds */
+  .mermaid .node rect,
+  .mermaid .node polygon,
+  .mermaid .node circle {
+    fill: transparent !important;
+    stroke: #fc6423 !important;
+    stroke-width: 2px !important;
+  }
+  .mermaid .cluster rect {
+    fill: transparent !important;
+    stroke: #fc6423 !important;
+    stroke-width: 1px !important;
+  }
+  .mermaid .nodeLabel,
+  .mermaid .label,
+  .mermaid text {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+  }
+  .mermaid .edgePath .path {
+    stroke: #fc6423 !important;
+    stroke-width: 2px !important;
+  }
+  .mermaid .arrowheadPath {
+    fill: #fc6423 !important;
+  }
+  .mermaid .cluster-label text {
+    fill: #fc6423 !important;
+    font-weight: bold !important;
+  }
+  
+  /* Responsive card grids */
+  .card-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  .card-grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  .card-grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  .card {
+    border: 1px solid #fc6423;
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  .card h3 {
+    margin-top: 0;
+  }
+  
+  /* Responsive tables */
+  .article__content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent horizontal scroll */
+  .article__content {
+    overflow-x: hidden;
+  }
+  .article__content img,
+  .article__content svg {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+
+<!-- end custom head snippets -->
