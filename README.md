@@ -257,9 +257,10 @@ See [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) for complete organization guideli
 |----------|---------|--------|
 | **[FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md)** | **👈 START HERE** - Repository organization | ✅ Current |
 | **[curator-agent/README.md](curator-agent/README.md)** | Deep Agent system documentation | ✅ Current |
-| [GETTING_STARTED.md](GETTING_STARTED.md) | Setup and installation guide | ⚠️ Needs update |
-| [AGENT_HANDOFF.md](AGENT_HANDOFF.md) | Project status and context | ⚠️ Needs update |
-| [ROADMAP.md](ROADMAP.md) | Implementation roadmap | ⚠️ Needs update |
+| [GETTING_STARTED.md](GETTING_STARTED.md) | Setup and installation guide | ✅ Current |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Implementation roadmap | ⚠️ Needs update |
+| [docs/AGENT_HANDOFF.md](docs/AGENT_HANDOFF.md) | AI agent onboarding context | ⚠️ Needs update |
+| [docs/MCP_SETUP_GUIDE.md](docs/MCP_SETUP_GUIDE.md) | MCP server setup | ✅ Current |
 | [docs/LANGSMITH_INTEGRATION.md](docs/LANGSMITH_INTEGRATION.md) | Tracing and observability | ✅ Current |
 | [docs/KNOWLEDGE_GRAPH_SCHEMA.md](docs/KNOWLEDGE_GRAPH_SCHEMA.md) | Database schema | ✅ Current |
 | [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md) | Trial results | ✅ Current |

@@ -12,17 +12,83 @@ PROVES_LIBRARY/
 ├── curator-agent/              # PRIMARY: Deep Agent system (LangGraph)
 ├── scripts/                    # Infrastructure utilities and tools
 ├── docs/                       # Technical documentation
+│   ├── ROADMAP.md              # Implementation roadmap
+│   ├── AGENT_HANDOFF.md        # AI agent onboarding context
+│   ├── MCP_SETUP_GUIDE.md      # MCP server setup
+│   └── *.md                    # Architecture, schema, integration docs
 ├── library/                    # Knowledge base entries
 ├── trial_docs/                 # Manual analysis and trial results
 ├── notebooks/                  # Jupyter notebooks for exploration
 ├── tests/                      # Test suite (to be populated)
 ├── archive/                    # Superseded code and documentation
+│   ├── legacy-agents/          # Old agent implementations
+│   ├── design-docs/            # Unimplemented designs
+│   ├── historical/             # Point-in-time logs and status
+│   └── old-configs/            # Deprecated configurations
 ├── .env.example                # Environment template (current)
 ├── requirements.txt            # Python dependencies (root)
-├── README.md                   # Project overview
+├── README.md                   # Project overview (START HERE)
 ├── GETTING_STARTED.md          # Setup and onboarding
-└── FOLDER_STRUCTURE.md         # This file
+└── FOLDER_STRUCTURE.md         # This file (organization guide)
 ```
+
+## What Goes Where?
+
+### Root Level (Minimal - User Essentials Only)
+
+**✅ KEEP IN ROOT:**
+- `README.md` - Project overview (first thing users see)
+- `GETTING_STARTED.md` - Quick start guide
+- `FOLDER_STRUCTURE.md` - Organization guide
+- `LICENSE` - License file (if you add one)
+- `CONTRIBUTING.md` - Contribution guidelines (if you add one)
+- `.env.example` - Environment template
+- `requirements.txt` - Python dependencies
+- `.gitignore`, `.gitattributes` - Git configuration
+
+**❌ DON'T PUT IN ROOT:**
+- Technical documentation → goes in `docs/`
+- Historical logs → goes in `archive/historical/`
+- Design documents → goes in `docs/` or `archive/design-docs/`
+- Status updates → goes in `archive/historical/`
+- Implementation plans → goes in `docs/`
+
+**Rule of thumb:** If it's not something a new user needs immediately, it doesn't belong in root.
+
+### docs/ (All Technical Documentation)
+
+**✅ GOES IN docs/:**
+- Architecture documents
+- Integration guides (LangSmith, MCP, etc.)
+- Database schema documentation
+- Implementation roadmaps
+- Agent onboarding docs
+- Setup guides for specific features
+- Design decision records
+
+**Examples:**
+- `docs/ROADMAP.md` - Implementation roadmap
+- `docs/AGENT_HANDOFF.md` - AI agent context
+- `docs/ARCHITECTURE.md` - System architecture
+- `docs/KNOWLEDGE_GRAPH_SCHEMA.md` - Database schema
+
+### archive/ (Historical & Superseded)
+
+**archive/legacy-agents/** - Old implementations
+- Superseded agent code
+- Old standalone scripts
+
+**archive/design-docs/** - Unimplemented designs
+- MCP server design (not built)
+- Risk scanner design (not built)
+
+**archive/historical/** - Point-in-time records
+- Setup logs from specific dates
+- Status snapshots
+- One-time event logs
+
+**archive/old-configs/** - Deprecated configurations
+- Old .env templates with outdated tech stack
 
 ---
 
