@@ -1,196 +1,333 @@
 # PROVES Library
 
-Open source knowledge library for PROVES Kit and F Prime CubeSat missions.
+**Agentic Knowledge Base for CubeSat Mission Safety**
 
-## Overview
+[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://lizo-roadtown.github.io/PROVES_LIBRARY/)
+[![LangSmith](https://img.shields.io/badge/tracing-LangSmith-orange)](https://smith.langchain.com)
 
-The PROVES Library is the working implementation of the knowledge capture and interrogation system described in the [PROVES Kit Agent portfolio](https://lizo-roadtown.github.io/proveskit-agent/).
-
-**Core Problem:** Knowledge is fragmented across repos, issues, commits, docs, and teams - even in open source. University CubeSat programs can't learn from each other's failures and successes.
-
-**Our Solution:** Automated knowledge capture through risk scanning + MCP-backed interrogatable library.
-
-## System Architecture
-
-```
-┌─────────────────┐
-│  Risk Scanner   │ ← Scans repos, detects risks (PUSH to teams)
-│                 │ ← Captures context/fixes (PULL from teams)
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│     Library     │ ← Stores lessons as markdown with metadata
-│  (this repo)    │ ← Citations, excerpts, artifact links
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   MCP Server    │ ← Makes library interrogatable (not just searchable)
-│                 │ ← Structured queries for AI tools
-└─────────────────┘
-```
-
-## Repository Structure
-
-```
-PROVES_LIBRARY/
-├── library/              # Knowledge entries (markdown with metadata)
-│   ├── build/           # Build knowledge (assembly, hardware, testing)
-│   ├── software/        # Software architecture (F Prime patterns)
-│   └── ops/             # Operational knowledge (configs, fixes)
-├── mcp-server/          # MCP server implementation
-├── risk-scanner/        # Repository risk scanner
-├── docs/                # Documentation and task breakdown
-├── tests/               # Test suite
-└── README.md
-```
-
-## What Needs to Be Built
-
-### Phase 1: Foundation (Current)
-- [x] Library structure (markdown storage)
-- [ ] Entry schema definition
-- [ ] MCP server skeleton
-- [ ] Risk scanner skeleton
-
-### Phase 2: Core Functionality
-- [ ] MCP server endpoints (search, fetch, list)
-- [ ] Risk scanner pattern matching
-- [ ] Library indexing system
-- [ ] Entry validation
-
-### Phase 3: Integration
-- [ ] VS Code extension (queries MCP)
-- [ ] Risk scan workflow (push/pull loop)
-- [ ] Community review process
-
-### Phase 4: Agentic Systems (Future)
-- [ ] Curator agent (normalizes lessons, maintains citations)
-- [ ] Builder agent (generates components/code from patterns)
-
-## Entry Format
-
-Knowledge entries are stored as markdown files with frontmatter metadata:
-
-```markdown
----
-type: lesson | risk-pattern | config
-domain: build | software | ops
-observed: Brief context description
-sources:
-  - citation: Source URL or reference
-    excerpt: Relevant excerpt
-artifacts:
-  - type: component | repo | doc | test
-    path: Path or URL to artifact
-resolution: How it was fixed (if applicable)
-verification: How to verify the fix
-tags: [power, radio, timing, etc]
 ---
 
-# Entry Title
+## 🎯 Overview
 
-Detailed description of the lesson, risk pattern, or operational knowledge.
+The PROVES Library is an **agentic knowledge graph system** that prevents catastrophic CubeSat mission failures by tracking hidden cross-system dependencies.
 
-## Context
+**The Problem We Solve:**
 
-What led to this discovery...
+> *"Team A modified power management code. Tested locally - worked perfectly. Two weeks before launch, Team B's I2C sensors stopped communicating. Root cause: undocumented dependency on load switch timing. Mission delayed 6 months."*
 
-## Resolution
+Knowledge is fragmented across teams, repos, docs, and commits. Dependencies are hidden. Failures cascade across systems. University CubeSat programs can't learn from each other.
 
-How it was addressed...
+**Our Solution:**
 
-## Verification
+LLM-powered dependency extraction + knowledge graph + continuous monitoring → Prevent "Team A changes something, Team B fails" scenarios.
 
-How to confirm the fix works...
+---
+
+## 🏗️ Current Architecture
+
+```
+┌──────────────────────────────────────────────────────┐
+│              PROVES Library System                   │
+├──────────────────────────────────────────────────────┤
+│                                                      │
+│  📄 Documentation Sources                            │
+│     ├─ F´ Framework (NASA/JPL)                      │
+│     └─ PROVES Kit (Cal Poly Pomona)                 │
+│              ↓                                       │
+│  🤖 LLM Dependency Extractor (GPT-4o-mini)          │
+│     ├─ Chunking & Prompt Engineering                │
+│     ├─ Cross-Document Analysis                      │
+│     └─ LangSmith Tracing (Full Observability)       │
+│              ↓                                       │
+│  🗄️  Neon PostgreSQL (Cloud Knowledge Graph)        │
+│     ├─ kg_nodes (Components, Hardware, Patterns)    │
+│     ├─ kg_relationships (ERV Dependency Types)      │
+│     ├─ library_entries (Source Documentation)       │
+│     └─ pgvector (Semantic Search)                   │
+│              ↓                                       │
+│  🌐 GitHub Pages (Interactive Visualization)        │
+│     └─ https://lizo-roadtown.github.io/             │
+│        PROVES_LIBRARY/                               │
+│                                                      │
+│  📊 LangSmith (Observability Dashboard)             │
+│     └─ https://smith.langchain.com                  │
+└──────────────────────────────────────────────────────┘
 ```
 
-## Knowledge Capture Flow
+---
 
-1. **Risk Scanner** runs on a repo
-2. Detects mission-critical risk patterns
-3. **PUSH:** Alerts team with risk details + fix links
-4. **PULL:** Captures team's context and resolution
-5. Raw capture submitted for review
-6. **(Future) Curator Agent** normalizes into entry format
-7. Human review approves entry
-8. Entry added to library
-9. **MCP Server** re-indexes
-10. All teams benefit from new knowledge
+## ✨ What's Built (Current State)
 
-## Technology Stack
+### ✅ Phase 1: Trial Mapping - **COMPLETE**
 
-- **Library Storage:** Markdown files with YAML frontmatter
-- **MCP Server:** Python (FastAPI or similar)
-- **Risk Scanner:** Python (AST parsing, pattern matching)
-- **Indexing:** SQLite + embeddings (for semantic search)
-- **VS Code Extension:** TypeScript
+**Proven the Concept:**
+- Manually analyzed F´ I2C Driver (411 lines) + PROVES Kit Power Management (154 lines)
+- **Found 45+ dependencies** with exact line citations
+- **Discovered 4 critical cross-system dependencies** (undocumented in either system!)
+- **Identified 5 major knowledge gaps** (timing specs, voltage requirements, error recovery)
+- **Mapped team boundaries** (F´ ↔ PROVES interface strength: 2/10 WEAK)
 
-## Getting Started
+**Results:**
+- [Comprehensive Dependency Map](trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md)
+- [GitHub Pages Visualizations](https://lizo-roadtown.github.io/PROVES_LIBRARY/)
+- Demonstrated feasibility of automated dependency extraction
+
+### ✅ Phase 2: Infrastructure - **COMPLETE**
+
+**Cloud Database:**
+- Neon PostgreSQL with pgvector for semantic search
+- Knowledge graph schema (nodes + ERV relationships)
+- Connection pooling and query utilities
+
+**LLM Extraction Pipeline:**
+- GPT-4o-mini powered dependency extractor
+- Document chunking and prompt engineering
+- Cross-document dependency detection
+- Full LangSmith tracing for observability
+
+**Visualization:**
+- GitHub Pages site with Tactile theme
+- 5 interactive Mermaid diagram pages
+- Automated deployment via GitHub Actions
+
+### ⏸️ Phase 3: Automation - **IN PROGRESS**
+
+**Next Steps:**
+- Test automated extraction vs manual analysis
+- Refine prompts based on LangSmith traces
+- Load extracted dependencies into knowledge graph
+- Validate query patterns (transitive chains, cascade paths)
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Python 3.9+
-- Node.js 16+ (for VS Code extension)
-- Git
+- **Python 3.9+**
+- **Git**
+- **API Keys:**
+  - OpenAI (for LLM extraction)
+  - LangSmith (for tracing/observability)
+  - Neon PostgreSQL (database connection string)
 
 ### Installation
 
 ```bash
-# Clone the repository
+# 1. Clone repository
 git clone https://github.com/Lizo-RoadTown/PROVES_LIBRARY.git
 cd PROVES_LIBRARY
 
-# Install MCP server dependencies
-cd mcp-server
+# 2. Set up Python environment
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+# source .venv/bin/activate  # macOS/Linux
+
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# Install risk scanner dependencies
-cd ../risk-scanner
-pip install -r requirements.txt
+# 4. Configure environment
+cp .env.example .env
+# Edit .env and add your API keys:
+#   NEON_DATABASE_URL=postgresql://...
+#   OPENAI_API_KEY=sk-...
+#   LANGSMITH_API_KEY=lsv2_pt_...
+#   LANGSMITH_TRACING=true
 ```
 
-### Running the MCP Server
+### Test the System
 
 ```bash
-cd mcp-server
-python server.py
+# Test database connection
+python scripts/db_connector.py
+
+# Test knowledge graph
+python scripts/graph_manager.py
+
+# Run dependency extraction (with LangSmith tracing)
+python scripts/dependency_extractor.py trial_docs/fprime_i2c_driver_full.md
+
+# View trace in LangSmith UI
+# → https://smith.langchain.com (PROVES_Library project)
 ```
 
-### Running a Risk Scan
+---
 
-```bash
-cd risk-scanner
-python scanner.py --repo /path/to/repo
+## 📚 Key Concepts
+
+### ERV (Engineering Relationship Vocabulary)
+
+6 dependency types for mission-critical systems:
+
+| Type | Description | Example |
+|------|-------------|---------|
+| **depends_on** | Runtime dependency | ImuManager depends_on LinuxI2cDriver |
+| **requires** | Build/config requirement | I2C driver requires board config |
+| **enables** | Makes something possible | Load switch enables sensor power |
+| **conflicts_with** | Incompatible | Two devices conflict on same I2C address |
+| **mitigates** | Reduces risk | Watchdog mitigates infinite loop risk |
+| **causes** | Leads to effect | Power glitch causes sensor reset |
+
+### Knowledge Gaps
+
+Dependencies that **exist but aren't documented**:
+
+From our trial mapping:
+- ❌ Timing specifications (how fast must I2C clock be?)
+- ❌ Voltage requirements (what voltage range for IMU?)
+- ❌ Error recovery (what if I2C transaction fails?)
+- ❌ Bus conflicts (how to handle address collisions?)
+- ❌ Platform integration (which boards support which sensors?)
+
+### Team Boundaries (FRAMES Model)
+
+Organizational interfaces where knowledge is **lost**:
+
+- **F´ Team ↔ PROVES Kit Team:** Interface strength 2/10 (WEAK)
+- Documentation doesn't cross team boundaries
+- Student graduation → 90% knowledge retention loss
+- Cross-system dependencies remain hidden
+
+### Transitive Dependencies
+
+Multi-hop chains that cascade across systems:
+
+```
+Application Code
+  → Device Manager
+    → Bus Driver
+      → Hardware Abstraction
+        → Board Configuration
+          → Power Management
+            → Load Switch
+              → Voltage Regulator
+                → Battery (13 hops!)
 ```
 
-## Contributing
+One change at any level can cascade failures through entire chain.
 
-This is an open source project. Contributions welcome:
+---
 
-- Submit knowledge entries (with citations)
-- Improve risk patterns
-- Enhance MCP server
-- Add scanner capabilities
+## 🗂️ Repository Structure
+
+```
+PROVES_LIBRARY/
+├── scripts/                    # Core utilities
+│   ├── db_connector.py        # Neon PostgreSQL connection
+│   ├── graph_manager.py       # Knowledge graph CRUD
+│   └── dependency_extractor.py # LLM extraction + tracing
+│
+├── docs/                       # Documentation
+│   ├── AGENT_HANDOFF.md       # 👈 START HERE (agent onboarding)
+│   ├── AGENTIC_ARCHITECTURE.md # Agent system design
+│   ├── KNOWLEDGE_GRAPH_SCHEMA.md # Database schema
+│   ├── LANGSMITH_INTEGRATION.md # Tracing setup
+│   └── *.md                   # Additional docs
+│
+├── trial_docs/                # Trial mapping results
+│   ├── COMPREHENSIVE_DEPENDENCY_MAP.md # Full analysis
+│   ├── fprime_i2c_driver_full.md # F´ documentation
+│   └── proves_kit_power_mgmt_full.md # PROVES Kit docs
+│
+├── mcp-server/                # MCP server (future)
+├── risk-scanner/              # Risk scanner (future)
+├── library/                   # Knowledge entries (future)
+├── .env.example               # Environment template
+├── requirements.txt           # Python dependencies
+└── README.md                  # This file
+```
+
+---
+
+## 📖 Documentation
+
+| Document | Purpose | Status |
+|----------|---------|--------|
+| **[AGENT_HANDOFF.md](AGENT_HANDOFF.md)** | **👈 START HERE** - Complete project status | ✅ Current |
+| [GETTING_STARTED.md](GETTING_STARTED.md) | Setup and installation guide | ✅ Current |
+| [ROADMAP.md](ROADMAP.md) | Implementation roadmap | ✅ Current |
+| [docs/AGENTIC_ARCHITECTURE.md](docs/AGENTIC_ARCHITECTURE.md) | Agent system design | ✅ Current |
+| [docs/LANGSMITH_INTEGRATION.md](docs/LANGSMITH_INTEGRATION.md) | Tracing and observability | ✅ Current |
+| [docs/KNOWLEDGE_GRAPH_SCHEMA.md](docs/KNOWLEDGE_GRAPH_SCHEMA.md) | Database schema | ✅ Current |
+| [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md) | Trial results | ✅ Current |
+
+---
+
+## 🌐 Live Demos
+
+- **GitHub Pages Visualization:** https://lizo-roadtown.github.io/PROVES_LIBRARY/
+- **LangSmith Tracing:** https://smith.langchain.com (PROVES_Library project)
+- **GitHub Repository:** https://github.com/Lizo-RoadTown/PROVES_LIBRARY
+
+---
+
+## 🔬 Research Background
+
+This system implements concepts from:
+
+- **FRAMES** (Sosa et al.) - Organizational knowledge flow analysis
+- **ERV** (Engineering Relationship Vocabulary) - Structured dependency semantics
+- **Knowledge Graphs** - Graph-based relationship modeling
+- **LLM Extraction** - Automated dependency discovery from documentation
+- **Agentic Systems** - Autonomous knowledge curation and validation
+
+---
+
+## 🤝 Contributing
+
+This is an open research project. Contributions welcome:
+
+- 🐛 Report issues with dependency extraction
+- 📝 Submit knowledge entries with citations
+- 🔍 Improve extraction prompts
+- 🎨 Enhance visualizations
+- 🧪 Add test cases
 
 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
-## License
+---
+
+## 📜 License
 
 MIT License - See [LICENSE](LICENSE) file
 
-## Contact
+Open source for the benefit of the CubeSat community.
+
+---
+
+## 👥 Team
 
 **Elizabeth Osborn**
 Cal Poly Pomona
 eosborn@cpp.edu
 
-## Acknowledgments
-
-- NASA JPL for F Prime
+**Acknowledgments:**
+- NASA JPL for F Prime framework
 - Cal Poly Pomona Bronco Space Lab for PROVES Kit
-- Anthropic for Claude and MCP
+- Anthropic for Claude and Model Context Protocol
+- LangSmith for LLM observability
+
+---
+
+## 🚨 Mission-Critical Use Case
+
+> **Scenario:** University CubeSat program, 18 months before launch.
+>
+> **Team A (Power):** Updates load switch timing to optimize battery life. Tests locally - works perfectly. Commits change.
+>
+> **Team B (Sensors):** Two weeks later, IMU sensor stops responding during integration test. Root cause after 3 days of debugging: I2C driver depended on old timing. Dependency was **undocumented**.
+>
+> **Impact:** Mission delay, team morale damage, risk of deadline miss.
+>
+> **Prevention:** PROVES Library would have:
+> 1. Extracted the I2C timing dependency from documentation
+> 2. Detected the cross-system dependency (Power → Sensors)
+> 3. Flagged the change as **HIGH RISK** before merge
+> 4. Alerted Team B of required validation
+>
+> **Result:** Issue caught in hours, not days. Mission stays on schedule.
+
+This is why we build.
 
 ---
 
