@@ -68,3 +68,7 @@ package-lock.json
 *.tmp
 .cache/
 .claude/
+
+# Local artifacts
+curator_checkpoints.db
+nul
