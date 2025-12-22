@@ -238,7 +238,7 @@ stateDiagram-v2
     Normal --> I2C_Error: I2C read fails
     I2C_Error --> Log_Warning: F´ logs event
 
-    state "❌ KNOWLEDGE GAP" as GAP {
+    state "KNOWLEDGE GAP" as GAP {
         Log_Warning --> Should_Power_Cycle: Decision point
         Should_Power_Cycle --> Power_Off: Yes
         Should_Power_Cycle --> Give_Up: No
@@ -586,7 +586,7 @@ gantt
     Discovery: Voltage gap :milestone, 2024-02-28, 0d
     section Operations
     Launch and operations  :2024-03-05, 7d
-    Discovery: Error handling gap :crit, milestone, 2024-03-08, 0d
+    Discovery: Error handling gap :crit, 2024-03-08, 0d
 ```
 
 **Average Discovery Time:** 45-60 days after project start
