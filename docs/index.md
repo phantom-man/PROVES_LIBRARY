@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Home
+layout: article
+title: PROVES Library
+key: page-home
 ---
 
 # PROVES Library: Trial Dependency Mapping
