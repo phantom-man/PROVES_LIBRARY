@@ -2,14 +2,70 @@
 PROVES Library Curator Agent
 Main agent that coordinates sub-agents for dependency curation
 """
-from typing import Annotated
+from typing import Annotated, Any, Literal, NotRequired, TypedDict
+import sqlite3
+import time
+from functools import wraps
 from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
+from langchain_core.messages import AIMessage, ToolMessage
 from langgraph.graph import StateGraph, MessagesState
+from langgraph.graph.message import add_messages
+from langgraph.types import Command, interrupt
+from langgraph.checkpoint.sqlite import SqliteSaver
 from langsmith import traceable
+
+# Timing utilities
+_timing_log = []
+
+def log_timing(func):
+    """Decorator to track execution time of functions"""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        try:
+            result = func(*args, **kwargs)
+            duration = time.time() - start
+            _timing_log.append({
+                'function': func.__name__,
+                'duration': duration,
+                'status': 'success'
+            })
+            print(f"[TIMING] {func.__name__}: {duration:.2f}s")
+            return result
+        except Exception as e:
+            duration = time.time() - start
+            _timing_log.append({
+                'function': func.__name__,
+                'duration': duration,
+                'status': 'error'
+            })
+            print(f"[TIMING] {func.__name__}: {duration:.2f}s (ERROR)")
+            raise
+    return wrapper
+
+def get_timing_summary():
+    """Get a summary of all timing data"""
+    if not _timing_log:
+        return "No timing data collected"
+
+    summary = "\n=== TIMING SUMMARY ===\n"
+    total = 0
+    for entry in _timing_log:
+        summary += f"{entry['function']}: {entry['duration']:.2f}s ({entry['status']})\n"
+        total += entry['duration']
+    summary += f"\nTOTAL TIME: {total:.2f}s\n"
+    summary += "=" * 50
+    return summary
 
 # Import sub-agents
 from .subagents import create_extractor_agent, create_validator_agent, create_storage_agent
+
+
+class CuratorState(TypedDict):
+    messages: Annotated[list, add_messages]
+    deferred_storage: NotRequired[list[dict[str, Any]]]
+    storage_approval: NotRequired[str | None]
 
 
 # ============================================
@@ -18,6 +74,7 @@ from .subagents import create_extractor_agent, create_validator_agent, create_st
 
 @tool("extractor_agent")
 @traceable(name="call_extractor_subagent")
+@log_timing
 def call_extractor_agent(task: str) -> str:
     """
     Call the extractor sub-agent to extract dependencies from documentation.
@@ -41,6 +98,7 @@ def call_extractor_agent(task: str) -> str:
 
 @tool("validator_agent")
 @traceable(name="call_validator_subagent")
+@log_timing
 def call_validator_agent(task: str) -> str:
     """
     Call the validator sub-agent to validate dependencies.
@@ -64,6 +122,7 @@ def call_validator_agent(task: str) -> str:
 
 @tool("storage_agent")
 @traceable(name="call_storage_subagent")
+@log_timing
 def call_storage_agent(task: str) -> str:
     """
     Call the storage sub-agent to store validated dependencies.
@@ -98,8 +157,19 @@ def create_curator():
     - Spawns specialized sub-agents (extractor, validator, storage)
     - Coordinates their work through tool calls
     - Maintains conversation state
-    - Enables human-in-the-loop via LangSmith Studio
+    - Enables human-in-the-loop via interrupt() and SQLite checkpointer
+
+    Cost Optimization:
+    - Main curator: Sonnet 4.5 (complex decisions)
+    - Extractor: Sonnet 4.5 (complex dependency analysis)
+    - Validator: Haiku 3.5 (simple schema checks - 90% cheaper!)
+    - Storage: Haiku 3.5 (simple DB operations - 90% cheaper!)
     """
+    print("Initializing Curator Agent...")
+    print("  Main Agent: Claude Sonnet 4.5")
+    print("  Sub-Agents: Extractor (Sonnet), Validator (Haiku), Storage (Haiku)")
+    print()
+
     # Initialize the model
     model = ChatAnthropic(
         model="claude-sonnet-4-5-20250929",
@@ -168,31 +238,203 @@ For each request, follow this pattern:
 
 Work autonomously but explain your reasoning. The human can watch and intervene via LangSmith Studio."""
 
+    system_message += """
+
+## Human-in-the-Loop (HITL)
+
+If you request `storage_agent` for a HIGH criticality dependency, storage may be deferred for human approval.
+In that case, you will receive a tool result starting with `DEFERRED_PENDING_APPROVAL`.
+Do not assume the dependency was stored until you see an explicit HITL message confirming storage execution.
+"""
+
+    # NOTE ON HITL + TOOL CALLING (IMPORTANT):
+    # Anthropic requires that every assistant tool_use is immediately followed by a tool_result message
+    # before the next model turn. Therefore, we must NEVER call interrupt() in-between an AIMessage
+    # with tool_calls and the corresponding ToolMessage(s). We implement HITL by:
+    # 1) Always emitting ToolMessage(s) for *every* tool call (storage HIGH may be deferred)
+    # 2) Only calling interrupt() in a later node, after tool results exist in state.
+
     # Agent logic
-    def call_model(state: MessagesState):
+    @log_timing
+    def call_model(state: CuratorState):
+        print("[CURATOR] Thinking...")
         messages = [{"role": "system", "content": system_message}] + state["messages"]
         response = model_with_tools.invoke(messages)
+
+        # Show what tools the curator wants to call
+        if hasattr(response, 'tool_calls') and response.tool_calls:
+            print(f"[CURATOR] Planning to call {len(response.tool_calls)} sub-agent(s):")
+            for tc in response.tool_calls:
+                print(f"  -> {tc['name']}")
+
         return {"messages": [response]}
 
+    tool_map = {t.name: t for t in tools}
+
+    def _is_high_criticality_storage_call(tool_call: dict[str, Any]) -> bool:
+        if tool_call.get("name") != "storage_agent":
+            return False
+        task = (tool_call.get("args") or {}).get("task", "")
+        return "HIGH" in str(task).upper()
+
+    # Tools node (gated): ALWAYS emits ToolMessage for each tool_use.
+    # - For storage HIGH: emit placeholder tool_result and defer the real write until approval.
+    # - For everything else: execute tool immediately and emit tool_result.
+    def run_tools_with_gate(state: CuratorState):
+        last_message = state["messages"][-1]
+        if not (isinstance(last_message, AIMessage) and last_message.tool_calls):
+            return {}
+
+        print("[TOOLS] Executing sub-agent tool calls...")
+        tool_messages: list[ToolMessage] = []
+        deferred_storage: list[dict[str, Any]] = []
+
+        for tool_call in last_message.tool_calls:
+            tool_name = tool_call.get("name")
+            tool_call_id = tool_call.get("id")
+            args = tool_call.get("args") or {}
+
+            if not tool_name or not tool_call_id:
+                continue
+
+            if tool_name not in tool_map:
+                tool_messages.append(
+                    ToolMessage(
+                        content=f"ERROR: Unknown tool '{tool_name}'.",
+                        tool_call_id=tool_call_id,
+                    )
+                )
+                continue
+
+            if _is_high_criticality_storage_call(tool_call):
+                task = str(args.get("task", ""))
+                print("[HITL] HIGH criticality storage request detected; deferring until approval")
+                deferred_storage.append({"task": task})
+                tool_messages.append(
+                    ToolMessage(
+                        content=(
+                            "DEFERRED_PENDING_APPROVAL: Storage was requested for a HIGH criticality dependency. "
+                            "A human approval step will run next. Do NOT assume this was stored yet."
+                        ),
+                        tool_call_id=tool_call_id,
+                    )
+                )
+                continue
+
+            # Execute tool immediately
+            try:
+                result = tool_map[tool_name].invoke(args)
+                tool_messages.append(ToolMessage(content=str(result), tool_call_id=tool_call_id))
+            except Exception as e:
+                tool_messages.append(
+                    ToolMessage(
+                        content=f"ERROR executing tool '{tool_name}': {e}",
+                        tool_call_id=tool_call_id,
+                    )
+                )
+
+        updates: dict[str, Any] = {}
+        if tool_messages:
+            updates["messages"] = tool_messages
+        if deferred_storage:
+            updates["deferred_storage"] = deferred_storage
+        return updates
+
+    def request_human_approval(state: CuratorState):
+        deferred = state.get("deferred_storage") or []
+        if not deferred:
+            return {"storage_approval": None}
+
+        # Only approve one at a time for now (simple + predictable).
+        pending = deferred[0]
+        task = pending.get("task", "")
+
+        print("[HITL] Requesting human approval for HIGH criticality dependency...")
+        approval = interrupt({
+            "type": "dependency_approval",
+            "task": task,
+            "criticality": "HIGH",
+            "message": "This dependency is marked as HIGH criticality (mission-critical). Review before storing."
+        })
+
+        return {"storage_approval": approval}
+
+    def commit_deferred_storage(state: CuratorState):
+        deferred = state.get("deferred_storage") or []
+        if not deferred:
+            return {}
+
+        approval = state.get("storage_approval")
+        task = (deferred[0] or {}).get("task", "")
+
+        if approval == "approved":
+            print("[HITL] Approved - executing deferred storage_agent now...")
+            try:
+                # Run storage sub-agent directly (not via tool calling), since we already emitted
+                # a placeholder tool_result for the original tool_use.
+                storage_result = call_storage_agent(task)
+                return {
+                    "messages": [
+                        AIMessage(
+                            content=(
+                                "[HITL] Human approved HIGH criticality dependency. "
+                                "Executed storage_agent.\n\n"
+                                f"{storage_result}"
+                            )
+                        )
+                    ],
+                    "deferred_storage": [],
+                    "storage_approval": None,
+                }
+            except Exception as e:
+                return {
+                    "messages": [AIMessage(content=f"[HITL] ERROR executing deferred storage_agent: {e}")],
+                    "deferred_storage": [],
+                    "storage_approval": None,
+                }
+
+        print("[HITL] Rejected - skipping deferred storage_agent")
+        return {
+            "messages": [AIMessage(content="[HITL] Human rejected HIGH criticality dependency. Skipped storage.")],
+            "deferred_storage": [],
+            "storage_approval": None,
+        }
+
     # Build the graph
-    workflow = StateGraph(MessagesState)
+    workflow = StateGraph(CuratorState)
     workflow.add_node("agent", call_model)
+    workflow.add_node("tools", run_tools_with_gate)
+    workflow.add_node("approval", request_human_approval)
+    workflow.add_node("commit", commit_deferred_storage)
     workflow.set_entry_point("agent")
 
-    # Add tool node for sub-agent calls
-    from langgraph.prebuilt import ToolNode
-    tool_node = ToolNode(tools)
-    workflow.add_node("tools", tool_node)
+    # Routing: agent -> tools (if tool calls) -> approval -> commit -> agent -> END (if no tool calls)
+    def route_from_agent(state: MessagesState):
+        """Route from agent: review if has tool calls, end otherwise."""
+        last_message = state["messages"][-1]
+        if isinstance(last_message, AIMessage) and last_message.tool_calls:
+            return "tools"
+        return "__end__"
 
-    # Add conditional edges
-    from langgraph.prebuilt import tools_condition
     workflow.add_conditional_edges(
         "agent",
-        tools_condition,
+        route_from_agent,
+        {"tools": "tools", "__end__": "__end__"}
     )
-    workflow.add_edge("tools", "agent")
+    workflow.add_edge("tools", "approval")
+    workflow.add_edge("approval", "commit")
+    workflow.add_edge("commit", "agent")
 
-    return workflow.compile()
+    # Initialize SQLite checkpointer for HITL persistence
+    print("Setting up SQLite checkpointer for HITL...")
+    # Create persistent connection manually to avoid context manager issues
+    conn = sqlite3.connect("curator_checkpoints.db", check_same_thread=False)
+    checkpointer = SqliteSaver(conn)
+
+    print("Curator Agent ready!")
+    print()
+
+    return workflow.compile(checkpointer=checkpointer)
 
 
 # Export the graph for LangGraph

@@ -1,133 +1,267 @@
-# PROVES Library
+# 🛰️ PROVES Library
 
-Agentic knowledge base for CubeSat mission safety. This repo preserves the
-trial dependency mapping between F Prime and PROVES Kit documentation and
-hosts the tooling to curate that knowledge into a structured graph.
+**An AI-powered knowledge graph that prevents CubeSat mission failures by tracking hidden cross-system dependencies.**
 
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://lizo-roadtown.github.io/PROVES_LIBRARY/)
+[![LangSmith](https://img.shields.io/badge/tracing-LangSmith-orange)](https://smith.langchain.com)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## Project snapshot
+---
 
-- Trial mapping complete: FA' I2C driver + PROVES Kit power management docs.
-- 45+ dependencies with citations, 4 cross-system dependencies, 5 knowledge gaps.
-- Documentation site with interactive Mermaid diagrams in `docs/`.
-- Curator agent and graph utilities under active development.
+## 🎯 The Problem
 
-## Agentic system overview
+> *"Team A modified power management code. Tested locally — worked perfectly. Two weeks before launch, Team B's I2C sensors stopped communicating. Root cause: undocumented dependency on load switch timing. **Mission delayed 6 months.**"*
 
-The curator system is a LangGraph-orchestrated workflow that turns raw
-documentation into structured knowledge graph entries with traceable sources.
-It is designed to surface hidden cross-system dependencies and highlight
-mission-critical risks before they cascade across teams.
+University CubeSat programs face a brutal reality:
+- **Knowledge is fragmented** across teams, repos, docs, and Slack threads
+- **Dependencies are hidden** — changes cascade unpredictably across systems
+- **Teams can't learn from each other** — every program rediscovers the same failures
 
-Core components:
+## 💡 The Solution
 
-- Curator agent: the coordinator that runs the end-to-end workflow.
-- Extractor sub-agent: finds dependencies, constraints, and requirements.
-- Validator sub-agent: normalizes output to the ERV schema and checks duplicates.
-- Storage sub-agent: writes approved nodes and relationships to the graph.
-- Human review loop: required for high-critical items and conflicts.
+**LLM-powered dependency extraction → Knowledge graph → Continuous monitoring**
 
-What the system produces:
+This project uses AI agents to automatically extract dependencies from technical documentation, validate them against a structured schema, and build a queryable knowledge graph that reveals the hidden connections between spacecraft systems.
 
-- Knowledge graph nodes (components, subsystems, patterns, risks).
-- ERV relationships (depends_on, requires, enables, conflicts_with, mitigates, causes).
-- Library entries with citations back to source documents.
-- Audit trail of decisions and approvals for transparency.
+---
 
-In scope today:
+## 🏗️ Architecture
 
-- Dependency extraction from documentation.
-- Knowledge gap detection (what is referenced but not documented).
-- Cross-system analysis between FA' and PROVES Kit sources.
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    PROVES Library System                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  📄 Documentation Sources                                       │
+│     ├── F´ Framework (NASA/JPL flight software)                │
+│     └── PROVES Kit (Cal Poly Pomona CubeSat hardware)          │
+│                          ↓                                      │
+│  🤖 Deep Agent System (LangGraph + Claude)                      │
+│     ┌─────────────────────────────────────────┐                │
+│     │  Main Curator Agent (Sonnet 4.5)        │                │
+│     │     ↓ spawns as tools                   │                │
+│     │  ├── Extractor (Sonnet 4.5)             │                │
+│     │  ├── Validator (Haiku 3.5) ← 90% cheaper│                │
+│     │  └── Storage   (Haiku 3.5) ← 90% cheaper│                │
+│     └─────────────────────────────────────────┘                │
+│                          ↓                                      │
+│  👤 Human-in-the-Loop (HITL)                                    │
+│     └── HIGH criticality deps require approval                 │
+│                          ↓                                      │
+│  🗄️ Neon PostgreSQL + pgvector                                 │
+│     ├── kg_nodes (components, hardware, patterns)              │
+│     ├── kg_relationships (ERV dependency types)                │
+│     └── library_entries (source documentation)                 │
+│                          ↓                                      │
+│  🌐 GitHub Pages (Interactive Visualizations)                   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-## Workflow
+### Why This Architecture?
 
-1. Ingest documentation (trial sources today, automated sync next).
-2. Extract candidate dependencies with citations.
-3. Validate and normalize into ERV relationships.
-4. Gate high-critical items for human approval.
-5. Store approved knowledge and update diagrams.
+| Decision | Rationale |
+|----------|-----------|
+| **Sub-agents as tools** | Context isolation — each agent is an expert at one thing |
+| **Haiku for validation/storage** | 90% cost savings on simple tasks; Sonnet only where reasoning matters |
+| **HITL for HIGH criticality** | Mission-critical dependencies need human eyes before storage |
+| **Deferred storage pattern** | Ensures tool_use/tool_result pairing for reliable interrupts |
 
-## Lifecycle diagrams
+---
 
-System flow from sources to usable knowledge:
+## 📊 Current Status
+
+### ✅ Phase 1: Trial Mapping — COMPLETE
+- Manually analyzed F´ I2C Driver (411 lines) + PROVES Kit Power Management (154 lines)
+- **Found 45+ dependencies** with exact line citations
+- **Discovered 4 critical cross-system dependencies** (undocumented in either system!)
+- **Identified 5 major knowledge gaps** (timing specs, voltage requirements, error recovery)
+
+### ✅ Phase 2: Deep Agent System — COMPLETE
+- LangGraph orchestration with sub-agents-as-tools pattern
+- Cost-optimized model selection (Sonnet for complex, Haiku for simple)
+- Human-in-the-loop with safe interrupt pattern
+- Neon PostgreSQL with pgvector for semantic search
+- LangSmith integration for observability
+
+### 🔄 Phase 3: Automation — IN PROGRESS
+- Automated extraction vs manual analysis comparison
+- GitHub sync for continuous documentation monitoring
+- Risk scanner integration
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.11+
+- API keys: [Anthropic](https://console.anthropic.com/), [LangSmith](https://smith.langchain.com/), [Neon](https://neon.tech/)
+
+### Setup
+
+```bash
+# Clone and enter
+git clone https://github.com/Lizo-RoadTown/PROVES_LIBRARY.git
+cd PROVES_LIBRARY
+
+# Create virtual environment
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+# source .venv/bin/activate  # macOS/Linux
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your API keys
+
+# Initialize database
+python scripts/apply_schema.py
+
+# Run the curator agent
+cd curator-agent
+python run_with_approval.py
+```
+
+---
+
+## 🔧 How It Works
+
+### The Workflow
 
 ```mermaid
 graph TD
-  A[Docs, repos, and issues] --> B[Ingestion]
-  B --> C[Extractor sub-agent]
-  C --> D[Validator sub-agent]
-  D -->|low/medium| E[Storage sub-agent]
-  D -->|high/conflict| F[Human review]
-  F -->|approve| E
-  F -->|reject| G[Reject or revise]
-  E --> H[Knowledge graph + library entries]
-  H --> I[Diagrams, queries, and risk scans]
-  I --> J[Prompt and pattern refinement]
-  J --> C
+  A[📄 Documentation] --> B[🤖 Curator Agent]
+  B --> C[Extractor Sub-Agent]
+  C --> D[Validator Sub-Agent]
+  D -->|LOW/MEDIUM| E[Storage Sub-Agent]
+  D -->|HIGH criticality| F[👤 Human Review]
+  F -->|Approved| E
+  F -->|Rejected| G[Skip Storage]
+  E --> H[🗄️ Knowledge Graph]
+  H --> I[📊 Visualizations & Queries]
 ```
 
-Curator job lifecycle:
+### ERV Relationship Types
 
-```mermaid
-stateDiagram-v2
-  [*] --> Ingested
-  Ingested --> Extracted: dependencies parsed
-  Extracted --> Validated: ERV normalization
-  Validated --> Review: high or conflict
-  Validated --> Stored: low/medium
-  Review --> Stored: approved
-  Review --> Rejected: needs rewrite
-  Stored --> [*]
-  Rejected --> [*]
-```
+The knowledge graph uses **Entity-Relationship-Value (ERV)** semantics:
 
-## Current focus
+| Relationship | Meaning | Example |
+|-------------|---------|---------|
+| `depends_on` | Runtime dependency | `ImuManager` depends_on `LinuxI2cDriver` |
+| `requires` | Build/config requirement | `FprimeComponent` requires `FPP toolchain` |
+| `enables` | Makes possible | `LoadSwitch` enables `SensorPower` |
+| `conflicts_with` | Incompatible | `UARTDebug` conflicts_with `RadioTX` (same pins) |
+| `mitigates` | Reduces risk | `Watchdog` mitigates `InfiniteLoop` |
+| `causes` | Leads to effect | `BrownoutReset` causes `StateCorruption` |
 
-- Automate extraction and validation of dependencies.
-- Load curated entries into the knowledge graph.
-- Improve monitoring and human review workflows.
+### Criticality Levels
 
-## Docs site
+| Level | Meaning | HITL Required? |
+|-------|---------|----------------|
+| **HIGH** | Mission-critical — failure = mission loss | ✅ Yes |
+| **MEDIUM** | Important — affects functionality | ❌ No |
+| **LOW** | Nice-to-have — minor impact | ❌ No |
 
-- Live site: https://lizo-roadtown.github.io/PROVES_LIBRARY/
-- Source: `docs/` (Jekyll, TeXt theme)
-- Diagrams: `docs/diagrams/*.md`
+---
 
-## How to use
-
-- Read the docs site or open `docs/index.md` locally.
-- For the curator agent, see `curator-agent/README.md`.
-- For database and graph utilities, see `scripts/`.
-
-## Repository layout
+## 📁 Repository Structure
 
 ```
 PROVES_LIBRARY/
-  curator-agent/           LangGraph-based curator agent
-  docs/                    GitHub Pages site and diagrams
-  library/                 Example knowledge entries
-  scripts/                 Database and graph utilities
-  trial_docs/              Manual trial analysis sources and results
-  archive/                 Superseded code and docs
-  requirements.txt         Python dependencies
-  FOLDER_STRUCTURE.md      Repository organization
+├── curator-agent/          # 🤖 LangGraph deep agent system
+│   ├── src/curator/
+│   │   ├── agent.py        # Main curator with HITL
+│   │   └── subagents/      # Extractor, Validator, Storage
+│   ├── run_with_approval.py # CLI with human approval
+│   └── langgraph.json      # LangGraph deployment config
+│
+├── docs/                   # 📚 GitHub Pages site
+│   ├── diagrams/           # Interactive Mermaid diagrams
+│   └── *.md                # Architecture & guides
+│
+├── scripts/                # 🔧 Database & graph utilities
+│   ├── apply_schema.py     # Initialize Neon schema
+│   ├── db_connector.py     # PostgreSQL connection
+│   └── graph_manager.py    # Knowledge graph operations
+│
+├── trial_docs/             # 📋 Manual analysis results
+│   └── COMPREHENSIVE_DEPENDENCY_MAP.md
+│
+├── library/                # 📖 Curated knowledge entries
+│   ├── build/              # Assembly & hardware
+│   ├── software/           # F´ patterns & components
+│   └── ops/                # Operations & fixes
+│
+└── archive/                # 🗄️ Superseded code & docs
 ```
 
-## Contributing
+---
 
-Open research project. Issues and improvements welcome. For agent-specific
-changes, start with `curator-agent/README.md`.
+## 🧠 For AI Builders
 
-## License
+This project demonstrates several production patterns for LangGraph agents:
 
-MIT License - see `LICENSE`.
+### Deep Agents Pattern
+Sub-agents are wrapped as tools, giving the main agent the ability to delegate specialized tasks while maintaining context isolation:
 
-## Contact
+```python
+@tool("extractor_agent")
+def call_extractor_agent(task: str) -> str:
+    extractor = create_extractor_agent()
+    result = extractor.invoke({"messages": [{"role": "user", "content": task}]})
+    return result['messages'][-1].content
+```
 
-Elizabeth Osborn
-Cal Poly Pomona
-eosborn@cpp.edu
+### Safe HITL Interrupts
+Anthropic requires every `tool_use` to have a `tool_result` before the next model turn. We use a **deferred storage pattern** to safely pause for human approval:
 
-Portfolio site: https://lizo-roadtown.github.io/proveskit-agent/
+1. **Tools node**: Always emits `ToolMessage` for every tool call
+2. **HIGH storage**: Returns `DEFERRED_PENDING_APPROVAL` placeholder
+3. **Approval node**: Calls `interrupt()` — safe because tool results exist
+4. **Commit node**: Executes deferred storage if approved
+
+### Cost Optimization
+Use expensive models only where reasoning matters:
+- **Sonnet 4.5**: Curator coordination, dependency extraction (complex)
+- **Haiku 3.5**: Schema validation, database storage (simple) — **90% cheaper**
+
+---
+
+## 🔗 Links
+
+| Resource | URL |
+|----------|-----|
+| **Live Docs** | https://lizo-roadtown.github.io/PROVES_LIBRARY/ |
+| **Dependency Map** | [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md) |
+| **Agent README** | [curator-agent/README.md](curator-agent/README.md) |
+| **Architecture Deep Dive** | [docs/AGENTIC_ARCHITECTURE.md](docs/AGENTIC_ARCHITECTURE.md) |
+
+---
+
+## 🤝 Contributing
+
+This is an open research project. Contributions welcome!
+
+- **Found a bug?** Open an issue
+- **Have domain knowledge?** Help us map more CubeSat dependencies
+- **AI/agent expertise?** Check `curator-agent/` for opportunities
+
+For agent-specific changes, start with [curator-agent/README.md](curator-agent/README.md).
+
+---
+
+## 📜 License
+
+MIT License — see [LICENSE](LICENSE).
+
+---
+
+## 👩‍🚀 Contact
+
+**Elizabeth Osborn**  
+Cal Poly Pomona  
+📧 eosborn@cpp.edu  
+🌐 [Portfolio](https://lizo-roadtown.github.io/proveskit-agent/)

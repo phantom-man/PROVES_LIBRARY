@@ -2,52 +2,83 @@
 Extractor Sub-Agent
 Specialized agent for extracting dependencies from documentation
 """
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../../../scripts'))
-
 from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
-from dependency_extractor import process_document_pipeline
 
 
 @tool
-def chunk_document(doc_path: str) -> str:
-    """Read and chunk a documentation file for processing."""
+def read_document(doc_path: str) -> str:
+    """Read and return the contents of a documentation file."""
     try:
         with open(doc_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        # Simple chunking
-        paragraphs = content.split('\n\n')
-        num_chunks = (len(paragraphs) + 9) // 10  # ~10 paragraphs per chunk
+        lines = content.split('\n')
+        chars = len(content)
 
-        return f"Document loaded: {len(content)} characters, {len(paragraphs)} paragraphs, ~{num_chunks} chunks"
+        # Return first 500 chars as preview + stats
+        preview = content[:500] + "..." if len(content) > 500 else content
+
+        return f"Document: {doc_path}\nSize: {chars} characters, {len(lines)} lines\n\nPreview:\n{preview}"
     except Exception as e:
         return f"Error reading document: {str(e)}"
 
 
 @tool
-def extract_dependencies_from_text(text: str, document_name: str) -> str:
-    """Extract dependencies from a text chunk using LLM."""
-    from dependency_extractor import DependencyExtractor
+def extract_dependencies_using_claude(text: str, document_name: str) -> str:
+    """
+    Extract dependencies from text using Claude Sonnet 4.5.
+
+    Identifies:
+    - Component names
+    - Dependency relationships (ERV types)
+    - Criticality levels (HIGH/MEDIUM/LOW)
+    - Context and reasoning
+    """
+    from langchain_anthropic import ChatAnthropic
 
     try:
-        extractor = DependencyExtractor()
-        deps = extractor.extract_dependencies(text, document_name)
+        model = ChatAnthropic(
+            model="claude-sonnet-4-5-20250929",
+            temperature=0,
+        )
 
-        summary = f"Extracted {len(deps)} dependencies:\n"
-        for dep in deps[:5]:  # Show first 5
-            summary += f"  - {dep.get('component')} {dep.get('relationship_type')} {dep.get('depends_on')} ({dep.get('criticality')})\n"
+        extraction_prompt = f"""Analyze this technical documentation and extract ALL software/hardware dependencies.
 
-        if len(deps) > 5:
-            summary += f"  ... and {len(deps) - 5} more\n"
+Document: {document_name}
 
-        return summary
+Text to analyze:
+{text}
+
+For each dependency, identify:
+1. Component name (what depends on something else)
+2. Depends on (what it needs/requires)
+3. Relationship type: depends_on, requires, enables, conflicts_with, mitigates, causes
+4. Criticality: HIGH (critical for operation), MEDIUM (important but has workarounds), LOW (nice-to-have)
+5. Context (line numbers, specific details)
+
+Format each dependency as:
+- Component: <name>
+- Depends on: <target>
+- Type: <relationship>
+- Criticality: <level>
+- Context: <details>
+
+Extract ALL dependencies, including:
+- Runtime dependencies (code depends on libraries)
+- Build dependencies (requires specific tools)
+- Hardware dependencies (software needs specific hardware)
+- Configuration dependencies
+- Cross-system dependencies
+"""
+
+        response = model.invoke(extraction_prompt)
+        return f"Extraction Results:\n\n{response.content}"
+
     except Exception as e:
-        return f"Error extracting: {str(e)}"
+        return f"Error during extraction: {str(e)}"
 
 
 @traceable(name="extractor_subagent")
@@ -68,8 +99,8 @@ def create_extractor_agent():
     )
 
     tools = [
-        chunk_document,
-        extract_dependencies_from_text,
+        read_document,
+        extract_dependencies_using_claude,
     ]
 
     agent = create_react_agent(model, tools)
