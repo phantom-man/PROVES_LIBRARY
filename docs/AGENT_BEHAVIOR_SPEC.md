@@ -1,568 +1,569 @@
-# PROVES Library - Agent Behavior Specification
+# PROVES Library - Agent Behavior Specification v2
 
 ## Overview
 
-This document defines how AI agents interact with the layered database architecture. Agents must follow these rules to ensure data integrity, provenance tracking, and pipeline correctness.
+This document defines the **3-agent architecture** for the PROVES Library curation pipeline. Each agent has a specific role, and loop control is handled by **LangGraph's built-in middleware**—not custom schema fields.
 
-## Architecture Summary
+## Architecture: 3 Agents
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           PIPELINE TRACKING                                  │
-│  pipeline_runs: Every operation is part of a tracked run                    │
+│                              USER REQUEST                                   │
 └─────────────────────────────────────────────────────────────────────────────┘
                                     │
-        ┌───────────────────────────┼───────────────────────────┐
-        ▼                           ▼                           ▼
-┌───────────────┐          ┌───────────────┐          ┌───────────────┐
-│   RAW LAYER   │          │  CORE LAYER   │          │ DERIVED LAYER │
-│  (immutable)  │    ──►   │ (normalized)  │    ──►   │ (regenerable) │
-│               │          │               │          │               │
-│ raw_snapshots │          │ core_entities │          │ doc_chunks    │
-│ raw_telemetry │          │ core_equiv    │          │ doc_embeddings│
-│ raw_extracts  │          │               │          │ graph_nodes   │
-│               │          │               │          │ graph_edges   │
-│               │          │               │          │ model_scores  │
-└───────────────┘          └───────────────┘          └───────────────┘
-
-## Confidence Rubric (Agents MUST Use)
-
-All extraction agents must assign confidence scores using this rubric:
-
-### HIGH (0.80–1.00)
-- ✓ Doc explicitly defines it ("is/shall/must") or shows formal signature/table
-- ✓ Term matches known F´ vocabulary (component/port/command/telemetry/event)
-- ✓ Multiple sources agree
-
-### MEDIUM (0.50–0.79)
-- ~ Strong cues but not a formal definition
-- ~ Extracted from an example that looks representative
-- ~ Missing 1–2 key properties
-
-### LOW (0.00–0.49)
-- ✗ Inferred from narrative text
-- ✗ Only appears once, unclear context
-- ✗ Conflicts with another statement or lacks supporting structure
-
-## Agent Roles
-
-### 1. Capture Agent (Extractor)
-**Purpose**: Fetch and store raw content from sources
-
-**Allowed Operations**:
-- INSERT into `raw_snapshots`
-- INSERT into `pipeline_runs` (to create a run)
-- UPDATE `pipeline_runs` (to update status/metrics)
-
-**Forbidden Operations**:
-- UPDATE `raw_snapshots` (immutable)
-- DELETE `raw_snapshots` (immutable)
-- Any writes to core_* or derived_* tables
-
-**Behavior**:
-```python
-# 1. Create or get pipeline run
-run_id = get_or_create_pipeline_run(
-    run_name="fprime_crawl_2024_12_22",
-    run_type="incremental"
-)
-
-# 2. For each source URL
-for url in sources_to_crawl:
-    # Fetch content
-    content = fetch_url(url)
-    
-    # Compute hash
-    content_hash = sha256(content)
-    
-    # Check if we already have this exact content
-    existing = SELECT id FROM raw_snapshots 
-               WHERE source_url = url AND content_hash = content_hash
-    
-    if existing:
-        continue  # Skip, already captured
-    
-    # Insert new snapshot
-    INSERT INTO raw_snapshots (
-        source_url, source_type, ecosystem,
-        content_hash, payload, payload_size_bytes,
-        captured_by_run_id, status
-    ) VALUES (
-        url, 'github_file', 'fprime',
-        content_hash, content_as_json, len(content),
-        run_id, 'captured'
-    )
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         1. EXTRACTOR AGENT                                  │
+│  Fetch source → Parse content → Extract candidates → Assign confidence     │
+│                                                                             │
+│  OUTPUT: staging_extractions (candidates with evidence + confidence)        │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                    ┌───────────────┴───────────────┐
+                    │      REFINEMENT LOOP          │
+                    │   (recursion_limit = 5)       │
+                    ▼                               │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         2. VALIDATOR AGENT                                  │
+│  Check confidence → Validate evidence → Request more info OR approve       │
+│                                                                             │
+│  IF needs_more_evidence → LOOP BACK to Extractor (up to recursion_limit)   │
+│  IF acceptable → PASS to Decision Maker                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      3. DECISION MAKER AGENT                                │
+│  Final gate: Promote to core_entities OR package for human review          │
+│                                                                             │
+│  IF high confidence + complete → AUTO-PROMOTE (with audit log)             │
+│  IF medium/low OR incomplete → QUEUE for human review                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                    ┌───────────────┴───────────────┐
+                    ▼                               ▼
+          ┌─────────────────┐             ┌─────────────────┐
+          │  core_entities  │             │  HITL Queue     │
+          │  (canonical)    │             │  (human review) │
+          └─────────────────┘             └─────────────────┘
 ```
 
-### 2. Extraction Agent
-**Purpose**: Extract candidates from raw snapshots WITH confidence metadata
+## What's NOT an Agent
 
-**Allowed Operations**:
-- INSERT into `raw_extractions` (with full confidence scoring)
-- INSERT into `extraction_confidence_details` (for per-dimension breakdown)
-- UPDATE `pipeline_runs` (status/metrics)
+These are **deterministic pipeline functions**, not LLM agents:
 
-**Forbidden Operations**:
-- Any writes to `core_entities` (that's the Validator's job after HITL)
-- UPDATE/DELETE on `raw_snapshots` (immutable)
-- Setting `status = 'accepted'` (requires HITL or Validator Agent)
+| Function | Why Not an Agent |
+|----------|------------------|
+| **Chunking** | Deterministic text splitting (no LLM needed) |
+| **Embedding** | API call to embedding model (no reasoning) |
+| **Graph Building** | Deterministic node/edge creation from entities |
+| **Scoring** | Rule-based or ML model inference (no agent loop) |
 
-**Critical Rules**:
-1. NEVER auto-promote extractions to `core_entities`
-2. ALL extractions start as `status = 'pending'`
-3. MUST assign `confidence_score` using the rubric above
-4. MUST provide `evidence_text` with exact source quote
-5. MUST provide `evidence_location` with doc/page/line info
+These run **after** entities are promoted to `core_entities`, as batch jobs.
 
-**Required Fields Per Extraction**:
+---
+
+## Loop Control: LangGraph Built-Ins
+
+### 1. Graph-Level: `recursion_limit`
+
+Limits the number of super-steps in a graph execution. Default is 25.
+
 ```python
-# For EVERY extracted candidate:
+from langgraph.graph import StateGraph
+
+graph = create_curator_graph()
+
+# Invoke with recursion limit
+result = graph.invoke(
+    {"document_url": "https://..."},
+    config={"recursion_limit": 10}  # Max 10 round-trips
+)
+```
+
+When limit is reached, raises `GraphRecursionError`. Handle gracefully:
+
+```python
+from langgraph.errors import GraphRecursionError
+
+try:
+    result = graph.invoke(inputs, config={"recursion_limit": 5})
+except GraphRecursionError:
+    # Escalate to human after max refinement attempts
+    queue_for_human_review(inputs)
+```
+
+### 2. Agent-Level: `ToolCallLimitMiddleware`
+
+Limits tool calls per agent to prevent runaway loops.
+
+```python
+from langchain.agents import create_agent
+from langchain.agents.middleware import ToolCallLimitMiddleware
+
+# Global limit across all tools
+global_limiter = ToolCallLimitMiddleware(
+    thread_limit=50,   # Max across entire conversation
+    run_limit=15,      # Max per single invocation
+    exit_behavior="continue"  # or "error" or "end"
+)
+
+# Per-tool limits (expensive operations)
+fetch_limiter = ToolCallLimitMiddleware(
+    tool_name="fetch_document",
+    run_limit=3,       # Max 3 fetches per run
+    exit_behavior="error"
+)
+
+extractor_agent = create_agent(
+    model="claude-sonnet-4-20250514",
+    tools=[fetch_tool, parse_tool, extract_tool],
+    middleware=[global_limiter, fetch_limiter]
+)
+```
+
+### 3. Model Call Limit (JS)
+
+```javascript
+import { createAgent, modelCallLimitMiddleware } from "langchain";
+
+const agent = createAgent({
+  model: "gpt-4o",
+  tools: [...],
+  middleware: [
+    modelCallLimitMiddleware({
+      threadLimit: 20,
+      runLimit: 10,
+      exitBehavior: "end"
+    })
+  ]
+});
+```
+
+---
+
+## Agent 1: Extractor
+
+**Purpose**: Fetch source documents, parse content, extract structured candidates with confidence scores.
+
+### Responsibilities
+
+1. **Fetch** source documents (URLs, files, GitHub repos)
+2. **Parse** content into structured format
+3. **Extract** candidate entities/relationships
+4. **Score** each candidate using the confidence rubric
+5. **Store** in `staging_extractions` with status = `pending`
+
+### Allowed Operations
+
+| Table | Operation | Notes |
+|-------|-----------|-------|
+| `raw_snapshots` | INSERT | Store fetched content |
+| `staging_extractions` | INSERT | Store extracted candidates |
+| `pipeline_runs` | INSERT, UPDATE | Track run progress |
+
+### Forbidden Operations
+
+- ❌ UPDATE `raw_snapshots` content (immutable)
+- ❌ Any writes to `core_entities` (Decision Maker's job)
+- ❌ Setting `status = 'accepted'` (requires Validator)
+
+### Output Schema
+
+Every extraction MUST include:
+
+```python
 {
-    "confidence_score": 0.0-1.0,      # Numeric score
-    "confidence_level": "low|medium|high",  # Auto-derived from score
-    "confidence_reason": "...",        # Short text explaining score
+    # Identity
+    "candidate_type": "component|port|dependency|...",
+    "candidate_key": "fprime:Svc:TlmChan",
+    "candidate_payload": {...},  # Extracted fields as JSONB
     
-    # Evidence trail
-    "evidence_type": "definition_spec|interface_contract|example|narrative|...",
-    "evidence_text": "...",           # Exact quote from source
-    "evidence_location": {            # Pointer to source
-        "doc": "...",
-        "lines": [10, 15],
-        "url": "..."
+    # Confidence (REQUIRED)
+    "confidence_score": 0.85,    # Numeric 0.0-1.0
+    "confidence_reason": "Formal port definition with complete signature",
+    
+    # Evidence (REQUIRED)
+    "evidence": {
+        "text": "port BufferGet: Fw.Buffer",
+        "source": {"doc": "TlmChan.fpp", "lines": [45, 52]}
     },
+    "evidence_type": "interface_contract",
     
-    # What we couldn't get
-    "missing_fields": ["units", "rate"],  # List of gaps
-    
-    # How we extracted
-    "extraction_method": "pattern|llm|hybrid",
-    "extraction_method_version": "llm:claude-3.5-sonnet-20241022",
-    
-    # NEVER skip this
+    # Status (ALWAYS pending)
     "status": "pending"
 }
 ```
 
-**Confidence Dimensions** (for complex extractions):
-- `type_confidence`: "Is this really a port vs a parameter?"
-- `field_confidence`: "Are these extracted properties correct (units, rate, type)?"
-- `relationship_confidence`: "Does this dependency actually exist?"
-- `completeness_confidence`: "Did we extract all the fields?"
+### Confidence Rubric
 
-**Behavior**:
+| Level | Score Range | Criteria |
+|-------|-------------|----------|
+| **HIGH** | 0.80–1.00 | Formal definition (`is/shall/must`), F´ vocabulary match, multiple sources agree |
+| **MEDIUM** | 0.50–0.79 | Strong cues but not formal, example-based, missing 1–2 properties |
+| **LOW** | 0.00–0.49 | Narrative inference, single mention, conflicts with other sources |
+
+---
+
+## Agent 2: Validator
+
+**Purpose**: Check the Extractor's work. Request refinement or approve for promotion.
+
+### Responsibilities
+
+1. **Review** pending extractions from `staging_extractions`
+2. **Validate** confidence score matches evidence quality
+3. **Check** for missing fields, conflicts, duplicates
+4. **Decide**: 
+   - `needs_more_evidence` → Loop back to Extractor
+   - `acceptable` → Pass to Decision Maker
+
+### Allowed Operations
+
+| Table | Operation | Notes |
+|-------|-----------|-------|
+| `staging_extractions` | UPDATE status | Only status field |
+| `validation_decisions` | INSERT | Record decision + reasoning |
+
+### Forbidden Operations
+
+- ❌ Modifying extraction content (only status)
+- ❌ Promoting to `core_entities` (Decision Maker's job)
+- ❌ Auto-accepting without evidence review
+
+### Refinement Loop
+
 ```python
-# Process raw snapshots
-snapshots = SELECT * FROM raw_snapshots WHERE status = 'captured'
-
-for snapshot in snapshots:
-    # Extract candidates using LLM
-    candidates = extract_candidates(
-        snapshot.payload,
-        model="claude-3.5-sonnet"
-    )
+def validate_extraction(extraction):
+    """Validator's decision logic."""
     
-    for candidate in candidates:
-        # Compute confidence using rubric
-        confidence_score = assess_confidence(candidate, snapshot.payload)
-        
-        INSERT INTO raw_extractions (
-            source_snapshot_id,
-            pipeline_run_id,
-            candidate_type,
-            canonical_key,
-            extracted_name,
-            extracted_properties,
-            ecosystem,
-            
-            # CONFIDENCE (required)
-            confidence_score,        # e.g., 0.85
-            confidence_level,        # auto: 'high'
-            confidence_reason,       # "Formal port definition with signature"
-            
-            # DIMENSIONAL CONFIDENCE (optional but helpful)
-            type_confidence,         # 0.90 - definitely a port
-            type_confidence_reason,  # "Matches F´ port syntax"
-            field_confidence,        # 0.75 - missing units
-            field_confidence_reason, # "Rate extracted, units not specified"
-            
-            # EVIDENCE (required)
-            evidence_type,           # 'definition_spec'
-            evidence_text,           # "port BufferGet: Fw.Buffer"
-            evidence_location,       # {"doc": "...", "lines": [45, 52]}
-            
-            # METADATA
-            extraction_method,       # 'llm'
-            extraction_method_version, # 'claude-3.5-sonnet-20241022'
-            missing_fields,          # ['description']
-            
-            # STATUS - always pending!
-            status                   # 'pending'
-        )
+    # Check evidence quality
+    if not extraction.evidence or extraction.evidence.get("text") == "":
+        return {
+            "decision": "needs_more_evidence",
+            "reason": "No evidence text provided",
+            "request": "Extract the exact source quote supporting this candidate"
+        }
     
-    # Update metrics
-    UPDATE pipeline_runs 
-    SET entities_created = entities_created + len(candidates)
-    WHERE id = current_run_id
+    # Check confidence matches evidence
+    if extraction.evidence_type == "narrative" and extraction.confidence_score > 0.6:
+        return {
+            "decision": "needs_more_evidence", 
+            "reason": "Confidence too high for narrative-only evidence",
+            "request": "Find formal definition or additional sources"
+        }
+    
+    # Check for missing fields
+    if extraction.candidate_type == "telemetry":
+        required = ["channel_name", "data_type", "units"]
+        missing = [f for f in required if f not in extraction.candidate_payload]
+        if missing:
+            return {
+                "decision": "needs_more_evidence",
+                "reason": f"Missing required fields: {missing}",
+                "request": f"Extract {missing} from source document"
+            }
+    
+    # Passed validation
+    return {"decision": "acceptable", "reason": "Evidence supports confidence level"}
 ```
 
-**Scoring Examples**:
+### Loop Limit Handling
 
-| Extraction | Score | Level | Reason |
-|------------|-------|-------|--------|
-| Port with formal `.fpp` definition | 0.95 | high | Formal F´ syntax, interface contract |
-| Component mentioned in prose | 0.35 | low | Narrative only, no formal definition |
-| Telemetry from example code | 0.65 | medium | Strong cues, missing units |
-| Dependency stated "A uses B" | 0.80 | high | Explicit statement, verb "uses" |
-| Inferred relationship | 0.30 | low | Single mention, unclear context |
+The Validator does NOT track retry counts. LangGraph's `recursion_limit` handles this:
 
-### 3. Validator Agent (HITL Gateway)
-**Purpose**: Review pending extractions and promote to canonical
-
-**Allowed Operations**:
-- UPDATE `raw_extractions.status` (pending → accepted|rejected|merged|needs_context)
-- INSERT into `core_entities` (ONLY for accepted extractions)
-- UPDATE `raw_extractions.promoted_to_entity_id` (after promotion)
-- UPDATE `raw_snapshots.status` (captured → parsed, when extractions promoted)
-
-**Forbidden Operations**:
-- Accepting extractions without review
-- Modifying `raw_extractions` content fields (only status/review fields)
-
-**Behavior**:
 ```python
-# Get pending extractions, prioritize high confidence
-extractions = SELECT * FROM raw_extractions 
-              WHERE status = 'pending'
-              ORDER BY confidence_score DESC
+# In the graph definition
+workflow = StateGraph(State)
+workflow.add_node("extractor", extractor_node)
+workflow.add_node("validator", validator_node)
+workflow.add_node("decision_maker", decision_maker_node)
 
-for extraction in extractions:
-    # Present to human or auto-validate high confidence
-    if extraction.confidence_level == 'high' and extraction.missing_fields is None:
-        # Auto-accept if confidence is high and complete
-        decision = 'accepted'
-    else:
-        # Require human review
-        decision = await human_review(extraction)
-    
-    if decision == 'accepted':
-        # Promote to core_entities
-        entity_id = INSERT INTO core_entities (...)
-        
-        UPDATE raw_extractions 
-        SET status = 'accepted',
-            promoted_to_entity_id = entity_id,
-            promoted_at = NOW(),
-            reviewed_by = 'validator_agent'
-        WHERE id = extraction.id
-    
-    elif decision == 'rejected':
-        UPDATE raw_extractions
-        SET status = 'rejected',
-            reviewed_by = 'human:alice',
-            review_notes = 'Not a valid component'
-        WHERE id = extraction.id
-```
-
-### 5. Parser Agent
-**Purpose**: Extract normalized entities from raw snapshots
-
-**Allowed Operations**:
-- INSERT into `core_entities`
-- INSERT into `core_equivalences`
-- UPDATE `raw_snapshots.status` (captured → parsed)
-- UPDATE `pipeline_runs` (status/metrics)
-
-**Forbidden Operations**:
-- UPDATE/DELETE on `raw_snapshots` content fields
-- Any writes to derived_* tables
-
-**Behavior**:
-```python
-# Process snapshots that are captured but not parsed
-snapshots = SELECT * FROM raw_snapshots WHERE status = 'captured'
-
-for snapshot in snapshots:
-    # Parse the payload
-    entities = parse_entities(snapshot.payload)
-    
-    for entity in entities:
-        # Create canonical key: ecosystem:namespace:name
-        canonical_key = f"{snapshot.ecosystem}:{entity.namespace}:{entity.name}"
-        
-        # Check if entity already exists (may need versioning)
-        existing = SELECT * FROM core_entities 
-                   WHERE entity_type = entity.type 
-                   AND canonical_key = canonical_key 
-                   AND is_current = TRUE
-        
-        if existing:
-            # Create new version if content changed
-            if entity.attributes != existing.attributes:
-                UPDATE core_entities SET is_current = FALSE, 
-                       superseded_by_id = new_id WHERE id = existing.id
-                # Insert new version
-        else:
-            INSERT INTO core_entities (...)
-    
-    # Update snapshot status
-    UPDATE raw_snapshots SET status = 'parsed' WHERE id = snapshot.id
-```
-
-### 6. Chunking Agent
-**Purpose**: Split documents into chunks for embedding
-
-**Allowed Operations**:
-- INSERT into `derived_doc_chunks`
-- UPDATE `raw_snapshots.status` (parsed → chunked)
-- UPDATE `pipeline_runs` (status/metrics)
-
-**Forbidden Operations**:
-- Any writes to raw_* tables
-- Any writes to core_* tables (except status)
-
-**Behavior**:
-```python
-# IMPORTANT: Only chunk documents that have been parsed
-snapshots = SELECT * FROM raw_snapshots WHERE status = 'parsed'
-
-for snapshot in snapshots:
-    # Get the text content from payload
-    text = extract_text(snapshot.payload)
-    
-    # Chunk using configured strategy
-    chunks = chunk_text(text, strategy='semantic', max_tokens=512)
-    
-    for i, chunk_text in enumerate(chunks):
-        INSERT INTO derived_doc_chunks (
-            source_snapshot_id,
-            pipeline_run_id,
-            entity_id,  -- Link to parsed entity if available
-            chunk_index,
-            chunk_text,
-            chunk_hash,
-            chunk_strategy,
-            chunk_version,
-            embedding_status
-        ) VALUES (
-            snapshot.id,
-            current_run_id,
-            related_entity_id,
-            i,
-            chunk_text,
-            sha256(chunk_text),
-            'semantic',
-            1,
-            'pending'  -- Ready for embedding
-        )
-    
-    UPDATE raw_snapshots SET status = 'chunked' WHERE id = snapshot.id
-```
-
-### 7. Embedding Agent
-**Purpose**: Generate vector embeddings for chunks
-
-**Allowed Operations**:
-- INSERT into `derived_doc_embeddings`
-- UPDATE `derived_doc_chunks.embedding_status` (via trigger)
-- UPDATE `raw_snapshots.status` (chunked → embedded)
-- UPDATE `pipeline_runs` (status/metrics)
-
-**Forbidden Operations**:
-- Any writes to raw_* content
-- UPDATE chunk content (would require re-embedding)
-
-**Critical Rules**:
-- MUST include `chunk_version` that matches the chunk's current version
-- Trigger will validate version match
-- Trigger will set chunk's `embedding_status = 'completed'`
-
-**Behavior**:
-```python
-# Get chunks pending embedding
-chunks = SELECT * FROM derived_doc_chunks WHERE embedding_status = 'pending'
-
-for chunk in chunks:
-    # Generate embedding
-    embedding = embed(chunk.chunk_text, model='text-embedding-ada-002')
-    
-    # Insert embedding (trigger validates version)
-    INSERT INTO derived_doc_embeddings (
-        chunk_id,
-        source_snapshot_id,
-        pipeline_run_id,
-        chunk_version,  -- MUST match current chunk version
-        embedding,
-        embedding_model
-    ) VALUES (
-        chunk.id,
-        chunk.source_snapshot_id,
-        current_run_id,
-        chunk.chunk_version,
-        embedding,
-        'text-embedding-ada-002'
-    )
-
-# Update snapshot status when all chunks embedded
-UPDATE raw_snapshots rs SET status = 'embedded'
-WHERE rs.id IN (
-    SELECT source_snapshot_id FROM derived_doc_chunks dc
-    GROUP BY source_snapshot_id
-    HAVING COUNT(*) = COUNT(*) FILTER (WHERE embedding_status = 'completed')
+# Conditional edge: validator may loop back to extractor
+workflow.add_conditional_edges(
+    "validator",
+    lambda state: "extractor" if state["needs_refinement"] else "decision_maker"
 )
-AND rs.status = 'chunked'
+
+# Runtime: limit loops
+graph.invoke(input, config={"recursion_limit": 5})  # Max 5 Extractor↔Validator loops
 ```
 
-### 8. Graph Agent
-**Purpose**: Build graph nodes and edges for cascade analysis
+When `GraphRecursionError` is raised, escalate to human:
 
-**Allowed Operations**:
-- INSERT into `derived_graph_nodes`
-- INSERT into `derived_graph_edges`
-- UPDATE `raw_snapshots.status` (embedded → graphed)
-- UPDATE `pipeline_runs` (status/metrics)
-
-**Behavior**:
 ```python
-# Create nodes from entities
-entities = SELECT * FROM core_entities WHERE is_current = TRUE
-
-for entity in entities:
-    INSERT INTO derived_graph_nodes (
-        entity_id,
-        source_snapshot_id,
-        pipeline_run_id,
-        node_type,
-        label,
-        properties
-    ) VALUES (
-        entity.id,
-        entity.source_snapshot_id,
-        current_run_id,
-        entity.entity_type,
-        entity.name,
-        entity.attributes
+except GraphRecursionError:
+    # Max refinement attempts reached
+    store_for_human_review(
+        extraction_id=current_extraction.id,
+        reason="Exceeded refinement limit after 5 attempts"
     )
-
-# Create edges from relationships found during parsing
-# (stored in entity attributes or separate relationship extraction)
-for relationship in extracted_relationships:
-    INSERT INTO derived_graph_edges (
-        source_snapshot_id,
-        pipeline_run_id,
-        source_node_id,
-        target_node_id,
-        edge_type,
-        weight,
-        evidence_text,
-        confidence
-    ) VALUES (...)
 ```
 
-### 9. Scoring Agent
-**Purpose**: Compute risk/quality scores using models
+---
 
-**Allowed Operations**:
-- INSERT into `derived_model_scores`
-- UPDATE `raw_snapshots.status` (graphed → scored)
-- UPDATE `pipeline_runs` (status/metrics)
+## Agent 3: Decision Maker
 
-**Behavior**:
+**Purpose**: Final gate. Promote to canonical OR queue for human review.
+
+### Responsibilities
+
+1. **Receive** validated extractions from Validator
+2. **Apply** promotion rules based on confidence + completeness
+3. **Promote** high-confidence candidates to `core_entities`
+4. **Queue** uncertain candidates for human review
+
+### Decision Rules
+
 ```python
-# Score entities based on graph structure and content
-entities = SELECT ce.*, 
-                  gn.in_degree, gn.out_degree,
-                  array_agg(ge.edge_type) as edge_types
-           FROM core_entities ce
-           JOIN derived_graph_nodes gn ON gn.entity_id = ce.id
-           LEFT JOIN derived_graph_edges ge ON ge.source_node_id = gn.id
-           WHERE ce.is_current = TRUE
-           GROUP BY ce.id, gn.id
-
-for entity in entities:
-    # Compute risk score
-    risk_score = compute_risk(entity)
+def make_decision(extraction):
+    """Decision Maker's promotion logic."""
     
-    INSERT INTO derived_model_scores (
-        entity_id,
-        source_snapshot_id,
-        pipeline_run_id,
-        score_type,
-        score_value,
-        score_model,
-        reasoning
-    ) VALUES (
-        entity.id,
-        entity.source_snapshot_id,
-        current_run_id,
-        'risk',
-        risk_score,
-        'proves_risk_v1',
-        explain_risk(entity)
-    )
+    score = extraction.confidence_score
+    has_all_fields = not extraction.missing_fields
+    
+    # Auto-promote: High confidence + complete
+    if score >= 0.80 and has_all_fields:
+        return {
+            "decision": "accept",
+            "action": "promote_to_core",
+            "reason": f"High confidence ({score}) with complete fields"
+        }
+    
+    # Queue for human: Medium confidence or incomplete
+    if 0.50 <= score < 0.80:
+        return {
+            "decision": "defer",
+            "action": "queue_for_human",
+            "priority": "normal",
+            "reason": f"Medium confidence ({score}) requires human verification"
+        }
+    
+    # Queue for human with high priority: Low confidence
+    if score < 0.50:
+        return {
+            "decision": "defer",
+            "action": "queue_for_human",
+            "priority": "high",
+            "reason": f"Low confidence ({score}) needs expert review"
+        }
+    
+    # Edge case: High confidence but missing fields
+    return {
+        "decision": "defer",
+        "action": "queue_for_human",
+        "priority": "normal",
+        "reason": f"High confidence but missing: {extraction.missing_fields}"
+    }
 ```
 
-## Status Flow
+### Allowed Operations
 
-```
-Snapshot Status:   captured → parsed → chunked → embedded → graphed → scored
-                      │          │         │          │          │         │
-Pipeline Stage:    CAPTURE   PARSE     CHUNK     EMBED      GRAPH    SCORE
-                      │          │         │          │          │         │
-Tables Written:    raw_*    core_*    chunks  embeddings  nodes    scores
-                                                          edges
-```
+| Table | Operation | Notes |
+|-------|-----------|-------|
+| `core_entities` | INSERT | Promote accepted candidates |
+| `staging_extractions` | UPDATE status | Mark accepted/rejected |
+| `validation_decisions` | INSERT | Record final decision |
 
-## HITL (Human-in-the-Loop) Integration
+### Promotion Flow
 
-**When to require HITL approval**:
-1. Cross-ecosystem equivalences (confidence < 0.9)
-2. Critical path graph edges (is_critical = TRUE)
-3. Risk scores above threshold (score_value > 0.8)
-
-**Workflow**:
 ```python
-# During graph agent
-if edge.is_critical:
-    # Store with pending validation
-    INSERT INTO derived_graph_edges (..., 
-        properties = jsonb_set(properties, '{validation_status}', '"pending"')
+def promote_extraction(extraction, decision):
+    """Promote to core_entities with full provenance."""
+    
+    # 1. Insert into core_entities
+    entity_id = insert_core_entity(
+        entity_type=extraction.candidate_type,
+        canonical_key=extraction.candidate_key,
+        name=extraction.candidate_payload.get("name"),
+        attributes=extraction.candidate_payload,
+        ecosystem=extraction.ecosystem,
+        source_snapshot_id=extraction.snapshot_id,
+        created_from_extraction_id=extraction.extraction_id  # Provenance link
     )
     
-    # Interrupt for HITL
-    await hitl_approval(
-        type='critical_edge',
-        data=edge,
-        message='Detected critical dependency path'
+    # 2. Update staging extraction status
+    update_staging_extraction(
+        extraction_id=extraction.extraction_id,
+        status="accepted",
+        promoted_to_id=entity_id,
+        promoted_at=now()
     )
     
-    # On approval, update
-    UPDATE derived_graph_edges 
-    SET properties = jsonb_set(properties, '{validation_status}', '"approved"')
-    WHERE id = edge.id
+    # 3. Record decision
+    insert_validation_decision(
+        extraction_id=extraction.extraction_id,
+        decided_by="decision_maker_agent",
+        decider_type="validator_agent",
+        decision="accept",
+        decision_reason=decision["reason"],
+        canonical_id=entity_id,
+        confidence_at_decision=extraction.confidence_score
+    )
+    
+    return entity_id
 ```
 
-## Regeneration
+---
 
-Derived tables can be regenerated:
+## Database Tables Summary
 
-```sql
--- Delete all derived data for a snapshot
-DELETE FROM derived_model_scores WHERE source_snapshot_id = $1;
-DELETE FROM derived_graph_edges WHERE source_snapshot_id = $1;
-DELETE FROM derived_graph_nodes WHERE source_snapshot_id = $1;
-DELETE FROM derived_doc_embeddings WHERE source_snapshot_id = $1;
-DELETE FROM derived_doc_chunks WHERE source_snapshot_id = $1;
+| Table | Layer | Purpose | Written By |
+|-------|-------|---------|------------|
+| `raw_snapshots` | Raw | Immutable source content | Extractor |
+| `staging_extractions` | Raw | Candidates with confidence | Extractor |
+| `validation_decisions` | Raw | Decision audit log | Validator, Decision Maker |
+| `core_entities` | Core | Canonical entities | Decision Maker only |
+| `core_equivalences` | Core | Cross-system mappings | Decision Maker only |
 
--- Reset snapshot status
-UPDATE raw_snapshots SET status = 'parsed' WHERE id = $1;
+---
 
--- Re-run pipeline from chunk stage
+## Pipeline Functions (Not Agents)
+
+These run **after** promotion to `core_entities`:
+
+### Chunking (Batch Job)
+
+```python
+def chunk_documents(snapshot_ids: list[UUID]):
+    """Deterministic chunking - no LLM needed."""
+    for snapshot_id in snapshot_ids:
+        content = get_snapshot_content(snapshot_id)
+        chunks = semantic_chunker(content, max_tokens=512)
+        for i, chunk in enumerate(chunks):
+            insert_doc_chunk(snapshot_id, i, chunk)
 ```
 
-## Provenance Queries
+### Embedding (Batch Job)
 
-Every derived record can answer:
-1. **Where did this come from?** → `source_snapshot_id` → `raw_snapshots.source_url`
-2. **When was it created?** → `created_at`
-3. **What pipeline created it?** → `pipeline_run_id` → `pipeline_runs.run_name`
-4. **Is it stale?** → Compare `chunk_version` or check latest `pipeline_run_id`
+```python
+def embed_chunks(chunk_ids: list[UUID]):
+    """API call to embedding model - no agent loop."""
+    for chunk_id in chunk_ids:
+        chunk_text = get_chunk_text(chunk_id)
+        embedding = openai.embed(chunk_text, model="text-embedding-3-small")
+        insert_embedding(chunk_id, embedding)
+```
+
+### Graph Building (Batch Job)
+
+```python
+def build_graph(entity_ids: list[UUID]):
+    """Deterministic graph construction from entities."""
+    for entity_id in entity_ids:
+        entity = get_entity(entity_id)
+        insert_graph_node(entity)
+        
+        # Build edges from relationships in entity attributes
+        for dep in entity.attributes.get("dependencies", []):
+            target = find_entity_by_key(dep["target"])
+            if target:
+                insert_graph_edge(entity_id, target.id, dep["type"])
+```
+
+---
+
+## Complete Graph Definition
+
+```python
+from langgraph.graph import StateGraph, END
+from langgraph.checkpoint.postgres import PostgresSaver
+
+# State schema
+class CuratorState(TypedDict):
+    document_url: str
+    raw_content: Optional[str]
+    extractions: list[dict]
+    current_extraction: Optional[dict]
+    validation_result: Optional[dict]
+    promoted_entities: list[UUID]
+    needs_refinement: bool
+
+# Build graph
+workflow = StateGraph(CuratorState)
+
+# Add nodes
+workflow.add_node("extractor", extractor_agent)
+workflow.add_node("validator", validator_agent)
+workflow.add_node("decision_maker", decision_maker_agent)
+
+# Entry point
+workflow.set_entry_point("extractor")
+
+# Edges
+workflow.add_edge("extractor", "validator")
+
+# Conditional: Validator → Extractor (refinement) or → Decision Maker
+workflow.add_conditional_edges(
+    "validator",
+    lambda state: "extractor" if state["needs_refinement"] else "decision_maker"
+)
+
+# Decision Maker → END
+workflow.add_edge("decision_maker", END)
+
+# Compile with checkpointer
+checkpointer = PostgresSaver.from_conn_string(DATABASE_URL)
+graph = workflow.compile(checkpointer=checkpointer)
+
+# Invoke with loop limit
+result = graph.invoke(
+    {"document_url": "https://github.com/nasa/fprime/..."},
+    config={
+        "recursion_limit": 10,  # Max Extractor↔Validator loops
+        "configurable": {"thread_id": "extraction_run_001"}
+    }
+)
+```
+
+---
+
+## Middleware Configuration
+
+```python
+from langchain.agents import create_agent
+from langchain.agents.middleware import ToolCallLimitMiddleware
+
+# Create agents with appropriate limits
+
+extractor_agent = create_agent(
+    model="claude-sonnet-4-20250514",
+    tools=[fetch_document, parse_content, extract_candidates],
+    middleware=[
+        ToolCallLimitMiddleware(run_limit=20, exit_behavior="continue"),
+        ToolCallLimitMiddleware(tool_name="fetch_document", run_limit=5)
+    ]
+)
+
+validator_agent = create_agent(
+    model="claude-sonnet-4-20250514", 
+    tools=[check_evidence, find_duplicates, request_refinement],
+    middleware=[
+        ToolCallLimitMiddleware(run_limit=10, exit_behavior="continue")
+    ]
+)
+
+decision_maker_agent = create_agent(
+    model="claude-sonnet-4-20250514",
+    tools=[promote_entity, queue_for_review, record_decision],
+    middleware=[
+        ToolCallLimitMiddleware(run_limit=5, exit_behavior="end")
+    ]
+)
+```
+
+---
+
+## Summary
+
+| Aspect | Old Approach (9 agents) | New Approach (3 agents) |
+|--------|-------------------------|-------------------------|
+| Agent Count | 9 (bloat) | 3 (focused) |
+| Loop Control | Custom `refinement_count` column | LangGraph `recursion_limit` |
+| Tool Limits | None | `ToolCallLimitMiddleware` |
+| Chunking | Agent | Batch function |
+| Embedding | Agent | Batch function |
+| Graph Building | Agent | Batch function |
+| Scoring | Agent | Batch function |
+
+**The key insight**: Only steps requiring LLM reasoning are agents. Everything else is a deterministic pipeline function.
