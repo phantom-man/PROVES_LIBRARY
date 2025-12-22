@@ -144,6 +144,48 @@ graph TD
   H --> I[📊 Visualizations & Queries]
 ```
 
+### Lifecycle: Curation Run
+
+```mermaid
+sequenceDiagram
+  participant Doc as Documentation
+  participant Curator
+  participant Extractor
+  participant Validator
+  participant Review as Human Review
+  participant Storage
+  participant Graph as Knowledge Graph
+
+  Doc->>Curator: Ingest source
+  Curator->>Extractor: Extract dependencies + citations
+  Extractor-->>Curator: Candidate list
+  Curator->>Validator: Normalize to ERV + de-dup
+  Validator-->>Curator: Validated candidates
+  alt High criticality or conflict
+    Curator->>Review: Request approval
+    Review-->>Curator: Approve or reject
+  end
+  Curator->>Storage: Write approved items
+  Storage->>Graph: Upsert nodes + relationships
+  Graph-->>Storage: Ack
+  Storage-->>Curator: Stored summary
+```
+
+### Lifecycle: Curator Job State
+
+```mermaid
+stateDiagram-v2
+  [*] --> Ingested
+  Ingested --> Extracted: dependencies parsed
+  Extracted --> Validated: ERV normalization
+  Validated --> ReviewPending: high or conflict
+  Validated --> Stored: low/medium
+  ReviewPending --> Stored: approved
+  ReviewPending --> Rejected: needs rewrite
+  Stored --> [*]
+  Rejected --> [*]
+```
+
 ### ERV Relationship Types
 
 The knowledge graph uses **Entity-Relationship-Value (ERV)** semantics:
