@@ -102,7 +102,7 @@ Edge:
 ## Identity / Equivalence Relations
 
 ```mermaid
-graph LR
+flowchart-elk LR
     A[Component A v1.0] -->|IDENTICAL| B[Component A v1.0<br/>different repo]
     C[old_name] -->|ALIAS_OF| D[new_name<br/>v2.0 rename]
     E[Driver X] -->|EQUIVALENT_TO| F[Driver Y<br/>same contract]
@@ -143,7 +143,7 @@ graph LR
 ## Dependency / Influence Relations
 
 ```mermaid
-graph TB
+flowchart-elk TB
     SW[Software Component] -->|REQUIRES| HW[Hardware Element]
     Config[Config File] -->|CONFIGURES| SW
     SW -->|CONTROLS| HW
@@ -213,7 +213,7 @@ The trick to "sideways cascades" is treating resources as nodes.
 ### Power Cascade Example
 
 ```mermaid
-graph TB
+flowchart-elk TB
     Radio[RadioTX Component] -->|CONSUMES| P1[PowerRail_3V3]
     P1 -->|CONSTRAINS| MCU[MCU BrownoutMargin]
     MCU -->|COUPLES_TO| FP[FPrime ResetBehavior]

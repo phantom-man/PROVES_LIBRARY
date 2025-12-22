@@ -3,7 +3,7 @@
 ## System Overview
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph Query[User Query Layer]
         User[University Team Query]
         UI[VS Code / CLI / Web]
@@ -144,7 +144,7 @@ POST /graph/cascade
 ### Hybrid RAG: Graph + Vector
 
 ```mermaid
-graph LR
+flowchart-elk LR
     Query[User Query] --> Router[Query Router]
     Router -->|Structural query| Graph[Graph Query Engine]
     Router -->|Semantic query| Vector[Vector Search]

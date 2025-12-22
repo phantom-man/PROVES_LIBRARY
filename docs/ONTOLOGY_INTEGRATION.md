@@ -17,7 +17,7 @@ This document analyzes how the **FRAMES Theoretical Ontology** (from the FRAMES 
 ### FRAMES Core Concepts → PROVES Library Mapping
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph FRAMES[FRAMES Ontology]
         A1[Near-Decomposable Subsystems]
         A2[Interface Strength]
@@ -162,7 +162,7 @@ def detect_i2c_conflict_enhanced(topology):
 F Prime systems form a **component topology** that can be analyzed using FRAMES principles.
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph Strong[Strong Internal Coupling]
         C1[Power Monitor]
         C2[I2C Manager]
@@ -376,7 +376,7 @@ def generate_component(requirements, team_context):
 ### FRAMES: Decisions Occur at Multiple Scales
 
 ```mermaid
-graph TD
+flowchart-elk TD
     subgraph Macro[Macro Decisions - Architecture]
         M1[Use I2C multiplexer architecture]
     end

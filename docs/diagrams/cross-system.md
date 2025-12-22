@@ -53,7 +53,7 @@ Neither F´ documentation nor PROVES Kit documentation mentions the other system
 ### The Hidden Dependency
 
 ```mermaid
-graph LR
+flowchart-elk LR
     subgraph "F´ System (NASA/JPL)"
         IM[ImuManager<br/>I2C Device Manager]
         I2C[I2C Bus Driver<br/>LinuxI2cDriver]
@@ -202,7 +202,7 @@ No alert that power sequencing is wrong
 ### Bus Sharing Conflicts
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph "F´ Configuration"
         IM_ADDR[ImuManager<br/>Address: 0x68]
         BUS[I2C Bus /dev/i2c-1<br/>Shared Resource]
@@ -276,7 +276,7 @@ Attitude determination fails
 ### Missing Integration
 
 ```mermaid
-flowchart TB
+flowchart-elk TB
     START[F´ I2C Read Operation]
     READ{I2C Status}
     ERROR[I2cStatus::I2C_READ_ERR]
@@ -355,7 +355,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 ### Team Interface Strength
 
 ```mermaid
-graph LR
+flowchart-elk LR
     subgraph "NASA/JPL Team"
         F_TEAM[F´ Core Team]
         F_DOC[Official Docs]

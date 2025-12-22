@@ -39,7 +39,7 @@ library/
 **Location:** `/mcp-server/`
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph Clients[MCP Clients]
         VSCode[VS Code Extension]
         Scanner[Risk Scanner]
@@ -107,7 +107,7 @@ graph TB
 **Location:** `/risk-scanner/`
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph Input[Scan Input]
         Repo[Repository Code]
         Config[Config Files]
@@ -194,7 +194,7 @@ graph TB
 ## Data Flow
 
 ```mermaid
-graph LR
+flowchart-elk LR
     Team[University Team] --> Scanner[Risk Scanner]
     Scanner -->|PUSH: Alert| Team
     Team -->|PULL: Context| Scanner
@@ -247,7 +247,7 @@ sequenceDiagram
 ## Future: Agentic Systems
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph Phase4[Phase 4 - Agentic Automation]
         Curator[Curator Agent<br/>LLM-powered normalization]
         Builder[Builder Agent<br/>Code generation]

@@ -141,7 +141,7 @@ python run_with_approval.py
 ### The Workflow
 
 ```mermaid
-graph TD
+flowchart-elk TD
   A[📄 Documentation] --> B[🤖 Curator Agent]
   B --> C[Extractor Sub-Agent]
   C --> D[Validator Sub-Agent]

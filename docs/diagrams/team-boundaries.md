@@ -32,7 +32,7 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ### Organizational Structure
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph "NASA/JPL"
         JPL_CORE[F´ Core Team<br/>⭐ Permanent Staff]
         JPL_DOC[Documentation Team]
@@ -101,7 +101,7 @@ graph TB
 ### F´ Team ↔ PROVES Kit Team
 
 ```mermaid
-graph LR
+flowchart-elk LR
     subgraph "F´ Knowledge"
         F_PUB[Public Documentation<br/>✅ Versioned<br/>✅ Comprehensive]
         F_CODE[GitHub Repository<br/>✅ nasa/fprime<br/>✅ Well-maintained]
@@ -167,7 +167,7 @@ This flowchart shows the journey developers take when they need integration know
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
-flowchart TB
+flowchart-elk TB
     START[Integration Knowledge Needed]
 
     DOC_F{Check F´ Docs}
@@ -392,7 +392,7 @@ sequenceDiagram
 ### What Gets Captured vs. Lost
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph "Mission Lifecycle"
         DESIGN[Design Decisions]
         IMPL[Implementation]
@@ -531,7 +531,7 @@ quadrantChart
 ### How This System Addresses Team Boundary Issues
 
 ```mermaid
-graph TB
+flowchart-elk TB
     subgraph "Traditional Approach (Failed)"
         TRAD_TEAM[Team Knowledge]
         TRAD_GRAD[Graduation]
