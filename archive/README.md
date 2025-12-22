@@ -2,6 +2,20 @@
 
 This directory contains outdated, superseded, or unimplemented code and documentation from the PROVES Library project evolution.
 
+> ⚠️ **Important:** Critical lessons and design principles from these documents have been extracted to [CANON.md](../CANON.md). The CANON file preserves institutional knowledge that must never be lost.
+
+## Knowledge Extraction (December 2025)
+
+The following key concepts were extracted from archived documents before archiving:
+
+| Archived Document | Extracted To | Key Lessons |
+|-------------------|--------------|-------------|
+| `AGENT_INTELLIGENCE_GUIDE.md` | CANON.md §1, §3 | Autonomous intelligence principles, transfer learning methodology |
+| `DESIGN_ACTION_LEVEL_HITL.md` | CANON.md §2 | Data-level vs action-level HITL, plan-then-execute pattern |
+| `OPTION_REMOVE_HITL.md` | CANON.md §1.2 | "Criticality is metadata, not a gate" principle |
+| `README_MONITORING.md` | CANON.md §4, §7 | Transparency stack, monitoring patterns |
+| `GITHUB_API_SYNC_QUICKSTART.md` | CANON.md §7.3 | GitHub API sync pattern |
+
 ## Archive Organization
 
 ### curator-agent-old/

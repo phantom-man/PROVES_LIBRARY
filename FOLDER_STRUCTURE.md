@@ -41,6 +41,7 @@ PROVES_LIBRARY/
 ├── requirements.txt            # Python dependencies (root)
 ├── README.md                   # Project overview (START HERE)
 ├── GETTING_STARTED.md          # Setup and onboarding
+├── CANON.md                    # Permanent lessons & design principles
 └── FOLDER_STRUCTURE.md         # This file
 ```
 
@@ -51,6 +52,7 @@ PROVES_LIBRARY/
 **✅ KEEP IN ROOT:**
 - `README.md` - Project overview (first thing users see)
 - `GETTING_STARTED.md` - Quick start guide
+- `CANON.md` - Permanent institutional knowledge (NEVER archive)
 - `FOLDER_STRUCTURE.md` - Organization guide
 - `LICENSE` - License file (if you add one)
 - `CONTRIBUTING.md` - Contribution guidelines (if you add one)

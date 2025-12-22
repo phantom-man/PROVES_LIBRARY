@@ -7,6 +7,8 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+> 📖 **New here?** Start with [GETTING_STARTED.md](GETTING_STARTED.md) | **Core principles:** [CANON.md](CANON.md)
+
 ---
 
 ## 🎯 The Problem
