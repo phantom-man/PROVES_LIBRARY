@@ -102,15 +102,17 @@ def call_extractor_agent(task: str) -> str:
     - Fetch web pages from documentation sites (fetch_webpage)
     - Fetch files directly from GitHub repos (fetch_github_file)
     - List GitHub directories to explore repo structure (list_github_directory)
-    - Extract dependencies from text using LLM
+    - Capture ALL dependencies from text
     - Identify ERV relationship types
-    - Assess dependency criticality
+    - Note confidence level based on documentation clarity
 
     IMPORTANT: The extractor has GitHub tools! For GitHub repos:
     - list_github_directory("nasa", "fprime", "Svc", branch="devel") - list contents
     - fetch_github_file("nasa", "fprime", "Svc/TlmChan/TlmChan.fpp", branch="devel") - get file
     
     All fetched content is automatically stored in raw_snapshots for audit.
+
+    NOTE: Do NOT assess criticality - that's metadata assigned by HUMANS after verification.
 
     Args:
         task: Description of what to extract. Be specific about sources:

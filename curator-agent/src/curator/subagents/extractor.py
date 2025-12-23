@@ -356,8 +356,10 @@ def extract_dependencies_using_claude(text: str, document_name: str) -> str:
     Identifies:
     - Component names
     - Dependency relationships (ERV types)
-    - Criticality levels (HIGH/MEDIUM/LOW)
+    - Confidence level based on documentation clarity
     - Context and reasoning
+    
+    NOTE: Do NOT assess criticality - that's metadata assigned by HUMANS after verification.
     """
     from langchain_anthropic import ChatAnthropic
 
@@ -378,22 +380,24 @@ For each dependency, identify:
 1. Component name (what depends on something else)
 2. Depends on (what it needs/requires)
 3. Relationship type: depends_on, requires, enables, conflicts_with, mitigates, causes
-4. Criticality: HIGH (critical for operation), MEDIUM (important but has workarounds), LOW (nice-to-have)
-5. Context (line numbers, specific details)
+4. Confidence: HIGH (clearly documented), MEDIUM (implied or indirect), LOW (uncertain/inferred)
+5. Context (line numbers, specific details, what happens if this fails)
 
 Format each dependency as:
 - Component: <name>
 - Depends on: <target>
 - Type: <relationship>
-- Criticality: <level>
+- Confidence: <level>
 - Context: <details>
+
+NOTE: Do NOT assign criticality levels - that is metadata assigned by HUMANS after verification.
 
 Extract ALL dependencies, including:
 - Runtime dependencies (code depends on libraries)
 - Build dependencies (requires specific tools)
 - Hardware dependencies (software needs specific hardware)
 - Configuration dependencies
-- Cross-system dependencies
+- Cross-system dependencies (F´/PROVES boundaries)
 """
 
         response = model.invoke(extraction_prompt)
@@ -413,9 +417,11 @@ def create_extractor_agent():
     - Fetching web documentation (nasa.github.io/fprime, docs.proveskit.space)
     - Fetching GitHub source files directly (without cloning)
     - Listing GitHub directories to explore structure
-    - Extracting dependencies using LLM
+    - Capturing ALL dependencies
     - Identifying ERV relationship types
-    - Assessing criticality levels
+    - Noting confidence levels based on documentation clarity
+    
+    NOTE: Does NOT assign criticality - that's human-assigned post-verification metadata.
     
     All extractions include source URLs/paths for citation.
     """
