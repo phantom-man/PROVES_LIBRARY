@@ -118,11 +118,34 @@ def update_progress_after_extraction(progress, page, status, extraction_count=0,
         progress['completed'].append(record)
         progress['metadata']['completed_pages'] += 1
 
+        # Generate daily report after successful completion
+        generate_daily_report(progress, page, extraction_count)
+
     elif status == 'failed':
-        record['error'] = error
-        record['failed_date'] = now
-        progress['failed'].append(record)
-        progress['metadata']['failed_pages'] += 1
+        # Implement retry logic
+        retry_count = page.get('retry_count', 0)
+
+        if retry_count < 3:
+            # Retry - put back in queue with incremented retry count
+            print(f"⚠️  Failed (attempt {retry_count + 1}/3). Will retry...")
+            progress['next_page'] = {
+                **page,
+                'retry_count': retry_count + 1,
+                'last_error': error,
+                'last_attempt': now
+            }
+        else:
+            # After 3 failures, mark as needs manual review
+            print(f"❌ Failed after 3 attempts. Needs manual review.")
+            record['error'] = error
+            record['failed_date'] = now
+            record['retry_count'] = retry_count
+            record['needs_manual_review'] = True
+            progress['failed'].append(record)
+            progress['metadata']['failed_pages'] += 1
+
+            # Move to next page
+            progress['next_page'] = determine_next_page(progress)
 
     elif status == 'skipped':
         record['reason'] = error or "User skipped"
@@ -130,17 +153,22 @@ def update_progress_after_extraction(progress, page, status, extraction_count=0,
         progress['skipped'].append(record)
         progress['metadata']['skipped_pages'] += 1
 
+        # Move to next page
+        progress['next_page'] = determine_next_page(progress)
+
     # Add to history
     progress['extraction_history'].append({
         "page": page.get('title'),
         "status": status,
         "date": now,
-        "extractions": extraction_count if status == 'completed' else 0
+        "extractions": extraction_count if status == 'completed' else 0,
+        "retry_count": page.get('retry_count', 0) if status == 'failed' else 0
     })
 
-    # Update next page (simplified - just move to next in sequence)
-    # TODO: Implement smarter next-page selection based on PROVESKIT_DOCS_MAP.md
-    progress['next_page'] = determine_next_page(progress)
+    # If not retrying a failure, determine next page
+    if status != 'failed' or page.get('retry_count', 0) >= 2:
+        if status != 'failed':  # Only update if not already set above
+            progress['next_page'] = determine_next_page(progress)
 
     save_progress(progress)
 
@@ -207,6 +235,111 @@ def determine_next_page(progress):
 
     # No more pages defined
     return None
+
+
+def generate_daily_report(progress, page, extraction_count):
+    """
+    Generate daily report after page extraction.
+
+    Creates a report showing:
+    - What was completed today
+    - Extraction statistics
+    - Overall progress
+    - Next page in queue
+    """
+    from pathlib import Path
+
+    # Create reports directory if it doesn't exist
+    reports_dir = Path(__file__).parent / 'reports'
+    reports_dir.mkdir(exist_ok=True)
+
+    # Generate report filename with date
+    date_str = datetime.now().strftime('%Y-%m-%d')
+    report_file = reports_dir / f'daily_report_{date_str}.md'
+
+    # Calculate statistics
+    total_pages = progress['metadata']['total_pages']
+    completed_pages = progress['metadata']['completed_pages']
+    skipped_pages = progress['metadata']['skipped_pages']
+    failed_pages = progress['metadata']['failed_pages']
+    remaining = total_pages - completed_pages - skipped_pages
+    progress_pct = (completed_pages / total_pages * 100) if total_pages > 0 else 0
+
+    # Get recent extractions from today
+    today_extractions = [
+        item for item in progress.get('extraction_history', [])
+        if item.get('date', '').startswith(date_str) and item.get('status') == 'completed'
+    ]
+    total_extractions_today = sum(item.get('extractions', 0) for item in today_extractions)
+
+    # Build report
+    report = f"""# Daily Extraction Report - {date_str}
+
+## Summary
+
+**Page Completed:** {page.get('title')}
+- URL: {page.get('url')}
+- Phase: {page.get('phase')}
+- Extractions: {extraction_count}
+- Status: ✅ COMPLETED
+
+## Overall Progress
+
+- **Total Pages:** {total_pages}
+- **Completed:** {completed_pages} ({progress_pct:.1f}%)
+- **Skipped:** {skipped_pages}
+- **Failed:** {failed_pages}
+- **Remaining:** {remaining}
+
+## Today's Activity
+
+- **Pages Completed Today:** {len(today_extractions)}
+- **Total Extractions Today:** {total_extractions_today}
+
+### Pages Completed Today:
+"""
+
+    for item in today_extractions:
+        report += f"- {item.get('page')} ({item.get('extractions', 0)} extractions)\n"
+
+    # Next page
+    next_page = progress.get('next_page')
+    if next_page:
+        report += f"""
+## Next Page
+
+- **Title:** {next_page.get('title')}
+- **URL:** {next_page.get('url')}
+- **Phase:** {next_page.get('phase')}
+- **Reason:** {next_page.get('reason', 'Next in sequence')}
+"""
+    else:
+        report += """
+## Next Page
+
+🎉 **All pages complete!**
+"""
+
+    # Recent history
+    recent = progress.get('completed', [])[-5:]
+    if recent:
+        report += """
+## Recent Completions
+
+"""
+        for item in reversed(recent):
+            title = item.get('title', 'Unknown')
+            count = item.get('extractions_count', 0)
+            date = item.get('completed_date', 'Unknown')[:10]
+            report += f"- {date}: {title} ({count} extractions)\n"
+
+    # Save report
+    with open(report_file, 'w') as f:
+        f.write(report)
+
+    print()
+    print(f"📊 Daily report saved: {report_file}")
+    print()
 
 
 def run_extraction(page, auto=False):
