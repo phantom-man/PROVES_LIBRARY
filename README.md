@@ -31,39 +31,15 @@ That layered capture becomes the basis for a future graph neural network risk mo
 
 ## 🏗️ Architecture: Truth Layer System
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    PROVES Library System                        │
-│                                                                 │
-│        "Context is EVERYTHING. Agents assist. Humans verify."   │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  📄 RAW SOURCES (capture everything)                            │
-│     ├── F´ Framework (NASA/JPL flight software)                │
-│     ├── PROVES Kit (Cal Poly Pomona CubeSat hardware)          │
-│     └── GitHub repos, docs, specs, datasheets...               │
-│                          ↓                                      │
-│  🤖 CAPTURE LAYER (Extractor Agent)                             │
-│     └── Grab ALL data, smart categorization, add lineage       │
-│                          ↓                                      │
-│  🔍 STAGING LAYER (Validator Agent)                             │
-│     └── Check confidence, flag anomalies, note pattern breaks  │
-│                          ↓                                      │
-│  📋 ROUTING (Decision Maker)                                    │
-│     ├── Clean data → staging table                             │
-│     └── Suspect data → flagged table with reasoning            │
-│                          ↓                                      │
-│  👤 HUMAN VERIFICATION (THE TRUTH GATE)                         │
-│     └── Human reviews EACH piece, aligns across sources        │
-│                          ↓                                      │
-│  ✅ TRUTH LAYER (Knowledge Graph)                               │
-│     ├── Only human-verified data enters                        │
-│     ├── Aligned layers create clean GNN matrix                 │
-│     └── kg_nodes, kg_relationships, library_entries            │
-│                          ↓                                      │
-│  🌐 GitHub Pages (Interactive Visualizations)                   │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart-elk TB
+  A[Raw Sources] --> B[Capture Layer (Extractor)]
+  B --> C[Staging Layer (Validator)]
+  C --> D[Routing (Decision Maker)]
+  D --> E[Human Verification (Truth Gate)]
+  E --> F[Layered Truth Graph]
+  F --> G[Graph Neural Network]
+  G --> H[Mission Ops Risk Assessment]
 ```
 
 ### Why This Architecture?
