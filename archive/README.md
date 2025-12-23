@@ -11,14 +11,21 @@ The following key concepts were extracted from archived documents before archivi
 | Archived Document | Extracted To | Key Lessons |
 |-------------------|--------------|-------------|
 | `AGENT_INTELLIGENCE_GUIDE.md` | CANON.md §1, §3 | Autonomous intelligence principles, transfer learning methodology |
-| `DESIGN_ACTION_LEVEL_HITL.md` | CANON.md §2 | Data-level vs action-level HITL, plan-then-execute pattern |
-| `OPTION_REMOVE_HITL.md` | CANON.md §1.2 | "Criticality is metadata, not a gate" principle |
+| `DESIGN_ACTION_LEVEL_HITL.md` | CANON.md §2 | Plan-then-execute pattern |
+| `OPTION_REMOVE_HITL.md` | CANON.md §1.2 | **SUPERSEDED** - "Criticality as gate" was wrong model |
 | `README_MONITORING.md` | CANON.md §9, §10 | Transparency stack, monitoring patterns |
 | `GITHUB_API_SYNC_QUICKSTART.md` | CANON.md §9.3 | GitHub API sync pattern |
 | `12_extraction_confidence.sql` | `12_extraction_enums.sql` | ENUMs extracted, duplicate table removed |
 | `AGENT_BEHAVIOR_SPEC.md` (v1) | `AGENT_BEHAVIOR_SPEC.md` (v2) | 9 agents → 3 agents, LangGraph loop control |
+| **(Dec 22)** Criticality model | CANON.md §1.2 | **CORRECTED:** Truth Layer Architecture - agents assist, humans verify |
 
 ## Recent Changes (December 22, 2025)
+
+### Truth Layer Architecture Correction
+- **Corrected:** CANON.md §1.2, §2.1, §5.1, §5.3, §8.2 - removed criticality-based filtering model
+- **Established:** Agents are context providers assisting human verification, not gatekeepers
+- **Core Principle:** Capture ALL data → Agents provide context/flags → Humans verify EACH piece → Truth graph
+- **Previous Error:** "Criticality as gate" and "HITL for HIGH only" were wrong mental models
 
 ### Schema Consolidation
 - **Deleted:** `12_extraction_confidence.sql` (duplicate table removed)
@@ -28,6 +35,7 @@ The following key concepts were extracted from archived documents before archivi
 ### Agent Spec Simplification
 - **Old:** 9 agents (Capture, Extraction, Validator, Parser, Chunking, Embedding, Graph, Scoring)
 - **New:** 3 agents (Extractor, Validator, Decision Maker)
+- **Agent Purpose:** Prepare data for human verification with context to eliminate ambiguity
 - **Not agents:** Chunking, embedding, graph building, scoring → batch functions
 - **Loop control:** LangGraph `recursion_limit` + `ToolCallLimitMiddleware` (not custom schema)
 

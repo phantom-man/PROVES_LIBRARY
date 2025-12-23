@@ -98,16 +98,26 @@ def call_extractor_agent(task: str) -> str:
     Call the extractor sub-agent to extract dependencies from documentation.
 
     Use this when you need to:
-    - Read and process documentation files
-    - Extract dependencies from text
+    - Read and process local documentation files (read_document)
+    - Fetch web pages from documentation sites (fetch_webpage)
+    - Fetch files directly from GitHub repos (fetch_github_file)
+    - List GitHub directories to explore repo structure (list_github_directory)
+    - Extract dependencies from text using LLM
     - Identify ERV relationship types
     - Assess dependency criticality
 
+    IMPORTANT: The extractor has GitHub tools! For GitHub repos:
+    - list_github_directory("nasa", "fprime", "Svc", branch="devel") - list contents
+    - fetch_github_file("nasa", "fprime", "Svc/TlmChan/TlmChan.fpp", branch="devel") - get file
+    
+    All fetched content is automatically stored in raw_snapshots for audit.
+
     Args:
-        task: Description of what to extract (e.g., "Extract dependencies from trial_docs/fprime_i2c_driver.md")
+        task: Description of what to extract. Be specific about sources:
+              "Fetch and analyze nasa/fprime Svc/CmdDispatcher using list_github_directory and fetch_github_file"
 
     Returns:
-        Extraction results with found dependencies
+        Extraction results with found dependencies and snapshot IDs
     """
     print(f"[EXTRACTOR TASK] {task}")  # Debug: show what task the extractor received
     extractor = create_extractor_agent()
@@ -150,13 +160,22 @@ def call_storage_agent(task: str) -> str:
     Call the storage sub-agent to store validated dependencies.
 
     Use this when you need to:
-    - Create nodes in the knowledge graph
-    - Store dependency relationships
-    - Get graph statistics
-    - Manage database operations
+    - Store extractions in staging_extractions (store_extraction)
+    - Promote validated entities to core_entities (promote_to_core)
+    - Link cross-ecosystem equivalences (store_equivalence)
+    - Get domain table statistics (get_staging_statistics)
+    - Legacy: Store findings, manage knowledge graph
+
+    WORKFLOW:
+    1. Extractor stores raw content → raw_snapshots (automatic)
+    2. Storage stores extractions → staging_extractions (pending status)
+    3. Validator reviews → validation_decisions (accept/reject)
+    4. Storage promotes accepted → core_entities
 
     Args:
-        task: Description of what to store (e.g., "Store dependency: ImuManager depends_on LinuxI2cDriver (HIGH criticality)")
+        task: Description of what to store, e.g.:
+              "Store extraction: component 'CmdDispatcher' from snapshot abc123"
+              "Promote extraction xyz789 to core entities"
 
     Returns:
         Storage confirmation with IDs
@@ -215,36 +234,41 @@ Your mission: Extract dependencies from CubeSat system documentation and build a
 
 ## Your Sub-Agents
 
-You coordinate THREE specialized sub-agents:
+You coordinate THREE specialized sub-agents that prepare data for HUMAN verification:
 
 1. **Extractor Agent** (`extractor_agent` tool)
-   - Extracts dependencies from documentation
-   - Identifies ERV relationship types
-   - Assesses criticality levels
-   - Use when: You need to process documentation files
+   - Grabs ALL raw data from sources
+   - Makes smart categorization attempts ("this component belongs to this hardware")
+   - Provides context based on source/origin
+   - Use when: You need to capture documentation, code, or specs
 
 2. **Validator Agent** (`validator_agent` tool)
-   - Checks for duplicates
-   - Verifies schema compliance
-   - Detects conflicts
-   - Use when: You need to validate dependencies before storage
+   - Checks everything is in place
+   - Verifies confidence levels are high
+   - Flags anything out of ordinary or breaking patterns
+   - Notes uncited data or confidence dips
+   - Can loop back to Extractor for more context
+   - Use when: You need to validate and flag data for human review
 
 3. **Storage Agent** (`storage_agent` tool)
-   - Creates nodes
-   - Stores relationships
-   - Manages database
-   - Use when: You're ready to save validated dependencies
+   - Routes data to appropriate staging table
+   - Clean data → normal staging
+   - Suspect data → flagged table with reasoning
+   - Prepares data for human review queue
+   - Use when: You're ready to stage data for human verification
 
 ## Workflow
 
-For each request, follow this SEQUENTIAL pattern. IMPORTANT: Complete each step before moving to the next!
+For each request, follow this SEQUENTIAL pattern:
 
-1. **Extract ONCE**: Call extractor_agent to process the documentation. Do NOT call it again - one extraction is enough.
-2. **Parse Results**: From the extraction results, identify HIGH criticality dependencies.
-3. **Store Each**: For each HIGH criticality dependency found, call storage_agent to save it.
-4. **Report and STOP**: After storing dependencies, provide a final summary and STOP (don't make more tool calls).
+1. **Extract**: Call extractor_agent to capture ALL raw data with context and categorization attempts.
+2. **Validate**: Call validator_agent to check confidence, flag anomalies, note pattern breaks.
+3. **Stage**: Call storage_agent to route data to appropriate staging tables for human review.
+4. **Report**: Provide summary of what was captured, flagged, and staged.
 
-CRITICAL: After calling extractor_agent ONCE, move on to storage_agent. Do NOT keep calling extractor repeatedly!
+**Remember:** You are preparing data for HUMAN verification. Provide context to help humans eliminate ambiguity. The human will align data across sources to establish TRUTH. Only human-verified data enters the knowledge graph.
+
+CRITICAL: Capture EVERYTHING. Flag concerns. Let humans decide truth.
 
 ## ERV Relationship Types
 
@@ -267,9 +291,12 @@ Work autonomously but explain your reasoning. When you're done, provide a summar
 
 ## Human-in-the-Loop (HITL)
 
-If you request `storage_agent` for a HIGH criticality dependency, storage may be deferred for human approval.
-In that case, you will receive a tool result starting with `DEFERRED_PENDING_APPROVAL`.
-Do not assume the dependency was stored until you see an explicit HITL message confirming storage execution.
+ALL staged data goes to human review. The agents' job is to:
+- Capture everything with context
+- Flag concerns with reasoning
+- Help humans eliminate ambiguity
+
+Humans verify EACH piece and align across sources. Only human-verified data becomes truth in the graph.
 """
 
     # NOTE ON HITL + TOOL CALLING (IMPORTANT):
@@ -296,15 +323,8 @@ Do not assume the dependency was stored until you see an explicit HITL message c
 
     tool_map = {t.name: t for t in tools}
 
-    def _is_high_criticality_storage_call(tool_call: dict[str, Any]) -> bool:
-        if tool_call.get("name") != "storage_agent":
-            return False
-        task = (tool_call.get("args") or {}).get("task", "")
-        return "HIGH" in str(task).upper()
-
-    # Tools node (gated): ALWAYS emits ToolMessage for each tool_use.
-    # - For storage HIGH: emit placeholder tool_result and defer the real write until approval.
-    # - For everything else: execute tool immediately and emit tool_result.
+    # Tools node: Execute all sub-agent tools without gates.
+    # Storage captures ALL raw data. Validation happens AFTER storage.
     def run_tools_with_gate(state: CuratorState):
         last_message = state["messages"][-1]
         if not (isinstance(last_message, AIMessage) and last_message.tool_calls):
@@ -331,22 +351,7 @@ Do not assume the dependency was stored until you see an explicit HITL message c
                 )
                 continue
 
-            if _is_high_criticality_storage_call(tool_call):
-                task = str(args.get("task", ""))
-                print("[HITL] HIGH criticality storage request detected; deferring until approval")
-                deferred_storage.append({"task": task})
-                tool_messages.append(
-                    ToolMessage(
-                        content=(
-                            "DEFERRED_PENDING_APPROVAL: Storage was requested for a HIGH criticality dependency. "
-                            "A human approval step will run next. Do NOT assume this was stored yet."
-                        ),
-                        tool_call_id=tool_call_id,
-                    )
-                )
-                continue
-
-            # Execute tool immediately
+            # Execute tool immediately (no gates on storage - capture all raw data)
             try:
                 result = tool_map[tool_name].invoke(args)
                 tool_messages.append(ToolMessage(content=str(result), tool_call_id=tool_call_id))

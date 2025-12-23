@@ -24,22 +24,28 @@ The curator agent is designed to be **intelligent**, not just automated. The dif
 
 **Pattern:** Provide rich context and clear goals → Let the agent decide HOW to achieve them.
 
-### 1.2 Criticality is Metadata, Not a Gate
+### 1.2 Truth Layer Architecture
 
-> "All dependencies should be stored. Criticality describes importance for querying."
+> "Agents provide context. Humans establish truth."
 
-**Critical Design Decision:** The agent stores ALL discovered dependencies in the knowledge graph. Criticality levels (HIGH/MEDIUM/LOW) are metadata that describe each dependency's importance - they are NOT filters for whether something gets stored.
+**Critical Design Decision:** The system has distinct layers:
+
+1. **Capture Layer (Agents):** Grab ALL raw data, categorize it, add lineage/source
+2. **Staging Layer (Agents):** Validate, flag anomalies, prepare for human review
+3. **Truth Layer (Human):** Human verifies EACH piece, aligns across sources
+4. **Graph Layer:** Only human-verified data enters the knowledge graph
 
 **Why This Matters:**
-- LOW criticality today might become HIGH tomorrow
-- Complete extraction enables better analysis
-- Filtering happens at query time, not storage time
+- Sources won't match in language - that's expected
+- Humans align disparate sources into unified truth
+- Human-aligned layers create clean matrix for GNN
+- Context is EVERYTHING - agents provide it, humans verify it
 
-**Query Example:**
-```cypher
-// Get only HIGH criticality dependencies
-MATCH (a)-[r:DEPENDS_ON {criticality: "HIGH"}]->(b)
-RETURN a.name, b.name, r.description
+**The Flow:**
+```
+Raw Sources → Agent Capture → Agent Staging → Human Verification → Truth Graph
+     ↑              ↑               ↑                ↑
+  (all data)   (categorize)    (flag/context)   (align/verify)
 ```
 
 ### 1.3 Four Pillars of Trustworthy AI Agents
@@ -53,14 +59,16 @@ RETURN a.name, b.name, r.description
 
 ## 2. Human-in-the-Loop (HITL) Patterns
 
-### 2.1 Data-Level vs Action-Level Approval
+### 2.1 Human Verification for Truth
 
-| Type | When | Use For |
-|------|------|---------|
-| **Data-Level** | Before storing data | "Should this dependency be added to the graph?" |
-| **Action-Level** | Before any execution | "Should I run this extraction plan?" |
+| Layer | Agent Role | Human Role |
+|-------|------------|------------|
+| **Capture** | Grab all raw data | - |
+| **Staging** | Categorize, flag, add context | - |
+| **Truth** | Prepare review queue | Verify EACH piece, align across sources |
+| **Graph** | - | Only verified data enters |
 
-**Current Implementation:** Data-level HITL for HIGH criticality dependencies.
+**Current Implementation:** Human reviews ALL staged data before it becomes truth.
 
 ### 2.2 Plan-Then-Execute Pattern
 
@@ -157,11 +165,13 @@ Output: Agent extracts new dependencies using learned methodology
 
 ### 5.1 The Three Agents
 
-| Agent | Purpose | Writes To |
-|-------|---------|----------|
-| **Extractor** | Fetch → Parse → Extract → Score confidence | `raw_snapshots`, `staging_extractions` |
-| **Validator** | Check evidence quality, loop back or approve | `staging_extractions` (status), `validation_decisions` |
-| **Decision Maker** | Promote to canonical OR queue for human | `core_entities`, `validation_decisions` |
+| Agent | Purpose | Output |
+|-------|---------|--------|
+| **Extractor** | Grab ALL raw data, smart categorization attempt ("this component belongs to this hardware") | `raw_snapshots`, `staging_extractions` with context |
+| **Validator** | Check everything in place, verify confidence, flag anomalies, note pattern breaks, flag uncited data | Updates `staging_extractions` with flags/notes, can loop back to Extractor |
+| **Decision Maker** | Route to appropriate table: clean staging OR flagged table with reasoning | Prepares human review queue with context |
+
+> **Key Insight:** Agents are assistants preparing data for human verification. They provide context to help humans eliminate ambiguity.
 
 ### 5.2 What's NOT an Agent
 
@@ -179,17 +189,18 @@ These are **deterministic pipeline functions**, not LLM agents:
 ### 5.3 Refinement Loop
 
 ```
-Extractor ◄──► Validator ──► Decision Maker
-    │              │                │
-    ▼              ▼                ▼
-staging_     validation       core_entities
-extractions  (loop with      + HITL queue
-             limits)
+Extractor ◄──► Validator ──► Decision Maker ──► Human Review
+    │              │                │                 │
+    ▼              ▼                ▼                 ▼
+raw data      flag/verify       route to         ESTABLISH
+w/context     confidence        staging          TRUTH
 ```
 
-- Validator can loop back to Extractor for more evidence
-- Loop is bounded by LangGraph's `recursion_limit` (not custom schema)
-- When limit exceeded → escalate to human
+- Validator can loop back to Extractor for more context
+- Loop is bounded by LangGraph's `recursion_limit`
+- Decision Maker routes: clean table OR flagged table with reasoning
+- Human reviews ALL staged data, aligns across sources
+- Only human-verified data enters the truth graph
 
 ---
 
@@ -275,13 +286,15 @@ Each sub-agent has ONE focused responsibility:
 | `mitigates` | A reduces risk from B | Watchdog mitigates lockup risk |
 | `causes` | A leads to B happening | Power surge causes reset |
 
-### 8.2 Criticality Levels
+### 8.2 Criticality Levels (Post-Verification Metadata)
 
-| Level | Definition | HITL Behavior |
+| Level | Definition | Assigned When |
 |-------|------------|---------------|
-| **HIGH** | Mission/safety critical | Requires human approval |
-| **MEDIUM** | Important for functionality | Auto-approved, logged |
-| **LOW** | Nice to have, minimal impact | Auto-approved, logged |
+| **HIGH** | Mission/safety critical | Human assigns during verification |
+| **MEDIUM** | Important for functionality | Human assigns during verification |
+| **LOW** | Nice to have, minimal impact | Human assigns during verification |
+
+**Note:** Criticality is metadata assigned by humans AFTER verification, not a gate for capture.
 
 ### 8.3 Component Categories
 
