@@ -151,9 +151,99 @@ Output: Agent extracts new dependencies using learned methodology
 
 ---
 
-## 5. Sub-Agent Architecture
+## 5. Three-Agent Architecture (v2)
 
-### 5.1 Specialization Pattern
+> **Updated December 2025:** Simplified from 9 agents to 3 focused agents.
+
+### 5.1 The Three Agents
+
+| Agent | Purpose | Writes To |
+|-------|---------|----------|
+| **Extractor** | Fetch → Parse → Extract → Score confidence | `raw_snapshots`, `staging_extractions` |
+| **Validator** | Check evidence quality, loop back or approve | `staging_extractions` (status), `validation_decisions` |
+| **Decision Maker** | Promote to canonical OR queue for human | `core_entities`, `validation_decisions` |
+
+### 5.2 What's NOT an Agent
+
+These are **deterministic pipeline functions**, not LLM agents:
+
+| Function | Why Not an Agent |
+|----------|------------------|
+| **Chunking** | Deterministic text splitting (no LLM needed) |
+| **Embedding** | API call to embedding model (no reasoning) |
+| **Graph Building** | Deterministic node/edge creation from entities |
+| **Scoring** | Rule-based or ML model inference (no agent loop) |
+
+**Key Insight:** Only steps requiring LLM reasoning are agents. Everything else is a batch job.
+
+### 5.3 Refinement Loop
+
+```
+Extractor ◄──► Validator ──► Decision Maker
+    │              │                │
+    ▼              ▼                ▼
+staging_     validation       core_entities
+extractions  (loop with      + HITL queue
+             limits)
+```
+
+- Validator can loop back to Extractor for more evidence
+- Loop is bounded by LangGraph's `recursion_limit` (not custom schema)
+- When limit exceeded → escalate to human
+
+---
+
+## 6. LangGraph Loop Control
+
+> **Principle:** Use framework built-ins, don't reinvent the wheel.
+
+### 6.1 Graph-Level: `recursion_limit`
+
+```python
+# Default: 25 super-steps
+graph.invoke(inputs, config={"recursion_limit": 5})
+```
+
+- Counts super-steps (each node execution in graph)
+- Raises `GraphRecursionError` when exceeded
+- Handle gracefully → escalate to human
+
+### 6.2 Agent-Level: `ToolCallLimitMiddleware`
+
+```python
+from langchain.agents.middleware import ToolCallLimitMiddleware
+
+limiter = ToolCallLimitMiddleware(
+    thread_limit=50,   # Max across entire conversation
+    run_limit=15,      # Max per single invocation
+    exit_behavior="continue"  # or "error" or "end"
+)
+```
+
+### 6.3 Per-Tool Limits
+
+```python
+# Limit expensive operations
+fetch_limiter = ToolCallLimitMiddleware(
+    tool_name="fetch_document",
+    run_limit=3,
+    exit_behavior="error"
+)
+```
+
+**Observable in LangSmith:**
+- Super-step count in metadata (`langgraph_step`)
+- Tool call counts per agent
+- `GraphRecursionError` in error panel
+
+---
+
+## 7. Sub-Agent Pattern (Historical)
+
+> **Note:** This section describes the original sub-agent-as-tools pattern.
+> See Section 5 for the current 3-agent architecture.
+
+### 7.1 Specialization Pattern
 
 Each sub-agent has ONE focused responsibility:
 
@@ -163,7 +253,7 @@ Each sub-agent has ONE focused responsibility:
 | **Validator** | Check for duplicates | Claude Haiku | `check_if_dependency_exists` |
 | **Storage** | Write to database | Claude Haiku | `store_dependency_relationship` |
 
-### 5.2 Why Sub-Agents?
+### 7.2 Why Sub-Agents?
 
 1. **Single Responsibility** - Each agent is expert at one thing
 2. **Model Optimization** - Use expensive models only where needed
@@ -172,12 +262,12 @@ Each sub-agent has ONE focused responsibility:
 
 ---
 
-## 6. ERV Ontology (Entity-Relationship-Value)
+## 8. ERV Ontology (Entity-Relationship-Value)
 
-### 6.1 Relationship Types
+### 8.1 Relationship Types
 
 | Type | Meaning | Example |
-|------|---------|---------|
+|------|---------|----------|
 | `depends_on` | A needs B to function | I2C_Driver depends_on HAL |
 | `requires` | A must have B present | Component requires specific config |
 | `enables` | A makes B possible | Framework enables rapid development |
@@ -185,7 +275,7 @@ Each sub-agent has ONE focused responsibility:
 | `mitigates` | A reduces risk from B | Watchdog mitigates lockup risk |
 | `causes` | A leads to B happening | Power surge causes reset |
 
-### 6.2 Criticality Levels
+### 8.2 Criticality Levels
 
 | Level | Definition | HITL Behavior |
 |-------|------------|---------------|
@@ -193,7 +283,7 @@ Each sub-agent has ONE focused responsibility:
 | **MEDIUM** | Important for functionality | Auto-approved, logged |
 | **LOW** | Nice to have, minimal impact | Auto-approved, logged |
 
-### 6.3 Component Categories
+### 8.3 Component Categories
 
 - `software` - Code, drivers, libraries
 - `hardware` - Physical components, boards
@@ -203,9 +293,9 @@ Each sub-agent has ONE focused responsibility:
 
 ---
 
-## 7. Operational Patterns
+## 9. Operational Patterns
 
-### 7.1 Monitoring Setup
+### 9.1 Monitoring Setup
 
 **Where data lives:**
 1. **Conversation State:** PostgreSQL (checkpointer tables)
@@ -222,7 +312,7 @@ SELECT COUNT(*) FROM nodes;
 SELECT COUNT(*) FROM edges;
 ```
 
-### 7.2 Error Handling Philosophy
+### 9.2 Error Handling Philosophy
 
 > "Fail visibly, recover gracefully."
 
@@ -231,7 +321,7 @@ SELECT COUNT(*) FROM edges;
 - Human can resume or retry
 - Never silently drop data
 
-### 7.3 GitHub API Sync Pattern
+### 9.3 GitHub API Sync Pattern
 
 **For external repos (F´, etc.):**
 - Use API instead of local clones (saves disk space)
@@ -241,7 +331,7 @@ SELECT COUNT(*) FROM edges;
 
 ---
 
-## 8. Key Takeaways (Summary)
+## 10. Key Takeaways (Summary)
 
 ### For Building Intelligent Agents:
 
@@ -259,20 +349,22 @@ SELECT COUNT(*) FROM edges;
 
 ---
 
-## 9. Version History
+## 11. Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.0 | December 2025 | Added 3-agent architecture, LangGraph loop control |
 | 1.0 | December 2025 | Initial extraction from archived documentation |
 
 ---
 
-## 10. Related Documents
+## 12. Related Documents
 
 **Current Documentation:**
 - [README.md](README.md) - Project overview
 - [GETTING_STARTED.md](GETTING_STARTED.md) - Setup guide
 - [docs/ROADMAP.md](docs/ROADMAP.md) - Development roadmap
+- [docs/ARCHIVING_GUIDELINES.md](docs/ARCHIVING_GUIDELINES.md) - How to extract canon during sweeps
 
 **Archived Sources (lessons extracted from):**
 - `archive/curator-agent-old/AGENT_INTELLIGENCE_GUIDE.md`

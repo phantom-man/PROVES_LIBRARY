@@ -495,6 +495,20 @@ Don't update for:
 
 ## Decision Log
 
+### 2024-12-22: 3-Agent Architecture Simplification
+- **Agent Spec Rewrite:** Reduced from 9 agents to 3 focused agents
+  - Extractor (fetch + parse + extract + confidence scoring)
+  - Validator (check evidence quality, loop or approve)
+  - Decision Maker (promote to canonical OR queue for human)
+- **Schema Consolidation:** Renamed `12_extraction_confidence.sql` → `12_extraction_enums.sql`
+  - ENUMs only: confidence_level, evidence_type, extraction_method, candidate_status
+  - Removed duplicate `raw_extractions` table (use `staging_extractions` in 13)
+- **Loop Control:** Documented LangGraph built-ins instead of custom schema
+  - `recursion_limit`: Max super-steps (default 25)
+  - `ToolCallLimitMiddleware`: Per-tool call limits
+  - Observable in LangSmith traces
+- **Not Agents:** Classified chunking, embedding, graph building, scoring as batch functions
+
 ### 2024-12-21: Initial Folder Structure Definition
 - Archived old agents/ directory (superseded by curator-agent/)
 - Archived mcp-server/ and risk-scanner/ (design-only, not implemented)
