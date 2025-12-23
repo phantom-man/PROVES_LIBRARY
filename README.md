@@ -197,9 +197,10 @@ flowchart TD
   D -->|Suspect data| F["⚠️ Flagged Table<br/>with reasoning"]
   E --> G["👤 Human Verification<br/>Review EACH piece"]
   F --> G
-  G -->|Verified + Aligned| H["✅ Truth Graph<br/>Knowledge Graph"]
+  G -->|Verified + Aligned| H["�o. Layered Truth Graph<br/>Knowledge Graph"]
   G -->|Rejected| I["❌ Discarded"]
-  H --> J["📊 Visualizations & Queries"]
+  H --> J["dY"S Graph Neural Network"]
+  J --> K["dY"- Mission Ops Risk Assessment"]
 ```
 
 **Truth Layer Pipeline:**
@@ -207,7 +208,8 @@ flowchart TD
 - **Validator** checks confidence, flags anomalies, notes pattern breaks.
 - **Decision Maker** routes to clean staging or flagged table with reasoning.
 - **Human** reviews EACH piece, aligns across sources to establish TRUTH.
-- Only human-verified data enters the knowledge graph.
+- Only human-verified data enters the layered truth graph.
+- The layered graph becomes the basis for GNN risk assessment in mission operations.
 
 ### Lifecycle: Curation Run
 
