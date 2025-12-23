@@ -1,6 +1,16 @@
 """
 Extractor Sub-Agent
-Specialized agent for extracting dependencies from documentation
+Specialized agent for mapping system architecture using FRAMES methodology.
+
+FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
+
+This agent extracts:
+- COMPONENTS (modules): Semi-autonomous units with boundaries
+- INTERFACES: Connection points where components touch
+- FLOWS: What moves through interfaces (data, commands, power, signals)
+- MECHANISMS: What maintains the interfaces (docs, schemas, drivers)
+
+Does NOT assign criticality - that's human judgment after verification.
 
 Supports:
 - Local file reading
@@ -19,6 +29,28 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
+
+
+def load_ontology() -> str:
+    """
+    Load the ONTOLOGY.md file which defines extraction vocabulary.
+    This is loaded into EVERY extraction prompt to prevent drift.
+    """
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+    ontology_path = os.path.join(project_root, 'ONTOLOGY.md')
+    
+    try:
+        with open(ontology_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        # Fallback if ontology not found - should never happen
+        return """## FRAMES Core Vocabulary
+- COMPONENTS: What units exist (modules)
+- INTERFACES: Where they connect (ports, buses)
+- FLOWS: What moves through (data, commands, power)
+- MECHANISMS: What maintains connections (docs, schemas)
+
+Do NOT assign criticality - humans do that after verification."""
 
 
 def get_db_connection():
@@ -349,19 +381,23 @@ def list_github_directory(owner: str, repo: str, path: str = "", branch: str = "
 
 
 @tool
-def extract_dependencies_using_claude(text: str, document_name: str) -> str:
+def extract_architecture_using_claude(text: str, document_name: str) -> str:
     """
-    Extract dependencies from text using Claude Sonnet 4.5.
+    Extract system architecture from text using FRAMES methodology.
 
-    Identifies:
-    - Component names
-    - Dependency relationships (ERV types)
-    - Confidence level based on documentation clarity
-    - Context and reasoning
+    Maps the structural elements:
+    - COMPONENTS: Semi-autonomous units (modules) with boundaries
+    - INTERFACES: Where components connect (ports, buses, protocols)
+    - FLOWS: What moves through interfaces (data, commands, power, signals)
+    - MECHANISMS: What maintains interfaces (documentation, schemas, drivers)
     
     NOTE: Do NOT assess criticality - that's metadata assigned by HUMANS after verification.
+    Criticality is about MISSION IMPACT which requires human judgment.
     """
     from langchain_anthropic import ChatAnthropic
+
+    # Load ontology to prevent drift
+    ontology = load_ontology()
 
     try:
         model = ChatAnthropic(
@@ -369,39 +405,82 @@ def extract_dependencies_using_claude(text: str, document_name: str) -> str:
             temperature=0,
         )
 
-        extraction_prompt = f"""Analyze this technical documentation and extract ALL software/hardware dependencies.
+        extraction_prompt = f"""## YOUR MISSION
+
+You are mapping the STRUCTURAL ARCHITECTURE of a system using FRAMES methodology.
+Read the ontology below, then analyze the document.
+
+---
+{ontology}
+---
+
+## DOCUMENT TO ANALYZE
 
 Document: {document_name}
 
-Text to analyze:
+Text:
 {text}
 
-For each dependency, identify:
-1. Component name (what depends on something else)
-2. Depends on (what it needs/requires)
-3. Relationship type: depends_on, requires, enables, conflicts_with, mitigates, causes
-4. Confidence: HIGH (clearly documented), MEDIUM (implied or indirect), LOW (uncertain/inferred)
-5. Context (line numbers, specific details, what happens if this fails)
+---
 
-Format each dependency as:
-- Component: <name>
-- Depends on: <target>
-- Type: <relationship>
-- Confidence: <level>
-- Context: <details>
+## YOUR TASK
 
-NOTE: Do NOT assign criticality levels - that is metadata assigned by HUMANS after verification.
+Extract ALL structural elements you find. Use this format:
 
-Extract ALL dependencies, including:
-- Runtime dependencies (code depends on libraries)
-- Build dependencies (requires specific tools)
-- Hardware dependencies (software needs specific hardware)
-- Configuration dependencies
-- Cross-system dependencies (F´/PROVES boundaries)
+### COMPONENTS FOUND
+For each component (module, unit, subsystem):
+```
+Component: <name>
+Type: software | hardware | subsystem | driver | library
+Boundary: <what's inside this component>
+Confidence: HIGH | MEDIUM | LOW (how clearly documented)
+Source: <line numbers or section>
+```
+
+### INTERFACES FOUND
+For each connection point between components:
+```
+Interface: <name or description>
+Connects: <Component A> ↔ <Component B>
+Type: I2C | SPI | UART | USB | power | command | telemetry | API | function_call
+Direction: bidirectional | A→B | B→A
+Confidence: HIGH | MEDIUM | LOW
+Source: <line numbers or section>
+```
+
+### FLOWS FOUND
+For each thing that moves through an interface:
+```
+Flow: <what moves>
+Through: <interface name>
+Type: data | command | power | signal | configuration
+If-Stops: <what breaks if this flow ceases>
+Confidence: HIGH | MEDIUM | LOW
+Source: <line numbers or section>
+```
+
+### MECHANISMS FOUND
+For each thing that maintains an interface:
+```
+Mechanism: <name>
+Maintains: <interface name>
+Type: documentation | schema | driver | protocol | handler
+Location: <where to find it>
+Confidence: HIGH | MEDIUM | LOW
+```
+
+---
+
+## REMEMBER
+
+- Capture EVERYTHING, not just what seems important
+- Note Confidence (documentation clarity), NOT Criticality (mission impact)
+- Humans will decide what's critical AFTER reviewing your extraction
+- Include source references (line numbers, sections) for traceability
 """
 
         response = model.invoke(extraction_prompt)
-        return f"Extraction Results:\n\n{response.content}"
+        return f"Architecture Extraction Results:\n\n{response.content}"
 
     except Exception as e:
         return f"Error during extraction: {str(e)}"
@@ -410,20 +489,26 @@ Extract ALL dependencies, including:
 @traceable(name="extractor_subagent")
 def create_extractor_agent():
     """
-    Create the extractor sub-agent
+    Create the extractor sub-agent using FRAMES methodology.
 
-    This agent specializes in:
+    FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
+    
+    This agent maps system ARCHITECTURE by extracting:
+    - COMPONENTS: Semi-autonomous units (modules) with boundaries
+    - INTERFACES: Where components connect (ports, buses, protocols)
+    - FLOWS: What moves through interfaces (data, commands, power, signals)
+    - MECHANISMS: What maintains interfaces (documentation, schemas, drivers)
+    
+    Supports:
     - Reading local documentation files
     - Fetching web documentation (nasa.github.io/fprime, docs.proveskit.space)
     - Fetching GitHub source files directly (without cloning)
     - Listing GitHub directories to explore structure
-    - Capturing ALL dependencies
-    - Identifying ERV relationship types
-    - Noting confidence levels based on documentation clarity
+    
+    The ONTOLOGY.md file is loaded into every extraction to prevent vocabulary drift.
     
     NOTE: Does NOT assign criticality - that's human-assigned post-verification metadata.
-    
-    All extractions include source URLs/paths for citation.
+    Agents note CONFIDENCE (documentation clarity). Humans assign CRITICALITY (mission impact).
     """
     model = ChatAnthropic(
         model="claude-sonnet-4-5-20250929",
@@ -435,7 +520,7 @@ def create_extractor_agent():
         fetch_webpage,
         fetch_github_file,
         list_github_directory,
-        extract_dependencies_using_claude,
+        extract_architecture_using_claude,  # FRAMES-based extraction
     ]
 
     agent = create_react_agent(model, tools)

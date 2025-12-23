@@ -69,25 +69,25 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
 
         interrupt_data = state.values["__interrupt__"]
 
-        # Handle dependency approval
+        # Handle staged data verification (architecture elements)
         if interrupt_data.get("type") == "dependency_approval":
             print()
             print("=" * 80)
-            print("VERIFICATION REQUIRED - STAGED DATA")
+            print("VERIFICATION REQUIRED - STAGED ARCHITECTURE DATA")
             print("=" * 80)
             print()
             print(f"Task: {interrupt_data['task']}")
-            print(f"Criticality: {interrupt_data['criticality']}")
+            print(f"Confidence: {interrupt_data.get('criticality', 'Not specified')}")
             print()
-            print(f"Message: {interrupt_data['message']}")
+            print(f"Agent found: {interrupt_data['message']}")
             print()
-            print("This dependency is mission-critical. If it fails, the mission fails.")
+            print("You decide: Is this accurate? What's the mission impact?")
             print()
             print("-" * 40)
             print("OPTIONS:")
-            print("  [y]es    - Approve and store as-is")
-            print("  [n]o     - Reject and skip storage")
-            print("  [e]dit   - Provide corrections (GOLD training data!)")
+            print("  [y]es    - Verify and store (becomes TRUTH)")
+            print("  [n]o     - Reject (wrong/inaccurate)")
+            print("  [e]dit   - Correct this (GOLD training data!)")
             print("-" * 40)
             print()
 
@@ -199,18 +199,23 @@ def simple_test():
     doc_path = os.path.join(project_root, "trial_docs", "fprime_i2c_driver_full.md")
     
     task = f"""
-LEGACY TEST - Basic connectivity check.
+ARCHITECTURE MAPPING TEST - Verify the FRAMES extraction pipeline.
 
-Read this local file and extract a few dependencies to verify the pipeline works:
+Read this local file and map the system architecture:
 File: {doc_path}
 
-Capture ALL dependencies you find to staging tables.
-For each dependency, note its characteristics:
-- Mission impact: If this fails, what happens?
-- Source confidence: How clear is the documentation?
-- Cross-system: Does this span F´/PROVES boundaries?
+Using FRAMES methodology, capture:
+- COMPONENTS: What modules/units exist?
+- INTERFACES: Where do they connect? (ports, buses, protocols)
+- FLOWS: What moves through those connections? (data, commands, power, signals)
+- MECHANISMS: What maintains those interfaces? (documentation, schemas, drivers)
 
-This is a connectivity test. Stage what you find for human verification.
+For each element, note:
+- Source: Where did you find this? (file path, line numbers)
+- Confidence: How clearly documented? (HIGH/MEDIUM/LOW)
+
+Remember: You are building institutional memory for student teams.
+Stage what you find for human verification. Humans will assign criticality.
 """
 
     thread_id = f"test-{uuid.uuid4().hex[:8]}"
@@ -222,9 +227,16 @@ This is a connectivity test. Stage what you find for human verification.
 def autonomous_exploration():
     """Run the autonomous exploration task from earlier."""
     task = """
-You are the curator agent for the PROVES Library - a knowledge graph system for CubeSat mission safety.
+You are the curator agent for the PROVES Library - building institutional memory for university space programs.
 
-YOUR MISSION: Explore the repository and decide what dependency extraction work should be done next.
+THE PROBLEM: University CubeSat programs have 88% failure rate because knowledge is lost when students graduate.
+YOUR MISSION: Map the system architecture so weak interfaces can be identified and strengthened.
+
+Using FRAMES methodology, explore and map:
+- COMPONENTS: What modules exist in this software system?
+- INTERFACES: Where do they connect?
+- FLOWS: What moves through those connections?
+- MECHANISMS: What documentation/schemas maintain those interfaces?
 
 AVAILABLE RESOURCES:
 1. Trial mapping results: ../trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md
@@ -233,19 +245,19 @@ AVAILABLE RESOURCES:
    - ../trial_docs/proves_kit_power_mgmt_full.md
 3. Research goals and ontology:
    - ../docs/ROADMAP.md
-   - ../docs/KNOWLEDGE_GRAPH_SCHEMA.md
+   - ../ONTOLOGY.md (defines extraction vocabulary)
 
 YOUR TASK:
 Analyze what's been done and decide the best next step:
 
-Option A: Replicate the trial mapping using your extraction sub-agent
+Option A: Replicate the trial mapping using FRAMES extraction
 Option B: Find new files to process
-Option C: Improve the ontology
+Option C: Improve component coverage
 
 YOU DECIDE: Use your sub-agents (extractor, validator, storage) to execute your chosen approach.
 
-Think step-by-step and explain your reasoning.
-Capture ALL facts you find to staging tables for human verification.
+Remember: You are building a map that prevents knowledge loss.
+Stage ALL findings for human verification. Humans connect to organizational context.
 """
 
     run_curator_with_approval(task, thread_id="autonomous-exploration-1")

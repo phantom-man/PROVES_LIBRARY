@@ -1,4 +1,4 @@
-# 🛰️ PROVES Library
+# PROVES Library
 
 **An AI-powered knowledge graph that prevents CubeSat mission failures by tracking hidden cross-system dependencies.**
 
@@ -7,29 +7,29 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> 📖 **New here?** Start with [GETTING_STARTED.md](GETTING_STARTED.md) | **Core principles:** [CANON.md](CANON.md)
+> **New here?** Start with [GETTING_STARTED.md](GETTING_STARTED.md) | **Core principles:** [CANON.md](CANON.md)
 
 ---
 
-## 🎯 The Problem
+## The Problem
 
-> *"Team A modified power management code. Tested locally — worked perfectly. Two weeks before launch, Team B's I2C sensors stopped communicating. Root cause: undocumented dependency on load switch timing. **Mission delayed 6 months.**"*
+> *"Team A modified power management code. Tested locally -- worked perfectly. Two weeks before launch, Team B's I2C sensors stopped communicating. Root cause: undocumented dependency on load switch timing. **Mission delayed 6 months.**"*
 
 University CubeSat programs face a brutal reality:
 - **Knowledge is fragmented** across teams, repos, docs, and Slack threads
-- **Dependencies are hidden** — changes cascade unpredictably across systems
-- **Teams can't learn from each other** — every program rediscovers the same failures
+- **Dependencies are hidden** -- changes cascade unpredictably across systems
+- **Teams can't learn from each other** -- every program rediscovers the same failures
 
-## 💡 The Solution
+## The Solution
 
-**LLM-powered dependency extraction → Knowledge graph → Continuous monitoring**
+**LLM-powered dependency extraction -> Knowledge graph -> Continuous monitoring**
 
 This project uses AI agents to automatically extract dependencies from technical documentation, validate them against a structured schema, and build a queryable knowledge graph that reveals the hidden connections between spacecraft systems.
 That layered capture becomes the basis for a future graph neural network risk model used to assess mission-operations impact.
 
 ---
 
-## 🏗️ Architecture: Truth Layer System
+## Architecture: Truth Layer System
 
 ```mermaid
 flowchart-elk TB
@@ -49,56 +49,56 @@ flowchart-elk TB
 | **Capture EVERYTHING** | Sources won't match in language - we need all data to cross-reference |
 | **Agents provide context** | Smart categorization helps humans eliminate ambiguity |
 | **Humans verify EACH piece** | Only human-aligned data becomes truth |
-| **Sub-agents as tools** | Context isolation — each agent is an expert at one thing |
+| **Sub-agents as tools** | Context isolation -- each agent is an expert at one thing |
 | **Haiku for validation/storage** | 90% cost savings on simple tasks |
 
 ---
 
-## 📊 Current Status (December 2025)
+## Current Status (December 2025)
 
-### ✅ Phase 1: Trial Mapping — COMPLETE
-- Manually analyzed F´ I2C Driver (411 lines) + PROVES Kit Power Management (154 lines)
+### Phase 1: Trial Mapping -- COMPLETE
+- Manually analyzed F' I2C Driver (411 lines) + PROVES Kit Power Management (154 lines)
 - **Found 45+ dependencies** with exact line citations
 - **Discovered 4 critical cross-system dependencies** (undocumented in either system!)
 - **Identified 5 major knowledge gaps** (timing specs, voltage requirements, error recovery)
 
-### ✅ Phase 2: Infrastructure — COMPLETE
+### Phase 2: Infrastructure -- COMPLETE
 - Neon PostgreSQL database with knowledge graph schema (9 tables)
 - LangGraph checkpointer tables for agent state persistence
 - Scripts for database management and schema application
 - Staging + domain tables for evidence, confidence, and promotion workflow
 
-### 🔄 Phase 3: Curator Agent — IN DEVELOPMENT
+### Phase 3: Curator Agent -- IN DEVELOPMENT
 - LangGraph orchestration with sub-agents-as-tools pattern
 - Claude Sonnet 4.5 (curator/extractor) + Haiku 3.5 (validator/storage)
-- Truth Layer: Capture ALL → Stage → Human Verify EVERY piece
+- Truth Layer: Capture ALL -> Stage -> Human Verify EVERY piece
 - **Current focus:** Agent workflow refinement and testing
 
-### 🔮 Phase 4: Training Pipeline — PLANNED
+### Phase 4: Training Pipeline -- PLANNED
 - Training data collection from HITL interactions
 - Local LLM fine-tuning with Unsloth/LoRA
 - Model deployment for specialized CubeSat knowledge
 
-### 📈 Confidence Calibration: How Agents Learn
+### Confidence Calibration: How Agents Learn
 
 As humans verify data, agents learn what "truth" looks like. Confidence grows, human involvement tapers:
 
 ```mermaid
-flowchart TB
-  subgraph Phase1["🥶 Phase 1: Cold Start"]
+flowchart-elk TB
+  subgraph Phase1[" Phase 1: Cold Start"]
     A1["Agent Confidence: LOW"]
     A2["Human Verifies: 100%"]
     A3["Every approve/reject builds corpus"]
   end
   
-  subgraph Phase2["🔥 Phase 2: Pattern Recognition"]
+  subgraph Phase2[" Phase 2: Pattern Recognition"]
     B1["Agent matches against verified patterns"]
     B2["'I've seen 12 similar I2C deps, all approved'"]
     B3["Confidence rises for matching patterns"]
     B4["Human focuses on flagged/novel items"]
   end
   
-  subgraph Phase3["🚀 Phase 3: Calibrated Autonomy"]
+  subgraph Phase3[" Phase 3: Calibrated Autonomy"]
     C1["High confidence >95%: Auto-promote"]
     C2["Medium 70-95%: Human reviews"]
     C3["Low <70%: Flagged for careful review"]
@@ -117,11 +117,11 @@ flowchart TB
 - Every human decision (approve/reject/correct) trains the agent
 - Corrections become **GOLD** training data
 - Agent confidence is calibrated per pattern type, not globally
-- Humans can always override — the agent suggests, humans decide
+- Humans can always override -- the agent suggests, humans decide
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.11+
@@ -137,7 +137,7 @@ cd PROVES_LIBRARY
 # Create virtual environment
 python -m venv .venv
 .venv\Scripts\activate  # Windows
-# source .venv/bin/activate  # macOS/Linux
+# source .venv/bin/activate # macOS/Linux
 
 # Install dependencies
 pip install -r requirements.txt
@@ -145,8 +145,8 @@ pip install -r requirements.txt
 # Configure environment
 cp .env.example .env
 # Edit .env with your API keys:
-#   ANTHROPIC_API_KEY=sk-ant-...
-#   DATABASE_URL=postgresql://...
+# ANTHROPIC_API_KEY=sk-ant-...
+# DATABASE_URL=postgresql://...
 
 # Initialize database
 python scripts/apply_schema.py
@@ -160,23 +160,23 @@ python run_with_approval.py
 
 ---
 
-## 🔧 How It Works
+## How It Works
 
 ### The Workflow
 
 ```mermaid
-flowchart TD
-  A["📄 Raw Sources<br/>(GitHub, docs, specs)"] --> B["🤖 Extractor Agent<br/>Capture ALL + categorize"]
-  B --> C["🔍 Validator Agent<br/>Check confidence, flag anomalies"]
-  C --> D["📋 Decision Maker<br/>Route to staging tables"]
-  D -->|Clean data| E["📦 Staging Table"]
-  D -->|Suspect data| F["⚠️ Flagged Table<br/>with reasoning"]
-  E --> G["👤 Human Verification<br/>Review EACH piece"]
+flowchart-elk TD
+  A["Raw Sources<br/>(GitHub, docs, specs)"] --> B["Extractor Agent<br/>Capture ALL + categorize"]
+  B --> C["Validator Agent<br/>Check confidence, flag anomalies"]
+  C --> D["Decision Maker<br/>Route to staging tables"]
+  D -->|Clean data| E["Staging Table"]
+  D -->|Suspect data| F["Flagged Table<br/>with reasoning"]
+  E --> G["Human Verification<br/>Review EACH piece"]
   F --> G
-  G -->|Verified + Aligned| H["�o. Layered Truth Graph<br/>Knowledge Graph"]
-  G -->|Rejected| I["❌ Discarded"]
-  H --> J["dY"S Graph Neural Network"]
-  J --> K["dY"- Mission Ops Risk Assessment"]
+  G -->|Verified + Aligned| H["Layered Truth Graph<br/>Knowledge Graph"]
+  G -->|Rejected| I["Discarded"]
+  H --> J["Graph Neural Network"]
+  J --> K["Mission Ops Risk Assessment"]
 ```
 
 **Truth Layer Pipeline:**
@@ -244,48 +244,44 @@ The knowledge graph uses **Entity-Relationship-Value (ERV)** semantics:
 
 | Level | Meaning | Assigned By |
 |-------|---------|-------------|
-| **HIGH** | Mission-critical — failure = mission loss | Human during verification |
-| **MEDIUM** | Important — affects functionality | Human during verification |
-| **LOW** | Nice-to-have — minor impact | Human during verification |
+| **HIGH** | Mission-critical -- failure = mission loss | Human during verification |
+| **MEDIUM** | Important -- affects functionality | Human during verification |
+| **LOW** | Nice-to-have -- minor impact | Human during verification |
 
 > **Note:** Criticality is metadata assigned by humans AFTER verification, not a gate for capture.
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 PROVES_LIBRARY/
-├── curator-agent/          # 🤖 LangGraph deep agent system
-│   ├── src/curator/
-│   │   ├── agent.py        # Main curator with HITL
-│   │   └── subagents/      # Extractor, Validator, Storage
-│   ├── run_with_approval.py # CLI with human approval
-│   └── langgraph.json      # LangGraph deployment config
-│
-├── docs/                   # 📚 GitHub Pages site
-│   ├── diagrams/           # Interactive Mermaid diagrams
-│   └── *.md                # Architecture & guides
-│
-├── scripts/                # 🔧 Database & graph utilities
-│   ├── apply_schema.py     # Initialize Neon schema
-│   ├── db_connector.py     # PostgreSQL connection
-│   └── graph_manager.py    # Knowledge graph operations
-│
-├── trial_docs/             # 📋 Manual analysis results
-│   └── COMPREHENSIVE_DEPENDENCY_MAP.md
-│
-├── library/                # 📖 Curated knowledge entries
-│   ├── build/              # Assembly & hardware
-│   ├── software/           # F´ patterns & components
-│   └── ops/                # Operations & fixes
-│
-└── archive/                # 🗄️ Superseded code & docs
+  curator-agent/            # LangGraph deep agent system
+    src/curator/
+      agent.py              # Main curator with HITL
+      subagents/            # Extractor, Validator, Storage
+    run_with_approval.py    # CLI with human approval
+    langgraph.json          # LangGraph deployment config
+  docs/                     # GitHub Pages site
+    diagrams/               # Interactive Mermaid diagrams
+    *.md                    # Architecture & guides
+  scripts/                  # Database & graph utilities
+    apply_schema.py         # Initialize Neon schema
+    setup_domain_tables.py  # Staging + domain tables
+    db_connector.py         # PostgreSQL connection
+    graph_manager.py        # Knowledge graph operations
+  trial_docs/               # Manual analysis results
+    COMPREHENSIVE_DEPENDENCY_MAP.md
+  library/                  # Curated knowledge entries
+    build/                  # Assembly & hardware
+    software/               # F' patterns & components
+    ops/                    # Operations & fixes
+  archive/                  # Superseded code & docs
 ```
 
 ---
 
-## 🧠 For AI Builders
+## For AI Builders
 
 This project demonstrates several production patterns for LangGraph agents:
 
@@ -305,17 +301,17 @@ Anthropic requires every `tool_use` to have a `tool_result` before the next mode
 
 1. **Tools node**: Always emits `ToolMessage` for every tool call
 2. **HIGH storage**: Returns `DEFERRED_PENDING_APPROVAL` placeholder
-3. **Approval node**: Calls `interrupt()` — safe because tool results exist
+3. **Approval node**: Calls `interrupt()` -- safe because tool results exist
 4. **Commit node**: Executes deferred storage if approved
 
 ### Cost Optimization
 Use expensive models only where reasoning matters:
 - **Sonnet 4.5**: Curator coordination, dependency extraction (complex)
-- **Haiku 3.5**: Schema validation, database storage (simple) — **90% cheaper**
+- **Haiku 3.5**: Schema validation, database storage (simple) -- **90% cheaper**
 
 ---
 
-## 🔗 Links
+## Links
 
 | Resource | URL |
 |----------|-----|
@@ -326,7 +322,7 @@ Use expensive models only where reasoning matters:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 This is an open research project. Contributions welcome!
 
@@ -338,15 +334,15 @@ For agent-specific changes, start with [curator-agent/README.md](curator-agent/R
 
 ---
 
-## 📜 License
+## License
 
-MIT License — see [LICENSE](LICENSE).
+MIT License -- see [LICENSE](LICENSE).
 
 ---
 
-## 👩‍🚀 Contact
+## Contact
 
 **Elizabeth Osborn**  
 Cal Poly Pomona  
-📧 eosborn@cpp.edu  
-🌐 [Portfolio](https://lizo-roadtown.github.io/proveskit-agent/)
+ eosborn@cpp.edu  
+ [Portfolio](https://lizo-roadtown.github.io/proveskit-agent/)

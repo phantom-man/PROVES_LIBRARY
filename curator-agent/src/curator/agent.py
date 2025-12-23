@@ -95,31 +95,38 @@ class CuratorState(TypedDict):
 @log_timing
 def call_extractor_agent(task: str) -> str:
     """
-    Call the extractor sub-agent to extract dependencies from documentation.
+    Call the extractor sub-agent to map system architecture using FRAMES methodology.
 
-    Use this when you need to:
-    - Read and process local documentation files (read_document)
-    - Fetch web pages from documentation sites (fetch_webpage)
-    - Fetch files directly from GitHub repos (fetch_github_file)
-    - List GitHub directories to explore repo structure (list_github_directory)
-    - Capture ALL dependencies from text
-    - Identify ERV relationship types
-    - Note confidence level based on documentation clarity
-
-    IMPORTANT: The extractor has GitHub tools! For GitHub repos:
-    - list_github_directory("nasa", "fprime", "Svc", branch="devel") - list contents
-    - fetch_github_file("nasa", "fprime", "Svc/TlmChan/TlmChan.fpp", branch="devel") - get file
+    FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
     
-    All fetched content is automatically stored in raw_snapshots for audit.
+    The extractor maps STRUCTURAL ELEMENTS:
+    - COMPONENTS: Semi-autonomous units (modules) with boundaries
+    - INTERFACES: Where components connect (ports, buses, protocols)
+    - FLOWS: What moves through interfaces (data, commands, power, signals)
+    - MECHANISMS: What maintains interfaces (documentation, schemas, drivers)
 
-    NOTE: Do NOT assess criticality - that's metadata assigned by HUMANS after verification.
+    Available tools:
+    - read_document: Read local documentation files
+    - fetch_webpage: Fetch web pages from docs sites
+    - fetch_github_file: Fetch files directly from GitHub repos
+    - list_github_directory: List GitHub directories
+    - extract_architecture_using_claude: Map architecture from text (loads ONTOLOGY.md)
+
+    IMPORTANT: For GitHub repos:
+    - list_github_directory("nasa", "fprime", "Svc", branch="devel")
+    - fetch_github_file("nasa", "fprime", "Svc/TlmChan/TlmChan.fpp", branch="devel")
+    
+    All fetched content is stored in raw_snapshots for audit.
+
+    CRITICAL: Agents note CONFIDENCE (documentation clarity).
+              Humans assign CRITICALITY (mission impact) after verification.
 
     Args:
-        task: Description of what to extract. Be specific about sources:
-              "Fetch and analyze nasa/fprime Svc/CmdDispatcher using list_github_directory and fetch_github_file"
+        task: What architecture to map. Be specific about sources:
+              "Read C:\\path\\to\\doc.md and extract all components, interfaces, flows"
 
     Returns:
-        Extraction results with found dependencies and snapshot IDs
+        Architecture extraction results with components, interfaces, flows, mechanisms
     """
     print(f"[EXTRACTOR TASK] {task}")  # Debug: show what task the extractor received
     extractor = create_extractor_agent()

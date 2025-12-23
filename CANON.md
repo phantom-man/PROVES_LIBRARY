@@ -57,9 +57,69 @@ Raw Sources → Agent Capture → Agent Staging → Human Verification → Truth
 
 ---
 
-## 2. Human-in-the-Loop (HITL) Patterns
+## 2. FRAMES Ontology (Foundational)
 
-### 2.1 Human Verification for Truth
+> **Source:** "FRAMES: A Structural Diagnostic for Resilience in Modular University Space Programs" (Osborn, 2025)
+>
+> **Implementation:** [ONTOLOGY.md](ONTOLOGY.md) - Loaded into EVERY extraction prompt to prevent drift
+
+### 2.1 What Agents Extract vs. What Humans Decide
+
+| Concept | Who Does It | What It Means |
+|---------|-------------|---------------|
+| **Components** | Agent captures | The discrete modules in a system (drivers, sensors, boards) |
+| **Interfaces** | Agent captures | WHERE components connect (ports, buses, protocols) |
+| **Flows** | Agent captures | WHAT moves through interfaces (data, signals, power, commands) |
+| **Mechanisms** | Agent captures | What maintains the interface (documentation, protocols, schemas) |
+| **Criticality** | Human assigns | Mission impact - how bad if this fails? |
+| **Alignment** | Human verifies | Do sources agree? Resolve conflicts. |
+
+### 2.2 FRAMES Core Vocabulary
+
+**From FRAMES research:**
+
+> "Interface mechanisms are the specific roles, processes, and tools that maintain connections at an interface and prevent them from degrading."
+
+| FRAMES Term | Definition | Agent Task |
+|-------------|------------|------------|
+| **Module** | Semi-autonomous unit (team, component, subsystem) | Capture as `Component` |
+| **Interface** | Connection point where modules touch | Capture as `Interface` |
+| **Coupling** | Strength of bond (strong internal, weak external) | Note as `coupling_strength` |
+| **Interface Mechanism** | What maintains the connection | Capture as `Mechanism` |
+| **Flow** | What moves through an interface | Capture as `Flow` |
+
+### 2.3 The Fundamental Question
+
+> "What MOVES through this system, and through which interfaces?"
+
+**NOT:** "What depends on what and how critical is it?"
+
+Human judgment assigns criticality AFTER understanding:
+- What components exist
+- What interfaces connect them  
+- What moves through those interfaces
+- What happens when that movement stops
+
+### 2.4 Example: Correct vs. Incorrect Extraction
+
+**❌ OLD (Wrong - agent making judgments):**
+> "I2C Driver DEPENDS ON Temperature Sensor - HIGH criticality"
+
+**✅ NEW (FRAMES-aligned - agent capturing structure):**
+> - **Component:** I2C_Driver
+> - **Interface:** I2C_Bus (address 0x48)
+> - **Flow:** temperature_readings (data), polling_commands (commands), ACK/NACK (signals)
+> - **Mechanism:** I2C protocol spec, driver documentation, timing constraints
+> - **Coupling:** Hardware interface, synchronous
+> - **Confidence:** HIGH (clearly documented in driver source)
+
+Human then reviews and assigns: "Criticality: HIGH - thermal protection depends on this"
+
+---
+
+## 3. Human-in-the-Loop (HITL) Patterns
+
+### 3.1 Human Verification for Truth
 
 | Layer | Agent Role | Human Role |
 |-------|------------|------------|
@@ -70,7 +130,7 @@ Raw Sources → Agent Capture → Agent Staging → Human Verification → Truth
 
 **Current Implementation:** Human reviews ALL staged data before it becomes truth.
 
-### 2.2 Plan-Then-Execute Pattern
+### 3.2 Plan-Then-Execute Pattern
 
 > "The agent should plan autonomously but execute with approval."
 
@@ -83,7 +143,7 @@ Raw Sources → Agent Capture → Agent Staging → Human Verification → Truth
 
 **Why:** Humans are good at judging plans, agents are good at executing them.
 
-### 2.3 Trust-Building Phases
+### 3.3 Trust-Building Phases
 
 ```
 Phase 1: Full Review      → Human reviews ALL data (current phase)
@@ -98,9 +158,9 @@ Each phase builds confidence in agent categorization before reducing human revie
 
 ---
 
-## 3. Transfer Learning Methodology
+## 4. Transfer Learning Methodology
 
-### 3.1 Learning from Examples
+### 4.1 Learning from Examples
 
 > "The agent learns methodology from examples, not just copies content."
 
@@ -113,7 +173,7 @@ Agent learns: How to identify dependencies, assess criticality, describe relatio
 Output: Agent extracts new dependencies using learned methodology
 ```
 
-### 3.2 What Gets Transferred
+### 4.2 What Gets Transferred
 
 - **Methodology:** HOW to analyze documents
 - **Ontology:** Relationship types, criticality levels, component categories
@@ -122,7 +182,7 @@ Output: Agent extracts new dependencies using learned methodology
 
 ---
 
-## 4. Transparency Stack
+## 5. Transparency Stack
 
 ```
 ┌─────────────────────────────────────┐
@@ -161,11 +221,11 @@ Output: Agent extracts new dependencies using learned methodology
 
 ---
 
-## 5. Three-Agent Architecture (v2)
+## 6. Three-Agent Architecture (v2)
 
 > **Updated December 2025:** Simplified from 9 agents to 3 focused agents.
 
-### 5.1 The Three Agents
+### 6.1 The Three Agents
 
 | Agent | Purpose | Output |
 |-------|---------|--------|
