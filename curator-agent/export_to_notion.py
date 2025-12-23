@@ -1,336 +1,143 @@
 """
-Export Statistics to Notion
+Prepare Reports for Notion Sync
 
-Exports extraction statistics and reports to Notion database/page.
-
-Setup:
-1. Create Notion integration at: https://www.notion.so/my-integrations
-2. Get integration token
-3. Add to .env: NOTION_API_KEY=secret_xxx
-4. Share target page with integration
-5. Get page ID from URL: https://www.notion.so/YOUR_PAGE_ID
-6. Add to .env: NOTION_PAGE_ID=YOUR_PAGE_ID
+Formats reports for easy syncing to Notion via Claude Desktop (which has MCP access).
+Creates JSON summaries that Claude can read and sync.
 
 Usage:
-    python export_to_notion.py
-    python export_to_notion.py --test  # Test connection only
+    python export_to_notion.py                    # Prepare today's report
+    python export_to_notion.py --summary          # Prepare weekly summary
+    python export_to_notion.py --errors           # Prepare error log
 """
 
 import os
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
-from dotenv import load_dotenv
 
 
-def get_notion_client():
-    """Get Notion client"""
-    try:
-        from notion_client import Client
-    except ImportError:
-        print("❌ notion-client not installed")
-        print("Install: pip install notion-client")
+def load_progress():
+    """Load progress tracker"""
+    progress_file = Path(__file__).parent / 'extraction_progress.json'
+    if not progress_file.exists():
+        return None
+    with open(progress_file, 'r') as f:
+        return json.load(f)
+
+
+def prepare_daily_report_for_notion():
+    """Prepare today's daily report for Notion sync"""
+    date_str = datetime.now().strftime('%Y-%m-%d')
+    report_file = Path(__file__).parent / 'reports' / f'daily_report_{date_str}.md'
+
+    if not report_file.exists():
+        print(f"❌ No report found for {date_str}")
+        print(f"   Run daily_extraction.py first")
         return None
 
-    # Load env
-    project_root = Path(__file__).parent.parent
-    load_dotenv(project_root / '.env')
+    with open(report_file, 'r') as f:
+        report_content = f.read()
 
-    api_key = os.environ.get('NOTION_API_KEY')
-    if not api_key:
-        print("❌ NOTION_API_KEY not set in .env")
-        print()
-        print("Setup:")
-        print("1. Create integration: https://www.notion.so/my-integrations")
-        print("2. Add to .env: NOTION_API_KEY=secret_xxx")
+    # Create summary JSON for Claude Desktop
+    summary = {
+        "type": "daily_report",
+        "date": date_str,
+        "report_file": str(report_file),
+        "content": report_content,
+        "instruction": "Append this to Notion page 'PROVES Extraction - Daily Reports'"
+    }
+
+    output_file = Path(__file__).parent / 'reports' / f'notion_sync_{date_str}.json'
+    with open(output_file, 'w') as f:
+        json.dump(summary, f, indent=2)
+
+    print()
+    print("=" * 80)
+    print("NOTION SYNC PREPARED")
+    print("=" * 80)
+    print()
+    print(f"Report: {report_file}")
+    print(f"Sync file: {output_file}")
+    print()
+    print("To sync to Notion:")
+    print("1. Open Claude Desktop (which has Notion MCP access)")
+    print("2. Say:")
+    print()
+    print(f'   "Read {output_file} and sync the daily report to my Notion page"')
+    print()
+    print("=" * 80)
+    print()
+
+    return output_file
+
+
+def prepare_error_log_for_notion():
+    """Prepare error log for Notion sync"""
+    progress = load_progress()
+    if not progress:
         return None
 
-    return Client(auth=api_key)
+    failed = progress.get('failed', [])
+    if not failed:
+        print("✅ No failed pages to log")
+        return None
 
+    # Format errors for Notion
+    errors = []
+    for item in failed:
+        errors.append({
+            "title": item.get('title'),
+            "url": item.get('url'),
+            "error": item.get('error'),
+            "retry_count": item.get('retry_count', 0),
+            "date": item.get('failed_date', 'Unknown')
+        })
 
-def test_notion_connection():
-    """Test Notion API connection"""
-    client = get_notion_client()
-    if not client:
-        return False
+    summary = {
+        "type": "error_log",
+        "date": datetime.now().isoformat(),
+        "error_count": len(errors),
+        "errors": errors,
+        "instruction": "Append these errors to Notion page 'PROVES Extraction - Error Log'"
+    }
 
-    try:
-        # Test by listing users
-        users = client.users.list()
-        print(f"✅ Connected to Notion (found {len(users.get('results', []))} users)")
-        return True
-    except Exception as e:
-        print(f"❌ Notion connection failed: {e}")
-        return False
+    output_file = Path(__file__).parent / 'reports' / 'notion_errors.json'
+    with open(output_file, 'w') as f:
+        json.dump(summary, f, indent=2)
 
+    print()
+    print("=" * 80)
+    print("ERROR LOG PREPARED")
+    print("=" * 80)
+    print()
+    print(f"Errors: {len(errors)}")
+    print(f"Sync file: {output_file}")
+    print()
+    print("To sync to Notion:")
+    print("1. Open Claude Desktop")
+    print("2. Say:")
+    print()
+    print(f'   "Read {output_file} and log the errors to my Notion error page"')
+    print()
+    print("=" * 80)
+    print()
 
-def create_extraction_stats_page(client, page_id, progress, db_stats):
-    """
-    Create or update extraction statistics page in Notion.
-
-    Args:
-        client: Notion client
-        page_id: Parent page ID
-        progress: Progress tracker dict
-        db_stats: Database statistics dict
-    """
-    try:
-        # Calculate statistics
-        meta = progress['metadata']
-        completed_pages = meta.get('completed_pages', 0)
-        total_pages = meta.get('total_pages', 0)
-        progress_pct = (completed_pages / total_pages * 100) if total_pages > 0 else 0
-
-        total_extractions = sum(
-            item.get('extractions_count', 0)
-            for item in progress.get('completed', [])
-        )
-
-        # Build page content
-        page_title = f"PROVES Kit Extraction Stats - {datetime.now().strftime('%Y-%m-%d')}"
-
-        # Create page
-        new_page = client.pages.create(
-            parent={"page_id": page_id},
-            properties={
-                "title": {
-                    "title": [
-                        {
-                            "text": {
-                                "content": page_title
-                            }
-                        }
-                    ]
-                }
-            },
-            children=[
-                # Header
-                {
-                    "object": "block",
-                    "type": "heading_1",
-                    "heading_1": {
-                        "rich_text": [{"type": "text", "text": {"content": "Overview"}}]
-                    }
-                },
-                # Callout with summary
-                {
-                    "object": "block",
-                    "type": "callout",
-                    "callout": {
-                        "rich_text": [
-                            {
-                                "type": "text",
-                                "text": {
-                                    "content": f"Progress: {completed_pages}/{total_pages} pages ({progress_pct:.1f}%)\n"
-                                               f"Total Extractions: {total_extractions}\n"
-                                               f"Verified Entities: {db_stats.get('verified_entities', 0) if db_stats else 'N/A'}"
-                                }
-                            }
-                        ],
-                        "icon": {"emoji": "📊"}
-                    }
-                },
-                # Progress bar (using quote blocks)
-                {
-                    "object": "block",
-                    "type": "heading_2",
-                    "heading_2": {
-                        "rich_text": [{"type": "text", "text": {"content": "Progress"}}]
-                    }
-                },
-                {
-                    "object": "block",
-                    "type": "paragraph",
-                    "paragraph": {
-                        "rich_text": [
-                            {
-                                "type": "text",
-                                "text": {"content": f"✅ Completed: {completed_pages}\n"}
-                            },
-                            {
-                                "type": "text",
-                                "text": {"content": f"⏭️ Skipped: {meta.get('skipped_pages', 0)}\n"}
-                            },
-                            {
-                                "type": "text",
-                                "text": {"content": f"❌ Failed: {meta.get('failed_pages', 0)}\n"}
-                            }
-                        ]
-                    }
-                },
-            ]
-        )
-
-        # Add database statistics if available
-        if db_stats:
-            # Confidence scores
-            conf = db_stats.get('confidence', {})
-            client.blocks.children.append(
-                block_id=new_page['id'],
-                children=[
-                    {
-                        "object": "block",
-                        "type": "heading_2",
-                        "heading_2": {
-                            "rich_text": [{"type": "text", "text": {"content": "Confidence Scores"}}]
-                        }
-                    },
-                    {
-                        "object": "block",
-                        "type": "paragraph",
-                        "paragraph": {
-                            "rich_text": [
-                                {
-                                    "type": "text",
-                                    "text": {
-                                        "content": f"Average: {conf.get('avg', 0):.2f}\n"
-                                                   f"Min: {conf.get('min', 0):.2f}\n"
-                                                   f"Max: {conf.get('max', 0):.2f}"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                ]
-            )
-
-            # Ecosystem breakdown
-            ecosystems = db_stats.get('by_ecosystem', {})
-            if ecosystems:
-                eco_text = "\n".join([f"{eco}: {count}" for eco, count in ecosystems.items()])
-                client.blocks.children.append(
-                    block_id=new_page['id'],
-                    children=[
-                        {
-                            "object": "block",
-                            "type": "heading_2",
-                            "heading_2": {
-                                "rich_text": [{"type": "text", "text": {"content": "By Ecosystem"}}]
-                            }
-                        },
-                        {
-                            "object": "block",
-                            "type": "paragraph",
-                            "paragraph": {
-                                "rich_text": [
-                                    {
-                                        "type": "text",
-                                        "text": {"content": eco_text}
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                )
-
-        # Add completed pages list
-        completed = progress.get('completed', [])[-10:]  # Last 10
-        if completed:
-            pages_list = []
-            for item in reversed(completed):
-                pages_list.append({
-                    "object": "block",
-                    "type": "bulleted_list_item",
-                    "bulleted_list_item": {
-                        "rich_text": [
-                            {
-                                "type": "text",
-                                "text": {
-                                    "content": f"{item.get('title')} ({item.get('extractions_count', 0)} extractions)"
-                                }
-                            }
-                        ]
-                    }
-                })
-
-            client.blocks.children.append(
-                block_id=new_page['id'],
-                children=[
-                    {
-                        "object": "block",
-                        "type": "heading_2",
-                        "heading_2": {
-                            "rich_text": [{"type": "text", "text": {"content": "Recent Pages"}}]
-                        }
-                    },
-                    *pages_list
-                ]
-            )
-
-        return True
-
-    except Exception as e:
-        print(f"❌ Error creating Notion page: {e}")
-        return False
-
-
-def export_report_to_notion(report_content, progress, db_stats):
-    """
-    Export report to Notion.
-
-    Args:
-        report_content: Markdown report content
-        progress: Progress tracker dict
-        db_stats: Database statistics dict
-    """
-    client = get_notion_client()
-    if not client:
-        return False
-
-    # Get page ID
-    page_id = os.environ.get('NOTION_PAGE_ID')
-    if not page_id:
-        print("❌ NOTION_PAGE_ID not set in .env")
-        print()
-        print("Setup:")
-        print("1. Share target Notion page with your integration")
-        print("2. Get page ID from URL: https://www.notion.so/YOUR_PAGE_ID")
-        print("3. Add to .env: NOTION_PAGE_ID=YOUR_PAGE_ID")
-        return False
-
-    # Create stats page
-    return create_extraction_stats_page(client, page_id, progress, db_stats)
+    return output_file
 
 
 def main():
     """Main function"""
-    test_only = '--test' in sys.argv
-
-    print()
-    print("=" * 80)
-    print("NOTION EXPORT")
-    print("=" * 80)
-    print()
-
-    if test_only:
-        print("Testing Notion connection...")
-        success = test_notion_connection()
-        return 0 if success else 1
-
-    # Load progress
-    from generate_final_report import load_progress, query_database_statistics
-
-    progress = load_progress()
-    if not progress:
+    if '--summary' in sys.argv:
+        print("Weekly summary not implemented yet")
         return 1
-
-    db_stats = query_database_statistics()
-
-    # Export to Notion
-    print("Exporting to Notion...")
-    success = export_report_to_notion("", progress, db_stats)
-
-    if success:
-        print("✅ Export complete")
+    elif '--errors' in sys.argv:
+        prepare_error_log_for_notion()
     else:
-        print("❌ Export failed")
+        # Default: prepare daily report
+        prepare_daily_report_for_notion()
 
-    print()
-    print("=" * 80)
-    print()
-
-    return 0 if success else 1
+    return 0
 
 
 if __name__ == "__main__":
