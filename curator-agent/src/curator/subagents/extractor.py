@@ -486,6 +486,159 @@ Confidence: HIGH | MEDIUM | LOW
         return f"Error during extraction: {str(e)}"
 
 
+# Database query tools for confidence calibration
+@tool
+def query_verified_entities(
+    entity_type: str = None,
+    ecosystem: str = None,
+    name_pattern: str = None,
+    limit: int = 20
+) -> str:
+    """
+    Query core_entities (verified truth) - USE THIS TO CALIBRATE CONFIDENCE.
+
+    Before staging your extraction, check what verified data exists.
+    Compare your extraction against approved examples to set appropriate confidence.
+
+    Examples:
+    - query_verified_entities(entity_type='component', ecosystem='hardware')
+      → See verified hardware components to match your pattern
+
+    - query_verified_entities(name_pattern='%I2C%')
+      → Find I2C-related entities to see how they were structured
+
+    Returns: Entity details with properties you can compare against
+    """
+    try:
+        import psycopg
+        from dotenv import load_dotenv
+        import os
+
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+        load_dotenv(os.path.join(project_root, '.env'))
+
+        db_url = os.environ.get('NEON_DATABASE_URL')
+        conn = psycopg.connect(db_url)
+
+        query = """
+            SELECT id, canonical_key, name, entity_type::text, ecosystem::text,
+                   properties, created_at
+            FROM core_entities
+            WHERE is_current = TRUE
+        """
+        params = []
+
+        if entity_type:
+            query += " AND entity_type = %s::candidate_type"
+            params.append(entity_type)
+
+        if ecosystem:
+            query += " AND ecosystem = %s::ecosystem_type"
+            params.append(ecosystem)
+
+        if name_pattern:
+            query += " AND (canonical_key ILIKE %s OR name ILIKE %s)"
+            params.extend([name_pattern, name_pattern])
+
+        query += " ORDER BY created_at DESC LIMIT %s"
+        params.append(limit)
+
+        with conn.cursor() as cur:
+            cur.execute(query, params)
+            rows = cur.fetchall()
+
+        conn.close()
+
+        if not rows:
+            return "No verified entities found. You're pioneering this extraction!"
+
+        result = f"Found {len(rows)} verified entities for comparison:\n\n"
+        for row in rows:
+            entity_id, canonical_key, name, etype, eco, props, created = row
+            result += f"ID: {entity_id}\n"
+            result += f"  Key: {canonical_key} | Name: {name}\n"
+            result += f"  Type: {etype} | Ecosystem: {eco}\n"
+            if props:
+                import json
+                props_dict = props if isinstance(props, dict) else json.loads(props)
+                result += f"  Properties: {json.dumps(props_dict)[:200]}...\n"
+            result += "\n"
+
+        return result
+
+    except Exception as e:
+        return f"Error querying verified entities: {str(e)}"
+
+
+@tool
+def query_staging_history(
+    candidate_type: str = None,
+    min_confidence: float = None,
+    limit: int = 20
+) -> str:
+    """
+    Query staging history - SEE WHAT CONFIDENCE LEVELS WERE ACCEPTED.
+
+    Learn from past extractions to calibrate your confidence scores.
+
+    Examples:
+    - query_staging_history(candidate_type='component', min_confidence=0.8)
+      → See high-confidence component extractions that were approved
+
+    Returns: Confidence scores and reasons from past extractions
+    """
+    try:
+        import psycopg
+        from dotenv import load_dotenv
+        import os
+
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+        load_dotenv(os.path.join(project_root, '.env'))
+
+        db_url = os.environ.get('NEON_DATABASE_URL')
+        conn = psycopg.connect(db_url)
+
+        query = """
+            SELECT candidate_type::text, candidate_key,
+                   confidence_score, confidence_reason, status::text
+            FROM staging_extractions
+            WHERE status IN ('approved', 'verified')
+        """
+        params = []
+
+        if candidate_type:
+            query += " AND candidate_type = %s::candidate_type"
+            params.append(candidate_type)
+
+        if min_confidence is not None:
+            query += " AND confidence_score >= %s"
+            params.append(min_confidence)
+
+        query += " ORDER BY confidence_score DESC LIMIT %s"
+        params.append(limit)
+
+        with conn.cursor() as cur:
+            cur.execute(query, params)
+            rows = cur.fetchall()
+
+        conn.close()
+
+        if not rows:
+            return "No staging history found. Set your best confidence estimate!"
+
+        result = f"Found {len(rows)} approved extractions for calibration:\n\n"
+        for row in rows:
+            ctype, ckey, conf, reason, status = row
+            result += f"{ctype}: {ckey}\n"
+            result += f"  Confidence: {conf} - {reason}\n"
+            result += f"  Status: {status}\n\n"
+
+        return result
+
+    except Exception as e:
+        return f"Error querying staging history: {str(e)}"
+
+
 @traceable(name="extractor_subagent")
 def create_extractor_agent():
     """
@@ -516,11 +669,16 @@ def create_extractor_agent():
     )
 
     tools = [
+        # Content fetching
         read_document,
         fetch_webpage,
         fetch_github_file,
         list_github_directory,
-        extract_architecture_using_claude,  # FRAMES-based extraction
+        # Extraction with FRAMES methodology
+        extract_architecture_using_claude,
+        # Database query tools for confidence calibration
+        query_verified_entities,
+        query_staging_history,
     ]
 
     agent = create_react_agent(model, tools)

@@ -291,6 +291,310 @@ def search_similar_dependencies(component_name: str) -> str:
         return f"Error searching: {str(e)}"
 
 
+@tool
+def query_verified_entities(
+    entity_type: str = None,
+    ecosystem: str = None,
+    name_pattern: str = None,
+    limit: int = 20
+) -> str:
+    """
+    Query core_entities (verified truth) - AGENT DECIDES WHAT HELPS.
+
+    Use this to see what verified data exists and calibrate your confidence.
+
+    Examples:
+    - query_verified_entities(entity_type='component', ecosystem='hardware')
+      → See all verified hardware components
+
+    - query_verified_entities(name_pattern='%I2C%')
+      → Find entities related to I2C
+
+    - query_verified_entities(entity_type='component', limit=10)
+      → Get 10 examples of verified components
+
+    Returns: Entity details including canonical_key, ecosystem, properties
+    """
+    try:
+        conn = get_db_connection()
+
+        # Build query dynamically based on filters
+        query = """
+            SELECT id, canonical_key, name, entity_type::text, ecosystem::text,
+                   properties, created_at
+            FROM core_entities
+            WHERE is_current = TRUE
+        """
+        params = []
+
+        if entity_type:
+            query += " AND entity_type = %s::candidate_type"
+            params.append(entity_type)
+
+        if ecosystem:
+            query += " AND ecosystem = %s::ecosystem_type"
+            params.append(ecosystem)
+
+        if name_pattern:
+            query += " AND (canonical_key ILIKE %s OR name ILIKE %s)"
+            params.extend([name_pattern, name_pattern])
+
+        query += " ORDER BY created_at DESC LIMIT %s"
+        params.append(limit)
+
+        with conn.cursor() as cur:
+            cur.execute(query, params)
+            rows = cur.fetchall()
+
+        conn.close()
+
+        if not rows:
+            return "No verified entities found matching criteria."
+
+        result = f"Found {len(rows)} verified entities:\n\n"
+        for row in rows:
+            entity_id, canonical_key, name, etype, eco, props, created = row
+            result += f"ID: {entity_id}\n"
+            result += f"  Key: {canonical_key} | Name: {name}\n"
+            result += f"  Type: {etype} | Ecosystem: {eco}\n"
+            if props:
+                import json
+                props_dict = props if isinstance(props, dict) else json.loads(props)
+                result += f"  Properties: {json.dumps(props_dict)[:200]}...\n"
+            result += f"  Created: {created}\n\n"
+
+        return result
+
+    except Exception as e:
+        return f"Error querying verified entities: {str(e)}"
+
+
+@tool
+def query_staging_history(
+    status: str = None,
+    candidate_type: str = None,
+    ecosystem: str = None,
+    min_confidence: float = None,
+    max_confidence: float = None,
+    limit: int = 20
+) -> str:
+    """
+    Query staging_extractions history - SEE WHAT WAS ACCEPTED/REJECTED.
+
+    Use this to understand what confidence levels humans accepted,
+    what patterns led to rejections, and learn from past decisions.
+
+    Examples:
+    - query_staging_history(status='approved', candidate_type='component')
+      → See what components were accepted
+
+    - query_staging_history(status='rejected')
+      → Learn from rejections
+
+    - query_staging_history(min_confidence=0.8, status='approved')
+      → See high-confidence items that were approved
+
+    Returns: Extraction details with confidence scores and reasons
+    """
+    try:
+        conn = get_db_connection()
+
+        query = """
+            SELECT extraction_id, candidate_type::text, candidate_key,
+                   ecosystem::text, confidence_score, confidence_reason,
+                   status::text, evidence, created_at
+            FROM staging_extractions
+            WHERE 1=1
+        """
+        params = []
+
+        if status:
+            query += " AND status = %s::candidate_status"
+            params.append(status)
+
+        if candidate_type:
+            query += " AND candidate_type = %s::candidate_type"
+            params.append(candidate_type)
+
+        if ecosystem:
+            query += " AND ecosystem = %s::ecosystem_type"
+            params.append(ecosystem)
+
+        if min_confidence is not None:
+            query += " AND confidence_score >= %s"
+            params.append(min_confidence)
+
+        if max_confidence is not None:
+            query += " AND confidence_score <= %s"
+            params.append(max_confidence)
+
+        query += " ORDER BY created_at DESC LIMIT %s"
+        params.append(limit)
+
+        with conn.cursor() as cur:
+            cur.execute(query, params)
+            rows = cur.fetchall()
+
+        conn.close()
+
+        if not rows:
+            return "No staging history found matching criteria."
+
+        result = f"Found {len(rows)} staging extractions:\n\n"
+        for row in rows:
+            ext_id, ctype, ckey, eco, conf, reason, stat, evidence, created = row
+            result += f"ID: {ext_id}\n"
+            result += f"  Type: {ctype} | Key: {ckey}\n"
+            result += f"  Ecosystem: {eco} | Status: {stat}\n"
+            result += f"  Confidence: {conf} - {reason}\n"
+            if evidence:
+                evidence_str = str(evidence)[:150]
+                result += f"  Evidence: {evidence_str}...\n"
+            result += f"  Created: {created}\n\n"
+
+        return result
+
+    except Exception as e:
+        return f"Error querying staging history: {str(e)}"
+
+
+@tool
+def query_validation_decisions(
+    decision_type: str = None,
+    reasoning_contains: str = None,
+    limit: int = 20
+) -> str:
+    """
+    Query validation_decisions - SEE HOW VALIDATOR REASONED.
+
+    Use this to learn what reasoning led to accepts/rejects/merges.
+
+    Examples:
+    - query_validation_decisions(decision_type='reject')
+      → Learn why things were rejected
+
+    - query_validation_decisions(reasoning_contains='duplicate')
+      → See duplicate-related decisions
+
+    Returns: Validation reasoning and decisions
+    """
+    try:
+        conn = get_db_connection()
+
+        query = """
+            SELECT decision_id, extraction_id, decision, reasoning,
+                   confidence_override, suggested_canonical_name, created_at
+            FROM validation_decisions
+            WHERE 1=1
+        """
+        params = []
+
+        if decision_type:
+            query += " AND decision = %s"
+            params.append(decision_type)
+
+        if reasoning_contains:
+            query += " AND reasoning ILIKE %s"
+            params.append(f'%{reasoning_contains}%')
+
+        query += " ORDER BY created_at DESC LIMIT %s"
+        params.append(limit)
+
+        with conn.cursor() as cur:
+            cur.execute(query, params)
+            rows = cur.fetchall()
+
+        conn.close()
+
+        if not rows:
+            return "No validation decisions found matching criteria."
+
+        result = f"Found {len(rows)} validation decisions:\n\n"
+        for row in rows:
+            dec_id, ext_id, decision, reasoning, conf_override, canon, created = row
+            result += f"Decision: {decision}\n"
+            result += f"  Extraction ID: {ext_id}\n"
+            result += f"  Reasoning: {reasoning}\n"
+            if conf_override:
+                result += f"  Confidence Override: {conf_override}\n"
+            if canon:
+                result += f"  Canonical Name: {canon}\n"
+            result += f"  Created: {created}\n\n"
+
+        return result
+
+    except Exception as e:
+        return f"Error querying validation decisions: {str(e)}"
+
+
+@tool
+def query_raw_snapshots(
+    source_url_pattern: str = None,
+    source_type: str = None,
+    limit: int = 10
+) -> str:
+    """
+    Query raw_snapshots - SEE WHAT SOURCES WERE PROCESSED.
+
+    Use this to avoid re-processing same sources.
+
+    Examples:
+    - query_raw_snapshots(source_url_pattern='%proveskit.space%')
+      → See what PROVES Kit pages were fetched
+
+    - query_raw_snapshots(source_type='webpage')
+      → See all webpage snapshots
+
+    Returns: Source URLs and fetch timestamps
+    """
+    try:
+        conn = get_db_connection()
+
+        query = """
+            SELECT snapshot_id, source_url, source_type, fetch_timestamp,
+                   content_preview
+            FROM raw_snapshots
+            WHERE 1=1
+        """
+        params = []
+
+        if source_url_pattern:
+            query += " AND source_url ILIKE %s"
+            params.append(source_url_pattern)
+
+        if source_type:
+            query += " AND source_type = %s"
+            params.append(source_type)
+
+        query += " ORDER BY fetch_timestamp DESC LIMIT %s"
+        params.append(limit)
+
+        with conn.cursor() as cur:
+            cur.execute(query, params)
+            rows = cur.fetchall()
+
+        conn.close()
+
+        if not rows:
+            return "No raw snapshots found matching criteria."
+
+        result = f"Found {len(rows)} raw snapshots:\n\n"
+        for row in rows:
+            snap_id, url, stype, timestamp, preview = row
+            result += f"Snapshot ID: {snap_id}\n"
+            result += f"  URL: {url}\n"
+            result += f"  Type: {stype}\n"
+            result += f"  Fetched: {timestamp}\n"
+            if preview:
+                result += f"  Preview: {preview[:100]}...\n"
+            result += "\n"
+
+        return result
+
+    except Exception as e:
+        return f"Error querying raw snapshots: {str(e)}"
+
+
 @traceable(name="validator_subagent")
 def create_validator_agent():
     """
@@ -318,6 +622,11 @@ def create_validator_agent():
         get_pending_extractions,
         record_validation_decision,
         check_for_duplicates,
+        # Database query tools for confidence calibration
+        query_verified_entities,
+        query_staging_history,
+        query_validation_decisions,
+        query_raw_snapshots,
         # Legacy kg_nodes tools
         check_if_dependency_exists,
         verify_schema_compliance,
