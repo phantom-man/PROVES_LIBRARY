@@ -102,6 +102,46 @@ This project uses AI agents to automatically extract dependencies from technical
 - Local LLM fine-tuning with Unsloth/LoRA
 - Model deployment for specialized CubeSat knowledge
 
+### 📈 Confidence Calibration: How Agents Learn
+
+As humans verify data, agents learn what "truth" looks like. Confidence grows, human involvement tapers:
+
+```mermaid
+flowchart TB
+  subgraph Phase1["🥶 Phase 1: Cold Start"]
+    A1["Agent Confidence: LOW"]
+    A2["Human Verifies: 100%"]
+    A3["Every approve/reject builds corpus"]
+  end
+  
+  subgraph Phase2["🔥 Phase 2: Pattern Recognition"]
+    B1["Agent matches against verified patterns"]
+    B2["'I've seen 12 similar I2C deps, all approved'"]
+    B3["Confidence rises for matching patterns"]
+    B4["Human focuses on flagged/novel items"]
+  end
+  
+  subgraph Phase3["🚀 Phase 3: Calibrated Autonomy"]
+    C1["High confidence >95%: Auto-promote"]
+    C2["Medium 70-95%: Human reviews"]
+    C3["Low <70%: Flagged for careful review"]
+    C4["Human sets comfort thresholds"]
+  end
+  
+  Phase1 --> |"~50 verified items"| Phase2
+  Phase2 --> |"~200+ verified items"| Phase3
+  
+  style Phase1 fill:#e3f2fd
+  style Phase2 fill:#fff3e0
+  style Phase3 fill:#e8f5e9
+```
+
+**The Feedback Loop:**
+- Every human decision (approve/reject/correct) trains the agent
+- Corrections become **GOLD** training data
+- Agent confidence is calibrated per pattern type, not globally
+- Humans can always override — the agent suggests, humans decide
+
 ---
 
 ## 🚀 Quick Start
