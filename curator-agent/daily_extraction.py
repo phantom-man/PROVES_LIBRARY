@@ -67,11 +67,11 @@ def initialize_progress():
         "skipped": [],
         "failed": [],
         "next_page": {
-            "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/index.md",
-            "title": "Hardware Overview",
+            "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/proves_prime/",
+            "title": "PROVES Prime",
             "phase": "Phase 1: Hardware Foundation",
             "priority": 1,
-            "reason": "Start with hardware overview to get component list"
+            "reason": "Main board - central component with detailed architecture"
         },
         "extraction_history": []
     }
@@ -187,35 +187,29 @@ def determine_next_page(progress):
 
     completed_count = progress['metadata']['completed_pages']
 
-    # Phase 1: Hardware Foundation (pages 1-4)
+    # Phase 1: Hardware Foundation (pages 1-3)
+    # NOTE: Skipping index pages - they have no detailed architecture, just TOC
     hardware_pages = [
-        {
-            "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/index.md",
-            "title": "Hardware Overview",
-            "phase": "Phase 1: Hardware Foundation",
-            "priority": 1,
-            "reason": "Start with hardware overview to get component list"
-        },
         {
             "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/proves_prime/",
             "title": "PROVES Prime",
             "phase": "Phase 1: Hardware Foundation",
-            "priority": 2,
-            "reason": "Main board - central component"
+            "priority": 1,
+            "reason": "Main board - central component with detailed architecture"
         },
         {
             "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/FC_board/",
             "title": "Flight Control Board",
             "phase": "Phase 1: Hardware Foundation",
-            "priority": 3,
-            "reason": "F' Prime integration likely documented here"
+            "priority": 2,
+            "reason": "F' Prime integration - critical interfaces documented here"
         },
         {
             "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/battery_board/",
             "title": "Battery Board",
             "phase": "Phase 1: Hardware Foundation",
-            "priority": 4,
-            "reason": "Power management architecture"
+            "priority": 3,
+            "reason": "Power management architecture and interface specs"
         },
     ]
 
@@ -224,7 +218,7 @@ def determine_next_page(progress):
         return hardware_pages[completed_count]
 
     # Phase 2: F' Prime Integration
-    if completed_count == 4:
+    if completed_count == 3:
         return {
             "url": "https://docs.proveskit.space/en/latest/quick_start/fprime-proves_tutorial/",
             "title": "F' Prime Tutorial",
@@ -463,15 +457,43 @@ def main():
     print(f"   Reason: {next_page.get('reason', 'Next in sequence')}")
     print()
 
-    # Step 4: Run extraction
-    print("Step 4: Launching extraction...")
+    # Step 4: Verify page is valid
+    print("Step 4: Verifying page URL...")
+    from verify_page import verify_page
+
+    page_check = verify_page(next_page['url'])
+
+    if not page_check['valid']:
+        print(f"❌ Page verification failed!")
+        print(f"   Status: {page_check['status_code']}")
+        print(f"   Error: {page_check['error']}")
+        print()
+        print("Marking page as skipped and moving to next page...")
+
+        # Mark as skipped
+        update_progress_after_extraction(
+            progress,
+            next_page,
+            status='skipped',
+            extraction_count=0,
+            error=f"Page verification failed: {page_check['error']}",
+            snapshot_ids=[]
+        )
+        return 1
+
+    print(f"✅ Page valid: {page_check['content_length']} bytes")
+    print(f"   Sample: {page_check['sample'][:100]}...")
+    print()
+
+    # Step 5: Run extraction
+    print("Step 5: Launching extraction...")
     print()
 
     status, count, snapshot_ids, error = run_extraction(next_page, auto=auto)
 
-    # Step 5: Update progress
+    # Step 6: Update progress
     print()
-    print("Step 5: Updating progress tracker...")
+    print("Step 6: Updating progress tracker...")
     update_progress_after_extraction(
         progress,
         next_page,

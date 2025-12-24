@@ -545,7 +545,7 @@ def query_verified_entities(
 
         query = """
             SELECT id, canonical_key, name, entity_type::text, ecosystem::text,
-                   properties, created_at
+                   attributes, created_at
             FROM core_entities
             WHERE is_current = TRUE
         """
@@ -577,14 +577,14 @@ def query_verified_entities(
 
         result = f"Found {len(rows)} verified entities for comparison:\n\n"
         for row in rows:
-            entity_id, canonical_key, name, etype, eco, props, created = row
+            entity_id, canonical_key, name, etype, eco, attrs, created = row
             result += f"ID: {entity_id}\n"
             result += f"  Key: {canonical_key} | Name: {name}\n"
             result += f"  Type: {etype} | Ecosystem: {eco}\n"
-            if props:
+            if attrs:
                 import json
-                props_dict = props if isinstance(props, dict) else json.loads(props)
-                result += f"  Properties: {json.dumps(props_dict)[:200]}...\n"
+                attrs_dict = attrs if isinstance(attrs, dict) else json.loads(attrs)
+                result += f"  Attributes: {json.dumps(attrs_dict)[:200]}...\n"
             result += "\n"
 
         return result

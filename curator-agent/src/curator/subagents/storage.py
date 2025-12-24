@@ -66,7 +66,7 @@ def store_extraction(
     candidate_type: str,
     candidate_key: str,
     raw_evidence: str,
-    source_snapshot_id: str,
+    source_snapshot_id: str = None,
     ecosystem: str = "external",
     properties: dict = None,
     confidence_score: float = 0.8,
@@ -86,7 +86,7 @@ def store_extraction(
                         'data_type', 'dependency', 'connection', 'inheritance'
         candidate_key: Entity name/key (e.g., "I2CDriver", "PowerManager")
         raw_evidence: Exact quote from source (REQUIRED - this is the evidence)
-        source_snapshot_id: ID from raw_snapshots (REQUIRED - links to source document)
+        source_snapshot_id: ID from raw_snapshots (auto-found from source_url if not provided)
         ecosystem: 'fprime', 'proveskit', 'pysquared', 'cubesat_general', 'external'
         properties: JSON dict of entity-specific properties (ports, commands, etc.)
         confidence_score: How confident the extractor is (0.0 to 1.0)
@@ -120,6 +120,25 @@ def store_extraction(
     try:
         import json
         conn = get_db_connection()
+
+        # If snapshot_id not provided, try to find it from source_url
+        if not source_snapshot_id and source_metadata and 'source_url' in source_metadata:
+            source_url = source_metadata['source_url']
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT id FROM raw_snapshots
+                    WHERE source_url = %s
+                    ORDER BY captured_at DESC
+                    LIMIT 1
+                """, (source_url,))
+                row = cur.fetchone()
+                if row:
+                    source_snapshot_id = str(row[0])
+                else:
+                    return f"Error: No snapshot found for URL {source_url}. Cannot store extraction without source snapshot."
+
+        if not source_snapshot_id:
+            return "Error: source_snapshot_id required (or provide source_url in source_metadata)"
 
         # Get or create pipeline run
         run_id = get_or_create_pipeline_run(conn)

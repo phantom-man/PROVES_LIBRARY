@@ -40,7 +40,7 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
         task: The task to give the curator (e.g., "Extract dependencies from trial_docs/fprime_i2c_driver_full.md")
         thread_id: Unique ID for this conversation (for resuming)
     """
-    config = {"configurable": {"thread_id": thread_id}}
+    config = {"configurable": {"thread_id": thread_id}, "recursion_limit": 10}
 
     print("=" * 80)
     print("CURATOR AGENT - HUMAN-IN-THE-LOOP MODE")
@@ -57,7 +57,7 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
     print()
     result = graph.invoke({
         "messages": [{"role": "user", "content": task}]
-    }, config, {"recursion_limit": 10})
+    }, config)
 
     # Loop to handle all interrupts
     while True:
@@ -160,7 +160,7 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
             # Resume with decision
             if decision in ['yes', 'y']:
                 print("Resuming with approval...")
-                result = graph.invoke(Command(resume="approved"), config, {"recursion_limit": 10})
+                result = graph.invoke(Command(resume="approved"), config)
             elif decision in ['edit', 'e']:
                 print()
                 print("=" * 60)
@@ -200,7 +200,7 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
 
                 if not correction_text:
                     print("No correction provided, approving as-is...")
-                    result = graph.invoke(Command(resume="approved"), config, {"recursion_limit": 10})
+                    result = graph.invoke(Command(resume="approved"), config)
                 else:
                     # Try to parse as JSON, otherwise wrap in task object
                     try:
@@ -215,10 +215,10 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
                     print()
                     print(f"Submitting correction: {json.dumps(correction_data, indent=2)[:200]}...")
                     print("This will be logged as GOLD training data!")
-                    result = graph.invoke(Command(resume=correction_data), config, {"recursion_limit": 10})
+                    result = graph.invoke(Command(resume=correction_data), config)
             else:
                 print("Resuming with rejection...")
-                result = graph.invoke(Command(resume="rejected"), config, {"recursion_limit": 10})
+                result = graph.invoke(Command(resume="rejected"), config)
 
     # Show final results
     print()

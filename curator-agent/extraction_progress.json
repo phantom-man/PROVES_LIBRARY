@@ -1,7 +1,7 @@
 {
   "metadata": {
     "created": "2025-12-23T00:00:00Z",
-    "last_updated": "2025-12-23T00:00:00Z",
+    "last_updated": "2025-12-24T05:42:48.094962+00:00",
     "total_pages": 60,
     "completed_pages": 0,
     "skipped_pages": 0,
@@ -12,11 +12,36 @@
   "skipped": [],
   "failed": [],
   "next_page": {
-    "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/index.md",
-    "title": "Hardware Overview",
+    "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/proves_prime/",
+    "title": "PROVES Prime",
     "phase": "Phase 1: Hardware Foundation",
     "priority": 1,
-    "reason": "Start with hardware overview to get component list"
+    "reason": "Main board - central component with detailed architecture",
+    "retry_count": 3,
+    "last_error": "Recursion limit of 10 reached without hitting a stop condition. You can increase the limit by setting the `recursion_limit` config key.\nFor troubleshooting, visit: https://docs.langchain.com/oss/python/langgraph/errors/GRAPH_RECURSION_LIMIT",
+    "last_attempt": "2025-12-24T05:42:48.094846+00:00"
   },
-  "extraction_history": []
+  "extraction_history": [
+    {
+      "page": "PROVES Prime",
+      "status": "failed",
+      "date": "2025-12-24T04:49:14.869115+00:00",
+      "extractions": 0,
+      "retry_count": 0
+    },
+    {
+      "page": "PROVES Prime",
+      "status": "failed",
+      "date": "2025-12-24T05:00:24.220922+00:00",
+      "extractions": 0,
+      "retry_count": 1
+    },
+    {
+      "page": "PROVES Prime",
+      "status": "failed",
+      "date": "2025-12-24T05:42:48.094846+00:00",
+      "extractions": 0,
+      "retry_count": 2
+    }
+  ]
 }

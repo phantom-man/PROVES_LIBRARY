@@ -313,7 +313,7 @@ def query_verified_entities(
     - query_verified_entities(entity_type='component', limit=10)
       → Get 10 examples of verified components
 
-    Returns: Entity details including canonical_key, ecosystem, properties
+    Returns: Entity details including canonical_key, ecosystem, attributes
     """
     try:
         conn = get_db_connection()
@@ -321,7 +321,7 @@ def query_verified_entities(
         # Build query dynamically based on filters
         query = """
             SELECT id, canonical_key, name, entity_type::text, ecosystem::text,
-                   properties, created_at
+                   attributes, created_at
             FROM core_entities
             WHERE is_current = TRUE
         """
@@ -353,14 +353,14 @@ def query_verified_entities(
 
         result = f"Found {len(rows)} verified entities:\n\n"
         for row in rows:
-            entity_id, canonical_key, name, etype, eco, props, created = row
+            entity_id, canonical_key, name, etype, eco, attrs, created = row
             result += f"ID: {entity_id}\n"
             result += f"  Key: {canonical_key} | Name: {name}\n"
             result += f"  Type: {etype} | Ecosystem: {eco}\n"
-            if props:
+            if attrs:
                 import json
-                props_dict = props if isinstance(props, dict) else json.loads(props)
-                result += f"  Properties: {json.dumps(props_dict)[:200]}...\n"
+                attrs_dict = attrs if isinstance(attrs, dict) else json.loads(attrs)
+                result += f"  Attributes: {json.dumps(attrs_dict)[:200]}...\n"
             result += f"  Created: {created}\n\n"
 
         return result
@@ -482,8 +482,8 @@ def query_validation_decisions(
         conn = get_db_connection()
 
         query = """
-            SELECT decision_id, extraction_id, decision, reasoning,
-                   confidence_override, suggested_canonical_name, created_at
+            SELECT decision_id, extraction_id, decision::text, decision_reason,
+                   confidence_at_decision, evidence_at_decision, created_at
             FROM validation_decisions
             WHERE 1=1
         """
@@ -511,14 +511,17 @@ def query_validation_decisions(
 
         result = f"Found {len(rows)} validation decisions:\n\n"
         for row in rows:
-            dec_id, ext_id, decision, reasoning, conf_override, canon, created = row
+            dec_id, ext_id, decision, reason, conf, evidence, created = row
             result += f"Decision: {decision}\n"
             result += f"  Extraction ID: {ext_id}\n"
-            result += f"  Reasoning: {reasoning}\n"
-            if conf_override:
-                result += f"  Confidence Override: {conf_override}\n"
-            if canon:
-                result += f"  Canonical Name: {canon}\n"
+            result += f"  Reasoning: {reason}\n"
+            if conf:
+                result += f"  Confidence: {conf}\n"
+            if evidence:
+                import json
+                evidence_dict = evidence if isinstance(evidence, dict) else json.loads(evidence)
+                if 'suggested_name' in evidence_dict:
+                    result += f"  Suggested Name: {evidence_dict['suggested_name']}\n"
             result += f"  Created: {created}\n\n"
 
         return result
@@ -551,8 +554,8 @@ def query_raw_snapshots(
         conn = get_db_connection()
 
         query = """
-            SELECT snapshot_id, source_url, source_type, fetch_timestamp,
-                   content_preview
+            SELECT id, source_url, source_type::text, captured_at,
+                   LEFT(payload::text, 200) as content_preview
             FROM raw_snapshots
             WHERE 1=1
         """
@@ -566,7 +569,7 @@ def query_raw_snapshots(
             query += " AND source_type = %s"
             params.append(source_type)
 
-        query += " ORDER BY fetch_timestamp DESC LIMIT %s"
+        query += " ORDER BY captured_at DESC LIMIT %s"
         params.append(limit)
 
         with conn.cursor() as cur:
