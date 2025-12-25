@@ -1,25 +1,33 @@
 {
   "metadata": {
     "created": "2025-12-23T00:00:00Z",
-    "last_updated": "2025-12-24T05:42:48.094962+00:00",
+    "last_updated": "2025-12-24T14:30:00.000000+00:00",
     "total_pages": 60,
-    "completed_pages": 0,
+    "completed_pages": 1,
     "skipped_pages": 0,
     "failed_pages": 0,
     "current_phase": "Phase 1: Hardware Foundation"
   },
-  "completed": [],
+  "completed": [
+    {
+      "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/proves_prime/",
+      "title": "PROVES Prime",
+      "phase": "Phase 1: Hardware Foundation",
+      "priority": 1,
+      "reason": "Main board - central component with detailed architecture",
+      "completed_at": "2025-12-24T14:30:00.000000+00:00",
+      "extractions_count": 6,
+      "status": "success"
+    }
+  ],
   "skipped": [],
   "failed": [],
   "next_page": {
-    "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/proves_prime/",
-    "title": "PROVES Prime",
+    "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/fc_board/",
+    "title": "FC Board",
     "phase": "Phase 1: Hardware Foundation",
-    "priority": 1,
-    "reason": "Main board - central component with detailed architecture",
-    "retry_count": 3,
-    "last_error": "Recursion limit of 10 reached without hitting a stop condition. You can increase the limit by setting the `recursion_limit` config key.\nFor troubleshooting, visit: https://docs.langchain.com/oss/python/langgraph/errors/GRAPH_RECURSION_LIMIT",
-    "last_attempt": "2025-12-24T05:42:48.094846+00:00"
+    "priority": 2,
+    "reason": "Flight controller - critical for satellite operations"
   },
   "extraction_history": [
     {
@@ -42,6 +50,13 @@
       "date": "2025-12-24T05:42:48.094846+00:00",
       "extractions": 0,
       "retry_count": 2
+    },
+    {
+      "page": "PROVES Prime",
+      "status": "success",
+      "date": "2025-12-24T14:30:00.000000+00:00",
+      "extractions": 6,
+      "retry_count": 3
     }
   ]
 }
