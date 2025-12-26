@@ -319,59 +319,7 @@ python daily_extraction.py  # Extracts from first page
 
 ### Verify Setup
 
-```bash
-# Check database has extractions
-python -c "
-import psycopg, os
-from dotenv import load_dotenv
-load_dotenv('../.env')
-conn = psycopg.connect(os.environ['NEON_DATABASE_URL'])
-with conn.cursor() as cur:
-    cur.execute('SELECT COUNT(*) FROM staging_extractions')
-    print(f'Extractions: {cur.fetchone()[0]}')
-"
-
-# Preview extractions for Notion sync
-python sync_to_notion.py --dry-run
-```
-
----
-
-## Repository Structure
-
-```
-PROVES_LIBRARY/
-  curator-agent/                    # Main pipeline
-    migrations/
-      001_add_lineage_and_relationships.sql  # Database schema
-
-    # Extraction pipeline
-    daily_extraction.py             # Main extraction script
-    retroactive_verify_lineage.py   # Lineage verification
-
-    # Notion integration
-    sync_to_notion.py               # Sync to Notion for review
-    promote_extraction.py           # Promote approved to truth graph
-    log_error_to_notion.py          # Error tracking
-    generate_curator_report.py      # Oversight reports
-
-    # Documentation
-    ID_LINEAGE_SYSTEM.md            # Lineage design
-    COMPLETE_NOTION_INTEGRATION.md  # Full setup guide
-    NOTION_SETUP_GUIDE.md           # Step-by-step Notion setup
-    SCHEMA_GAP_ANALYSIS.md          # Database analysis
-
-  docs/                             # GitHub Pages
-    diagrams/                       # Architecture diagrams
-    AGENTIC_ARCHITECTURE.md         # Deep dive
-
-  trial_docs/                       # Manual analysis
-    COMPREHENSIVE_DEPENDENCY_MAP.md # Trial results
-
-  scripts/                          # Utilities
-    db_connector.py                 # Database connection
-    graph_manager.py                # Graph operations
-```
+Check the [COMPLETE_NOTION_INTEGRATION.md](curator-agent/COMPLETE_NOTION_INTEGRATION.md) guide for detailed verification steps and troubleshooting.
 
 ---
 
