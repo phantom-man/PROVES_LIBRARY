@@ -58,7 +58,7 @@ def reset_progress():
         "extraction_history": []
     }
 
-    with open(progress_file, 'w') as f:
+    with open(progress_file, 'w', encoding='utf-8') as f:
         json.dump(progress, f, indent=2)
 
     return True

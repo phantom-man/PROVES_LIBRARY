@@ -524,8 +524,8 @@ def query_verified_entities(
     Compare your extraction against approved examples to set appropriate confidence.
 
     Examples:
-    - query_verified_entities(entity_type='component', ecosystem='hardware')
-      → See verified hardware components to match your pattern
+    - query_verified_entities(entity_type='component', ecosystem='proveskit')
+      → See verified PROVES Kit components to match your pattern
 
     - query_verified_entities(name_pattern='%I2C%')
       → Find I2C-related entities to see how they were structured
@@ -552,7 +552,7 @@ def query_verified_entities(
         params = []
 
         if entity_type:
-            query += " AND entity_type = %s::candidate_type"
+            query += " AND entity_type = %s::entity_type"
             params.append(entity_type)
 
         if ecosystem:
@@ -606,7 +606,7 @@ def query_staging_history(
 
     Examples:
     - query_staging_history(candidate_type='component', min_confidence=0.8)
-      → See high-confidence component extractions that were approved
+      → See high-confidence component extractions that were accepted
 
     Returns: Confidence scores and reasons from past extractions
     """
@@ -625,7 +625,7 @@ def query_staging_history(
             SELECT candidate_type::text, candidate_key,
                    confidence_score, confidence_reason, status::text
             FROM staging_extractions
-            WHERE status IN ('approved', 'verified')
+            WHERE status = 'accepted'::candidate_status
         """
         params = []
 
@@ -649,7 +649,7 @@ def query_staging_history(
         if not rows:
             return "No staging history found. Set your best confidence estimate!"
 
-        result = f"Found {len(rows)} approved extractions for calibration:\n\n"
+        result = f"Found {len(rows)} accepted extractions for calibration:\n\n"
         for row in rows:
             ctype, ckey, conf, reason, status = row
             result += f"{ctype}: {ckey}\n"
@@ -676,7 +676,6 @@ def create_extractor_agent():
     - MECHANISMS: What maintains interfaces (documentation, schemas, drivers)
     
     Supports:
-    - Reading local documentation files
     - Fetching web documentation (nasa.github.io/fprime, docs.proveskit.space)
     - Fetching GitHub source files directly (without cloning)
     - Listing GitHub directories to explore structure
@@ -692,8 +691,7 @@ def create_extractor_agent():
     )
 
     tools = [
-        # Content fetching
-        read_document,
+        # Content fetching (web and GitHub only - no local files)
         fetch_webpage,
         fetch_github_file,
         list_github_directory,

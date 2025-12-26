@@ -304,8 +304,8 @@ def query_verified_entities(
     Use this to see what verified data exists and calibrate your confidence.
 
     Examples:
-    - query_verified_entities(entity_type='component', ecosystem='hardware')
-      → See all verified hardware components
+    - query_verified_entities(entity_type='component', ecosystem='proveskit')
+      → See all verified PROVES Kit components
 
     - query_verified_entities(name_pattern='%I2C%')
       → Find entities related to I2C
@@ -328,7 +328,7 @@ def query_verified_entities(
         params = []
 
         if entity_type:
-            query += " AND entity_type = %s::candidate_type"
+            query += " AND entity_type = %s::entity_type"
             params.append(entity_type)
 
         if ecosystem:
@@ -385,14 +385,14 @@ def query_staging_history(
     what patterns led to rejections, and learn from past decisions.
 
     Examples:
-    - query_staging_history(status='approved', candidate_type='component')
+    - query_staging_history(status='accepted', candidate_type='component')
       → See what components were accepted
 
     - query_staging_history(status='rejected')
       → Learn from rejections
 
-    - query_staging_history(min_confidence=0.8, status='approved')
-      → See high-confidence items that were approved
+    - query_staging_history(min_confidence=0.8, status='accepted')
+      → See high-confidence items that were accepted
 
     Returns: Extraction details with confidence scores and reasons
     """

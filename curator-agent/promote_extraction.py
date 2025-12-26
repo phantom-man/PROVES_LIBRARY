@@ -9,6 +9,8 @@ Usage:
 
 Options:
     --dry-run    Preview what would be promoted without making changes
+Required Arguments:
+    extraction_id: UUID of the extraction to promote from the staging_extractions table in the neon database.
 """
 
 import psycopg
@@ -78,7 +80,7 @@ def promote_extraction(extraction_id, dry_run=False):
             print(f"Type:             {type_}")
             print(f"Ecosystem:        {ecosystem}")
             print(f"Confidence:       {confidence:.2f}")
-            print(f"Lineage:          {lineage_confidence:.2f if lineage_confidence else 'N/A'}")
+            print(f"Lineage:          {lineage_confidence if lineage_confidence else 'N/A'}")
             print(f"Lineage Verified: {lineage_verified}")
             print(f"Status:           {status}")
             print(f"Source:           {source_url}")

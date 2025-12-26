@@ -22,7 +22,7 @@ def load_progress():
         print("❌ No progress file found")
         return None
 
-    with open(progress_file, 'r') as f:
+    with open(progress_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -295,7 +295,7 @@ This extraction was part of a bootstrapping strategy to build a verified corpus 
 """
 
     # Save report
-    with open(report_file, 'w') as f:
+    with open(report_file, 'w', encoding='utf-8') as f:
         f.write(report)
 
     return report_file, report

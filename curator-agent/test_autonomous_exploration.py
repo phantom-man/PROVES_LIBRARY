@@ -12,6 +12,9 @@ import os
 import sys
 from dotenv import load_dotenv
 
+print("TODO build web fetch subagent and make the current curator to use that instead")
+exit(0)
+
 # Load environment from parent directory
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
@@ -74,12 +77,12 @@ Option B: Find new files to process
   - Identify high-value files for dependency extraction
   - Process them using your sub-agents
 
-Option C: Improve the ontology
+Option C: Improve the ontologyt
   - Review the ERV (Engineering Relationship Vocabulary)
   - Suggest improvements based on the trial results
   - Propose new relationship types or validation rules
 
-YOU DECIDE: Use your sub-agents (extractor, validator, storage) to execute your chosen approach.
+YOU DECIDE: Use your sub-agents to execute your chosen approach.
 
 Think step-by-step and explain your reasoning.
 """
@@ -90,8 +93,9 @@ Think step-by-step and explain your reasoning.
             "messages": [{
                 "role": "user",
                 "content": task
-            }]
-        })
+            }],},
+        {"configurable": {"thread_id": "1", "user_id": "autonomous-exploration-test"}}
+        )
 
         print()
         print("=" * 80)

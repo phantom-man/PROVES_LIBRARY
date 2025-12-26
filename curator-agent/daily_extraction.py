@@ -32,10 +32,10 @@ def load_progress():
     """Load progress tracker"""
     progress_file = Path(__file__).parent / 'extraction_progress.json'
     if not progress_file.exists():
-        print("❌ Progress file not found. Creating new one...")
+        print("[FAIL] Progress file not found. Creating new one...")
         initialize_progress()
 
-    with open(progress_file, 'r') as f:
+    with open(progress_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -44,7 +44,7 @@ def save_progress(progress):
     progress_file = Path(__file__).parent / 'extraction_progress.json'
     progress['metadata']['last_updated'] = datetime.now(timezone.utc).isoformat()
 
-    with open(progress_file, 'w') as f:
+    with open(progress_file, 'w', encoding='utf-8') as f:
         json.dump(progress, f, indent=2)
 
 
@@ -84,7 +84,7 @@ def get_next_page(progress):
     """Determine next page to extract based on priority order"""
     next_page = progress.get('next_page')
     if not next_page:
-        print("❌ No next page defined in progress tracker")
+        print("[FAIL] No next page defined in progress tracker")
         return None
 
     return next_page
@@ -127,7 +127,7 @@ def update_progress_after_extraction(progress, page, status, extraction_count=0,
 
         if retry_count < 3:
             # Retry - put back in queue with incremented retry count
-            print(f"⚠️  Failed (attempt {retry_count + 1}/3). Will retry...")
+            print(f"[WARN] Failed (attempt {retry_count + 1}/3). Will retry...")
             progress['next_page'] = {
                 **page,
                 'retry_count': retry_count + 1,
@@ -136,7 +136,7 @@ def update_progress_after_extraction(progress, page, status, extraction_count=0,
             }
         else:
             # After 3 failures, mark as needs manual review
-            print(f"❌ Failed after 3 attempts. Needs manual review.")
+            print(f"[FAIL] Failed after 3 attempts. Needs manual review.")
             record['error'] = error
             record['failed_date'] = now
             record['retry_count'] = retry_count
@@ -275,7 +275,7 @@ def generate_daily_report(progress, page, extraction_count):
 - URL: {page.get('url')}
 - Phase: {page.get('phase')}
 - Extractions: {extraction_count}
-- Status: ✅ COMPLETED
+- Status: [OK] COMPLETED
 
 ## Overall Progress
 
@@ -311,7 +311,7 @@ def generate_daily_report(progress, page, extraction_count):
         report += """
 ## Next Page
 
-🎉 **All pages complete!**
+**All pages complete!**
 """
 
     # Recent history
@@ -328,11 +328,11 @@ def generate_daily_report(progress, page, extraction_count):
             report += f"- {date}: {title} ({count} extractions)\n"
 
     # Save report
-    with open(report_file, 'w') as f:
+    with open(report_file, 'w', encoding='utf-8') as f:
         f.write(report)
 
     print()
-    print(f"📊 Daily report saved: {report_file}")
+    print(f"[REPORT] Daily report saved: {report_file}")
     print()
 
 
@@ -432,7 +432,7 @@ def main():
 
     if not all_passed:
         print()
-        print("❌ Environment check failed. Fix issues before proceeding.")
+        print("[FAIL] Environment check failed. Fix issues before proceeding.")
         return 1
 
     # Step 2: Load progress
@@ -441,18 +441,18 @@ def main():
 
     completed = progress['metadata']['completed_pages']
     total = progress['metadata']['total_pages']
-    print(f"✅ Progress: {completed}/{total} pages complete")
+    print(f"[OK] Progress: {completed}/{total} pages complete")
     print()
 
-    # Step 3: Get next page
+    # Step 3: Determining next page...")
     print("Step 3: Determining next page...")
     next_page = get_next_page(progress)
 
     if not next_page:
-        print("✅ No more pages to extract! All done.")
+        print("[OK] No more pages to extract! All done.")
         return 0
 
-    print(f"✅ Next: {next_page['title']}")
+    print(f"[OK] Next: {next_page['title']}")
     print(f"   URL: {next_page['url']}")
     print(f"   Reason: {next_page.get('reason', 'Next in sequence')}")
     print()
@@ -464,7 +464,7 @@ def main():
     page_check = verify_page(next_page['url'])
 
     if not page_check['valid']:
-        print(f"❌ Page verification failed!")
+        print(f"[FAIL] Page verification failed!")
         print(f"   Status: {page_check['status_code']}")
         print(f"   Error: {page_check['error']}")
         print()
@@ -481,7 +481,7 @@ def main():
         )
         return 1
 
-    print(f"✅ Page valid: {page_check['content_length']} bytes")
+    print(f"[OK] Page valid: {page_check['content_length']} bytes")
     print(f"   Sample: {page_check['sample'][:100]}...")
     print()
 

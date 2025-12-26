@@ -463,9 +463,9 @@ def get_staging_statistics() -> str:
                 for status, count in status_counts:
                     stats.append(f"  {status}: {count}")
             
-            # Count staging by entity type
+            # Count staging by candidate type
             cur.execute("""
-                SELECT entity_type::text, COUNT(*) FROM staging_extractions GROUP BY entity_type ORDER BY COUNT(*) DESC
+                SELECT candidate_type::text, COUNT(*) FROM staging_extractions GROUP BY candidate_type ORDER BY COUNT(*) DESC
             """)
             type_counts = cur.fetchall()
             if type_counts:

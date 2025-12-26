@@ -192,15 +192,15 @@ def run_health_check(verbose=True):
         print()
 
         for check_name, (passed, message) in results.items():
-            status = "✅" if passed else "❌"
+            status = "[OK]" if passed else "[FAIL]"
             print(f"{status} {check_name}: {message}")
 
         print()
         print("=" * 80)
         if all_passed:
-            print("✅ ALL CHECKS PASSED - Ready for extraction")
+            print("[OK] ALL CHECKS PASSED - Ready for extraction")
         else:
-            print("❌ SOME CHECKS FAILED - Fix issues before proceeding")
+            print("[FAIL] SOME CHECKS FAILED - Fix issues before proceeding")
         print("=" * 80)
         print()
 

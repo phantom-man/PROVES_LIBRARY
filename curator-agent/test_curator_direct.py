@@ -3,16 +3,25 @@ Direct interaction with curator agent for testing/debugging
 """
 import sys
 from pathlib import Path
-
+def setup_console():
+    """Set up console for UTF-8 output (Windows fix)"""
+    if sys.platform == "win32":
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except :
+            os.system('chcp 65001 > nul')
+            sys.stdout.flush()
+setup_console()
 # Add parent to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.curator.agent import graph
-
 # Configuration
 config = {
     "configurable": {"thread_id": "test-session-001"},
-    "recursion_limit": 25  # Increase from default 10
+    # EXPENSIVE to increase
+    # 12 cents with a recursion limit of 25 for this test
+    "recursion_limit": 10  # Increase from default 10
 }
 
 # Simple task

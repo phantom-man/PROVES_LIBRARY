@@ -299,7 +299,7 @@ class TrainingDataLogger:
             rows = cur.fetchall()
             conn.commit()
             
-            with open(output_path, 'w') as f:
+            with open(output_path, 'w', encoding='utf-8') as f:
                 for row in rows:
                     f.write(row[0] + '\n')
             

@@ -22,7 +22,7 @@ def load_progress():
         print("❌ No progress file found")
         return None
 
-    with open(progress_file, 'r') as f:
+    with open(progress_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -31,7 +31,7 @@ def save_progress(progress):
     progress_file = Path(__file__).parent / 'extraction_progress.json'
     progress['metadata']['last_updated'] = datetime.now(timezone.utc).isoformat()
 
-    with open(progress_file, 'w') as f:
+    with open(progress_file, 'w', encoding='utf-8') as f:
         json.dump(progress, f, indent=2)
 
 

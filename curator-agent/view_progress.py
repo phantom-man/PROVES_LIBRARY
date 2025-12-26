@@ -20,7 +20,7 @@ def load_progress():
     if not progress_file.exists():
         return None
 
-    with open(progress_file, 'r') as f:
+    with open(progress_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 

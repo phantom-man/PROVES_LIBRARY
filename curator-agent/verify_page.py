@@ -7,7 +7,8 @@ Checks:
 3. Returns sample of content for human verification
 """
 import httpx
-
+print("TODO: make a verify_page subagent and integrate into the main extraction flow")
+exit(0)
 
 def verify_page(url: str) -> dict:
     """

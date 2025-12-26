@@ -587,44 +587,19 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
                 except Exception as e:
                     print(f"[Training] Could not log interaction: {e}")
 
-            print("[HITL] Requesting human verification for staged extraction...")
+            print("[HITL] Extraction staged in staging_extractions table for later human review")
 
-            # Pass FULL metadata to human (reduces ambiguity!)
-            approval = interrupt({
-                "type": "dependency_approval",
+            # NOTE: Async workflow - extractions go to staging_extractions table
+            # Humans review from table later, no need to block agent execution
+            # The interrupt() call below is commented out for async workflow
 
-                # Legacy fields (for backward compatibility)
-                "task": task,
-                "criticality": "STAGED",
-                "message": "Review extraction before promoting to truth graph.",
-                "instructions": "Reply with 'approved', 'rejected', or provide corrections as JSON.",
+            # approval = interrupt({
+            #     "type": "dependency_approval",
+            #     ... metadata ...
+            # })
 
-                # NEW METADATA - What human needs to verify
-                # Source Information
-                "source_url": source_url,
-                "source_type": source_metadata.get("source_type", "unknown"),
-                "snapshot_id": str(snapshot_id),
-                "fetch_timestamp": source_metadata.get("fetch_timestamp", ""),
-
-                # Extraction Details
-                "extraction_id": str(extraction_id),
-                "entity_type": candidate_type,
-                "entity_key": candidate_key,
-                "ecosystem": ecosystem,
-                "properties": properties,
-
-                # Evidence (exact quote from source)
-                "evidence_quote": raw_evidence,
-                "evidence_type": evidence_type,
-
-                # Confidence & Reasoning
-                "confidence_score": float(confidence_score),
-                "confidence_reason": confidence_reason,
-                "reasoning_trail": reasoning_trail,
-
-                # Duplicate Check Results
-                "duplicate_check": duplicate_check,
-            })
+            # Return None to indicate no blocking approval needed
+            approval = "approval"
 
             return {
                 "storage_approval": approval,
@@ -847,11 +822,12 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
     workflow = StateGraph(CuratorState)
     workflow.add_node("agent", call_model)
     workflow.add_node("tools", run_tools_with_gate)
-    workflow.add_node("approval", request_human_approval)
-    workflow.add_node("commit", commit_deferred_storage)
+    # NOTE: Removed approval and commit nodes for async HITL workflow
+    # Extractions go to staging_extractions table, humans review later
+    # No blocking interrupts needed - agents just stage data and continue
     workflow.set_entry_point("agent")
 
-    # Routing: agent -> tools (if tool calls) -> approval -> commit -> agent -> END (if no tool calls)
+    # Routing: agent -> tools (if tool calls) -> agent -> END (if no tool calls)
     def route_from_agent(state: MessagesState):
         """Route from agent: review if has tool calls, end otherwise."""
         last_message = state["messages"][-1]
@@ -864,9 +840,7 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
         route_from_agent,
         {"tools": "tools", "__end__": "__end__"}
     )
-    workflow.add_edge("tools", "approval")
-    workflow.add_edge("approval", "commit")
-    workflow.add_edge("commit", "agent")
+    workflow.add_edge("tools", "agent")  # Direct: tools -> agent (async workflow)
 
     # Initialize PostgreSQL checkpointer for HITL persistence (Neon)
     db_url = os.getenv('NEON_DATABASE_URL')

@@ -22,7 +22,7 @@ def load_progress():
     progress_file = Path(__file__).parent / 'extraction_progress.json'
     if not progress_file.exists():
         return None
-    with open(progress_file, 'r') as f:
+    with open(progress_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -32,11 +32,11 @@ def prepare_daily_report_for_notion():
     report_file = Path(__file__).parent / 'reports' / f'daily_report_{date_str}.md'
 
     if not report_file.exists():
-        print(f"❌ No report found for {date_str}")
+        print(f"X No report found for {date_str}")
         print(f"   Run daily_extraction.py first")
         return None
 
-    with open(report_file, 'r') as f:
+    with open(report_file, 'r', encoding='utf-8') as f:
         report_content = f.read()
 
     # Create summary JSON for Claude Desktop
@@ -49,7 +49,7 @@ def prepare_daily_report_for_notion():
     }
 
     output_file = Path(__file__).parent / 'reports' / f'notion_sync_{date_str}.json'
-    with open(output_file, 'w') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(summary, f, indent=2)
 
     print()
@@ -103,7 +103,7 @@ def prepare_error_log_for_notion():
     }
 
     output_file = Path(__file__).parent / 'reports' / 'notion_errors.json'
-    with open(output_file, 'w') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(summary, f, indent=2)
 
     print()
