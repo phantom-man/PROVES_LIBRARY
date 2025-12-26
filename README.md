@@ -646,9 +646,12 @@ MIT License - see [LICENSE](LICENSE)
 ## Contact
 
 **Elizabeth Osborn**
-Cal Poly Pomona
+Bronco Space Lab
+California State Polytechnic University, Pomona
 eosborn@cpp.edu
 [Portfolio](https://lizo-roadtown.github.io/proveskit-agent/)
+
+This work is part of a multi-university collaboration involving 9 institutions working to advance CubeSat mission success and knowledge integration methodologies.
 
 ---
 
@@ -656,10 +659,28 @@ eosborn@cpp.edu
 
 This project demonstrates a methodology for knowledge integration across fragmented systems:
 
-- LLM extraction with cryptographic lineage verification
-- Multi-layer dependency modeling grounded in nearly decomposable systems theory
-- Human-in-the-loop truth validation at scale
-- Forward-looking relationship extraction enabling composition before complete knowledge
+- **Agentic pipeline built with LangGraph** - Deep agents pattern for specialized extraction, validation, and storage
+- **LLM extraction** with cryptographic lineage verification (Anthropic Claude)
+- **Multi-layer dependency modeling** grounded in nearly decomposable systems theory
+- **Human-in-the-loop truth validation** at scale via Notion integration
+- **Forward-looking relationship extraction** enabling composition before complete knowledge
+
+### Inspirations and Related Work
+
+This work draws inspiration from graph neural network research in Earth observation systems:
+
+```bibtex
+@misc{armin_mehrabian_2025,
+  author       = { Armin Mehrabian },
+  title        = { nasa-eosdis-heterogeneous-gnn (Revision 7e71e62) },
+  year         = 2025,
+  url          = { https://huggingface.co/arminmehrabian/nasa-eosdis-heterogeneous-gnn },
+  doi          = { 10.57967/hf/6789 },
+  publisher    = { Hugging Face }
+}
+```
+
+### Contribution
 
 The knowledge graph is the foundation. The real contribution is demonstrating that we can integrate fragmented knowledge at scale with provable correctness, revealing hidden dependencies that cause system failures.
 
