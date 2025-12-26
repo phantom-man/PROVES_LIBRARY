@@ -468,19 +468,19 @@ This is open research. Contributions welcome!
 
 ## Roadmap
 
-### Q1 2026: Complete CubeSat Extraction
+### Complete CubeSat Extraction
 - [ ] Process all 60 documentation pages
 - [ ] Build complete dependency graph
 - [ ] Publish extraction results
 - [ ] Validate with CubeSat teams
 
-### Q2 2026: Multi-Ecosystem Integration
+### Multi-Ecosystem Integration
 - [ ] Integrate PROVES Kit + F' Prime + custom hardware
 - [ ] Entity aliasing across naming conventions
 - [ ] Semantic relationship matching
 - [ ] Cross-system dependency analysis
 
-### Q3 2026: Graph Neural Network for Predictive Modeling
+### Graph Neural Network for Predictive Modeling
 
 The rich multi-layer dependency graph becomes training data for multiple types of predictive models.
 
@@ -541,6 +541,60 @@ Our GNN architecture reflects this:
 - **Multi-layer message passing:** Propagate information across digital/org/physical layers
 - **Cascade prediction:** Model failure propagation paths through weak cross-couplings
 
+**Architecture Diagram:**
+
+```mermaid
+flowchart TB
+  subgraph PROVES_LIBRARY["PROVES_LIBRARY (This Repo)"]
+    A[Documentation Sources]
+    B[Extractor Agent<br/>LLM extraction]
+    C[staging_extractions<br/>Entities with lineage]
+    D[staging_relationships<br/>Type, Layer, Strength, Direction]
+    E[Truth Graph<br/>Verified knowledge]
+  end
+
+  subgraph PROVES_AI["PROVES_AI (GNN Stack)"]
+    F[Graph Construction<br/>From Neon PostgreSQL]
+    G[Feature Engineering<br/>Node: type, layer, centrality<br/>Edge: type, layer, strength, direction]
+    H[GraphSAGE GNN<br/>PyTorch Geometric<br/>Multi-layer message passing]
+    I[XGBoost Baseline<br/>Mission success probability]
+    J[Cross-Encoder Reranker<br/>Semantic risk ranking]
+    K[pgvector Retrieval<br/>Similar failure patterns]
+  end
+
+  subgraph Output["Risk Assessment Output"]
+    L["Risk Prediction<br/>📊 Change Component A:<br/>├─ 85% cascade to B (tight digital)<br/>├─ 60% cascade to C (org dependency)<br/>└─ 15% cascade to D (loose physical)"]
+    M["Impact Analysis<br/>🎯 Affected Subsystems:<br/>Digital: 5 components (high severity)<br/>Organizational: 2 teams (medium)<br/>Physical: 1 connection (low)"]
+    N["Optimization Recommendations<br/>💡 Decouple A↔B (risk reduction: 40%)<br/>💡 Add redundancy for C (risk reduction: 25%)"]
+  end
+
+  A --> B --> C
+  B --> D
+  C --> E
+  D --> E
+
+  E --> F
+  F --> G
+  G --> H
+  G --> I
+  K --> J
+
+  H --> L
+  H --> M
+  I --> L
+  J --> M
+  H --> N
+
+  style PROVES_LIBRARY fill:#e8f5e9
+  style PROVES_AI fill:#e3f2fd
+  style Output fill:#fff3e0
+  style L fill:#ffebee
+  style M fill:#ffebee
+  style N fill:#ffebee
+```
+
+> **Live Implementation:** The GNN stack is under active development at [Proves_AI](https://github.com/Lizo-RoadTown/Proves_AI)
+
 **Implementation Roadmap:**
 
 - [ ] Build training dataset from verified dependency graph
@@ -564,7 +618,7 @@ A rich multi-layer dependency graph with type/layer/strength/direction can tell 
 
 This transforms the graph from a **static knowledge base** into a **predictive model** of system behavior - exactly what's needed for risk assessment and failure prevention.
 
-### Q4 2026: Generalization
+### Generalization
 - [ ] Apply to second domain (software ecosystem? medical knowledge?)
 - [ ] Refine methodology for cross-domain use
 - [ ] Publish results
@@ -577,6 +631,7 @@ This transforms the graph from a **static knowledge base** into a **predictive m
 | Resource | URL |
 |----------|-----|
 | **Live Documentation** | https://lizo-roadtown.github.io/PROVES_LIBRARY/ |
+| **PROVES_AI (GNN Stack)** | https://github.com/Lizo-RoadTown/Proves_AI |
 | **Complete Integration Guide** | [curator-agent/COMPLETE_NOTION_INTEGRATION.md](curator-agent/COMPLETE_NOTION_INTEGRATION.md) |
 | **Lineage System Design** | [curator-agent/ID_LINEAGE_SYSTEM.md](curator-agent/ID_LINEAGE_SYSTEM.md) |
 | **Trial Results** | [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md) |
