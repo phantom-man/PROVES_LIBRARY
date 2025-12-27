@@ -48,7 +48,7 @@ Neither F´ documentation nor PROVES Kit documentation mentions the other system
 
 ---
 
-## Dependency 1: I2C Device → Power Stability
+## Dependency 1: I2C Device -> Power Stability
 
 ### The Hidden Dependency
 
@@ -133,7 +133,7 @@ Mission continues without IMU (silent failure)
 
 ---
 
-## Dependency 2: Bus Operations → Power Control Sequence
+## Dependency 2: Bus Operations -> Power Control Sequence
 
 ### Temporal Ordering Requirement
 
@@ -146,7 +146,7 @@ sequenceDiagram
     participant BusDrv as LinuxI2cDriver<br/>(F´)
     participant I2C as I2C Bus<br/>/dev/i2c-1
 
-    Note over Topology: ❌ UNDOCUMENTED ORDER
+    Note over Topology: [NO] UNDOCUMENTED ORDER
 
     rect rgb(255, 200, 200)
         Topology->>LSM: turn_on("imu")
@@ -162,7 +162,7 @@ sequenceDiagram
         BusDrv-->>Topology: I2cStatus::I2C_OK
     end
 
-    Note over Topology,I2C: ⚠️ If order reversed, initialization fails silently
+    Note over Topology,I2C: [WARNING] If order reversed, initialization fails silently
 ```
 
 ### Evidence Chain
@@ -197,7 +197,7 @@ No alert that power sequencing is wrong
 
 ---
 
-## Dependency 3: I2C Address Configuration → Pin Enable Logic
+## Dependency 3: I2C Address Configuration -> Pin Enable Logic
 
 ### Bus Sharing Conflicts
 
@@ -271,7 +271,7 @@ Attitude determination fails
 
 ---
 
-## Dependency 4: Error Handling → Power State Recovery
+## Dependency 4: Error Handling -> Power State Recovery
 
 ### Missing Integration
 
@@ -283,7 +283,7 @@ flowchart TB
     LOG[log_WARNING_HI_ImuReadError]
     CONTINUE[Continue without IMU data]
 
-    MISSING[❌ MISSING:<br/>Power Cycle Recovery]
+    MISSING[[NO] MISSING:<br/>Power Cycle Recovery]
     POWER_OFF[LoadSwitchManager.turn_off]
     DELAY[Wait for power drain]
     POWER_ON[LoadSwitchManager.turn_on]
@@ -482,7 +482,7 @@ quadrantChart
 
 - [← Back to Home](../index.html)
 - [← Previous: Dependency Overview](overview.html)
-- [Next: Transitive Dependency Chains →](transitive-chains.html)
+- [Next: Transitive Dependency Chains ->](transitive-chains.html)
 
 ---
 
