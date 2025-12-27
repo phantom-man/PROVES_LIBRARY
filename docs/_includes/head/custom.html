@@ -6,7 +6,7 @@
   // Constants for mermaid diagram processing
   const FLOWCHART_PATTERN = /^\s*(flowchart|graph)(\s|$)/i;
   const INIT_DIRECTIVE_PATTERN = /%%\s*{\s*init\s*:/i;
-  const CURVE_INIT_DIRECTIVE = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n';
+  const CURVE_INIT_DIRECTIVE = '%%{init: {"flowchart": {"curve": "linear"}, "theme": "base"}}%%\n';
   
   document.addEventListener('DOMContentLoaded', function() {
     mermaid.initialize({
