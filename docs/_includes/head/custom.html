@@ -5,7 +5,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     mermaid.initialize({
-      startOnLoad: true,
+      startOnLoad: false,
       theme: 'base',
       securityLevel: 'loose',
       
@@ -256,12 +256,19 @@
     });
     
     // Find all mermaid code blocks and render them
+    var mermaidElements = [];
     document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
       var container = document.createElement('div');
       container.className = 'mermaid';
       container.textContent = el.textContent;
       el.parentElement.replaceWith(container);
+      mermaidElements.push(container);
     });
+    
+    // Explicitly render all mermaid diagrams with the configuration
+    if (mermaidElements.length > 0) {
+      mermaid.run({ nodes: mermaidElements });
+    }
   });
 </script>
 
