@@ -59,7 +59,7 @@ toc:
 ##############################
 mathjax: true
 mathjax_autoNumber: false
-mermaid: false # Disabled - using custom Mermaid v10 in head/custom.html instead
+mermaid: true # Enabled - custom Mermaid v10 configuration in head/custom.html
 chart: false
 
 ## => Paginate
