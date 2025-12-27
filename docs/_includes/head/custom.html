@@ -3,6 +3,11 @@
 <!-- Mermaid Diagrams - Professional Theme -->
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
+  // Constants for mermaid diagram processing
+  var FLOWCHART_PATTERN = /^\s*(flowchart|graph)(\s|$)/i;
+  var INIT_DIRECTIVE_PATTERN = /%%\s*{\s*init\s*:/i;
+  var CURVE_INIT_DIRECTIVE = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n';
+  
   document.addEventListener('DOMContentLoaded', function() {
     mermaid.initialize({
       startOnLoad: false,
@@ -258,9 +263,6 @@
     
     // Find all mermaid code blocks and render them
     var mermaidElements = [];
-    var flowchartPattern = /^\s*(flowchart|graph)(\s|$)/i;
-    var initDirectivePattern = /%%\s*{\s*init\s*:/i;
-    var curveInitDirective = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n';
     
     document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
       var container = document.createElement('div');
@@ -270,8 +272,8 @@
       var diagramContent = el.textContent.trim();
       
       // Inject curve configuration if it's a flowchart and doesn't already have %%init%%
-      if (flowchartPattern.test(diagramContent) && !initDirectivePattern.test(diagramContent)) {
-        diagramContent = curveInitDirective + diagramContent;
+      if (FLOWCHART_PATTERN.test(diagramContent) && !INIT_DIRECTIVE_PATTERN.test(diagramContent)) {
+        diagramContent = CURVE_INIT_DIRECTIVE + diagramContent;
       }
       
       container.textContent = diagramContent;
