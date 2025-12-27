@@ -58,12 +58,12 @@ Sources -> Extract -> Validate -> Human Review -> Truth Graph
 
 ## Cool diagrams
 
-- `docs/diagrams/overview.md` - dependency overview
-- `docs/diagrams/cross-system.md` - cross-system dependencies
-- `docs/diagrams/knowledge-gaps.md` - hidden gaps
-- `docs/diagrams/gnn-molecule.md` - GNN as molecular model
-- `docs/diagrams/team-boundaries.md` - team boundary map
-- `docs/diagrams/transitive-chains.md` - transitive chains
+- [Dependency overview](docs/diagrams/overview.md)
+- [Cross-system dependencies](docs/diagrams/cross-system.md)
+- [Hidden gaps](docs/diagrams/knowledge-gaps.md)
+- [GNN as molecular model](docs/diagrams/gnn-molecule.md)
+- [Team boundary map](docs/diagrams/team-boundaries.md)
+- [Transitive chains](docs/diagrams/transitive-chains.md)
 
 ---
 
