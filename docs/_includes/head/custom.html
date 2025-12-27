@@ -258,6 +258,10 @@
     
     // Find all mermaid code blocks and render them
     var mermaidElements = [];
+    var flowchartPattern = /^\s*(flowchart|graph)(\s|$)/i;
+    var initDirectivePattern = /%%\s*{\s*init\s*:/i;
+    var curveInitDirective = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n';
+    
     document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
       var container = document.createElement('div');
       container.className = 'mermaid';
@@ -266,8 +270,8 @@
       var diagramContent = el.textContent.trim();
       
       // Inject curve configuration if it's a flowchart and doesn't already have %%init%%
-      if (diagramContent.match(/^\s*(flowchart|graph)(\s|$)/i) && !diagramContent.match(/%%\s*{\s*init\s*:/i)) {
-        diagramContent = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n' + diagramContent;
+      if (diagramContent.match(flowchartPattern) && !diagramContent.match(initDirectivePattern)) {
+        diagramContent = curveInitDirective + diagramContent;
       }
       
       container.textContent = diagramContent;
