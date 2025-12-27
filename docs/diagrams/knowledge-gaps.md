@@ -86,6 +86,7 @@ sequenceDiagram
 ### Real-World Impact
 
 ```mermaid
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     START[New developer integrates IMU]
 
@@ -142,6 +143,7 @@ This diagram shows electrical characteristics that software developers never thi
 ### The Missing Specification
 
 ```mermaid
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     subgraph "Power Supply Characteristics"
         V_NOM[Nominal Voltage<br/>3.3V]
@@ -325,6 +327,7 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ### The Missing Architecture
 
 ```mermaid
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         BUS[I2C Bus /dev/i2c-1<br/>SDA/SCL]
@@ -450,6 +453,7 @@ This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare meta
 ### The Missing Cross-Platform Guide
 
 ```mermaid
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart LR
     subgraph "F´ Framework"
         F_LINUX[LinuxI2cDriver<br/>Linux]
@@ -546,6 +550,7 @@ flowchart LR
 ### Gap Distribution
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#ff6b6b', 'pie2':'#ffa500', 'pie3':'#ffd700', 'pie4':'#ff8c42', 'pie5':'#ffb347'}}}%%
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5
