@@ -32,53 +32,6 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ### Organizational Structure
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     subgraph "NASA/JPL"
         JPL_CORE[F´ Core Team<br/>⭐ Permanent Staff]
@@ -148,53 +101,6 @@ flowchart TB
 ### F´ Team ↔ PROVES Kit Team
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart LR
     subgraph "F´ Knowledge"
         F_PUB[Public Documentation<br/>✅ Versioned<br/>✅ Comprehensive]
@@ -260,53 +166,6 @@ This flowchart shows the journey developers take when they need integration know
 ### Where Integration Knowledge Lives
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     START[Integration Knowledge Needed]
 
@@ -369,22 +228,6 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 ### University Team Lifecycle
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .slice, .pieTitleText {
-      transition: filter 0.2s ease;
-    }
-    .slice:hover {
-      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
-      cursor: pointer;
-    }
-  `
-}}%%
 gantt
     title University Team Knowledge Retention
     dateFormat YYYY-MM
@@ -421,22 +264,6 @@ gantt
 ### Knowledge Loss Calculation
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .slice, .pieTitleText {
-      transition: filter 0.2s ease;
-    }
-    .slice:hover {
-      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
-      cursor: pointer;
-    }
-  `
-}}%%
 pie title Knowledge Retention After Team Graduation
     "Lost (graduated)" : 70
     "Degraded (partially remembered)" : 20
@@ -460,49 +287,6 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 ### Organizational Dynamics
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'actorBkg': '#e3f2fd',
-    'actorBorder': '#1976d2',
-    'actorTextColor': '#1a1a1a',
-    'signalColor': '#546e7a',
-    'signalTextColor': '#1a1a1a',
-    'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#000',
-    'loopTextColor': '#1a1a1a',
-    'noteBkgColor': '#f3e5f5',
-    'noteBorderColor': '#7b1fa2',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .actor {
-      transition: filter 0.2s ease;
-    }
-    .actor:hover {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .note {
-      transition: filter 0.2s ease;
-    }
-    .note:hover {
-      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
-    }
-    .labelBox {
-      stroke: #000 !important;
-      stroke-width: 1px;
-    }
-    .labelText {
-      padding: 5px;
-    }
-  `,
-  'sequence': {
-    'mirrorActors': false,
-    'messageAlign': 'center'
-  }
-}}%%
 sequenceDiagram
     autonumber
     participant TeamA as Team A<br/>(2020)
@@ -606,53 +390,6 @@ sequenceDiagram
 ### What Gets Captured vs. Lost
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     subgraph "Mission Lifecycle"
         DESIGN[Design Decisions]
@@ -721,22 +458,6 @@ flowchart TB
 ### Knowledge at Risk by Interface
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .slice, .pieTitleText {
-      transition: filter 0.2s ease;
-    }
-    .slice:hover {
-      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
-      cursor: pointer;
-    }
-  `
-}}%%
 quadrantChart
     title Knowledge Loss Risk by Interface Strength
     x-axis Low Team Turnover --> High Team Turnover
@@ -808,53 +529,6 @@ quadrantChart
 ### How This System Addresses Team Boundary Issues
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     subgraph "Traditional Approach (Failed)"
         TRAD_TEAM[Team Knowledge]

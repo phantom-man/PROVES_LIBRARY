@@ -37,53 +37,6 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 **What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     APP[Application Components<br/>Your mission code that needs sensor data]
 
@@ -114,53 +67,6 @@ flowchart TB
 **What you're looking at:** Three types of configuration that all need to match up correctly.
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     subgraph BUILD["Build System - Compiles the code"]
         FPUTIL[fprime-util<br/>Build command]
@@ -201,53 +107,6 @@ flowchart TB
 **What you're looking at:** How the PROVES Kit software controls power to different subsystems.
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     LSM[LoadSwitchManager<br/>Main power control class<br/>Written in Python]
 
@@ -283,49 +142,6 @@ flowchart TB
 ### Configuration Flow
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'actorBkg': '#e3f2fd',
-    'actorBorder': '#1976d2',
-    'actorTextColor': '#1a1a1a',
-    'signalColor': '#546e7a',
-    'signalTextColor': '#1a1a1a',
-    'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#000',
-    'loopTextColor': '#1a1a1a',
-    'noteBkgColor': '#f3e5f5',
-    'noteBorderColor': '#7b1fa2',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .actor {
-      transition: filter 0.2s ease;
-    }
-    .actor:hover {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .note {
-      transition: filter 0.2s ease;
-    }
-    .note:hover {
-      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
-    }
-    .labelBox {
-      stroke: #000 !important;
-      stroke-width: 1px;
-    }
-    .labelText {
-      padding: 5px;
-    }
-  `,
-  'sequence': {
-    'mirrorActors': false,
-    'messageAlign': 'center'
-  }
-}}%%
 sequenceDiagram
     participant User
     participant LSM as LoadSwitchManager
@@ -367,22 +183,6 @@ sequenceDiagram
 ### By Criticality
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .slice, .pieTitleText {
-      transition: filter 0.2s ease;
-    }
-    .slice:hover {
-      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
-      cursor: pointer;
-    }
-  `
-}}%%
 pie title Dependency Criticality Distribution
     "HIGH" : 28
     "MEDIUM" : 11

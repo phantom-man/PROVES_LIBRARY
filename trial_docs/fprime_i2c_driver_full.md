@@ -30,53 +30,6 @@ Consider an [MPU6050 IMU sensor](https://cdn-learn.adafruit.com/downloads/pdf/mp
 - The application layer uses the device manager component to obtain sensor data when needed.
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 graph LR
     subgraph SW["F´ Software"]
         A[Application Layer] -->|Read sensor data| B[ImuManager<br/>Device Manager]

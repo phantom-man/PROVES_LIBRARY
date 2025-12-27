@@ -34,49 +34,6 @@ This sequence diagram shows the power-on process for an I2C device, with all the
 ### The Missing Specification
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'actorBkg': '#e3f2fd',
-    'actorBorder': '#1976d2',
-    'actorTextColor': '#1a1a1a',
-    'signalColor': '#546e7a',
-    'signalTextColor': '#1a1a1a',
-    'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#000',
-    'loopTextColor': '#1a1a1a',
-    'noteBkgColor': '#f3e5f5',
-    'noteBorderColor': '#7b1fa2',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .actor {
-      transition: filter 0.2s ease;
-    }
-    .actor:hover {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .note {
-      transition: filter 0.2s ease;
-    }
-    .note:hover {
-      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
-    }
-    .labelBox {
-      stroke: #000 !important;
-      stroke-width: 1px;
-    }
-    .labelText {
-      padding: 5px;
-    }
-  `,
-  'sequence': {
-    'mirrorActors': false,
-    'messageAlign': 'center'
-  }
-}}%%
 sequenceDiagram
     participant LSM as LoadSwitchManager
     participant Power as Power Supply
@@ -129,53 +86,6 @@ sequenceDiagram
 ### Real-World Impact
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     START[New developer integrates IMU]
 
@@ -232,53 +142,6 @@ This diagram shows electrical characteristics that software developers never thi
 ### The Missing Specification
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     subgraph "Power Supply Characteristics"
         V_NOM[Nominal Voltage<br/>3.3V]
@@ -369,32 +232,6 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ### The Missing Integration
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryBorderColor': '#1976d2',
-    'lineColor': '#546e7a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'labelBackgroundColor': '#fff8e1'
-  },
-  'themeCSS': `
-    .stateGroup rect, .stateGroup circle {
-      transition: filter 0.2s ease;
-    }
-    .stateGroup:hover rect, .stateGroup:hover circle {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .transition-label {
-      padding: 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-  `
-}}%%
 stateDiagram-v2
     [*] --> Normal: System boot
 
@@ -488,53 +325,6 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ### The Missing Architecture
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         BUS[I2C Bus /dev/i2c-1<br/>SDA/SCL]
@@ -592,49 +382,6 @@ flowchart TB
 ### Conflict Scenarios
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'actorBkg': '#e3f2fd',
-    'actorBorder': '#1976d2',
-    'actorTextColor': '#1a1a1a',
-    'signalColor': '#546e7a',
-    'signalTextColor': '#1a1a1a',
-    'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#000',
-    'loopTextColor': '#1a1a1a',
-    'noteBkgColor': '#f3e5f5',
-    'noteBorderColor': '#7b1fa2',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .actor {
-      transition: filter 0.2s ease;
-    }
-    .actor:hover {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .note {
-      transition: filter 0.2s ease;
-    }
-    .note:hover {
-      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
-    }
-    .labelBox {
-      stroke: #000 !important;
-      stroke-width: 1px;
-    }
-    .labelText {
-      padding: 5px;
-    }
-  `,
-  'sequence': {
-    'mirrorActors': false,
-    'messageAlign': 'center'
-  }
-}}%%
 sequenceDiagram
     participant App as Application
     participant IMU as IMU Manager
@@ -703,53 +450,6 @@ This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare meta
 ### The Missing Cross-Platform Guide
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart LR
     subgraph "F´ Framework"
         F_LINUX[LinuxI2cDriver<br/>Linux]
@@ -846,22 +546,6 @@ flowchart LR
 ### Gap Distribution
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .slice, .pieTitleText {
-      transition: filter 0.2s ease;
-    }
-    .slice:hover {
-      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
-      cursor: pointer;
-    }
-  `
-}}%%
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5
@@ -883,22 +567,6 @@ pie title Knowledge Gaps by Category
 ### Time to Discover
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .slice, .pieTitleText {
-      transition: filter 0.2s ease;
-    }
-    .slice:hover {
-      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
-      cursor: pointer;
-    }
-  `
-}}%%
 gantt
     title Typical Discovery Timeline for Knowledge Gaps
     dateFormat YYYY-MM-DD

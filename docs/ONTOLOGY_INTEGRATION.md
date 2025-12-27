@@ -17,53 +17,6 @@ This document analyzes how the **FRAMES Theoretical Ontology** (from the FRAMES 
 ### FRAMES Core Concepts → PROVES Library Mapping
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     subgraph FRAMES[FRAMES Ontology]
         A1[Near-Decomposable Subsystems]
@@ -209,53 +162,6 @@ def detect_i2c_conflict_enhanced(topology):
 F Prime systems form a **component topology** that can be analyzed using FRAMES principles.
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TB
     subgraph Strong[Strong Internal Coupling]
         C1[Power Monitor]
@@ -323,49 +229,6 @@ def analyze_topology_resilience(topology):
 The scanner can extract **much richer context** by treating git history as digital traces.
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'actorBkg': '#e3f2fd',
-    'actorBorder': '#1976d2',
-    'actorTextColor': '#1a1a1a',
-    'signalColor': '#546e7a',
-    'signalTextColor': '#1a1a1a',
-    'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#000',
-    'loopTextColor': '#1a1a1a',
-    'noteBkgColor': '#f3e5f5',
-    'noteBorderColor': '#7b1fa2',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  },
-  'themeCSS': `
-    .actor {
-      transition: filter 0.2s ease;
-    }
-    .actor:hover {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .note {
-      transition: filter 0.2s ease;
-    }
-    .note:hover {
-      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
-    }
-    .labelBox {
-      stroke: #000 !important;
-      stroke-width: 1px;
-    }
-    .labelText {
-      padding: 5px;
-    }
-  `,
-  'sequence': {
-    'mirrorActors': false,
-    'messageAlign': 'center'
-  }
-}}%%
 sequenceDiagram
     participant Dev as Developer
     participant Git as Git History
@@ -513,53 +376,6 @@ def generate_component(requirements, team_context):
 ### FRAMES: Decisions Occur at Multiple Scales
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#e3f2fd',
-    'primaryTextColor': '#1a1a1a',
-    'primaryBorderColor': '#1976d2',
-    'secondaryColor': '#fff8e1',
-    'secondaryBorderColor': '#f9a825',
-    'tertiaryColor': '#f3e5f5',
-    'tertiaryBorderColor': '#7b1fa2',
-    'lineColor': '#546e7a',
-    'textColor': '#1a1a1a',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px',
-    'edgeLabelBackground': '#fff8e1'
-  },
-  'themeCSS': `
-    .edgeLabel foreignObject { overflow: visible; }
-    .edgeLabel .label { 
-      padding: 5px 5px;
-      border: 1px solid #000;
-      border-radius: 3px;
-      background: #fff8e1;
-    }
-    .node rect, .node circle, .node ellipse, .node polygon, .node path {
-      transition: filter 0.2s ease;
-    }
-    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
-      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
-      cursor: pointer;
-    }
-    .cluster rect {
-      transition: filter 0.2s ease;
-    }
-    .cluster:hover rect {
-      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
-    }
-  `,
-  'flowchart': {
-    'curve': 'linear',
-    'nodeSpacing': 40,
-    'rankSpacing': 60,
-    'padding': 15,
-    'htmlLabels': true,
-    'useMaxWidth': false
-  }
-}}%%
 flowchart TD
     subgraph Macro[Macro Decisions - Architecture]
         M1[Use I2C multiplexer architecture]

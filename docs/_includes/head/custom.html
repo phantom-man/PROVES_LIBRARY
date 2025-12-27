@@ -8,7 +8,18 @@
       startOnLoad: true,
       theme: 'base',
       securityLevel: 'loose',
-      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+      flowchart: { 
+        useMaxWidth: true, 
+        htmlLabels: true, 
+        curve: 'linear',
+        nodeSpacing: 40,
+        rankSpacing: 60,
+        padding: 15
+      },
+      sequence: {
+        mirrorActors: false,
+        messageAlign: 'center'
+      },
       themeVariables: {
         primaryColor: 'transparent',
         primaryTextColor: '#ffffff',
@@ -23,9 +34,18 @@
         clusterBkg: 'transparent',
         clusterBorder: '#fc6423',
         titleColor: '#ffffff',
-        edgeLabelBackground: 'transparent',
+        edgeLabelBackground: '#2a2a2a',
         textColor: '#ffffff',
-        nodeTextColor: '#ffffff'
+        nodeTextColor: '#ffffff',
+        actorBkg: 'transparent',
+        actorBorder: '#fc6423',
+        actorTextColor: '#ffffff',
+        signalColor: '#fc6423',
+        signalTextColor: '#ffffff',
+        labelBoxBkgColor: '#2a2a2a',
+        labelBoxBorderColor: '#fc6423',
+        noteBkgColor: '#2a2a2a',
+        noteBorderColor: '#fc6423'
       }
     });
     // Find all mermaid code blocks and render them
@@ -54,25 +74,51 @@
     max-width: 100%;
     background: transparent;
   }
-  /* Override mermaid colors - orange accents, white text, transparent backgrounds */
+  
+  /* Node styling - orange accents, white text, transparent backgrounds */
   .mermaid .node rect,
   .mermaid .node polygon,
-  .mermaid .node circle {
+  .mermaid .node circle,
+  .mermaid .node ellipse {
     fill: transparent !important;
     stroke: #fc6423 !important;
     stroke-width: 2px !important;
+    transition: filter 0.2s ease, stroke-width 0.2s ease;
   }
+  
+  /* Hover glow effect on nodes */
+  .mermaid .node:hover rect,
+  .mermaid .node:hover polygon,
+  .mermaid .node:hover circle,
+  .mermaid .node:hover ellipse {
+    filter: drop-shadow(0 0 12px #fc6423) drop-shadow(0 0 6px #ff8a50);
+    stroke-width: 3px !important;
+    cursor: pointer;
+  }
+  
+  /* Cluster/subgraph styling */
   .mermaid .cluster rect {
     fill: transparent !important;
     stroke: #fc6423 !important;
     stroke-width: 1px !important;
+    transition: filter 0.2s ease;
   }
+  
+  /* Hover glow on clusters */
+  .mermaid .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(252, 100, 35, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Text styling */
   .mermaid .nodeLabel,
   .mermaid .label,
   .mermaid text {
     fill: #ffffff !important;
     color: #ffffff !important;
   }
+  
+  /* Edge/arrow styling */
   .mermaid .edgePath .path {
     stroke: #fc6423 !important;
     stroke-width: 2px !important;
@@ -80,9 +126,132 @@
   .mermaid .arrowheadPath {
     fill: #fc6423 !important;
   }
+  
+  /* Edge labels - padding, border, background */
+  .mermaid .edgeLabel {
+    background-color: #2a2a2a !important;
+  }
+  .mermaid .edgeLabel .label {
+    padding: 5px 8px !important;
+    border: 1px solid #fc6423 !important;
+    border-radius: 4px !important;
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+  }
+  .mermaid .edgeLabel foreignObject {
+    overflow: visible !important;
+  }
+  .mermaid .edgeLabel span {
+    padding: 5px 8px !important;
+    border: 1px solid #fc6423 !important;
+    border-radius: 4px !important;
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    display: inline-block !important;
+  }
+  
+  /* Cluster label styling */
   .mermaid .cluster-label text {
     fill: #fc6423 !important;
     font-weight: bold !important;
+  }
+  
+  /* Sequence diagram actors */
+  .mermaid .actor {
+    fill: transparent !important;
+    stroke: #fc6423 !important;
+    stroke-width: 2px !important;
+    transition: filter 0.2s ease;
+  }
+  .mermaid .actor:hover {
+    filter: drop-shadow(0 0 12px #fc6423) drop-shadow(0 0 6px #ff8a50);
+    cursor: pointer;
+  }
+  
+  /* Sequence diagram messages/signals */
+  .mermaid .messageText {
+    fill: #ffffff !important;
+  }
+  .mermaid .messageLine0,
+  .mermaid .messageLine1 {
+    stroke: #fc6423 !important;
+    stroke-width: 2px !important;
+  }
+  
+  /* Sequence diagram notes */
+  .mermaid .note {
+    fill: #2a2a2a !important;
+    stroke: #fc6423 !important;
+    transition: filter 0.2s ease;
+  }
+  .mermaid .note:hover {
+    filter: drop-shadow(0 0 8px rgba(252, 100, 35, 0.6));
+  }
+  .mermaid .noteText {
+    fill: #ffffff !important;
+  }
+  
+  /* Sequence diagram loop/alt boxes */
+  .mermaid .loopText,
+  .mermaid .labelText {
+    fill: #ffffff !important;
+  }
+  .mermaid .loopLine,
+  .mermaid .labelBox {
+    stroke: #fc6423 !important;
+  }
+  .mermaid rect.labelBox {
+    fill: #2a2a2a !important;
+    stroke: #fc6423 !important;
+    border: 1px solid #fc6423 !important;
+  }
+  
+  /* State diagram states */
+  .mermaid .stateGroup rect,
+  .mermaid .stateGroup circle {
+    fill: transparent !important;
+    stroke: #fc6423 !important;
+    stroke-width: 2px !important;
+    transition: filter 0.2s ease;
+  }
+  .mermaid .stateGroup:hover rect,
+  .mermaid .stateGroup:hover circle {
+    filter: drop-shadow(0 0 12px #fc6423) drop-shadow(0 0 6px #ff8a50);
+    cursor: pointer;
+  }
+  
+  /* State diagram transition labels */
+  .mermaid .transition-label,
+  .mermaid .statediagram-state .state-title {
+    padding: 5px 8px !important;
+    background-color: #2a2a2a !important;
+  }
+  
+  /* Pie chart slices */
+  .mermaid .slice {
+    transition: filter 0.2s ease;
+  }
+  .mermaid .slice:hover {
+    filter: drop-shadow(0 0 10px rgba(252, 100, 35, 0.7));
+    cursor: pointer;
+  }
+  
+  /* Gantt chart bars */
+  .mermaid .task {
+    transition: filter 0.2s ease;
+  }
+  .mermaid .task:hover {
+    filter: drop-shadow(0 0 8px rgba(252, 100, 35, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Quadrant chart points */
+  .mermaid .quadrant-point {
+    transition: filter 0.2s ease;
+  }
+  .mermaid .quadrant-point:hover {
+    filter: drop-shadow(0 0 10px rgba(252, 100, 35, 0.7));
+    cursor: pointer;
   }
   
   /* Responsive card grids */
