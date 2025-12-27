@@ -4,9 +4,9 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
   // Constants for mermaid diagram processing
-  var FLOWCHART_PATTERN = /^\s*(flowchart|graph)(\s|$)/i;
-  var INIT_DIRECTIVE_PATTERN = /%%\s*{\s*init\s*:/i;
-  var CURVE_INIT_DIRECTIVE = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n';
+  const FLOWCHART_PATTERN = /^\s*(flowchart|graph)(\s|$)/i;
+  const INIT_DIRECTIVE_PATTERN = /%%\s*{\s*init\s*:/i;
+  const CURVE_INIT_DIRECTIVE = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n';
   
   document.addEventListener('DOMContentLoaded', function() {
     mermaid.initialize({
@@ -269,14 +269,15 @@
       container.className = 'mermaid';
       
       // Get the diagram content
-      var diagramContent = el.textContent.trim();
+      const diagramContent = el.textContent.trim();
       
       // Inject curve configuration if it's a flowchart and doesn't already have %%init%%
+      let processedContent = diagramContent;
       if (FLOWCHART_PATTERN.test(diagramContent) && !INIT_DIRECTIVE_PATTERN.test(diagramContent)) {
-        diagramContent = CURVE_INIT_DIRECTIVE + diagramContent;
+        processedContent = CURVE_INIT_DIRECTIVE + diagramContent;
       }
       
-      container.textContent = diagramContent;
+      container.textContent = processedContent;
       el.parentElement.replaceWith(container);
       mermaidElements.push(container);
     });
