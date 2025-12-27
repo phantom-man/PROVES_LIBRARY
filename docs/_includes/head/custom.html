@@ -9,9 +9,6 @@
       theme: 'base',
       securityLevel: 'loose',
       
-      // Global curve setting for all diagram types
-      curve: 'linear',
-      
       // Flowchart config - ALWAYS straight lines
       flowchart: { 
         useMaxWidth: true, 
@@ -264,7 +261,16 @@
     document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
       var container = document.createElement('div');
       container.className = 'mermaid';
-      container.textContent = el.textContent;
+      
+      // Get the diagram content
+      var diagramContent = el.textContent.trim();
+      
+      // Inject curve configuration if it's a flowchart and doesn't already have %%init%%
+      if (diagramContent.match(/^\s*(flowchart|graph)\s/i) && !diagramContent.includes('%%init%%')) {
+        diagramContent = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n' + diagramContent;
+      }
+      
+      container.textContent = diagramContent;
       el.parentElement.replaceWith(container);
       mermaidElements.push(container);
     });
