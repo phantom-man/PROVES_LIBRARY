@@ -268,14 +268,11 @@
       var container = document.createElement('div');
       container.className = 'mermaid';
       
-      // Get the diagram content
+      // Get the diagram content and inject curve configuration if it's a flowchart
       const diagramContent = el.textContent.trim();
-      
-      // Inject curve configuration if it's a flowchart and doesn't already have %%init%%
-      let processedContent = diagramContent;
-      if (FLOWCHART_PATTERN.test(diagramContent) && !INIT_DIRECTIVE_PATTERN.test(diagramContent)) {
-        processedContent = CURVE_INIT_DIRECTIVE + diagramContent;
-      }
+      const processedContent = (FLOWCHART_PATTERN.test(diagramContent) && !INIT_DIRECTIVE_PATTERN.test(diagramContent))
+        ? CURVE_INIT_DIRECTIVE + diagramContent
+        : diagramContent;
       
       container.textContent = processedContent;
       el.parentElement.replaceWith(container);
