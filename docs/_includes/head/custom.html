@@ -9,11 +9,15 @@
       theme: 'base',
       securityLevel: 'loose',
       
+      // Global curve setting for all diagram types
+      curve: 'linear',
+      
       // Flowchart config - ALWAYS straight lines
       flowchart: { 
         useMaxWidth: true, 
         htmlLabels: true, 
         curve: 'linear',
+        defaultRenderer: 'dagre',
         nodeSpacing: 50,
         rankSpacing: 70,
         padding: 20,
@@ -294,6 +298,13 @@
   .mermaid svg {
     max-width: 100%;
     background: transparent;
+  }
+  
+  /* === FORCE LINEAR EDGES === */
+  .mermaid .edgePath path,
+  .mermaid .flowchart-link,
+  .mermaid path.path {
+    stroke-linecap: butt !important;
   }
   
   /* === FLOWCHART NODES === */
