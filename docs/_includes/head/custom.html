@@ -7,7 +7,8 @@
   // Constants for mermaid diagram processing
   const FLOWCHART_PATTERN = /^\s*(flowchart|graph)(\s|$)/i;
   const INIT_DIRECTIVE_PATTERN = /%%\s*{\s*init\s*:/i;
-  const CURVE_INIT_DIRECTIVE = '%%{init: {"flowchart": {"curve": "linear"}, "theme": "base"}}%%\n';
+  // For Mermaid v9, use basis or linear for straight lines
+  const CURVE_INIT_DIRECTIVE = '%%{init: {"flowchart": {"curve": "basis"}, "theme": "base"}}%%\n';
   
   document.addEventListener('DOMContentLoaded', function() {
     mermaid.initialize({
@@ -19,7 +20,7 @@
       flowchart: { 
         useMaxWidth: true, 
         htmlLabels: true, 
-        curve: 'linear',
+        curve: 'basis',
         defaultRenderer: 'dagre',
         nodeSpacing: 50,
         rankSpacing: 70,
@@ -281,8 +282,9 @@
     });
     
     // Explicitly render all mermaid diagrams with the configuration
+    // Mermaid v9 uses init() instead of run()
     if (mermaidElements.length > 0) {
-      mermaid.run({ nodes: mermaidElements });
+      mermaid.init(undefined, mermaidElements);
     }
   });
 </script>
