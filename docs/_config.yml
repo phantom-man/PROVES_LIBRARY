@@ -59,7 +59,7 @@ toc:
 ##############################
 mathjax: true
 mathjax_autoNumber: false
-mermaid: true # Enabled - custom Mermaid v10 configuration in head/custom.html
+mermaid: true # Enable Jekyll mermaid processing; custom initialization in head/custom.html
 chart: false
 
 ## => Paginate
