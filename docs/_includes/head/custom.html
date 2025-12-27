@@ -270,7 +270,7 @@
       var diagramContent = el.textContent.trim();
       
       // Inject curve configuration if it's a flowchart and doesn't already have %%init%%
-      if (diagramContent.match(flowchartPattern) && !diagramContent.match(initDirectivePattern)) {
+      if (flowchartPattern.test(diagramContent) && !initDirectivePattern.test(diagramContent)) {
         diagramContent = curveInitDirective + diagramContent;
       }
       
