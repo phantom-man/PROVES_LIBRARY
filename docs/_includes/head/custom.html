@@ -266,7 +266,7 @@
       var diagramContent = el.textContent.trim();
       
       // Inject curve configuration if it's a flowchart and doesn't already have %%init%%
-      if (diagramContent.match(/^\s*(flowchart|graph)\s/i) && !diagramContent.includes('%%init%%')) {
+      if (diagramContent.match(/^\s*(flowchart|graph)(\s|$)/i) && !diagramContent.match(/%%\s*{\s*init\s*:/i)) {
         diagramContent = '%%{init: {"flowchart": {"curve": "linear"}}}%%\n' + diagramContent;
       }
       
