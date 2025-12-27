@@ -5,15 +5,19 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     mermaid.initialize({
-      startOnLoad: true,
+      startOnLoad: false,
       theme: 'base',
       securityLevel: 'loose',
+      
+      // Global curve setting for all diagram types
+      curve: 'linear',
       
       // Flowchart config - ALWAYS straight lines
       flowchart: { 
         useMaxWidth: true, 
         htmlLabels: true, 
         curve: 'linear',
+        defaultRenderer: 'dagre',
         nodeSpacing: 50,
         rankSpacing: 70,
         padding: 20,
@@ -256,12 +260,19 @@
     });
     
     // Find all mermaid code blocks and render them
+    var mermaidElements = [];
     document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
       var container = document.createElement('div');
       container.className = 'mermaid';
       container.textContent = el.textContent;
       el.parentElement.replaceWith(container);
+      mermaidElements.push(container);
     });
+    
+    // Explicitly render all mermaid diagrams with the configuration
+    if (mermaidElements.length > 0) {
+      mermaid.run({ nodes: mermaidElements });
+    }
   });
 </script>
 
@@ -287,6 +298,13 @@
   .mermaid svg {
     max-width: 100%;
     background: transparent;
+  }
+  
+  /* === FORCE LINEAR EDGES === */
+  .mermaid .edgePath path,
+  .mermaid .flowchart-link,
+  .mermaid path.path {
+    stroke-linecap: butt !important;
   }
   
   /* === FLOWCHART NODES === */
