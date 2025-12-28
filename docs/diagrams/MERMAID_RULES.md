@@ -447,6 +447,7 @@ config:
   layout: elk
 flowchart:
   htmlLabels: false
+  curve: linear
 ---
 flowchart LR
     A --> B
@@ -454,10 +455,41 @@ flowchart LR
 
 ### Directives
 ```mermaid
-%%{init: {'theme':'forest'}}%%
+%%{init: {'theme':'forest', 'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
     A --> B
 ```
+
+### Line Styles - Straight vs Curved
+
+**To force straight lines instead of curved:**
+
+#### Method 1: Frontmatter (affects entire diagram)
+```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
+flowchart LR
+    A --> B --> C
+```
+
+#### Method 2: Directive (inline)
+```
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
+flowchart LR
+    A --> B --> C
+```
+
+**Curve options:**
+- `linear` - Straight lines (no curves)
+- `basis` - Smooth curves (default)
+- `step` - Step-like connections
+- `stepBefore` - Steps before nodes
+- `stepAfter` - Steps after nodes
+
+**Best practice:** Add to frontmatter at top of diagram for consistency across all connections.
 
 ## Best Practices
 
