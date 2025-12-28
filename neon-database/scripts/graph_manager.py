@@ -6,7 +6,7 @@ CRUD operations for nodes and relationships (ERV)
 from typing import Optional, Dict, Any, List
 from uuid import UUID
 import json
-from scripts.core.db_connector import get_db
+from db_connector import get_db
 
 
 class GraphManager:

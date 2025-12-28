@@ -17,10 +17,13 @@ from dotenv import load_dotenv
 import psycopg
 
 # Setup paths
-sys.path.insert(0, str(Path(__file__).parent.parent))
-load_dotenv(os.path.join(Path(__file__).parent.parent, '.env'))
+# production/scripts/ - need to add production/ to path for curator module
+production_root = Path(__file__).parent.parent  # production/
+project_root = production_root.parent  # PROVES_LIBRARY/
+sys.path.insert(0, str(production_root))
+load_dotenv(project_root / '.env')
 
-from src.curator.agent_v2 import graph
+from curator.agent_v2 import graph
 
 
 def safe_print(text):

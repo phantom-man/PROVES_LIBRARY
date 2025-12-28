@@ -10,13 +10,16 @@ DOMAIN TABLE WORKFLOW (2024-12-22):
 import sys
 import os
 import uuid
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../../../scripts'))
+
+# Add neon-database to path for database utilities
+neon_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../neon-database/scripts'))
+sys.path.insert(0, neon_db_path)
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
-from scripts.core.graph_manager import GraphManager
+from graph_manager import GraphManager
 
 
 def get_db_connection():
