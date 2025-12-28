@@ -288,6 +288,7 @@ Every relationship has:
 
 This granularity lets the GNN learn **conditional dependencies** and **mode-specific behavior**.
 
+
 ---
 
 ## Who This Is For

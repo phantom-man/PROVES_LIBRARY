@@ -13,12 +13,13 @@ Use this directory for:
 
 ## Structure
 
-### Recommended Organization
+### Current Organization
 
-- **scripts/** - Test scripts (unit tests, integration tests, validators)
-- **data/** - Test data, fixtures, and sample inputs
-- **results/** - Test outputs and results (add to .gitignore)
-- **docs/** - Testing documentation and guides
+- **scripts/** - Testing and diagnostic scripts
+  - [generate_progress_report.py](scripts/README.md) - Meta-analysis agent for progress reports
+- **data/** - Test data, fixtures, and sample inputs (future)
+- **results/** - Test outputs and results (future, add to .gitignore)
+- **docs/** - Testing documentation and guides (future)
 
 ## Related Directories
 
