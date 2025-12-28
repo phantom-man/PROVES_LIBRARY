@@ -43,7 +43,7 @@ flowchart TB
 
     subgraph "Layer 3 Bus Driver"
         BD[LinuxI2cDriver.writeRead]
-        DEV["/dev/i2c-1" device]
+        DEV[/dev/i2c-1 device]
     end
 
     subgraph "Layer 4 Hardware Bus"
@@ -158,14 +158,14 @@ sequenceDiagram
     Main->>Topo: Call configureTopology
 
     rect rgb(255, 200, 200)
-        Note over Topo,LSM: Step 2-4: UNDOCUMENTED
+        Note over Topo,LSM: Step 2-4 UNDOCUMENTED
         Topo->>LSM: turn_on imu
         LSM->>LSM: Set board.IMU_ENABLE = HIGH
         LSM-->>Topo: Return True
     end
 
     rect rgb(255, 255, 180)
-        Note over Delay: Step 5: UNDOCUMENTED - How long to wait?
+        Note over Delay: Step 5 UNDOCUMENTED - How long to wait?
         Delay-->>Delay: Wait for voltage stabilization
     end
 
@@ -182,7 +182,7 @@ sequenceDiagram
     end
 
     rect rgb(200, 255, 255)
-        Note over IM,HW: Step 10-12: Documented in F Prime
+        Note over IM,HW: Step 10-12 Documented in F Prime
         IM->>HW: Write RESET_REG
         HW->>HW: Device reset
         HW-->>IM: ACK
