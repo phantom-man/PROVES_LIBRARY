@@ -263,7 +263,7 @@ flowchart TB
         SCHED[Svc.Sched port]
         RUN[ImuManager.run_handler]
         READ[ImuManager.read]
-        STATUS{I2cStatus}
+        STATUS{Check Status}
         TLM[tlmWrite_ImuData]
         ERR[log_WARNING_HI_ImuReadError]
     end

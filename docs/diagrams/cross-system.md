@@ -159,7 +159,7 @@ sequenceDiagram
         Topology->>BusDrv: open /dev/i2c-1
         BusDrv->>I2C: Initialize I2C device
         I2C-->>BusDrv: Device ready
-        BusDrv-->>Topology: I2cStatus I2C_OK
+        BusDrv-->>Topology: Return I2C_OK
     end
 
     Note over Topology,I2C: If order reversed initialization fails silently
