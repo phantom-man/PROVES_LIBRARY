@@ -2,6 +2,73 @@
 
 Comprehensive rules compiled from official Mermaid documentation (v10+).
 
+## ⚠️ VALIDATION REQUIREMENTS
+
+**MANDATORY: Run validation before committing any diagram changes or updates to this file.**
+
+### Validation Checklist
+
+Before committing changes, run ALL validation commands below:
+
+```powershell
+# 1. Check for HTML tags in diagrams (CRITICAL ERROR)
+grep -n "<br/>\|<span>\|<div>" docs/diagrams/*.md
+
+# 2. Check for double colons in text (ALWAYS BREAKS)
+grep -n "::" docs/diagrams/*.md | grep -v "http://" | grep -v "https://" | grep -v "stateDiagram-v2"
+
+# 3. Check for colons in subgraph labels (BREAKS)
+grep -n "subgraph.*:.*\"" docs/diagrams/*.md
+
+# 4. Check for unquoted forward slashes in node labels (BREAKS)
+grep -n "\[\/.*\]" docs/diagrams/*.md | grep -v "\[\"\/.*\"\]"
+
+# 5. Check for unquoted square brackets inside node labels (BREAKS)
+grep -n "\[[^\"\[]*\[[^\]]*\].*\]" docs/diagrams/*.md
+
+# 6. Check for unquoted parentheses in pie/gantt (BREAKS)
+grep -n "\"[^\"]*([^)]*)\"" docs/diagrams/*.md
+
+# 7. Check for colons in gantt task names after first colon (BREAKS)
+grep -n "^[[:space:]]*[^:]*:.*:.*:" docs/diagrams/*.md | grep -v "http"
+
+# 8. Validate all diagrams render (use Mermaid Live Editor)
+# Copy each diagram to https://mermaid.live/ and verify no errors
+```
+
+### Validation Rules for MERMAID_RULES.md Itself
+
+When adding examples to this documentation file:
+
+1. **Complete diagrams ONLY as ```mermaid blocks**
+   - Must have proper diagram type declaration (flowchart, sequenceDiagram, etc.)
+   - Must be fully valid and renderable
+   - Test in Mermaid Live Editor first
+
+2. **Syntax examples as plain ``` blocks**
+   - Incomplete snippets showing syntax only
+   - Examples with intentional errors (BAD examples)
+   - Fragments without diagram type declaration
+
+3. **Test this file on GitHub**
+   - Push and verify all diagrams render
+   - GitHub treats ALL ```mermaid blocks as renderable diagrams
+   - Incomplete examples will show "Unable to render" errors
+
+### Common Validation Errors Found
+
+Based on production issues discovered:
+
+- **HTML tags** → Remove or replace with markdown
+- **Double colons** → Remove or replace with single space
+- **Colons in subgraph labels** → Remove from label text
+- **Colons in sequence note text** → Keep only first colon (label separator)
+- **Forward slashes unquoted** → Wrap in double quotes
+- **Square brackets inside node labels** → Wrap entire label in quotes
+- **Parentheses in pie/gantt labels** → Wrap entire label in quotes
+- **State transition colons** → Keep only label separator colon
+- **Incomplete ```mermaid examples** → Convert to plain ``` blocks
+
 ## Critical Syntax Rules
 
 ### 1. NO HTML Tags
