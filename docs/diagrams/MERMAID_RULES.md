@@ -49,7 +49,7 @@ Comprehensive rules compiled from official Mermaid documentation (v10+).
 - ❌ Starting with "o" or "x" creates special edges: `A---oB` = circle edge
 
 ### 3. Subgraph Syntax
-```mermaid
+```
 subgraph id [Label Text]
     nodes...
 end
@@ -62,14 +62,14 @@ end
 ### 4. Node Labels
 
 #### Simple text
-```mermaid
+```
 id[This is text]
 id(Round edges)
 id{Diamond shape}
 ```
 
 #### Unicode/Special characters
-```mermaid
+```
 id["Unicode: ❤ works"]
 id["Escaped: #9829;"]
 ```
@@ -90,7 +90,7 @@ flowchart LR
 #### Flowcharts
 - ❌ NO `<br/>` tags
 - ✅ Markdown formatting with newlines:
-```mermaid
+```
 id["`Line 1
 Line 2
 Line 3`"]
@@ -98,11 +98,11 @@ Line 3`"]
 
 #### Sequence Diagrams
 - ✅ `<br/>` is allowed:
-```mermaid
+```
 Alice->John: Hello<br/>World
 ```
 - ✅ In participant aliases:
-```mermaid
+```
 participant A as Alice<br/>Johnson
 ```
 
@@ -145,26 +145,26 @@ flowchart LR
 ### 8. Styling
 
 #### Node styling
-```mermaid
+```
 style id1 fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 #### Classes
-```mermaid
+```
 classDef className fill:#f9f
 class nodeId className
 A:::className --> B
 ```
 
 #### Link styling
-```mermaid
+```
 linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
 
 ## Flowchart-Specific Rules
 
 ### Node Shapes
-```mermaid
+```
 id[Rectangle]
 id(Round edges)
 id([Stadium])
@@ -182,7 +182,7 @@ id(((Double circle)))
 ```
 
 ### Direction
-```mermaid
+```
 flowchart TB   %% Top to Bottom
 flowchart TD   %% Top-Down (same as TB)
 flowchart BT   %% Bottom to Top
@@ -293,7 +293,7 @@ stateDiagram-v2
 - Unquoted special characters
 
 **Fix:**
-```mermaid
+```
 %% BAD
 flowchart LR
     A[Line 1<br/>Line 2]
@@ -317,7 +317,7 @@ flowchart LR
 - Unquoted forward slashes: `/dev/i2c-1`
 
 **Fix:**
-```mermaid
+```
 %% BAD
 subgraph "API: v2"
     node[Address: 0x68]
@@ -337,7 +337,7 @@ Note over A: Step 1 Initialize
 - File paths or URLs without quotes: `/dev/i2c-1`
 
 **Fix:**
-```mermaid
+```
 %% BAD
 flowchart LR
     DEV[/dev/i2c-1 device]
@@ -347,7 +347,6 @@ flowchart LR
 flowchart LR
     DEV["/dev/i2c-1 device"]
     URL["http://example.com"]
-end
 
 %% GOOD
 subgraph "API v2"
@@ -359,7 +358,7 @@ end
 **Cause:** Reserved word "end" or starting with "o"/"x"
 
 **Fix:**
-```mermaid
+```
 %% BAD
 A --> end
 dev --> ops
