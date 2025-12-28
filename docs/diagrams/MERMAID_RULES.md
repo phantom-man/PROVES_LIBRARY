@@ -202,7 +202,7 @@ flowchart LR
 ## Sequence Diagram-Specific Rules
 
 ### Participants
-```mermaid
+```
 participant A as Alice
 actor B as Bob
 participant C@{ "type" : "boundary" }
@@ -223,7 +223,7 @@ participant D@{ "type" : "database" }
 ```
 
 ### Activations
-```mermaid
+```
 activate Alice
 deactivate Alice
 %% Or shorthand:
@@ -232,7 +232,7 @@ Bob-->>-Alice: Reply
 ```
 
 ### Notes
-```mermaid
+```
 Note right of Alice: Text
 Note left of Alice: Text
 Note over Alice,Bob: Text
@@ -243,7 +243,7 @@ Note over Alice,Bob: Text
 - ✅ **Single colon separating label is OK**: `Note over A: Any text here`
 
 ### Loops/Alt/Par
-```mermaid
+```
 loop Every minute
     A->>B: Check
 end
