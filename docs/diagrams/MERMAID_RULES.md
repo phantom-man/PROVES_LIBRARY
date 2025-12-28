@@ -261,6 +261,29 @@ and Parallel 2
 end
 ```
 
+## State Diagram-Specific Rules
+
+### Transitions
+```mermaid
+stateDiagram-v2
+    [*] --> State1
+    State1 --> State2: Transition label
+    State2 --> [*]
+```
+- ⚠️ **CRITICAL**: Transition labels after colon cannot contain more colons
+- ❌ **BREAKS**: `State1 --> State2: Currently: No recovery`
+- ✅ **WORKS**: `State1 --> State2: Currently No recovery`
+- ✅ **Single colon for label is OK**: `State1 --> State2: Any text`
+
+### Composite States
+```mermaid
+stateDiagram-v2
+    state "Complex State" as CS {
+        [*] --> SubState1
+        SubState1 --> [*]
+    }
+```
+
 ## Common Errors and Fixes
 
 ### Error: "Unable to render rich display"
@@ -410,7 +433,12 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS without quotes
 - [ ] **Quote labels with special chars**: Spaces, colons, symbols all need quotes
 
-#### 4. Gantt Chart Validation
+#### 4. State Diagram Validation
+- [ ] **No colons in transition labels**: `State1 --> State2: Text: More` → FAILS
+- [ ] **Single colon for label OK**: `State1 --> State2: Text` → WORKS
+- [ ] **Same rule as sequence notes**: Text after colon cannot have more colons
+
+#### 5. Gantt Chart Validation
 - [ ] **No colons in task descriptions**: `Gap: Team leaves` → FAILS (use `Gap Team leaves`)
 - [ ] **Colon delimiter required**: `Task name :milestone, crit, 2024-01, 0d` (colon after name is syntax)
 - [ ] **Avoid colons before delimiter colon**: Having `Task: Name :milestone` confuses parser
@@ -483,16 +511,21 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
    - ❌ `Note over A: Step 1: Initialize`
    - ✅ `Note over A: Step 1 Initialize`
 
-6. **Double colons**
+6. **Colons in state transition labels**
+   - ❌ `State1 --> State2: Currently: No recovery`
+   - ✅ `State1 --> State2: Currently No recovery`
+   - ⚠️ Same rule as sequence notes
+
+7. **Double colons**
    - ❌ `I2cStatus::OK`
    - ✅ `I2C_OK`
 
-7. **Gantt task names with colons**
+8. **Gantt task names with colons**
    - ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
    - ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
    - ⚠️ Colon in task description before delimiter confuses parser
 
-8. **Quadrant chart labels without quotes**
+9. **Quadrant chart labels without quotes**
    - ❌ `F´ Core Docs: [0.1, 0.9]`
    - ✅ `"F´ Core Docs": [0.1, 0.9]`
    - ⚠️ Always quote data point labels, especially with colons or special chars
