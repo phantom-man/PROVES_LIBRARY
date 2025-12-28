@@ -410,11 +410,18 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Check for colons**: Use quotes if label contains special chars
 
 #### 4. Gantt Chart Validation
-- [ ] **Colons in task names OK**: `Task name :milestone, crit, 2024-01, 0d` works
+- [ ] **No colons in task descriptions**: `Gap: Team leaves` → FAILS (use `Gap Team leaves`)
+- [ ] **Colon delimiter required**: `Task name :milestone, crit, 2024-01, 0d` (colon after name is syntax)
+- [ ] **Avoid colons before delimiter colon**: Having `Task: Name :milestone` confuses parser
 - [ ] **Check dateFormat**: Must be valid format
 - [ ] **Section names**: Plain text, no quotes needed
 
-#### 5. Universal Checks (All Diagram Types)
+#### 5. Quadrant Chart Validation
+- [ ] **Quote all data point labels**: Especially those with colons or special characters
+- [ ] **Syntax**: `"Label text": [x, y]` with quotes
+- [ ] **Special characters**: Unicode like `F´` needs quotes if label has colons
+
+#### 6. Universal Checks (All Diagram Types)
 - [ ] **Test in Mermaid Live Editor**: https://mermaid.live/
 - [ ] **Check rendering on GitHub**: After push, verify actual rendering
 - [ ] **All quotes properly closed**: Balance `"` marks
@@ -445,6 +452,12 @@ grep -E '<br/>|<span|<div' docs/diagrams/*.md
 
 # Find sequence note colons (potential issues)
 grep -E 'Note over.*:.*:' docs/diagrams/*.md
+
+# Find gantt task names with colons before delimiter
+grep -E '^\s+[^:]+:\s+[^:]+\s*:' docs/diagrams/*.md
+
+# Find unquoted quadrant chart labels (context sensitive)
+grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 ```
 
 ### Common Issues Found During Validation
@@ -472,6 +485,16 @@ grep -E 'Note over.*:.*:' docs/diagrams/*.md
 6. **Double colons**
    - ❌ `I2cStatus::OK`
    - ✅ `I2C_OK`
+
+7. **Gantt task names with colons**
+   - ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
+   - ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
+   - ⚠️ Colon in task description before delimiter confuses parser
+
+8. **Quadrant chart labels without quotes**
+   - ❌ `F´ Core Docs: [0.1, 0.9]`
+   - ✅ `"F´ Core Docs": [0.1, 0.9]`
+   - ⚠️ Always quote data point labels, especially with colons or special chars
 
 ## Resources
 
