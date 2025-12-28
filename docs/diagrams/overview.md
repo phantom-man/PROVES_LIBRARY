@@ -149,19 +149,19 @@ sequenceDiagram
     participant HW as Hardware
 
     User->>LSM: Initialize with switches dict
-    LSM->>Pin: Create DigitalInOut(board.IMU_ENABLE)
-    LSM->>LSM: Set enable_logic (active high/low)
+    LSM->>Pin: Create DigitalInOut for board.IMU_ENABLE
+    LSM->>LSM: Set enable_logic - active high/low
     LSM->>LSM: Initialize switch_states dict
 
-    User->>LSM: turn_on("imu")
-    LSM->>Pin: Set pin HIGH (if active high)
+    User->>LSM: turn_on imu
+    LSM->>Pin: Set pin HIGH if active high
     Pin->>HW: Enable power to IMU
-    LSM->>LSM: Update switch_states["imu"] = True
-    LSM-->>User: Return True (success)
+    LSM->>LSM: Update switch_states imu = True
+    LSM-->>User: Return True success
 
-    User->>LSM: get_switch_state("imu")
+    User->>LSM: get_switch_state imu
     LSM->>LSM: Query switch_states dict
-    LSM-->>User: Return True (powered)
+    LSM-->>User: Return True powered
 ```
 
 ---
