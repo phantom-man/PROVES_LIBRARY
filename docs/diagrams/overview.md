@@ -68,17 +68,17 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    subgraph BUILD["Build System - Compiles the code"]
+    subgraph BUILD ["Build System - Compiles the code"]
         FPUTIL[fprime-util<br/>Build command]
         FPP[FPP files<br/>Component definitions]
     end
 
-    subgraph TOPO["System Configuration - How components connect"]
+    subgraph TOPO ["System Configuration - How components connect"]
         TOPO_FILE[topology.fpp<br/>Defines which components exist]
         CONFIG[configureTopology function<br/>Sets up connections at startup]
     end
 
-    subgraph DEVICE["Hardware Configuration - Device settings"]
+    subgraph DEVICE ["Hardware Configuration - Device settings"]
         ADDR[I2C Address: 0x68<br/>How to find the IMU on the bus]
         REGS[IMU Register Addresses<br/>RESET: 0x00, CONFIG: 0x01, DATA: 0x10]
         VALS[Register Values<br/>What to write to configure the sensor]
@@ -110,13 +110,13 @@ flowchart TB
 flowchart TB
     LSM[LoadSwitchManager<br/>Main power control class<br/>Written in Python]
 
-    subgraph TOOLS["Software Tools It Uses"]
+    subgraph TOOLS ["Software Tools It Uses"]
         DIO[digitalio.DigitalInOut<br/>Controls GPIO pins]
         LOGGER[Logger<br/>Records events]
         STATE[switch_states dict<br/>Tracks on/off status]
     end
 
-    subgraph DEVICES["Hardware It Powers"]
+    subgraph DEVICES ["Hardware It Powers"]
         RADIO[Radio<br/>board.RADIO_ENABLE]
         IMU[IMU Sensor<br/>board.IMU_ENABLE]
         MAG[Magnetometer<br/>board.MAG_ENABLE]

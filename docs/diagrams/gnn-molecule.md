@@ -20,7 +20,7 @@ Think of the truth graph as a molecular structure:
 ```mermaid
 %%{init: {'flowchart': {'defaultRenderer': 'elk'}, 'theme':'base', 'themeVariables': { 'fontFamily': 'Space Mono, monospace', 'lineColor': '#6b8fb3'}}}%%
 flowchart TB
-    subgraph Molecule["Truth Graph as Molecular Structure"]
+    subgraph Molecule ["Truth Graph as Molecular Structure"]
         A[Power Manager]
         B[I2C Bus]
         C[IMU Sensor]
