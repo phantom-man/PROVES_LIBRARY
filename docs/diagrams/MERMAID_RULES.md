@@ -405,9 +405,10 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **No double colons in messages**
 
 #### 3. Pie Chart Validation
-- [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS
-- [ ] **Proper syntax**: `"Label text" : value`
-- [ ] **Check for colons**: Use quotes if label contains special chars
+- [ ] **ALWAYS quote all labels**: Even simple labels like `HIGH` need quotes
+- [ ] **Proper syntax**: `"Label text" : value` (always with quotes)
+- [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS without quotes
+- [ ] **Quote labels with special chars**: Spaces, colons, symbols all need quotes
 
 #### 4. Gantt Chart Validation
 - [ ] **No colons in task descriptions**: `Gap: Team leaves` → FAILS (use `Gap Team leaves`)
