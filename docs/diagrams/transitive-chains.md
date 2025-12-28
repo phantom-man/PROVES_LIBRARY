@@ -172,13 +172,13 @@ sequenceDiagram
     rect rgb(200, 255, 200)
         Topo->>BD: open /dev/i2c-1
         BD->>BD: Initialize I2C device
-        BD-->>Topo: Return I2cStatus I2C_OK
+        BD-->>Topo: Return I2C_OK
     end
 
     rect rgb(200, 220, 255)
         Topo->>IM: configure 0x68
         IM->>IM: Set I2C address
-        IM-->>Topo: Return I2cStatus I2C_OK
+        IM-->>Topo: Return I2C_OK
     end
 
     rect rgb(200, 255, 255)
