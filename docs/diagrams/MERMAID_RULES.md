@@ -21,6 +21,13 @@ Comprehensive rules compiled from official Mermaid documentation (v10+).
 - ✅ **Single colon separating label from text is OK**: `Note over A: Some text` → WORKS
 - ✅ **Colons OK in link text**: `A -->|Status: OK| B` → WORKS
 
+#### Square Brackets (`[]`) - Breaking in Node Labels
+- ❌ **Brackets inside node text break parsing**: `NODE[Status [YES] OK]` → FAILS
+- ✅ **Quote labels with nested brackets**: `NODE["Status [YES] OK"]` → WORKS
+- ❌ **Multiple bracket markers unquoted**: `NODE[Doc [WARNING] Incomplete]` → FAILS
+- ✅ **Quote all bracket-containing text**: `NODE["Doc [WARNING] Incomplete"]` → WORKS
+- ✅ **Outer brackets define node - inner brackets need quotes**
+
 #### Forward Slashes (`/`) - Breaking in Node Labels
 - ❌ **File paths without quotes break parsing**: `DEV[/dev/i2c-1]` → FAILS
 - ✅ **Quote all paths with slashes**: `DEV["/dev/i2c-1"]` → WORKS
@@ -32,6 +39,7 @@ Comprehensive rules compiled from official Mermaid documentation (v10+).
 #### Quotes - When Required
 - ✅ **Quote text with forward slashes**: `id["/path/to/file"]`
 - ✅ **Quote text with parentheses**: `id["Text with (parens)"]`
+- ✅ **Quote text with square brackets**: `id["Status [YES] Complete"]`
 - ✅ **Quote text with special symbols**: `id["Price: $50"]`
 - ✅ Use entity codes: `#` (e.g., `#9829;` for ♥)
 - ✅ For markdown: Use backticks: `` id["`**Bold** text`"] ``
@@ -384,10 +392,11 @@ Run these checks BEFORE committing any Mermaid diagrams:
 #### 1. Flowchart Validation
 - [ ] **No HTML tags**: Search for `<br/>`, `<span>`, `<div>` in flowchart nodes
 - [ ] **No unquoted paths**: Search for `/dev/`, `/sys/`, file paths without quotes
+- [ ] **No unquoted brackets**: Search for `[YES]`, `[NO]`, `[WARNING]` inside node labels
 - [ ] **No colons in subgraph labels**: `subgraph "Layer 1: App"` → FAILS
 - [ ] **No colons in node labels**: Except in link text
 - [ ] **No double colons**: `Status::OK` → FAILS
-- [ ] **Quote special characters**: Parentheses, slashes, special symbols need quotes
+- [ ] **Quote special characters**: Parentheses, slashes, brackets, special symbols need quotes
 - [ ] **Word "end" capitalized or quoted**
 
 #### 2. Sequence Diagram Validation  
@@ -419,6 +428,9 @@ Run these grep searches to find potential issues:
 # Find unquoted parentheses in pie charts
 grep -E '^\s+[^"]*\([^)]+\)[^"]*\s*:' docs/diagrams/*.md
 
+# Find unquoted square brackets in node labels
+grep -E '^\s+[A-Z_]+\[[^\]"]*\[[^\]]*\]' docs/diagrams/*.md
+
 # Find potential path issues (forward slashes)
 grep -E '\[/dev/|\[/sys/|http://[^"]' docs/diagrams/*.md
 
@@ -441,19 +453,23 @@ grep -E 'Note over.*:.*:' docs/diagrams/*.md
    - ❌ `Direct (visible) : 15`
    - ✅ `"Direct (visible)" : 15`
 
-2. **Forward slashes without quotes**
+2. **Square brackets without quotes** (node labels)
+   - ❌ `NODE[Status [YES] Complete]`
+   - ✅ `NODE["Status [YES] Complete"]`
+
+3. **Forward slashes without quotes**
    - ❌ `DEV[/dev/i2c-1]`
    - ✅ `DEV["/dev/i2c-1"]`
 
-3. **Colons in subgraph labels**
+4. **Colons in subgraph labels**
    - ❌ `subgraph "Layer 1: Application"`
    - ✅ `subgraph "Layer 1 Application"`
 
-4. **Colons in sequence notes**
+5. **Colons in sequence notes**
    - ❌ `Note over A: Step 1: Initialize`
    - ✅ `Note over A: Step 1 Initialize`
 
-5. **Double colons**
+6. **Double colons**
    - ❌ `I2cStatus::OK`
    - ✅ `I2C_OK`
 
