@@ -33,7 +33,7 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 ```mermaid
 flowchart TB
     subgraph "Layer 1: Application"
-        APP[Application Component<br/>Requests IMU data]
+        APP[Application Component Requests IMU data]
     end
 
     subgraph "Layer 2: Device Manager"
@@ -47,24 +47,24 @@ flowchart TB
     end
 
     subgraph "Layer 4: Hardware Bus"
-        I2C[I2C Physical Bus<br/>SDA/SCL pins]
-        PULLUP[Pull-up Resistors<br/>4.7kΩ]
+        I2C[I2C Physical Bus SDA/SCL pins]
+        PULLUP[Pull-up Resistors 4.7kΩ]
     end
 
     subgraph "Layer 5: Device"
-        IMU[MPU6050 IMU<br/>Address: 0x68]
-        REG[Device Registers<br/>DATA_REG: 0x10]
+        IMU[MPU6050 IMU Address 0x68]
+        REG[Device Registers DATA_REG 0x10]
     end
 
     subgraph "Layer 6: Power (PROVES Kit)"
         PWR[3.3V Power Supply]
-        LSM[LoadSwitchManager<br/>turn_on]
-        PIN[board.IMU_ENABLE<br/>GPIO Pin]
+        LSM[LoadSwitchManager turn_on]
+        PIN[board.IMU_ENABLE GPIO Pin]
     end
 
     subgraph "Layer 7: Board Configuration"
-        BOARD[Board Definition<br/>Pin Mapping]
-        LOGIC[enable_logic<br/>Active High/Low]
+        BOARD[Board Definition Pin Mapping]
+        LOGIC[enable_logic Active High/Low]
     end
 
     APP -->|1. requests| DM
@@ -216,11 +216,11 @@ sequenceDiagram
 flowchart TB
     START[main calls configureTopology]
 
-    CASE1{Does code call<br/>LSM.turn_on?}
-    CASE2{Sufficient<br/>delay before<br/>bus.open?}
+    CASE1{Does code call LSM.turn_on?}
+    CASE2{Sufficient delay before bus.open?}
 
-    FAIL1["✗ Power never enabled<br/>I2C device doesn't exist<br/>open returns I2C_OPEN_ERR"]
-    FAIL2["✗ Voltage not stable<br/>I2C init races with power-on<br/>Intermittent failures"]
+    FAIL1["✗ Power never enabled, I2C device doesn't exist, open returns I2C_OPEN_ERR"]
+    FAIL2["✗ Voltage not stable, I2C init races with power-on, Intermittent failures"]
     SUCCESS["✓ System initializes correctly"]
 
     START --> CASE1
@@ -278,7 +278,7 @@ flowchart TB
     end
 
     subgraph "What ACTUALLY Happens"
-        CONT[Continue without IMU data<br/>Silent degradation]
+        CONT[Continue without IMU data Silent degradation]
     end
 
     START --> SCHED

@@ -38,15 +38,15 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 
 ```mermaid
 flowchart TB
-    APP[Application Components<br/>Your mission code that needs sensor data]
+    APP[Application Components - Your mission code that needs sensor data]
 
-    DM[ImuManager - Device Manager<br/>Knows how to talk to the IMU sensor<br/>Uses: busWriteRead, busWrite ports<br/>Returns: ImuData, GeometricVector3]
+    DM[ImuManager Device Manager - Knows how to talk to the IMU sensor - Uses busWriteRead, busWrite ports - Returns ImuData, GeometricVector3]
 
-    BD[LinuxI2cDriver - Bus Driver<br/>Low-level I2C communication<br/>Implements: Drv.I2c interface<br/>Returns: I2cStatus success/error codes]
+    BD[LinuxI2cDriver Bus Driver - Low-level I2C communication - Implements Drv.I2c interface - Returns I2cStatus success/error codes]
 
-    I2C_BUS[I2C Hardware Bus<br/>/dev/i2c-1<br/>Physical wires: SDA and SCL]
+    I2C_BUS[I2C Hardware Bus /dev/i2c-1 - Physical wires SDA and SCL]
 
-    HW[MPU6050 IMU Sensor<br/>Hardware device at address 0x68<br/>Measures acceleration and rotation]
+    HW[MPU6050 IMU Sensor - Hardware device at address 0x68 - Measures acceleration and rotation]
 
     APP -->|"1. Requests sensor data"| DM
     DM -->|"2. Calls I2C operations"| BD
@@ -69,19 +69,19 @@ flowchart TB
 ```mermaid
 flowchart TB
     subgraph BUILD ["Build System - Compiles the code"]
-        FPUTIL[fprime-util<br/>Build command]
-        FPP[FPP files<br/>Component definitions]
+        FPUTIL[fprime-util Build command]
+        FPP[FPP files Component definitions]
     end
 
     subgraph TOPO ["System Configuration - How components connect"]
-        TOPO_FILE[topology.fpp<br/>Defines which components exist]
-        CONFIG[configureTopology function<br/>Sets up connections at startup]
+        TOPO_FILE[topology.fpp - Defines which components exist]
+        CONFIG[configureTopology function - Sets up connections at startup]
     end
 
     subgraph DEVICE ["Hardware Configuration - Device settings"]
-        ADDR[I2C Address: 0x68<br/>How to find the IMU on the bus]
-        REGS[IMU Register Addresses<br/>RESET: 0x00, CONFIG: 0x01, DATA: 0x10]
-        VALS[Register Values<br/>What to write to configure the sensor]
+        ADDR[I2C Address 0x68 - How to find the IMU on the bus]
+        REGS[IMU Register Addresses - RESET 0x00, CONFIG 0x01, DATA 0x10]
+        VALS[Register Values - What to write to configure the sensor]
     end
 
     FPUTIL -->|"Compiles"| TOPO_FILE
@@ -108,19 +108,19 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    LSM[LoadSwitchManager<br/>Main power control class<br/>Written in Python]
+    LSM[LoadSwitchManager - Main power control class - Written in Python]
 
     subgraph TOOLS ["Software Tools It Uses"]
-        DIO[digitalio.DigitalInOut<br/>Controls GPIO pins]
-        LOGGER[Logger<br/>Records events]
-        STATE[switch_states dict<br/>Tracks on/off status]
+        DIO[digitalio.DigitalInOut - Controls GPIO pins]
+        LOGGER[Logger - Records events]
+        STATE[switch_states dict - Tracks on/off status]
     end
 
     subgraph DEVICES ["Hardware It Powers"]
-        RADIO[Radio<br/>board.RADIO_ENABLE]
-        IMU[IMU Sensor<br/>board.IMU_ENABLE]
-        MAG[Magnetometer<br/>board.MAG_ENABLE]
-        CAM[Camera<br/>board.CAMERA_ENABLE]
+        RADIO[Radio - board.RADIO_ENABLE]
+        IMU[IMU Sensor - board.IMU_ENABLE]
+        MAG[Magnetometer - board.MAG_ENABLE]
+        CAM[Camera - board.CAMERA_ENABLE]
     end
 
     LSM -->|Uses| DIO

@@ -89,11 +89,11 @@ sequenceDiagram
 flowchart TB
     START[New developer integrates IMU]
 
-    CASE1{Does developer<br/>add delay?}
-    CASE2{What delay<br/>value?}
+    CASE1{Does developer add delay?}
+    CASE2{What delay value?}
     CASE3{Test coverage?}
 
-    TOO_SHORT[Delay too short<br/>50ms]
+    TOO_SHORT[Delay too short 50ms]
     WORKS_BENCH["✓ Works on bench<br/>warm start"]
     FAILS_FLIGHT["✗ Fails in flight<br/>cold start slower"]
 
@@ -144,22 +144,22 @@ This diagram shows electrical characteristics that software developers never thi
 ```mermaid
 flowchart TB
     subgraph "Power Supply Characteristics"
-        V_NOM[Nominal Voltage<br/>3.3V]
-        V_RIPPLE[Ripple: ??? mV]
-        V_DROPOUT[Dropout: ??? mV]
-        I_SPIKE[Current spike: ??? mA]
+        V_NOM[Nominal Voltage 3.3V]
+        V_RIPPLE[Ripple ??? mV]
+        V_DROPOUT[Dropout ??? mV]
+        I_SPIKE[Current spike ??? mA]
     end
 
     subgraph "I2C Bus Requirements"
-        V_IH[V_IH: Input High<br/>??? V minimum]
-        V_IL[V_IL: Input Low<br/>??? V maximum]
-        V_MARGIN[Noise Margin<br/>???]
+        V_IH[V_IH Input High ??? V minimum]
+        V_IL[V_IL Input Low ??? V maximum]
+        V_MARGIN[Noise Margin ???]
     end
 
     subgraph "Load Switch Characteristics"
-        R_ON[R_ON: ??? mΩ]
-        I_MAX[I_MAX: ??? mA]
-        T_SWITCH[Switch time: ??? μs]
+        R_ON[R_ON ??? mΩ]
+        I_MAX[I_MAX ??? mA]
+        T_SWITCH[Switch time ??? μs]
     end
 
     V_NOM -.->|minus dropout| V_DROPOUT
@@ -329,10 +329,10 @@ flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         BUS[I2C Bus /dev/i2c-1<br/>SDA/SCL]
 
-        DEV1[Device 1: IMU<br/>Addr: 0x68]
-        DEV2[Device 2: Magnetometer<br/>Addr: ???]
-        DEV3[Device 3: Camera<br/>Addr: ???]
-        DEV4[Device 4: ???<br/>Addr: ???]
+        DEV1[Device 1 IMU Addr 0x68]
+        DEV2[Device 2 Magnetometer Addr ???]
+        DEV3[Device 3 Camera Addr ???]
+        DEV4[Device 4 ??? Addr ???]
     end
 
     subgraph "Power Control"
