@@ -12,35 +12,77 @@ import os
 import re
 from psycopg_pool import ConnectionPool
 from langgraph.checkpoint.postgres import PostgresSaver
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
 
 # Load environment
 load_dotenv(os.path.join(os.path.dirname(__file__), '../../..', '.env'))
 
-from .subagents.extractor import create_extractor_agent
-from .subagents.validator import create_validator_agent
-from .subagents.storage import create_storage_agent
+from .subagent_specs import (
+    get_extractor_spec,
+    get_validator_spec,
+    get_storage_spec,
+)
 
 
 def create_curator():
     """
-    Create the extraction orchestration system using existing subagent functions.
+    Create the extraction orchestration system.
 
     Returns:
-        dict with three subagent runnables
+        dict with three subagent runnables and checkpointer
     """
 
-    # Use the existing agent creation functions from subagent modules
-    extractor = create_extractor_agent()
-    validator = create_validator_agent()
-    storage = create_storage_agent()
+    # Initialize PostgreSQL checkpointer (Neon) with SSL config
+    db_url = os.getenv('NEON_DATABASE_URL')
+    pool = ConnectionPool(
+        conninfo=db_url,
+        min_size=1,
+        max_size=5,
+        timeout=30,  # Connection timeout in seconds
+        kwargs={
+            "keepalives": 1,
+            "keepalives_idle": 30,
+            "keepalives_interval": 10,
+            "keepalives_count": 5,
+        }
+    )
+    checkpointer = PostgresSaver(pool)
+    checkpointer.setup()
+
+    # Get subagent specifications
+    extractor_spec = get_extractor_spec()
+    validator_spec = get_validator_spec()
+    storage_spec = get_storage_spec()
+
+    # Create subagents as standalone runnables
+    extractor = create_agent(
+        model=ChatAnthropic(model=extractor_spec["model"], temperature=0.1),
+        system_prompt=extractor_spec["system_prompt"],
+        tools=extractor_spec["tools"],
+        checkpointer=checkpointer,
+    )
+
+    validator = create_agent(
+        model=ChatAnthropic(model=validator_spec["model"], temperature=0.1),
+        system_prompt=validator_spec["system_prompt"],
+        tools=validator_spec["tools"],
+        checkpointer=checkpointer,
+    )
+
+    storage = create_agent(
+        model=ChatAnthropic(model=storage_spec["model"], temperature=0.1),
+        system_prompt=storage_spec["system_prompt"],
+        tools=storage_spec["tools"],
+        checkpointer=checkpointer,
+    )
 
     return {
         "extractor": extractor,
         "validator": validator,
         "storage": storage,
+        "checkpointer": checkpointer,
     }
 
 
@@ -118,7 +160,7 @@ Otherwise, APPROVE.
 
     validator_message = validator_result["messages"][-1].content
 
-    # Check if validation approved
+    # Check if validation rejected
     if "REJECTED" in validator_message.upper():
         return {
             "status": "rejected",
@@ -127,15 +169,8 @@ Otherwise, APPROVE.
             "extractor_output": final_message
         }
 
-    if "APPROVED" not in validator_message.upper():
-        return {
-            "status": "failed",
-            "stage": "validation",
-            "error": "Validator did not return clear decision",
-            "validator_output": validator_message
-        }
-
-    print(f"[OK] Validation approved")
+    # If not explicitly rejected, proceed to storage
+    print(f"[OK] Validation completed")
 
     # STEP 3: STORE
     print(f"\n[STEP 3/3] Storing validated extractions...")

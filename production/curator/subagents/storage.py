@@ -899,36 +899,24 @@ def get_graph_statistics() -> str:
 
 
 @traceable(name="storage_subagent")
-def create_storage_agent():
+def create_storage_agent(checkpointer=None):
     """
-    Create the storage sub-agent
+    Create the storage sub-agent with epistemic field mapping training.
 
-    This agent specializes in:
-    - store_extraction() -> staging_extractions (new primary workflow)
-    - promote_to_core() -> core_entities (after validation)
-    - store_equivalence() -> core_equivalences (cross-ecosystem links)
-    - get_staging_statistics() -> domain table stats
-
-    Legacy tools (backward compatible):
-    - store_finding() -> findings table
-    - legacy_store_equivalence() -> equivalences table
-    - record_crawled_source() -> crawled_sources
-
-    Uses Claude Haiku 3.5 for cost optimization (storage is simple database operations)
+    Args:
+        checkpointer: Optional LangGraph checkpointer (e.g., PostgresSaver) for state persistence
     """
-    model = ChatAnthropic(
-        model="claude-3-5-haiku-20241022",
-        temperature=0.1,
+    from langchain.agents import create_agent
+    from ..subagent_specs import get_storage_spec
+
+    spec = get_storage_spec()
+
+    # Create agent with system prompt and optional checkpointer
+    agent = create_agent(
+        model=ChatAnthropic(model=spec["model"], temperature=0.1),
+        system_prompt=spec["system_prompt"],
+        tools=spec["tools"],
+        checkpointer=checkpointer,
     )
 
-    tools = [
-        # Extraction workflow - ONLY store, don't promote (human review required)
-        store_extraction,        # Stage extractions for human review
-        get_staging_statistics,  # Query database stats
-        # REMOVED: promote_to_core - only called by separate script after human approval
-        # REMOVED: store_equivalence - only used after entities are in core
-        # Legacy tools REMOVED - they cause schema confusion
-    ]
-
-    agent = create_react_agent(model, tools)
     return agent
