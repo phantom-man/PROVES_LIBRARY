@@ -657,15 +657,33 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
 Each diagram type supports its own configuration options for spacing, sizing, and layout. These are placed at the same level as `themeVariables` in the config object.
 
 ### Flowchart Configuration
+
+**CRITICAL: Use these settings to avoid common rendering issues:**
+
 ```yaml
 flowchart:
   curve: 'linear'            # Connection style: 'linear', 'basis', 'cardinal', 'catmullRom' (MUST be quoted)
-  padding: 15                # Padding around diagram
-  nodeSpacing: 50            # Horizontal space between nodes
-  rankSpacing: 50            # Vertical space between ranks/levels
+  htmlLabels: false          # ⚠️ CRITICAL: Set to FALSE for proper text handling
+  padding: 25                # Padding around subgraph content (increased from 15)
+  nodeSpacing: 60            # Horizontal space between nodes
+  rankSpacing: 80            # Vertical space between ranks/levels (increased from 50)
   diagramPadding: 8          # Padding around entire diagram
-  htmlLabels: true           # Enable HTML in labels
   useMaxWidth: true          # Responsive width
+```
+
+**Why `htmlLabels: false` is required:**
+- **Subgraph labels overlapping content:** When `htmlLabels: true`, subgraph labels render in HTML foreignObject elements with fixed widths. Multi-line labels wrap behind nodes below them.
+- **Text clipping in diamond shapes:** HTML text in decision nodes gets clipped at the diamond boundaries.
+- **Inconsistent rendering:** GitHub preview and Jekyll HTML render differently because they use different Mermaid configurations.
+- **With `htmlLabels: false`:** Mermaid uses native SVG text elements that:
+  - Wrap properly within shape boundaries
+  - Scale consistently across renderers
+  - Don't have fixed-width clipping issues
+
+**Note:** With `htmlLabels: false`, you CANNOT use HTML tags like `<br/>` for line breaks. Use markdown backtick syntax instead:
+```
+id["`Line 1
+Line 2`"]
 ```
 
 ### Gantt Chart Configuration
@@ -1103,7 +1121,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -1183,11 +1201,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1300,7 +1318,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1380,11 +1398,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1497,7 +1515,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1577,11 +1595,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1694,7 +1712,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'
@@ -1774,11 +1792,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50

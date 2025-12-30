@@ -43,7 +43,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -123,11 +123,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -162,7 +162,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagramPadding: 20
+    diagrampadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -214,7 +214,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4ShapePadding: 20
+    c4Shapepadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -342,7 +342,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -422,11 +422,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -461,7 +461,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagramPadding: 20
+    diagrampadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -513,7 +513,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4ShapePadding: 20
+    c4Shapepadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -594,7 +594,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -674,11 +674,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -713,7 +713,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagramPadding: 20
+    diagrampadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -765,7 +765,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4ShapePadding: 20
+    c4Shapepadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -822,7 +822,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -902,11 +902,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -941,7 +941,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagramPadding: 20
+    diagrampadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -993,7 +993,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4ShapePadding: 20
+    c4Shapepadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -1090,7 +1090,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1170,11 +1170,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1209,7 +1209,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagramPadding: 20
+    diagrampadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1261,7 +1261,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4ShapePadding: 20
+    c4Shapepadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -1342,7 +1342,7 @@ config:
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
+    .cluster-label { font-weight: 600; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1422,11 +1422,11 @@ config:
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
-    htmlLabels: true
+    htmlLabels: false
     useMaxWidth: true
-    padding: 20
+    padding: 25
     nodeSpacing: 60
-    rankSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1461,7 +1461,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagramPadding: 20
+    diagrampadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1513,7 +1513,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4ShapePadding: 20
+    c4Shapepadding: 25
     width: 216
     height: 60
     boxMargin: 10

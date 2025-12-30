@@ -23,17 +23,69 @@
   });
 </script>
 
-<!-- Basic Mermaid layout only - no theme overrides -->
+<!-- Mermaid diagram styles - fixes for flowchart rendering issues -->
 <style>
   .mermaid {
     text-align: center;
     margin: 2rem auto;
     max-width: 100%;
+    overflow-x: auto;
   }
   
   .mermaid svg {
     max-width: 100%;
     height: auto;
+  }
+  
+  /* Fix subgraph label positioning - prevent overlap with content */
+  .mermaid .cluster-label {
+    dominant-baseline: text-before-edge !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Ensure cluster labels have proper z-index */
+  .mermaid .cluster-label foreignObject {
+    overflow: visible !important;
+  }
+  
+  /* Fix subgraph container to allow label space */
+  .mermaid .cluster rect {
+    /* Clusters need proper top padding for labels */
+  }
+  
+  /* Consistent font sizing for flowchart nodes */
+  .mermaid .node .label,
+  .mermaid .nodeLabel,
+  .mermaid .node foreignObject div {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Fix diamond (decision) shape text - allow overflow and increase visibility */
+  .mermaid .node polygon + .label,
+  .mermaid .node.decision .label,
+  .mermaid .node foreignObject {
+    overflow: visible !important;
+  }
+  
+  /* Ensure text in diamonds is visible */
+  .mermaid .node .label foreignObject {
+    overflow: visible !important;
+  }
+  
+  /* Fix edge labels positioning */
+  .mermaid .edgeLabel {
+    background-color: transparent !important;
+  }
+  
+  .mermaid .edgeLabel rect {
+    opacity: 0.9 !important;
+  }
+  
+  /* Ensure proper text wrapping in nodes */
+  .mermaid .nodeLabel {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
   }
 </style>
 
