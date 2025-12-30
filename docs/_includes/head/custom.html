@@ -4,10 +4,19 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Minimal initialization - let the diagram frontmatter configs control everything
+    // Initialize with proper spacing and font settings
     mermaid.initialize({
-      startOnLoad: false,  // We'll manually trigger rendering
-      securityLevel: 'loose'
+      startOnLoad: false,
+      securityLevel: 'loose',
+      flowchart: {
+        htmlLabels: false,
+        curve: 'linear',
+        padding: 30,
+        nodeSpacing: 70,
+        rankSpacing: 100,
+        useMaxWidth: true
+      },
+      fontSize: 18
     });
     
     // Find all mermaid code blocks and render them
@@ -53,12 +62,21 @@
     /* Clusters need proper top padding for labels */
   }
   
-  /* Consistent font sizing for flowchart nodes */
+  /* Consistent font sizing for flowchart nodes - LARGE for readability */
   .mermaid .node .label,
   .mermaid .nodeLabel,
-  .mermaid .node foreignObject div {
+  .mermaid .node foreignObject div,
+  .mermaid .edgeLabel {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 18px !important;
     line-height: 1.4 !important;
+  }
+  
+  /* Cluster/subgraph labels need to be larger and bolder */
+  .mermaid .cluster-label .nodeLabel,
+  .mermaid .cluster-label foreignObject div {
+    font-size: 20px !important;
+    font-weight: 700 !important;
   }
   
   /* Fix diamond (decision) shape text - allow overflow and increase visibility */
