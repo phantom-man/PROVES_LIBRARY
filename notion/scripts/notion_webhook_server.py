@@ -772,6 +772,12 @@ async def status():
         )
 
 
+@app.get("/health")
+async def health():
+    """Simple health check endpoint"""
+    return {"status": "ok", "service": "notion-webhook-server"}
+
+
 if __name__ == "__main__":
     import uvicorn
 

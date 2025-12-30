@@ -78,27 +78,30 @@ def store_extraction(
     reasoning_trail: dict = None,
     duplicate_check: dict = None,
     source_metadata: dict = None,
-    # Dimensional canonicalization metadata (Knowledge Canonicalization Theory)
-    knowledge_form: str = "unknown",
-    knowledge_form_confidence: float = 0.0,
-    knowledge_form_reasoning: str = None,
-    contact_level: str = "unknown",
-    contact_confidence: float = 0.0,
-    contact_reasoning: str = None,
-    directionality: str = "unknown",
-    directionality_confidence: float = 0.0,
-    directionality_reasoning: str = None,
-    temporality: str = "unknown",
-    temporality_confidence: float = 0.0,
-    temporality_reasoning: str = None,
-    formalizability: str = "unknown",
-    formalizability_confidence: float = 0.0,
-    formalizability_reasoning: str = None,
-    carrier: str = "unknown",
-    carrier_confidence: float = 0.0,
-    carrier_reasoning: str = None,
-    needs_human_review: bool = False,
-    review_reason: str = None
+    # Knowledge Capture Checklist (7 questions) - stored in knowledge_epistemics sidecar
+    observer_id: str = "agent:extractor_v3",
+    observer_type: str = "ai",
+    contact_mode: str = "derived",
+    contact_strength: float = 0.30,
+    signal_type: str = "text",
+    pattern_storage: str = "externalized",
+    representation_media: list = None,
+    dependencies: dict = None,
+    sequence_role: str = "none",
+    validity_conditions: dict = None,
+    assumptions: list = None,
+    scope: str = None,
+    observed_at: str = None,
+    valid_from: str = None,
+    valid_to: str = None,
+    refresh_trigger: str = None,
+    staleness_risk: float = 0.20,
+    author_id: str = None,
+    intent: str = "unknown",
+    uncertainty_notes: str = None,
+    reenactment_required: bool = False,
+    practice_interval: str = None,
+    skill_transferability: str = "portable"
 ) -> str:
     """
     Deliver an extracted entity to the human review inbox (staging_extractions table).
@@ -155,32 +158,31 @@ def store_extraction(
                 "source_type": "webpage",
                 "fetch_timestamp": "2025-12-23T10:45:32Z"
             }
-        knowledge_form: 'embodied' | 'inferred' | 'unknown'
-            How this knowledge was obtained (direct experience vs symbolic reasoning)
-        knowledge_form_confidence: Confidence in knowledge form classification (0.0-1.0)
-        knowledge_form_reasoning: Why this knowledge form was assigned
-        contact_level: 'direct' | 'mediated' | 'indirect' | 'derived' | 'unknown'
-            Epistemic anchoring - how knowledge touched reality
-        contact_confidence: Confidence in contact level (0.0-1.0)
-        contact_reasoning: Why this contact level was assigned
-        directionality: 'forward' | 'backward' | 'bidirectional' | 'unknown'
-            Epistemic operation - prediction vs assessment
-        directionality_confidence: Confidence in directionality (0.0-1.0)
-        directionality_reasoning: Why this directionality was assigned
-        temporality: 'snapshot' | 'sequence' | 'history' | 'lifecycle' | 'unknown'
-            Epistemic dependence on history
-        temporality_confidence: Confidence in temporality (0.0-1.0)
-        temporality_reasoning: Why this temporality was assigned
-        formalizability: 'portable' | 'conditional' | 'local' | 'tacit' | 'unknown'
-            Capacity for symbolic transformation
-        formalizability_confidence: Confidence in formalizability (0.0-1.0)
-        formalizability_reasoning: Why this formalizability was assigned
-        carrier: 'body' | 'instrument' | 'artifact' | 'community' | 'machine' | 'unknown'
-            What carries this knowledge
-        carrier_confidence: Confidence in carrier (0.0-1.0)
-        carrier_reasoning: Why this carrier was assigned
-        needs_human_review: Set to TRUE if any dimensional confidence < 0.7
-        review_reason: Explanation of why human review is needed
+        observer_id: Who observed this (e.g., "agent:extractor_v3", "human:technician_name")
+        observer_type: 'ai' | 'human' | 'instrument' | 'process'
+        contact_mode: 'direct' | 'mediated' | 'effect_only' | 'derived'
+            Question 1: Who knew this, and how close were they?
+        contact_strength: Continuous 0.00-1.00 (1.0 = direct physical, 0.3 = from docs)
+        signal_type: 'text' | 'code' | 'spec' | 'comment' | 'log' | 'telemetry' | etc.
+        pattern_storage: 'internalized' | 'externalized' | 'mixed' | 'unknown'
+            Question 2: Where does the experience live? (embodied in body vs in docs)
+        representation_media: List of media types (e.g., ["text"], ["code", "diagram"])
+        dependencies: JSON dict of dependencies (Question 3: What must stay connected?)
+        sequence_role: 'precondition' | 'step' | 'outcome' | 'postcondition' | 'none'
+        validity_conditions: JSON dict (Question 4: Under what conditions was this true?)
+        assumptions: List of assumptions this knowledge depends on
+        scope: 'local' | 'subsystem' | 'system' | 'general'
+        observed_at: When this was observed (ISO timestamp)
+        valid_from: When this becomes valid
+        valid_to: When this stops being valid (Question 5: When does this expire?)
+        refresh_trigger: What triggers need to refresh ("new_rev", "recalibration", etc.)
+        staleness_risk: 0.00-1.00 risk of knowledge becoming stale
+        author_id: Who wrote/taught this (Question 6: Who wrote this, and why?)
+        intent: 'explain' | 'instruct' | 'justify' | 'explore' | 'comply' | 'persuade' | etc.
+        uncertainty_notes: Explicit uncertainties or provisional nature
+        reenactment_required: Question 7: Does this only work if someone keeps doing it?
+        practice_interval: How often practice is needed ("per-run", "weekly", etc.)
+        skill_transferability: 'portable' | 'conditional' | 'local' | 'tacit_like'
 
     Lineage Computation (AUTOMATIC):
         This function automatically computes lineage verification data:
@@ -391,6 +393,7 @@ def store_extraction(
 
             evidence = json.dumps(evidence_data)
 
+            # Insert into staging_extractions (core extraction data)
             cur.execute("""
                 INSERT INTO staging_extractions (
                     pipeline_run_id, snapshot_id, agent_id, agent_version,
@@ -399,14 +402,7 @@ def store_extraction(
                     evidence, evidence_type, status,
                     evidence_checksum, evidence_byte_offset, evidence_byte_length,
                     lineage_verified, lineage_confidence, lineage_verified_at,
-                    lineage_verification_details,
-                    knowledge_form, knowledge_form_confidence, knowledge_form_reasoning,
-                    contact_level, contact_confidence, contact_reasoning,
-                    directionality, directionality_confidence, directionality_reasoning,
-                    temporality, temporality_confidence, temporality_reasoning,
-                    formalizability, formalizability_confidence, formalizability_reasoning,
-                    carrier, carrier_confidence, carrier_reasoning,
-                    needs_dimensional_review, dimensional_review_reason
+                    lineage_verification_details
                 ) VALUES (
                     %s::uuid, %s::uuid, %s, %s,
                     %s::candidate_type, %s, %s::jsonb,
@@ -414,14 +410,7 @@ def store_extraction(
                     %s::jsonb, %s::evidence_type, 'pending'::candidate_status,
                     %s, %s, %s,
                     %s, %s, %s,
-                    %s::jsonb,
-                    %s, %s, %s,
-                    %s, %s, %s,
-                    %s, %s, %s,
-                    %s, %s, %s,
-                    %s, %s, %s,
-                    %s, %s, %s,
-                    %s, %s
+                    %s::jsonb
                 ) RETURNING extraction_id
             """, (
                 run_id, source_snapshot_id, 'storage_agent', '1.0',
@@ -430,16 +419,50 @@ def store_extraction(
                 evidence, evidence_type,
                 evidence_checksum, evidence_byte_offset, evidence_byte_length,
                 lineage_verified, lineage_confidence, lineage_verified_at,
-                json.dumps(lineage_verification_details),
-                knowledge_form, knowledge_form_confidence, knowledge_form_reasoning,
-                contact_level, contact_confidence, contact_reasoning,
-                directionality, directionality_confidence, directionality_reasoning,
-                temporality, temporality_confidence, temporality_reasoning,
-                formalizability, formalizability_confidence, formalizability_reasoning,
-                carrier, carrier_confidence, carrier_reasoning,
-                needs_human_review, review_reason
+                json.dumps(lineage_verification_details)
             ))
             extraction_id = cur.fetchone()[0]
+
+            # Insert into knowledge_epistemics sidecar (epistemic metadata)
+            # Prepare representation_media as array
+            if representation_media is None:
+                representation_media = ['text']
+
+            # Convert timestamps to proper format if provided as strings
+            observed_at_ts = observed_at if observed_at else None
+            valid_from_ts = valid_from if valid_from else None
+            valid_to_ts = valid_to if valid_to else None
+
+            cur.execute("""
+                INSERT INTO knowledge_epistemics (
+                    extraction_id,
+                    observer_id, observer_type, contact_mode, contact_strength, signal_type,
+                    pattern_storage, representation_media,
+                    dependencies, sequence_role,
+                    validity_conditions, assumptions, scope,
+                    observed_at, valid_from, valid_to, refresh_trigger, staleness_risk,
+                    author_id, intent, uncertainty_notes,
+                    reenactment_required, practice_interval, skill_transferability
+                ) VALUES (
+                    %s::uuid,
+                    %s, %s, %s::contact_mode, %s, %s::signal_type,
+                    %s::pattern_storage, %s,
+                    %s::jsonb, %s::sequence_role,
+                    %s::jsonb, %s, %s,
+                    %s::timestamptz, %s::timestamptz, %s::timestamptz, %s, %s,
+                    %s, %s::author_intent, %s,
+                    %s, %s, %s::transferability
+                )
+            """, (
+                extraction_id,
+                observer_id, observer_type, contact_mode, contact_strength, signal_type,
+                pattern_storage, representation_media,
+                json.dumps(dependencies) if dependencies else None, sequence_role,
+                json.dumps(validity_conditions) if validity_conditions else None, assumptions, scope,
+                observed_at_ts, valid_from_ts, valid_to_ts, refresh_trigger, staleness_risk,
+                author_id, intent, uncertainty_notes,
+                reenactment_required, practice_interval, skill_transferability
+            ))
         conn.commit()
         conn.close()
 

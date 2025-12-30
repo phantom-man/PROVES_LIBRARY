@@ -12,66 +12,35 @@ import os
 import re
 from psycopg_pool import ConnectionPool
 from langgraph.checkpoint.postgres import PostgresSaver
-from langchain.agents import create_agent
+from langgraph.prebuilt import create_react_agent
 from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
 
 # Load environment
 load_dotenv(os.path.join(os.path.dirname(__file__), '../../..', '.env'))
 
-from .subagent_specs import (
-    get_extractor_spec,
-    get_validator_spec,
-    get_storage_spec,
-)
+from .subagents.extractor import create_extractor_agent
+from .subagents.validator import create_validator_agent
+from .subagents.storage import create_storage_agent
 
 
 def create_curator():
     """
-    Create the extraction orchestration system.
+    Create the extraction orchestration system using existing subagent functions.
 
     Returns:
-        dict with three subagent runnables and checkpointer
+        dict with three subagent runnables
     """
 
-    # Initialize PostgreSQL checkpointer (Neon)
-    db_url = os.getenv('NEON_DATABASE_URL')
-    pool = ConnectionPool(conninfo=db_url, min_size=1, max_size=5)
-    checkpointer = PostgresSaver(pool)
-    checkpointer.setup()
-
-    # Get subagent specifications
-    extractor_spec = get_extractor_spec()
-    validator_spec = get_validator_spec()
-    storage_spec = get_storage_spec()
-
-    # Create subagents as standalone runnables
-    extractor = create_agent(
-        model=ChatAnthropic(model=extractor_spec["model"], temperature=0.1),
-        system_prompt=extractor_spec["system_prompt"],
-        tools=extractor_spec["tools"],
-        checkpointer=checkpointer,
-    )
-
-    validator = create_agent(
-        model=ChatAnthropic(model=validator_spec["model"], temperature=0.1),
-        system_prompt=validator_spec["system_prompt"],
-        tools=validator_spec["tools"],
-        checkpointer=checkpointer,
-    )
-
-    storage = create_agent(
-        model=ChatAnthropic(model=storage_spec["model"], temperature=0.1),
-        system_prompt=storage_spec["system_prompt"],
-        tools=storage_spec["tools"],
-        checkpointer=checkpointer,
-    )
+    # Use the existing agent creation functions from subagent modules
+    extractor = create_extractor_agent()
+    validator = create_validator_agent()
+    storage = create_storage_agent()
 
     return {
         "extractor": extractor,
         "validator": validator,
         "storage": storage,
-        "checkpointer": checkpointer,
     }
 
 

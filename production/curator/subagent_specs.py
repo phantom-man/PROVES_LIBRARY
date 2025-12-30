@@ -116,95 +116,135 @@ Extract COUPLINGS (not just components):
 
 **Optional:** If you need the full FRAMES vocabulary reference, use the get_ontology() tool.
 
-## Dimensional Canonicalization (REQUIRED for ALL extractions)
+## Knowledge Capture Checklist (REQUIRED for ALL extractions)
 
-For EVERY extraction, you MUST infer dimensional metadata using Knowledge Canonicalization Theory.
-This preserves epistemic grounding so downstream systems (GNN, reasoning engines) can weight confidence appropriately.
+For EVERY extraction, you MUST answer the 7-question Knowledge Capture Checklist.
+This preserves epistemic grounding so downstream systems can identify loss modes and interface transfer risks.
 
-### The Four Dimensions + Knowledge Form + Carrier
+### The 7 Questions (Answer ALL for each extraction)
 
-**1. Knowledge Form** (embodied vs inferred):
-   - **embodied**: Learned through direct experience, hands-on interaction, tacit patterns
-     Example: "technician observed unusual sound during spin-down"
-   - **inferred**: Symbolic/documented, expressible in text/code, derived from reasoning
-     Example: "I2C address 0x48 documented in driver specification"
-   - Set confidence HIGH (0.9+) if text clearly indicates direct experience or documentation
-   - Set confidence LOW (<0.7) if ambiguous
+**Question 1: Who knew this, and how close were they?** (Observer coupling)
+   - Was this learned by direct involvement, or secondhand?
+   - Did the knower touch the real system, or only outputs?
+   - **Fields to populate:**
+     - `observer_id`: "agent:extractor_v3" (you), "doc:fprime_team", "human:technician_name"
+     - `observer_type`: "ai", "human", "instrument", "process"
+     - `contact_mode`: "direct" (physical), "mediated" (instrumented), "effect_only" (indirect), "derived" (model-only)
+     - `contact_strength`: 0.00-1.00 (continuous: 1.0 = direct physical, 0.3 = derived from docs, 0.1 = pure model)
+     - `signal_type`: "text", "code", "spec", "comment", "example", "log", "telemetry", "diagram", "model", "table", "test"
 
-**2. Contact** (epistemic anchoring - how knowledge touched reality):
-   - **direct**: Physical/experiential ("technician felt", "engineer measured directly")
-   - **mediated**: Instrumented observation ("sensor reports", "telemetry shows")
-   - **indirect**: Effect-only ("torque increased, therefore bearing friction suspected")
-   - **derived**: Model/simulation-only ("thermal model predicts", "calculated from spec")
-   - Set confidence based on explicit mention of observation method
+**Question 2: Where does the experience live now?** (Pattern storage location)
+   - Is this skill or judgment carried by people?
+   - Is it written down, modeled, or logged?
+   - **Fields to populate:**
+     - `pattern_storage`: "internalized" (in body/nervous system), "externalized" (in symbols/docs), "mixed", "unknown"
+     - `representation_media`: ["text"], ["code"], ["text", "diagram"], etc.
 
-**3. Directionality** (epistemic operation):
-   - **forward**: Prediction ("if X happens, Y will occur", "sends data to")
-   - **backward**: Assessment/diagnosis ("Y occurred, therefore X likely caused it")
-   - **bidirectional**: Both directions documented
-   - Set confidence based on causal language (if/then = forward, therefore/because = backward)
+**Question 3: What has to stay connected for this to work?** (Relational integrity)
+   - Does this depend on sequence, timing, or coordination?
+   - Are pieces stored together or scattered?
+   - **Fields to populate:**
+     - `dependencies`: JSON array of entity keys that must remain connected (e.g., ["component:I2C_Driver", "component:PowerMonitor"])
+     - `sequence_role`: "precondition", "step", "outcome", "postcondition", "none"
+     - `relational_notes`: Freeform description of dependencies
 
-**4. Temporality** (dependence on history):
-   - **snapshot**: Instantaneous state ("current temperature", "I2C address")
-   - **sequence**: Ordering matters ("init before start", "timeout after 500ms")
-   - **history**: Accumulated past affects present ("bearing wear over time", "thermal cycling")
-   - **lifecycle**: Long-term evolution ("mission duration", "degradation patterns")
-   - Set confidence based on temporal keywords (timing, sequence, accumulation)
+**Question 4: Under what conditions was this true?** (Context preservation)
+   - What assumptions were in place?
+   - What constraints mattered?
+   - **Fields to populate:**
+     - `validity_conditions`: JSON object (e.g., {"fprime_version": "v3.4.0", "hardware_rev": "2.1"})
+     - `assumptions`: Array of strings (e.g., ["Normal temperature", "Standard config"])
+     - `scope`: "local", "subsystem", "system", "general"
 
-**5. Formalizability** (symbolic transformation capacity):
-   - **portable**: Fully documented, moves intact into code/specs ("I2C protocol", "API contract")
-   - **conditional**: Formalizable if context preserved ("calibration with specific tooling")
-   - **local**: Resists formalization outside setting ("team-specific workflow")
-   - **tacit**: Embodied, cannot be fully symbolized ("pattern recognition from experience")
-   - Set confidence based on documentation completeness
+**Question 5: When does this stop being reliable?** (Temporal validity)
+   - Does this age out?
+   - Has the system changed since this was learned?
+   - **Fields to populate:**
+     - `observed_at`: Timestamp when source was created (from snapshot metadata)
+     - `valid_from`, `valid_to`: Validity range if known
+     - `refresh_trigger`: "new_rev", "recalibration", "periodic", "after_incident", null
+     - `staleness_risk`: 0.00-1.00 (0.0 = timeless, 1.0 = highly time-sensitive)
 
-**6. Carrier** (what carries this knowledge):
-   - **body**: Human embodied knowledge (technician skills, pattern recognition)
-   - **instrument**: Sensor/measurement device (telemetry, oscilloscope)
-   - **artifact**: Documentation, code, specifications
-   - **community**: Organizational practice, team knowledge
-   - **machine**: AI/GNN learned patterns
-   - Set confidence based on explicit source mention
+**Question 6: Who wrote or taught this, and why?** (Authorship & intent)
+   - Was this exploratory, provisional, or certain?
+   - Was it written to explain, persuade, or comply?
+   - **Fields to populate:**
+     - `author_id`: "doc:fprime_team", "human:engineer_x", "agent:parser_v1"
+     - `intent`: "explain", "instruct", "justify", "explore", "comply", "persuade", "remember", "unknown"
+     - `uncertainty_notes`: What uncertainty was present but not recorded?
 
-### Confidence Thresholds and Review Flags
+**Question 7: Does this only work if someone keeps doing it?** (Reenactment dependency)
+   - Does this knowledge require practice?
+   - Can it be understood without having done it?
+   - **Fields to populate:**
+     - `reenactment_required`: TRUE/FALSE
+     - `practice_interval`: "per-run", "weekly", "per-release", null
+     - `skill_transferability`: "portable", "conditional", "local", "tacit_like", "unknown"
 
-- If ANY dimension confidence < 0.7: Set needs_human_review=TRUE
-- Include review_reason explaining which dimensions are uncertain and why
-- Example review_reason: "Temporality confidence 0.65 - unclear if timing is sequence-critical or just nominal"
+### Default Values for Documentation Extraction (YOU as agent)
 
-### Dimensional Inference Examples
+Since you are extracting from documentation (not observing hardware directly):
+- `observer_id`: "agent:extractor_v3" (or your agent ID)
+- `observer_type`: "ai"
+- `contact_mode`: "derived" (you only see text, not hardware)
+- `contact_strength`: 0.25-0.40 (low - reading docs, not touching system)
+- `signal_type`: Usually "text", "code", "spec", "diagram"
+- `pattern_storage`: Usually "externalized" (in documentation)
+- `representation_media`: ["text"] or ["code"] or ["text", "diagram"]
 
-**Example 1: Embodied knowledge with direct contact**
-Text: "Senior technician observed unusual bearing sound during RW-3 spin-down. Pattern differed from previous units."
+### Inference Examples
 
-Dimensions:
-- knowledge_form: "embodied" (confidence: 0.92, reasoning: "Direct sensory observation by experienced technician")
-- contact_level: "direct" (confidence: 0.90, reasoning: "Physical presence, hearing sound directly")
-- directionality: "backward" (confidence: 0.85, reasoning: "Sound pattern used to infer bearing condition")
-- temporality: "history" (confidence: 0.75, reasoning: "'Pattern differed from previous' implies accumulated experience")
-- formalizability: "tacit" (confidence: 0.70, reasoning: "Sound-based pattern recognition, qualitative description")
-- carrier: "body" (confidence: 0.95, reasoning: "Technician's embodied sensory knowledge")
-- needs_human_review: TRUE (formalizability and temporality below 0.80)
-- review_reason: "Formalizability 0.70 and temporality 0.75 - tacit knowledge with unclear historical accumulation"
+**Example 1: Technical procedure from documentation**
+Text: "Initialize I2CDriver before PowerMonitor. Send readings every 100ms via address 0x48. If timeout exceeds 500ms, enter safe mode."
 
-**Example 2: Inferred knowledge with mediated contact**
-Text: "I2CDriver sends readings to PowerMonitor every 100ms via I2C address 0x48. If readings stop after 500ms timeout, system enters safe mode."
+Epistemic fields:
+- `observer_id`: "agent:extractor_v3"
+- `observer_type`: "ai"
+- `contact_mode`: "derived" (extracted from docs, no hardware access)
+- `contact_strength`: 0.35
+- `signal_type`: "spec"
+- `pattern_storage`: "externalized"
+- `representation_media`: ["text", "code"]
+- `dependencies`: ["component:I2CDriver", "component:PowerMonitor"]
+- `sequence_role`: "step"
+- `validity_conditions`: {"fprime_version": "v3.4.0"}  (if version mentioned)
+- `assumptions`: ["Normal operation", "I2C bus functional"]
+- `scope`: "subsystem"
+- `staleness_risk`: 0.4 (could change with new version)
+- `refresh_trigger`: "new_rev"
+- `author_id`: "doc:fprime_team"
+- `intent`: "instruct"
+- `reenactment_required`: FALSE
+- `skill_transferability`: "portable"
 
-Dimensions:
-- knowledge_form: "inferred" (confidence: 0.95, reasoning: "Documented in code/spec, symbolic representation")
-- contact_level: "mediated" (confidence: 0.90, reasoning: "I2C sensor mediates physical measurement")
-- directionality: "forward" (confidence: 0.95, reasoning: "Clear forward flow: sensor → manager, timeout → safe mode")
-- temporality: "sequence" (confidence: 0.95, reasoning: "Explicit timing: 100ms periodic, 500ms timeout sequence")
-- formalizability: "portable" (confidence: 0.98, reasoning: "I2C protocol, timing constraints fully documented")
-- carrier: "artifact" (confidence: 0.95, reasoning: "Code documentation, driver specification")
-- needs_human_review: FALSE (all confidences >= 0.80)
+**Example 2: Observed hardware behavior (from documentation describing observation)**
+Text: "During RW-3 testing, technician noted unusual bearing sound at spin-down. Pattern differed from nominal units, suggesting early wear."
+
+Epistemic fields:
+- `observer_id`: "human:technician_unknown" (mentioned in text)
+- `observer_type`: "human"
+- `contact_mode`: "direct" (technician physically present)
+- `contact_strength`: 0.85 (direct sensory observation)
+- `signal_type`: "test" (from testing)
+- `pattern_storage`: "internalized" (technician's pattern recognition)
+- `representation_media`: ["text"]
+- `dependencies`: ["component:RW-3", "component:bearing"]
+- `sequence_role`: "outcome"
+- `scope`: "local"
+- `staleness_risk`: 0.6 (hardware-specific observation)
+- `author_id`: "human:technician_unknown"
+- `intent`: "remember"
+- `uncertainty_notes`: "No quantitative threshold provided, qualitative assessment only"
+- `reenactment_required`: TRUE
+- `practice_interval`: "per-run"
+- `skill_transferability`: "tacit_like"
 
 ## Critical Rules
 
 - ALWAYS cite the source URL in your response
 - Provide exact evidence quotes for each extraction
-- ALWAYS infer dimensional metadata for EVERY extraction
-- Document your confidence reasoning for EACH dimension
+- ALWAYS answer ALL 7 Knowledge Capture Checklist questions for EVERY extraction
+- Document epistemic metadata thoroughly (observer, pattern storage, dependencies, etc.)
 - Note any uncertainties or ambiguities
 - Do NOT assign criticality (that is for humans to decide)
 - Focus on WHAT exists, not on how critical it might be
@@ -221,15 +261,14 @@ Your final response should be structured text that includes:
   - raw_evidence (exact quote from source)
   - evidence_type (explicit_requirement, interface_specification, etc.)
   - confidence_score and confidence_reason
-  - **DIMENSIONAL METADATA (ALL 6 dimensions):**
-    - knowledge_form + confidence + reasoning
-    - contact_level + confidence + reasoning
-    - directionality + confidence + reasoning
-    - temporality + confidence + reasoning
-    - formalizability + confidence + reasoning
-    - carrier + confidence + reasoning
-  - needs_human_review (TRUE if any dimension confidence < 0.7)
-  - review_reason (explanation if flagged for review)
+  - **KNOWLEDGE CAPTURE CHECKLIST (ALL 7 questions answered):**
+    - observer_id, observer_type, contact_mode, contact_strength, signal_type (Q1)
+    - pattern_storage, representation_media (Q2)
+    - dependencies, sequence_role (Q3)
+    - validity_conditions, assumptions, scope (Q4)
+    - observed_at, valid_from, valid_to, refresh_trigger, staleness_risk (Q5)
+    - author_id, intent, uncertainty_notes (Q6)
+    - reenactment_required, practice_interval, skill_transferability (Q7)
 - Any uncertainties or notes
 
 Work step-by-step through the workflow above.""",
@@ -399,16 +438,14 @@ Store extracted entities in staging_extractions for human review.
    - properties (entity-specific JSON)
    - confidence_score and confidence_reason
    - reasoning_trail (your thought process)
-   - lineage_verified, lineage_confidence, evidence_checksum (from validator)
-   - **DIMENSIONAL METADATA (Knowledge Canonicalization - REQUIRED):**
-     - knowledge_form, knowledge_form_confidence, knowledge_form_reasoning
-     - contact_level, contact_confidence, contact_reasoning
-     - directionality, directionality_confidence, directionality_reasoning
-     - temporality, temporality_confidence, temporality_reasoning
-     - formalizability, formalizability_confidence, formalizability_reasoning
-     - carrier, carrier_confidence, carrier_reasoning
-     - needs_human_review (TRUE if any dimension confidence < 0.7)
-     - review_reason (explanation if flagged)
+   - **KNOWLEDGE CAPTURE CHECKLIST (7 questions - REQUIRED):**
+     - observer_id, observer_type, contact_mode, contact_strength, signal_type (Q1)
+     - pattern_storage, representation_media (Q2)
+     - dependencies, sequence_role (Q3)
+     - validity_conditions, assumptions, scope (Q4)
+     - observed_at, valid_from, valid_to, refresh_trigger, staleness_risk (Q5)
+     - author_id, intent, uncertainty_notes (Q6)
+     - reenactment_required, practice_interval, skill_transferability (Q7)
 3. Verify storage using get_staging_statistics() (1 tool call)
 4. Report success/failure with statistics
 
@@ -418,8 +455,7 @@ After 5 tool calls, you MUST return. No exceptions.
 
 - ALWAYS include source_snapshot_id (from the extractor's output)
 - ALWAYS include raw_evidence (exact quotes)
-- ALWAYS include dimensional metadata (all 6 dimensions with confidence and reasoning)
-- Set needs_human_review=TRUE if any dimension confidence < 0.7
+- ALWAYS include epistemic metadata (all 7 questions answered)
 - Store ALL extractions (don't filter based on importance)
 - Include complete metadata for human verification
 
