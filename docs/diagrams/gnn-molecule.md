@@ -27,7 +27,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { font-weight: 600 !important; margin-bottom: 10px !important; }
+    .cluster rect { padding-top: 25px !important; }
+    .cluster-label { font-weight: 600 !important; display: block !important; padding-bottom: 8px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -113,7 +114,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 200
+    wrappingWidth: 300
   sequence:
     diagramMarginX: 50
     diagramMarginY: 10
