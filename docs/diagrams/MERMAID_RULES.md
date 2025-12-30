@@ -293,6 +293,7 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
       themeCSS: |
         .nodeLabel { font-size: 18px !important; }
         .edgeLabel { font-size: 16px !important; }
+        .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
       themeVariables:
         fontSize: '18px'
     ```
@@ -319,6 +320,10 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
 - `defaultLinkColor` - Default link/edge color (default: same as lineColor)
 - `titleColor` - Title text color (default: same as tertiaryTextColor)
 - `edgeLabelBackground` - Background color of edge labels (auto-calculated from secondaryColor)
+  - **Note:** No theme variable for edge label borders. Use `themeCSS` instead:
+    ```css
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    ```
 - `border2` - Alternative border color
 
 ### Sequence Diagram Variables
@@ -478,6 +483,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -542,6 +548,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -606,6 +613,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -670,6 +678,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'

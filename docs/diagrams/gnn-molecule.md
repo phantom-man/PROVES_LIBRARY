@@ -27,6 +27,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -133,5 +134,6 @@ A GNN learns which bonds carry the strongest influence. With verified edges and 
 ---
 
 [Back to Home](../index.html)
+
 
 

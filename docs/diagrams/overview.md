@@ -45,6 +45,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -128,6 +129,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -221,6 +223,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -309,6 +312,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -403,6 +407,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -495,5 +500,6 @@ Every dependency tracked with precise source locations:
 **Analysis Method:** Manual annotation with line-by-line review
 **Confidence Level:** High (human-verified)
 **Date:** December 20, 2024
+
 
 

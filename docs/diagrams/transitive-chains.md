@@ -42,6 +42,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -210,6 +211,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -331,6 +333,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -428,6 +431,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -565,6 +569,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -686,6 +691,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -803,5 +809,6 @@ Test suites should:
 **Longest Chain Found:** 13 hops (Application -> Board Configuration)
 **Documentation Gap:** 14 undocumented transitive links
 **Date:** December 20, 2024
+
 
 

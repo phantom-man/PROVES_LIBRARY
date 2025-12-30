@@ -43,6 +43,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -163,6 +164,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -280,6 +282,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -393,6 +396,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -480,6 +484,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -555,6 +560,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -710,6 +716,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -829,6 +836,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -952,6 +960,7 @@ config:
   themeCSS: |
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
+    .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1091,6 +1100,7 @@ flowchart TB
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024
+
 
 
 
