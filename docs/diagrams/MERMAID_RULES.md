@@ -1007,8 +1007,7 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { z-index: 10 !important; pointer-events: none; }
-    .cluster rect { z-index: -1 !important; }
+    .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -1209,8 +1208,7 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { z-index: 10 !important; pointer-events: none; }
-    .cluster rect { z-index: -1 !important; }
+    .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1411,8 +1409,7 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { z-index: 10 !important; pointer-events: none; }
-    .cluster rect { z-index: -1 !important; }
+    .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1613,8 +1610,7 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { z-index: 10 !important; pointer-events: none; }
-    .cluster rect { z-index: -1 !important; }
+    .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'
@@ -2221,16 +2217,17 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
    - **Impact**: Without quotes, Mermaid ignores the setting and uses default curved lines
    - **Required additions**: Also add `htmlLabels: true` and `useMaxWidth: true` for proper rendering
 
-2. **Subgraph labels overlap with nodes (z-index issue)**
-   - **Problem**: Subgraph titles render behind nodes, making them unreadable
-   - **Solution**: Add to themeCSS:
+2. **Subgraph labels too close to content boxes**
+   - **Problem**: Subgraph titles appear directly on top of the subgraph border, overlapping with content
+   - **Solution**: Add vertical offset to themeCSS:
    ```yaml
    themeCSS: |
-     .cluster-label { z-index: 10 !important; pointer-events: none; }
-     .cluster rect { z-index: -1 !important; }
+     .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
    ```
-   - **Why**: Mermaid's default rendering puts cluster backgrounds and labels at same z-level as nodes
+   - **Why**: Mermaid renders cluster labels at the exact border position with no spacing
+   - **How it works**: `translateY(-15px)` moves the label 15 pixels upward, away from the box
    - **Impact**: Critical for diagrams with subgraphs (team boundaries, system architecture)
+   - **Note**: Negative value moves up, positive moves down. Adjust -15px as needed.
 
 3. **Parentheses without quotes** (pie charts, node labels)
    - ❌ `Direct (visible) : 15`
