@@ -114,45 +114,6 @@ config:
   flowchart:
     curve: linear
 ---
-
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
-
 flowchart TB
     subgraph "Layer 1 Application"
         APP[Application Component Requests IMU data]
@@ -505,45 +466,6 @@ config:
   flowchart:
     curve: linear
 ---
-
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
-
 flowchart TB
     START[RateGroup.run every 100ms]
 
@@ -671,45 +593,6 @@ config:
   flowchart:
     curve: linear
 ---
-
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
-
 flowchart LR
     subgraph "User Commands"
         USER[Developer runs fprime-util build]
