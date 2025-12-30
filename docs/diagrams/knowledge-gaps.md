@@ -55,31 +55,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -92,9 +90,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 sequenceDiagram
     participant LSM as LoadSwitchManager
     participant Power as Power Supply
@@ -164,31 +295,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -201,9 +330,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart TB
     START[New developer integrates IMU]
 
@@ -279,31 +541,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -316,9 +576,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart TB
     subgraph "Power Supply Characteristics"
         V_NOM[Nominal Voltage 3.3V]
@@ -428,31 +821,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -465,9 +856,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 stateDiagram-v2
     [*] --> Normal: System boot
 
@@ -580,31 +1104,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -617,9 +1139,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         BUS["I2C Bus /dev/i2c-1 SDA/SCL"]
@@ -694,31 +1349,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -731,9 +1384,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 sequenceDiagram
     participant App as Application
     participant IMU as IMU Manager
@@ -821,31 +1607,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -858,9 +1642,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart LR
     subgraph "F´ Framework"
         F_LINUX[LinuxI2cDriver<br/>Linux]
@@ -976,31 +1893,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -1013,9 +1928,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5
@@ -1054,31 +2102,29 @@ config:
     tertiaryColor: '#FFF9C4'
     primaryTextColor: '#2E7D32'
     secondaryTextColor: '#C2185B'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#66BB6A'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
     secondaryBorderColor: '#F06292'
     tertiaryBorderColor: '#FDD835'
-    lineColor: '#4CAF50'
-    edgeLabelBackground: '#F1F8E9'
-    nodeBorder: '#66BB6A'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
     clusterBorder: '#FDD835'
-    defaultLinkColor: '#4CAF50'
-    titleColor: '#2E7D32'
+    edgeLabelBackground: '#FCE4EC'
     actorBkg: '#E8F5E9'
-    actorBorder: '#66BB6A'
+    actorBorder: '#4CAF50'
     actorTextColor: '#2E7D32'
-    signalColor: '#4CAF50'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
     labelBoxBkgColor: '#FCE4EC'
-    stateBkg: '#E8F5E9'
-    sectionBkgColor: '#FFF9C4'
-    taskBorderColor: '#66BB6A'
-    taskBkgColor: '#E8F5E9'
-    activeTaskBkgColor: '#C8E6C9'
-    gridColor: '#A5D6A7'
-    doneTaskBkgColor: '#81C784'
-    critBkgColor: '#F06292'
-    todayLineColor: '#2E7D32'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
     pie1: '#4CAF50'
     pie2: '#F06292'
     pie3: '#FDD835'
@@ -1091,9 +2137,142 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 gantt
     title Typical Discovery Timeline for Knowledge Gaps
     dateFormat YYYY-MM-DD
@@ -1185,6 +2364,7 @@ gantt
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
+
 
 
 

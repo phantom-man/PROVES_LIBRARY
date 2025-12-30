@@ -39,7 +39,7 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -48,49 +48,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
     fontSize: '18px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart TB
     subgraph "NASA/JPL"
         JPL_CORE[F´ Core Team ⭐ Permanent Staff]
@@ -163,7 +296,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -172,49 +305,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
     fontSize: '18px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart LR
     subgraph "F´ Knowledge"
         F_PUB["Public Documentation [YES] Versioned [YES] Comprehensive"]
@@ -284,7 +550,7 @@ This flowchart shows the journey developers take when they need integration know
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -293,49 +559,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
     fontSize: '18px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart TB
     START[Integration Knowledge Needed]
 
@@ -401,7 +800,7 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -410,68 +809,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    sectionBkgColor: '#FFE0B2'
-    altSectionBkgColor: '#E1F5FE'
-    sectionBkgColor2: '#FFF9C4'
-    taskBkgColor: '#81D4FA'
-    taskBorderColor: '#0288D1'
-    activeTaskBkgColor: '#4FC3F7'
-    activeTaskBorderColor: '#0277BD'
-    doneTaskBkgColor: '#B3E5FC'
-    doneTaskBorderColor: '#0288D1'
-    critBkgColor: '#FF8A80'
-    critBorderColor: '#D32F2F'
-    taskTextColor: '#01579B'
-    taskTextOutsideColor: '#01579B'
-    taskTextLightColor: '#01579B'
+    fontSize: '18px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
     taskTextDarkColor: '#FFFFFF'
-    gridColor: '#B3E5FC'
-    todayLineColor: '#D32F2F'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
   gantt:
     fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 gantt
     title University Team Knowledge Retention
     dateFormat YYYY-MM
@@ -511,7 +1024,7 @@ gantt
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -520,49 +1033,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
     fontSize: '18px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 pie title Knowledge Retention After Team Graduation
     "Lost knowledge from graduated teams" : 70
     "Degraded or partially remembered" : 20
@@ -590,7 +1236,7 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -599,49 +1245,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
     fontSize: '18px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 sequenceDiagram
     autonumber
     participant TeamA as Team A 2020
@@ -749,7 +1528,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -758,49 +1537,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
     fontSize: '18px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart TB
     subgraph "Mission Lifecycle"
         DESIGN[Design Decisions]
@@ -872,7 +1784,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -881,49 +1793,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
     fontSize: '18px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 quadrantChart
     title Knowledge Loss Risk by Interface Strength
     x-axis Low Team Turnover --> High Team Turnover
@@ -999,7 +2044,7 @@ quadrantChart
 ---
 config:
   theme: base
-  fontSize: '18'
+  fontSize: 18
   themeCSS: |
     .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
     .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
@@ -1008,49 +2053,182 @@ config:
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
-    primaryColor: '#E1F5FE'
-    secondaryColor: '#FFF9C4'
-    tertiaryColor: '#FFE0B2'
-    primaryTextColor: '#01579B'
-    secondaryTextColor: '#F57F17'
-    tertiaryTextColor: '#E65100'
-    primaryBorderColor: '#0288D1'
-    secondaryBorderColor: '#FDD835'
-    tertiaryBorderColor: '#FF9800'
-    background: '#E3F2FD'
-    textColor: '#01579B'
-    lineColor: '#29B6F6'
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
     fontSize: '18px'
-    nodeBorder: '#0288D1'
-    mainBkg: '#E1F5FE'
-    clusterBkg: '#FFE0B2'
-    clusterBorder: '#FF9800'
-    edgeLabelBackground: '#FFF9C4'
-    actorBkg: '#E1F5FE'
-    actorBorder: '#0288D1'
-    actorTextColor: '#01579B'
-    signalColor: '#29B6F6'
-    signalTextColor: '#01579B'
-    labelBoxBkgColor: '#FFF9C4'
-    noteBkgColor: '#FFE0B2'
-    noteTextColor: '#E65100'
-    noteBorderColor: '#FF9800'
-    pie1: '#0288D1'
-    pie2: '#FDD835'
-    pie3: '#FF9800'
-    pie4: '#29B6F6'
-    pie5: '#FFEB3B'
-    pie6: '#FFB74D'
-    pie7: '#4FC3F7'
-    pie8: '#FFF176'
-    pie9: '#FF8A65'
-    pie10: '#81D4FA'
-    pie11: '#FFF9C4'
-    pie12: '#FFE0B2'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
+  gantt:
+    fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
----
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10---
 flowchart TB
     subgraph "Traditional Approach (Failed)"
         TRAD_TEAM[Team Knowledge]
@@ -1146,6 +2324,7 @@ flowchart TB
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024
+
 
 
 
