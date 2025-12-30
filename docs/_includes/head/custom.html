@@ -62,11 +62,17 @@
     /* Clusters need proper top padding for labels */
   }
   
-  /* Consistent font sizing for flowchart nodes - LARGE for readability */
+  /* Consistent font sizing for ALL flowchart nodes including inside subgraphs */
   .mermaid .node .label,
   .mermaid .nodeLabel,
   .mermaid .node foreignObject div,
-  .mermaid .edgeLabel {
+  .mermaid .edgeLabel,
+  .mermaid .cluster .node .label,
+  .mermaid .cluster .nodeLabel,
+  .mermaid .flowchart-label,
+  .mermaid text.nodeLabel,
+  .mermaid .label foreignObject div,
+  .mermaid g.node text {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
     font-size: 24px !important;
     line-height: 1.4 !important;
@@ -74,9 +80,20 @@
   
   /* Cluster/subgraph labels need to be larger and bolder */
   .mermaid .cluster-label .nodeLabel,
-  .mermaid .cluster-label foreignObject div {
+  .mermaid .cluster-label foreignObject div,
+  .mermaid .cluster-label text {
     font-size: 26px !important;
     font-weight: 700 !important;
+  }
+  
+  /* Target SVG text elements directly for nodes */
+  .mermaid svg text {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+  }
+  
+  .mermaid svg .node text,
+  .mermaid svg .cluster .node text {
+    font-size: 24px !important;
   }
   
   /* Fix diamond (decision) shape text - allow overflow and increase visibility */
