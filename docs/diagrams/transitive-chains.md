@@ -37,6 +37,38 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -155,6 +187,43 @@ This sequence diagram shows what happens when your system boots up. The tricky p
 ### Initialization Dependency Chain
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 sequenceDiagram
     autonumber
     participant Main as main startup
@@ -224,8 +293,39 @@ sequenceDiagram
 
 ```mermaid
 ---
-
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -275,6 +375,38 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -364,6 +496,38 @@ This diagram shows how F´'s build system creates your code. When you run `fprim
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -435,6 +599,43 @@ flowchart LR
 ### 1. Hidden Coupling
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 pie title Dependency Visibility
     "Direct (visible in code)" : 15
     "Transitive (hidden)" : 27

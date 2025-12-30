@@ -58,9 +58,39 @@ Neither F´ documentation nor PROVES Kit documentation mentions the other system
 
 ```mermaid
 ---
-
-
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -151,6 +181,43 @@ Mission continues without IMU (silent failure)
 ### Temporal Ordering Requirement
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 sequenceDiagram
     autonumber
     participant Topology as Topology.cpp configureTopology
@@ -219,6 +286,38 @@ No alert that power sequencing is wrong
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -300,6 +399,38 @@ Attitude determination fails
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -386,6 +517,38 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -449,6 +612,43 @@ flowchart LR
 ### Estimated Risk
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 quadrantChart
     title Risk Matrix: Cross-System Dependencies
     x-axis Low Impact --> High Impact

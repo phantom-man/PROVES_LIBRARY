@@ -38,6 +38,43 @@ This sequence diagram shows the power-on process for an I2C device, with all the
 ### The Missing Specification
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 sequenceDiagram
     participant LSM as LoadSwitchManager
     participant Power as Power Supply
@@ -92,6 +129,38 @@ sequenceDiagram
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -155,6 +224,38 @@ This diagram shows electrical characteristics that software developers never thi
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -250,6 +351,43 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ### The Missing Integration
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 stateDiagram-v2
     [*] --> Normal: System boot
 
@@ -347,6 +485,38 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -407,6 +577,43 @@ flowchart TB
 ### Conflict Scenarios
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 sequenceDiagram
     participant App as Application
     participant IMU as IMU Manager
@@ -479,6 +686,38 @@ This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare meta
 ```mermaid
 ---
 config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
   flowchart:
     curve: linear
 ---
@@ -580,6 +819,43 @@ flowchart LR
 ### Gap Distribution
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5
@@ -601,6 +877,43 @@ pie title Knowledge Gaps by Category
 ### Time to Discover
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#66BB6A'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    lineColor: '#4CAF50'
+    edgeLabelBackground: '#F1F8E9'
+    nodeBorder: '#66BB6A'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    defaultLinkColor: '#4CAF50'
+    titleColor: '#2E7D32'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#66BB6A'
+    actorTextColor: '#2E7D32'
+    signalColor: '#4CAF50'
+    labelBoxBkgColor: '#FCE4EC'
+    stateBkg: '#E8F5E9'
+    sectionBkgColor: '#FFF9C4'
+    taskBorderColor: '#66BB6A'
+    taskBkgColor: '#E8F5E9'
+    activeTaskBkgColor: '#C8E6C9'
+    gridColor: '#A5D6A7'
+    doneTaskBkgColor: '#81C784'
+    critBkgColor: '#F06292'
+    todayLineColor: '#2E7D32'
+  flowchart:
+    curve: linear
+---
 gantt
     title Typical Discovery Timeline for Knowledge Gaps
     dateFormat YYYY-MM-DD
