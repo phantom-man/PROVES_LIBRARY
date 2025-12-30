@@ -228,24 +228,218 @@ A:::className --> B
 linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
 
-#### Arrow Label Styling Limitations
+## Theme Variables
 
-**Mermaid Theme Variables:**
-- `edgeLabelBackground` - sets background color of arrow labels
-- No built-in variables for borders (`edgeLabelBorder`, `edgeLabelStroke`, etc.)
+Mermaid supports extensive theming through `themeVariables` in the init directive. Only the `base` theme is fully customizable.
 
-Example using `themeVariables`:
+### Usage Syntax
 ```
-%%{init: {'theme':'base', 'themeVariables': {'edgeLabelBackground':'#ffeecc'}}}%%
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff0000', 'lineColor':'#333'}}}%%
 ```
 
-**Custom CSS (GitHub Pages Only):**
-Arrow label borders and hover effects require CSS in `docs/_sass/custom.scss` and only work on GitHub Pages (phantom-man.github.io/PROVES_LIBRARY), NOT on GitHub.com.
+### Base Theme Variables
+
+#### Core Colors
+- `background` - Diagram background color (default: `#f4f4f4`)
+- `primaryColor` - Primary color for nodes and elements (default: `#fff4dd`)
+- `secondaryColor` - Secondary color, auto-calculated from primary
+- `tertiaryColor` - Tertiary color, auto-calculated from primary
+- `primaryTextColor` - Text color in primary elements (default: calculated from darkMode)
+- `secondaryTextColor` - Text color in secondary elements (auto-calculated)
+- `tertiaryTextColor` - Text color in tertiary elements (auto-calculated)
+- `primaryBorderColor` - Border color for primary elements (auto-calculated)
+- `secondaryBorderColor` - Border color for secondary elements (auto-calculated)
+- `tertiaryBorderColor` - Border color for tertiary elements (auto-calculated)
+
+#### Text and Lines
+- `textColor` - General text color (default: same as primaryTextColor)
+- `lineColor` - Line and connection color (auto-calculated from background)
+- `arrowheadColor` - Color of arrow heads (auto-calculated from background)
+- `fontFamily` - Font family for diagram text (default: `"trebuchet ms", verdana, arial, sans-serif`)
+- `fontSize` - Font size for diagram text (default: `16px`)
+
+#### Notes and Labels
+- `noteBkgColor` - Background color for note boxes (default: `#fff5ad`)
+- `noteTextColor` - Text color in notes (default: `#333`)
+- `noteBorderColor` - Border color for notes (auto-calculated)
+- `labelColor` - Label text color
+- `labelBackgroundColor` - Background for labels
+- `labelTextColor` - Text color in labels
+
+#### Error Styling
+- `errorBkgColor` - Background for syntax error messages
+- `errorTextColor` - Text color for error messages
+
+### Flowchart Variables
+- `nodeBkg` - Node background color (default: same as mainBkg)
+- `mainBkg` - Main background for nodes (default: same as primaryColor)
+- `nodeBorder` - Node border color (default: same as primaryBorderColor)
+- `nodeTextColor` - Text color inside nodes
+- `clusterBkg` - Background for subgraphs/clusters (default: same as tertiaryColor)
+- `clusterBorder` - Border for subgraphs (default: same as tertiaryBorderColor)
+- `defaultLinkColor` - Default link/edge color (default: same as lineColor)
+- `titleColor` - Title text color (default: same as tertiaryTextColor)
+- `edgeLabelBackground` - Background color of edge labels (auto-calculated from secondaryColor)
+- `border2` - Alternative border color
+
+### Sequence Diagram Variables
+- `actorBkg` - Actor box background (default: same as mainBkg)
+- `actorBorder` - Actor box border (default: same as primaryBorderColor)
+- `actorTextColor` - Text in actor boxes (default: same as primaryTextColor)
+- `actorLineColor` - Actor lifeline color (default: same as actorBorder)
+- `signalColor` - Signal/message line color (default: same as textColor)
+- `signalTextColor` - Text on signals (default: same as textColor)
+- `labelBoxBkgColor` - Background for label boxes (default: same as actorBkg)
+- `labelBoxBorderColor` - Border for label boxes (default: same as actorBorder)
+- `loopTextColor` - Text in loop boxes (default: same as actorTextColor)
+- `activationBorderColor` - Border of activation boxes (auto-calculated)
+- `activationBkgColor` - Background of activation boxes (default: same as secondaryColor)
+- `sequenceNumberColor` - Color of sequence numbers (auto-calculated)
+
+### State Diagram Variables
+- `stateBkg` - State box background (default: same as mainBkg)
+- `compositeBackground` - Background for composite states (default: background or tertiaryColor)
+- `altBackground` - Alternative background for deep composite states (default: same as tertiaryColor)
+- `compositeTitleBackground` - Title background in composite states (default: same as mainBkg)
+- `compositeBorder` - Border for composite states (default: same as nodeBorder)
+- `innerEndBackground` - Background for inner end states
+- `transitionColor` - Color of state transitions (default: same as lineColor)
+- `specialStateColor` - Color for special states (default: same as lineColor)
+
+### Gantt Diagram Variables
+- `sectionBkgColor` - Section background color (default: same as tertiaryColor)
+- `altSectionBkgColor` - Alternate section background (default: `white`)
+- `sectionBkgColor2` - Second section background (default: same as primaryColor)
+- `excludeBkgColor` - Background for excluded periods (default: `#eeeeee`)
+- `taskBorderColor` - Task box border (default: same as primaryBorderColor)
+- `taskBkgColor` - Task box background (default: same as primaryColor)
+- `activeTaskBorderColor` - Active task border (default: same as primaryColor)
+- `activeTaskBkgColor` - Active task background (auto-calculated)
+- `gridColor` - Grid line color (default: `lightgrey`)
+- `doneTaskBkgColor` - Completed task background (default: `lightgrey`)
+- `doneTaskBorderColor` - Completed task border (default: `grey`)
+- `critBorderColor` - Critical task border (default: `#ff8888`)
+- `critBkgColor` - Critical task background (default: `red`)
+- `todayLineColor` - Today marker line color (default: `red`)
+- `vertLineColor` - Vertical line color (default: `navy`)
+- `taskTextColor` - Text color in tasks (default: same as textColor)
+- `taskTextOutsideColor` - Text outside task boxes (default: same as textColor)
+- `taskTextLightColor` - Light task text (default: same as textColor)
+- `taskTextDarkColor` - Dark task text (default: same as textColor)
+- `taskTextClickableColor` - Clickable task text color (default: `#003163`)
+
+### Class Diagram Variables
+- `classText` - Text color in class boxes (default: same as textColor)
+
+### Pie Chart Variables
+- `pie1` through `pie12` - Fill colors for pie sections (defaults: various calculated colors)
+- `pieTitleTextSize` - Title text size (default: `25px`)
+- `pieTitleTextColor` - Title text color
+- `pieSectionTextSize` - Section label text size (default: `17px`)
+- `pieSectionTextColor` - Section label text color (default: same as textColor)
+- `pieLegendTextSize` - Legend text size (default: `17px`)
+- `pieLegendTextColor` - Legend text color
+- `pieStrokeColor` - Pie section border color (default: `black`)
+- `pieStrokeWidth` - Pie section border width (default: `2px`)
+- `pieOuterStrokeWidth` - Outer circle border width (default: `2px`)
+- `pieOuterStrokeColor` - Outer circle border color (default: `black`)
+- `pieOpacity` - Section opacity (default: `0.7`)
+
+### Quadrant Chart Variables
+- `quadrant1Fill` through `quadrant4Fill` - Fill colors for quadrants
+- `quadrant1TextFill` through `quadrant4TextFill` - Text colors in quadrants
+- `quadrantPointFill` - Point fill color
+- `quadrantPointTextFill` - Point label text color
+- `quadrantXAxisTextFill` - X-axis label text color
+- `quadrantYAxisTextFill` - Y-axis label text color
+- `quadrantInternalBorderStrokeFill` - Internal border color
+- `quadrantExternalBorderStrokeFill` - External border color
+- `quadrantTitleFill` - Quadrant title text color
+
+### XY Chart Variables
+`xyChart` is an object containing:
+- `backgroundColor` - Chart background
+- `titleColor` - Chart title color
+- `xAxisTitleColor` - X-axis title color
+- `xAxisLabelColor` - X-axis label color
+- `xAxisTickColor` - X-axis tick color
+- `xAxisLineColor` - X-axis line color
+- `yAxisTitleColor` - Y-axis title color
+- `yAxisLabelColor` - Y-axis label color
+- `yAxisTickColor` - Y-axis tick color
+- `yAxisLineColor` - Y-axis line color
+- `plotColorPalette` - Comma-separated color list for data series
+
+### Requirement Diagram Variables
+- `requirementBackground` - Requirement box background (default: same as primaryColor)
+- `requirementBorderColor` - Requirement box border (default: same as primaryBorderColor)
+- `requirementBorderSize` - Border width (default: `1`)
+- `requirementTextColor` - Text in requirement boxes (default: same as primaryTextColor)
+- `relationColor` - Relation line color (default: same as lineColor)
+- `relationLabelBackground` - Relation label background (auto-calculated from secondaryColor)
+- `relationLabelColor` - Relation label text color (default: same as actorTextColor)
+
+### Git Graph Variables
+- `git0` through `git7` - Branch colors (calculated from primary/secondary/tertiary)
+- `gitInv0` through `gitInv7` - Inverted branch colors
+- `gitBranchLabel0` through `gitBranchLabel7` - Branch label text colors
+- `commitLabelColor` - Commit label text color
+- `commitLabelBackground` - Commit label background (default: same as secondaryColor)
+- `commitLabelFontSize` - Commit label font size (default: `10px`)
+- `tagLabelColor` - Tag label text color
+- `tagLabelBackground` - Tag label background (default: same as primaryColor)
+- `tagLabelBorder` - Tag border color (default: same as primaryBorderColor)
+- `tagLabelFontSize` - Tag label font size
+
+### Color Scale Variables (for general use)
+- `cScale0` through `cScale11` - Base color scale (12 colors)
+- `cScaleInv0` through `cScaleInv11` - Inverted color scale
+- `cScalePeer0` through `cScalePeer11` - Peer colors for borders
+- `cScaleLabel0` through `cScaleLabel11` - Label text colors for color scale
+- `scaleLabelColor` - Default scale label color (default: same as labelTextColor)
+
+### Surface Colors (for layered elements)
+- `surface0` through `surface4` - Surface background colors (5 levels)
+- `surfacePeer0` through `surfacePeer4` - Peer/border colors for surfaces
+
+### User Journey / Timeline Variables
+- `fillType0` through `fillType7` - Section fill colors
+- `actorColours` - Array of actor colors
+- `sectionFills` - Array of section fill colors
+- `sectionColours` - Array of section text colors
+
+### Entity-Relationship Diagram Variables
+- `attributeBackgroundColorOdd` - Background for odd attribute rows
+- `attributeBackgroundColorEven` - Background for even attribute rows
+
+### darkMode Flag
+- `darkMode` (boolean) - Affects color calculations (default: `false`)
+
+### Custom CSS Styling (GitHub Pages Only)
+
+**Note:** Arrow label borders and hover effects require CSS in `docs/_sass/custom.scss` and only work on GitHub Pages (phantom-man.github.io/PROVES_LIBRARY), NOT on GitHub.com.
 
 GitHub.com renders Mermaid server-side without custom CSS. To add borders to arrow labels:
 - Use custom CSS on GitHub Pages deployment
 - View diagrams on GitHub Pages for full styling (borders, hover effects)
-- On GitHub.com, only edgeLabelBackground theme variable works
+- On GitHub.com, only `edgeLabelBackground` theme variable works
+
+### Complete Theme Variable Example
+```
+%%{init: {'theme':'base', 'themeVariables': {
+  'primaryColor':'#BB2528',
+  'primaryTextColor':'#fff',
+  'primaryBorderColor':'#7C0000',
+  'lineColor':'#F8B229',
+  'secondaryColor':'#006100',
+  'tertiaryColor':'#fff',
+  'fontFamily':'Arial, sans-serif',
+  'fontSize':'14px',
+  'edgeLabelBackground':'#ffeecc'
+}}}%%
+flowchart TD
+    A --> B
+```
 
 ## Flowchart-Specific Rules
 
