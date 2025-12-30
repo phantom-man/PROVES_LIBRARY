@@ -41,6 +41,7 @@ This sequence diagram shows the power-on process for an I2C device, with all the
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -142,6 +143,7 @@ sequenceDiagram
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -249,6 +251,7 @@ This diagram shows electrical characteristics that software developers never thi
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -390,6 +393,7 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -534,6 +538,7 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -640,6 +645,7 @@ flowchart TB
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -759,6 +765,7 @@ This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare meta
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -906,6 +913,7 @@ flowchart LR
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -976,6 +984,7 @@ pie title Knowledge Gaps by Category
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -1113,3 +1122,4 @@ gantt
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
+

@@ -276,7 +276,13 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
 - `lineColor` - Line and connection color (auto-calculated from background)
 - `arrowheadColor` - Color of arrow heads (auto-calculated from background)
 - `fontFamily` - Font family for diagram text (default: `"trebuchet ms", verdana, arial, sans-serif`)
-- `fontSize` - Font size for diagram text (default: `16px`, recommend `18px` for better readability)
+
+**Font Size Configuration:**
+- **Global `fontSize`** (config level): Controls overall diagram font size including flowchart nodes (default: `16`, recommend `18`)
+  - Place at config level: `config: { fontSize: 18, themeVariables: {...} }`
+- **Theme `fontSize`** (themeVariables level): Theme-specific font styling for certain diagram types
+  - Place in themeVariables: `themeVariables: { fontSize: '18px' }`
+- **Use BOTH** for complete coverage across all diagram types
 
 #### Notes and Labels
 - `noteBkgColor` - Background color for note boxes (default: `#fff5ad`)
@@ -455,6 +461,7 @@ These are complete, ready-to-use theme configurations. Copy the frontmatter for 
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -515,6 +522,7 @@ config:
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -575,6 +583,7 @@ config:
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -635,6 +644,7 @@ config:
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'

@@ -41,6 +41,7 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -120,6 +121,7 @@ flowchart TB
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -209,6 +211,7 @@ flowchart TB
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -293,6 +296,7 @@ flowchart TB
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -383,6 +387,7 @@ sequenceDiagram
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -475,3 +480,4 @@ Every dependency tracked with precise source locations:
 **Analysis Method:** Manual annotation with line-by-line review
 **Confidence Level:** High (human-verified)
 **Date:** December 20, 2024
+

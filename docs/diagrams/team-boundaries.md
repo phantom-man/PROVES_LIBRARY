@@ -39,6 +39,7 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -155,6 +156,7 @@ flowchart TB
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -268,6 +270,7 @@ This flowchart shows the journey developers take when they need integration know
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -377,6 +380,7 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -460,6 +464,7 @@ gantt
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -531,6 +536,7 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -682,6 +688,7 @@ sequenceDiagram
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -797,6 +804,7 @@ flowchart TB
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -916,6 +924,7 @@ quadrantChart
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1055,3 +1064,4 @@ flowchart TB
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024
+

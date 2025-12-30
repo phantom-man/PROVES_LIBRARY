@@ -23,6 +23,7 @@ Think of the truth graph as a molecular structure:
 ---
 config:
   theme: base
+  fontSize: 18
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -129,3 +130,4 @@ A GNN learns which bonds carry the strongest influence. With verified edges and 
 ---
 
 [Back to Home](../index.html)
+
