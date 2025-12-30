@@ -1718,7 +1718,7 @@ config:
     height: 60
     boxMargin: 10
 ---
-flowchart LR
+flowchart TB
     subgraph "Mission Lifecycle"
         spacer8[ ]:::spacer
         DESIGN[Design Decisions]
@@ -1726,43 +1726,41 @@ flowchart LR
         TEST[Testing & Debugging]
         OPS[Operations]
         RETRO[Retrospective]
+        
+        DESIGN --> IMPL --> TEST --> OPS --> RETRO
     end
 
-    subgraph "Knowledge Outcomes"
+    subgraph "Captured 30%"
         spacer9[ ]:::spacer
-        subgraph "Captured 30%"
-            spacer9a[ ]:::spacer
-            CODE["Code Repository ✓"]
-            SCHEMA["Schematics ✓"]
-            FORMAL_DOC["Formal Docs ⚠"]
-        end
-
-        subgraph "Partial 20%"
-            spacer9b[ ]:::spacer
-            ISSUES["GitHub Issues ⚠"]
-            CHAT["Chat Logs ⚠"]
-            EMAIL["Email Threads ⚠"]
-        end
-
-        subgraph "Lost 50%"
-            spacer9c[ ]:::spacer
-            TRIBAL["Tribal Knowledge ✗"]
-            WORKAROUND["Workarounds ✗"]
-            FAILURES["Failure Lessons ✗"]
-            WHY["Design Rationale ✗"]
-        end
+        CODE["Code Repository ✓"]
+        SCHEMA["Schematics ✓"]
+        FORMAL_DOC["Formal Docs ⚠"]
     end
 
-    DESIGN --> CODE
-    DESIGN --> WHY
-    IMPL --> CODE
-    IMPL --> WORKAROUND
-    TEST --> ISSUES
-    TEST --> FAILURES
-    OPS --> CHAT
-    OPS --> TRIBAL
-    RETRO --> FORMAL_DOC
-    RETRO -.->|rarely| FAILURES
+    subgraph "Partial 20%"
+        spacer10[ ]:::spacer
+        ISSUES["GitHub Issues ⚠"]
+        CHAT["Chat Logs ⚠"]
+        EMAIL["Email Threads ⚠"]
+    end
+
+    subgraph "Lost 50%"
+        spacer11[ ]:::spacer
+        TRIBAL["Tribal Knowledge ✗"]
+        WORKAROUND["Workarounds ✗"]
+        FAILURES["Failure Lessons ✗"]
+        WHY["Design Rationale ✗"]
+    end
+
+    DESIGN -.-> CODE
+    IMPL -.-> CODE
+    IMPL -.-> WORKAROUND
+    TEST -.-> ISSUES
+    TEST -.-> FAILURES
+    OPS -.-> CHAT
+    OPS -.-> TRIBAL
+    RETRO -.-> FORMAL_DOC
+    DESIGN -.-> WHY
 
     style CODE fill:#c8e6c9
     style SCHEMA fill:#c8e6c9
@@ -2237,58 +2235,61 @@ config:
     height: 60
     boxMargin: 10
 ---
-flowchart LR
-    subgraph "Traditional"
+flowchart TB
+    subgraph "Traditional Approach"
         spacer12[ ]:::spacer
         TRAD_TEAM[Team Knowledge] --> TRAD_GRAD[Graduation] --> TRAD_LOSS[Knowledge Lost]
     end
 
-    subgraph "PROVES Library Solution"
+    subgraph "Knowledge Sources"
         spacer13[ ]:::spacer
-        subgraph "Sources"
-            spacer14[ ]:::spacer
-            SRC_CODE[Code + Comments]
-            SRC_ISSUES[GitHub Issues]
-            SRC_CHAT[Chat/Email]
-            SRC_EMPIRICAL[Mission Reports]
-        end
-
-        subgraph "Processing"
-            spacer15[ ]:::spacer
-            LIB_CAPTURE[Continuous Capture]
-            LIB_AGENTS[Curator Agents]
-            LIB_GRAPH[Knowledge Graph]
-            LIB_FRAMES[Team Tracking]
-            LIB_QUERY[Query System]
-            LIB_ALERT[Risk Alerts]
-        end
-
-        subgraph "Preserved"
-            spacer16[ ]:::spacer
-            PRES_TECH[Technical Dependencies]
-            PRES_ORG[Organizational Context]
-            PRES_WHY[Design Rationale]
-            PRES_FAIL[Failure Lessons]
-        end
-
-        SRC_CODE --> LIB_CAPTURE
-        SRC_ISSUES --> LIB_CAPTURE
-        SRC_CHAT --> LIB_CAPTURE
-        SRC_EMPIRICAL --> LIB_CAPTURE
-
-        LIB_CAPTURE --> LIB_AGENTS --> LIB_GRAPH --> LIB_FRAMES --> LIB_QUERY --> LIB_ALERT
-
-        LIB_GRAPH --> PRES_TECH
-        LIB_GRAPH --> PRES_WHY
-        LIB_GRAPH --> PRES_FAIL
-        LIB_FRAMES --> PRES_ORG
+        SRC_CODE[Code + Comments]
+        SRC_ISSUES[GitHub Issues]
+        SRC_CHAT[Chat/Email]
+        SRC_EMPIRICAL[Mission Reports]
     end
+
+    subgraph "PROVES Library Processing"
+        spacer14[ ]:::spacer
+        LIB_CAPTURE[Continuous Capture]
+        LIB_AGENTS[Curator Agents]
+        LIB_GRAPH[Knowledge Graph]
+        LIB_FRAMES[Team Tracking]
+        LIB_QUERY[Query System]
+        LIB_ALERT[Risk Alerts]
+        
+        LIB_CAPTURE --> LIB_AGENTS
+        LIB_AGENTS --> LIB_GRAPH
+        LIB_GRAPH --> LIB_FRAMES
+        LIB_FRAMES --> LIB_QUERY
+        LIB_QUERY --> LIB_ALERT
+    end
+
+    subgraph "Preserved Knowledge"
+        spacer15[ ]:::spacer
+        PRES_TECH[Technical Dependencies]
+        PRES_ORG[Organizational Context]
+        PRES_WHY[Design Rationale]
+        PRES_FAIL[Failure Lessons]
+    end
+
+    SRC_CODE --> LIB_CAPTURE
+    SRC_ISSUES --> LIB_CAPTURE
+    SRC_CHAT --> LIB_CAPTURE
+    SRC_EMPIRICAL --> LIB_CAPTURE
+
+    LIB_GRAPH --> PRES_TECH
+    LIB_GRAPH --> PRES_WHY
+    LIB_GRAPH --> PRES_FAIL
+    LIB_FRAMES --> PRES_ORG
 
     style TRAD_LOSS fill:#ffcdd2
     style LIB_GRAPH fill:#c8e6c9
     style LIB_CAPTURE fill:#e1f5ff
     style PRES_TECH fill:#e8f5e9
     style PRES_ORG fill:#f3e5f5
+    style PRES_WHY fill:#e8f5e9
+    style PRES_FAIL fill:#e8f5e9
     %% Font sizing classes for consistency
     classDef default font-size:20px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:18px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
