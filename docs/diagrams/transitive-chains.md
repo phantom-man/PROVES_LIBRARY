@@ -222,7 +222,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph "Layer 1 Application"
         APP[Application Component Requests IMU data]
@@ -525,7 +526,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 sequenceDiagram
     autonumber
     participant Main as main startup
@@ -781,7 +783,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     START[main calls configureTopology]
 
@@ -1013,7 +1016,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     START[RateGroup.run every 100ms]
 
@@ -1285,7 +1289,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart LR
     subgraph "User Commands"
         USER[Developer runs fprime-util build]
@@ -1541,7 +1546,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 pie title Dependency Visibility
     "Direct visible in code" : 15
     "Transitive hidden deps" : 27
@@ -1613,6 +1619,7 @@ Test suites should:
 **Longest Chain Found:** 13 hops (Application -> Board Configuration)
 **Documentation Gap:** 14 undocumented transitive links
 **Date:** December 20, 2024
+
 
 
 

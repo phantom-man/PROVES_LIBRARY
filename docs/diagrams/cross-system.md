@@ -244,7 +244,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart LR
     subgraph "F´ System (NASA/JPL)"
         IM[ImuManager I2C Device Manager]
@@ -519,7 +520,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 sequenceDiagram
     autonumber
     participant Topology as Topology.cpp configureTopology
@@ -773,7 +775,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph "F´ Configuration"
         IM_ADDR[ImuManager Address 0x68]
@@ -1037,7 +1040,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     START[F´ I2C Read Operation]
     READ{I2C Status}
@@ -1306,7 +1310,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart LR
     subgraph "NASA/JPL Team"
         F_TEAM[F´ Core Team]
@@ -1554,7 +1559,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 quadrantChart
     title Risk Matrix: Cross-System Dependencies
     x-axis Low Impact --> High Impact
@@ -1634,6 +1640,7 @@ quadrantChart
 **Confidence Level:** High (human-verified, evidence-based)
 **Impact:** Demonstrates exact Team A/Team B failure mode
 **Date:** December 20, 2024
+
 
 
 

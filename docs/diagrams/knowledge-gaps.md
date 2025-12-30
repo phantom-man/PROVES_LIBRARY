@@ -225,7 +225,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 sequenceDiagram
     participant LSM as LoadSwitchManager
     participant Power as Power Supply
@@ -465,7 +466,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     START[New developer integrates IMU]
 
@@ -711,7 +713,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph "Power Supply Characteristics"
         V_NOM[Nominal Voltage 3.3V]
@@ -991,7 +994,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 stateDiagram-v2
     [*] --> Normal: System boot
 
@@ -1274,7 +1278,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         BUS["I2C Bus /dev/i2c-1 SDA/SCL"]
@@ -1519,7 +1524,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 sequenceDiagram
     participant App as Application
     participant IMU as IMU Manager
@@ -1777,7 +1783,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart LR
     subgraph "F´ Framework"
         F_LINUX[LinuxI2cDriver<br/>Linux]
@@ -2063,7 +2070,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5
@@ -2272,7 +2280,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 gantt
     title Typical Discovery Timeline for Knowledge Gaps
     dateFormat YYYY-MM-DD
@@ -2364,6 +2373,7 @@ gantt
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
+
 
 
 

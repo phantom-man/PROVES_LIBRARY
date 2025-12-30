@@ -207,7 +207,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph Molecule ["Truth Graph as Molecular Structure"]
         A[Power Manager]
@@ -268,6 +269,7 @@ A GNN learns which bonds carry the strongest influence. With verified edges and 
 ---
 
 [Back to Home](../index.html)
+
 
 
 

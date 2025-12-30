@@ -223,7 +223,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph "NASA/JPL"
         JPL_CORE[F´ Core Team ⭐ Permanent Staff]
@@ -480,7 +481,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart LR
     subgraph "F´ Knowledge"
         F_PUB["Public Documentation [YES] Versioned [YES] Comprehensive"]
@@ -734,7 +736,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     START[Integration Knowledge Needed]
 
@@ -984,7 +987,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 gantt
     title University Team Knowledge Retention
     dateFormat YYYY-MM
@@ -1208,7 +1212,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 pie title Knowledge Retention After Team Graduation
     "Lost knowledge from graduated teams" : 70
     "Degraded or partially remembered" : 20
@@ -1420,7 +1425,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 sequenceDiagram
     autonumber
     participant TeamA as Team A 2020
@@ -1712,7 +1718,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph "Mission Lifecycle"
         DESIGN[Design Decisions]
@@ -1968,7 +1975,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 quadrantChart
     title Knowledge Loss Risk by Interface Strength
     x-axis Low Team Turnover --> High Team Turnover
@@ -2228,7 +2236,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph "Traditional Approach (Failed)"
         TRAD_TEAM[Team Knowledge]
@@ -2324,6 +2333,7 @@ flowchart TB
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024
+
 
 
 

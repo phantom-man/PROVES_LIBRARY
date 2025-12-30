@@ -225,7 +225,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     APP[Application Components - Your mission code that needs sensor data]
 
@@ -443,7 +444,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     subgraph BUILD ["Build System - Compiles the code"]
         FPUTIL[fprime-util Build command]
@@ -671,7 +673,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 flowchart TB
     LSM[LoadSwitchManager - Main power control class - Written in Python]
 
@@ -894,7 +897,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 sequenceDiagram
     participant User
     participant LSM as LoadSwitchManager
@@ -1123,7 +1127,8 @@ config:
     c4ShapePadding: 20
     width: 216
     height: 60
-    boxMargin: 10---
+    boxMargin: 10
+---
 pie title Dependency Criticality Distribution
     "HIGH criticality" : 28
     "MEDIUM criticality" : 11
@@ -1170,6 +1175,7 @@ Every dependency tracked with precise source locations:
 **Analysis Method:** Manual annotation with line-by-line review
 **Confidence Level:** High (human-verified)
 **Date:** December 20, 2024
+
 
 
 
