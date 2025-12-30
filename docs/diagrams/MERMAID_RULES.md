@@ -276,7 +276,7 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
 - `lineColor` - Line and connection color (auto-calculated from background)
 - `arrowheadColor` - Color of arrow heads (auto-calculated from background)
 - `fontFamily` - Font family for diagram text (default: `"trebuchet ms", verdana, arial, sans-serif`)
-- `fontSize` - Font size for diagram text (default: `16px`)
+- `fontSize` - Font size for diagram text (default: `16px`, recommend `18px` for better readability)
 
 #### Notes and Labels
 - `noteBkgColor` - Background color for note boxes (default: `#fff5ad`)
@@ -469,7 +469,7 @@ config:
     textColor: '#2E7D32'
     lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '16px'
+    fontSize: '18px'
     nodeBorder: '#4CAF50'
     mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
@@ -529,7 +529,7 @@ config:
     textColor: '#01579B'
     lineColor: '#29B6F6'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '16px'
+    fontSize: '18px'
     nodeBorder: '#0288D1'
     mainBkg: '#E1F5FE'
     clusterBkg: '#FFE0B2'
@@ -589,7 +589,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '16px'
+    fontSize: '18px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -649,7 +649,7 @@ config:
     textColor: '#0D47A1'
     lineColor: '#42A5F5'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '16px'
+    fontSize: '18px'
     nodeBorder: '#1976D2'
     mainBkg: '#E3F2FD'
     clusterBkg: '#ECEFF1'
