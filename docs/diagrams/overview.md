@@ -42,7 +42,7 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -255,7 +255,7 @@ flowchart TB
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -481,7 +481,7 @@ flowchart TB
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -701,7 +701,7 @@ flowchart TB
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -921,7 +921,7 @@ sequenceDiagram
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'

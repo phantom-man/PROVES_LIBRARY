@@ -39,7 +39,7 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -344,7 +344,7 @@ This sequence diagram shows what happens when your system boots up. The tricky p
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -591,7 +591,7 @@ sequenceDiagram
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -818,7 +818,7 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1088,7 +1088,7 @@ This diagram shows how F-Prime's build system creates your code. When you run `f
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1344,7 +1344,7 @@ flowchart LR
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'

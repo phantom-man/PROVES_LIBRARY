@@ -40,7 +40,7 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -296,7 +296,7 @@ flowchart TB
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -548,7 +548,7 @@ This flowchart shows the journey developers take when they need integration know
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -793,7 +793,7 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1008,7 +1008,7 @@ gantt
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1211,7 +1211,7 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1494,7 +1494,7 @@ sequenceDiagram
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1757,7 +1757,7 @@ flowchart LR
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -2008,7 +2008,7 @@ quadrantChart
 config:
   theme: base
   fontSize: 20
-    themeVariables:
+  themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
