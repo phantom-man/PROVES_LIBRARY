@@ -41,9 +41,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -165,9 +165,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -286,9 +286,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -403,9 +403,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -423,7 +423,7 @@ config:
     textColor: '#01579B'
     lineColor: '#29B6F6'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '18px'
+    fontSize: '20px'
     nodeBorder: '#0288D1'
     mainBkg: '#E1F5FE'
     clusterBkg: '#FFE0B2'
@@ -438,6 +438,23 @@ config:
     noteBkgColor: '#FFE0B2'
     noteTextColor: '#E65100'
     noteBorderColor: '#FF9800'
+    sectionBkgColor: '#FFE0B2'
+    altSectionBkgColor: '#E1F5FE'
+    sectionBkgColor2: '#FFF9C4'
+    taskBkgColor: '#81D4FA'
+    taskBorderColor: '#0288D1'
+    activeTaskBkgColor: '#4FC3F7'
+    activeTaskBorderColor: '#0277BD'
+    doneTaskBkgColor: '#B3E5FC'
+    doneTaskBorderColor: '#0288D1'
+    critBkgColor: '#FF8A80'
+    critBorderColor: '#D32F2F'
+    taskTextColor: '#01579B'
+    taskTextOutsideColor: '#01579B'
+    taskTextLightColor: '#01579B'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#B3E5FC'
+    todayLineColor: '#D32F2F'
     pie1: '#0288D1'
     pie2: '#FDD835'
     pie3: '#FF9800'
@@ -450,6 +467,8 @@ config:
     pie10: '#81D4FA'
     pie11: '#FFF9C4'
     pie12: '#FFE0B2'
+  gantt:
+    fontSize: 20
   flowchart:
     curve: linear
 ---
@@ -494,9 +513,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -573,9 +592,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -732,9 +751,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -855,9 +874,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -982,9 +1001,9 @@ config:
   theme: base
   fontSize: '18'
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -1127,6 +1146,7 @@ flowchart TB
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024
+
 
 
 

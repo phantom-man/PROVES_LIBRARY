@@ -416,6 +416,40 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
 - `taskTextDarkColor` - Dark task text (default: same as textColor)
 - `taskTextClickableColor` - Clickable task text color (default: `#003163`)
 
+**IMPORTANT: Gantt Charts Require Explicit Colors**
+
+Gantt charts do NOT inherit flowchart `themeCSS` font sizing. You must:
+1. Set `gantt: { fontSize: 20 }` in config for font size control
+2. Define ALL section and task colors explicitly to avoid white backgrounds:
+   ```yaml
+   themeVariables:
+     # Section backgrounds (horizontal rows) - MUST set all 3
+     sectionBkgColor: '#FFE0B2'      # First section color
+     altSectionBkgColor: '#E1F5FE'   # Alternating section color
+     sectionBkgColor2: '#FFF9C4'     # Third section color pattern
+     
+     # Task types - each needs background + border
+     taskBkgColor: '#81D4FA'         # Normal task background
+     taskBorderColor: '#0288D1'      # Normal task border
+     
+     activeTaskBkgColor: '#4FC3F7'   # Active task (:active) background
+     activeTaskBorderColor: '#0277BD' # Active task border
+     
+     doneTaskBkgColor: '#B3E5FC'     # Completed task (:done) background
+     doneTaskBorderColor: '#0288D1'  # Completed task border
+     
+     critBkgColor: '#FF8A80'         # Critical task (:crit) background
+     critBorderColor: '#D32F2F'      # Critical task border
+     
+     # Text and grid
+     taskTextColor: '#01579B'        # Text inside tasks
+     taskTextOutsideColor: '#01579B' # Section labels
+     gridColor: '#B3E5FC'           # Background grid lines
+     todayLineColor: '#D32F2F'      # Today marker
+   ```
+
+Without explicit colors, sections and tasks may render with white/default backgrounds, making them invisible or indistinguishable.
+
 ### Class Diagram Variables
 - `classText` - Text color in class boxes (default: same as textColor)
 
@@ -525,9 +559,9 @@ config:
   theme: base
   fontSize: 18
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -572,6 +606,25 @@ config:
     pie10: '#A5D6A7'
     pie11: '#FCE4EC'
     pie12: '#FFF9C4'
+    sectionBkgColor: '#FFF9C4'
+    altSectionBkgColor: '#E8F5E9'
+    sectionBkgColor2: '#FCE4EC'
+    taskBkgColor: '#A5D6A7'
+    taskBorderColor: '#4CAF50'
+    activeTaskBkgColor: '#81C784'
+    activeTaskBorderColor: '#388E3C'
+    doneTaskBkgColor: '#C8E6C9'
+    doneTaskBorderColor: '#4CAF50'
+    critBkgColor: '#F48FB1'
+    critBorderColor: '#C2185B'
+    taskTextColor: '#2E7D32'
+    taskTextOutsideColor: '#2E7D32'
+    taskTextLightColor: '#2E7D32'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#C8E6C9'
+    todayLineColor: '#C2185B'
+  gantt:
+    fontSize: 20
   flowchart:
     curve: linear
 ---
@@ -593,9 +646,9 @@ config:
   theme: base
   fontSize: 18
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -640,6 +693,25 @@ config:
     pie10: '#81D4FA'
     pie11: '#FFF9C4'
     pie12: '#FFE0B2'
+    sectionBkgColor: '#FFE0B2'
+    altSectionBkgColor: '#E1F5FE'
+    sectionBkgColor2: '#FFF9C4'
+    taskBkgColor: '#81D4FA'
+    taskBorderColor: '#0288D1'
+    activeTaskBkgColor: '#4FC3F7'
+    activeTaskBorderColor: '#0277BD'
+    doneTaskBkgColor: '#B3E5FC'
+    doneTaskBorderColor: '#0288D1'
+    critBkgColor: '#FF8A80'
+    critBorderColor: '#D32F2F'
+    taskTextColor: '#01579B'
+    taskTextOutsideColor: '#01579B'
+    taskTextLightColor: '#01579B'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#B3E5FC'
+    todayLineColor: '#D32F2F'
+  gantt:
+    fontSize: 20
   flowchart:
     curve: linear
 ---
@@ -661,9 +733,9 @@ config:
   theme: base
   fontSize: 18
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -708,6 +780,25 @@ config:
     pie10: '#FF8A65'
     pie11: '#F3E5F5'
     pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+  gantt:
+    fontSize: 20
   flowchart:
     curve: linear
 ---
@@ -729,9 +820,9 @@ config:
   theme: base
   fontSize: 18
   themeCSS: |
-    .label, .nodeLabel, text { font-size: 18px !important; }
-    .edgeLabel { font-size: 16px !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { stroke: #000 !important; stroke-width: 1.5px !important; fill-opacity: 1 !important; }
+    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
+    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
+    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
     .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
@@ -776,6 +867,25 @@ config:
     pie10: '#90CAF9'
     pie11: '#ECEFF1'
     pie12: '#E1F5FE'
+    sectionBkgColor: '#E1F5FE'
+    altSectionBkgColor: '#E3F2FD'
+    sectionBkgColor2: '#ECEFF1'
+    taskBkgColor: '#90CAF9'
+    taskBorderColor: '#1976D2'
+    activeTaskBkgColor: '#64B5F6'
+    activeTaskBorderColor: '#1565C0'
+    doneTaskBkgColor: '#BBDEFB'
+    doneTaskBorderColor: '#1976D2'
+    critBkgColor: '#B0BEC5'
+    critBorderColor: '#455A64'
+    taskTextColor: '#0D47A1'
+    taskTextOutsideColor: '#0D47A1'
+    taskTextLightColor: '#0D47A1'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#BBDEFB'
+    todayLineColor: '#455A64'
+  gantt:
+    fontSize: 20
   flowchart:
     curve: linear
 ---
