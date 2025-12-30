@@ -1718,7 +1718,7 @@ config:
     height: 60
     boxMargin: 10
 ---
-flowchart TB
+flowchart LR
     subgraph "Mission Lifecycle"
         spacer8[ ]:::spacer
         DESIGN[Design Decisions]
@@ -1728,40 +1728,39 @@ flowchart TB
         RETRO[Retrospective]
     end
 
-    subgraph "Captured (30%)"
+    subgraph "Knowledge Outcomes"
         spacer9[ ]:::spacer
-        CODE["Code Repository [YES] Preserved"]
-        SCHEMA["Schematics [YES] Preserved"]
-        FORMAL_DOC["Formal Documentation [WARNING] Often outdated"]
-    end
+        subgraph "Captured 30%"
+            spacer9a[ ]:::spacer
+            CODE["Code Repository ✓"]
+            SCHEMA["Schematics ✓"]
+            FORMAL_DOC["Formal Docs ⚠"]
+        end
 
-    subgraph "Partially Captured (20%)"
-        spacer10[ ]:::spacer
-        ISSUES["GitHub Issues [WARNING] Searchable but dispersed"]
-        CHAT["Chat Logs [WARNING] Saved but not indexed"]
-        EMAIL["Email Threads [WARNING] Private, not shared"]
-    end
+        subgraph "Partial 20%"
+            spacer9b[ ]:::spacer
+            ISSUES["GitHub Issues ⚠"]
+            CHAT["Chat Logs ⚠"]
+            EMAIL["Email Threads ⚠"]
+        end
 
-    subgraph "Lost (50%)"
-        spacer11[ ]:::spacer
-        TRIBAL["Tribal Knowledge [NO] In people's heads"]
-        WORKAROUND["Workarounds [NO] Undocumented"]
-        FAILURES["Failure Lessons [NO] Not written down"]
-        WHY["Design Rationale [NO] Not explained"]
+        subgraph "Lost 50%"
+            spacer9c[ ]:::spacer
+            TRIBAL["Tribal Knowledge ✗"]
+            WORKAROUND["Workarounds ✗"]
+            FAILURES["Failure Lessons ✗"]
+            WHY["Design Rationale ✗"]
+        end
     end
 
     DESIGN --> CODE
     DESIGN --> WHY
-
     IMPL --> CODE
     IMPL --> WORKAROUND
-
     TEST --> ISSUES
     TEST --> FAILURES
-
     OPS --> CHAT
     OPS --> TRIBAL
-
     RETRO --> FORMAL_DOC
     RETRO -.->|rarely| FAILURES
 
@@ -2238,57 +2237,51 @@ config:
     height: 60
     boxMargin: 10
 ---
-flowchart TB
-    subgraph "Traditional Approach (Failed)"
+flowchart LR
+    subgraph "Traditional"
         spacer12[ ]:::spacer
-        TRAD_TEAM[Team Knowledge]
-        TRAD_GRAD[Graduation]
-        TRAD_LOSS[Knowledge Lost]
-
-        TRAD_TEAM --> TRAD_GRAD
-        TRAD_GRAD --> TRAD_LOSS
+        TRAD_TEAM[Team Knowledge] --> TRAD_GRAD[Graduation] --> TRAD_LOSS[Knowledge Lost]
     end
 
-    subgraph "PROVES Library Approach"
+    subgraph "PROVES Library Solution"
         spacer13[ ]:::spacer
-        LIB_CAPTURE[Continuous Capture]
-        LIB_AGENTS[Curator Agents]
-        LIB_GRAPH[Knowledge Graph]
-        LIB_FRAMES[Team Boundaries Tracking]
-        LIB_QUERY[Query System]
-        LIB_ALERT[Risk Alerts]
+        subgraph "Sources"
+            spacer14[ ]:::spacer
+            SRC_CODE[Code + Comments]
+            SRC_ISSUES[GitHub Issues]
+            SRC_CHAT[Chat/Email]
+            SRC_EMPIRICAL[Mission Reports]
+        end
 
-        LIB_CAPTURE --> LIB_AGENTS
-        LIB_AGENTS --> LIB_GRAPH
-        LIB_GRAPH --> LIB_FRAMES
-        LIB_FRAMES --> LIB_QUERY
-        LIB_QUERY --> LIB_ALERT
-    end
+        subgraph "Processing"
+            spacer15[ ]:::spacer
+            LIB_CAPTURE[Continuous Capture]
+            LIB_AGENTS[Curator Agents]
+            LIB_GRAPH[Knowledge Graph]
+            LIB_FRAMES[Team Tracking]
+            LIB_QUERY[Query System]
+            LIB_ALERT[Risk Alerts]
+        end
 
-    subgraph "Knowledge Sources"
-        spacer14[ ]:::spacer
-        SRC_CODE[Code + Comments]
-        SRC_ISSUES[GitHub Issues]
-        SRC_CHAT[Chat/Email]
-        SRC_EMPIRICAL[Mission Reports]
+        subgraph "Preserved"
+            spacer16[ ]:::spacer
+            PRES_TECH[Technical Dependencies]
+            PRES_ORG[Organizational Context]
+            PRES_WHY[Design Rationale]
+            PRES_FAIL[Failure Lessons]
+        end
 
         SRC_CODE --> LIB_CAPTURE
         SRC_ISSUES --> LIB_CAPTURE
         SRC_CHAT --> LIB_CAPTURE
         SRC_EMPIRICAL --> LIB_CAPTURE
-    end
 
-    subgraph "Preserved Knowledge"
-        spacer15[ ]:::spacer
-        PRES_TECH[Technical Dependencies]
-        PRES_ORG[Organizational Context]
-        PRES_WHY[Design Rationale]
-        PRES_FAIL[Failure Lessons]
+        LIB_CAPTURE --> LIB_AGENTS --> LIB_GRAPH --> LIB_FRAMES --> LIB_QUERY --> LIB_ALERT
 
         LIB_GRAPH --> PRES_TECH
-        LIB_FRAMES --> PRES_ORG
         LIB_GRAPH --> PRES_WHY
         LIB_GRAPH --> PRES_FAIL
+        LIB_FRAMES --> PRES_ORG
     end
 
     style TRAD_LOSS fill:#ffcdd2
