@@ -153,11 +153,29 @@ Based on production issues discovered:
    }
    ```
 
-4. **Never assume changes work:**
+4. **AFTER PUSHING - Verify rendered output:**
+   ```powershell
+   # MANDATORY: View the actual rendered page on GitHub Pages
+   # Wait 2-3 minutes for GitHub Pages to rebuild
+   # Then open and verify EVERY diagram renders correctly
+   
+   # Example for team-boundaries:
+   Start-Process "https://phantom-man.github.io/PROVES_LIBRARY/diagrams/team-boundaries.html"
+   
+   # Check for error messages like:
+   # - "Unable to render rich display"
+   # - "bad indentation of a mapping entry"
+   # - "Parse error" or "Syntax error"
+   # - Diagrams not appearing at all
+   ```
+
+5. **Never assume changes work:**
    - Scripts can have bugs
    - Regex can match incorrectly
    - YAML structure is fragile
-   - Always validate output before pushing
+   - Source files can look correct but fail to render
+   - **YOU MUST SEE THE SAME ERRORS USERS SEE** - check the live site after every push
+   - If you can't see rendering errors, you can't fix them proactively
 
 
 ## 🔧 RULES FOR BATCH EDITING SCRIPTS
