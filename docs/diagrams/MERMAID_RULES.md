@@ -87,6 +87,312 @@ Based on production issues discovered:
 - **State transition colons** → Keep only label separator colon
 - **Incomplete ```mermaid examples** → Convert to plain ``` blocks
 
+## 🔧 RULES FOR BATCH EDITING SCRIPTS
+
+**CRITICAL: Follow these rules when writing PowerShell/Bash scripts to modify mermaid diagram files.**
+
+### YAML Frontmatter Integrity
+
+**NEVER break the YAML frontmatter structure when batch editing diagrams.**
+
+#### ✅ SAFE Replacement Patterns
+
+1. **Match Complete Sections with Boundaries**
+   ```powershell
+   # CORRECT: Match config block with proper boundaries
+   $content -replace '(?ms)^config:.*?^---\s*\n', $replacement
+   
+   # CORRECT: Preserve closing --- with explicit newline
+   $replacement = @"
+   config:
+     theme: base
+     ...
+   ---
+   
+   "@
+   ```
+
+2. **Preserve Structural Separators**
+   ```powershell
+   # CORRECT: Include separators in replacement string
+   $replacement = "  c4:`n    boxMargin: 10`n---`n"
+   
+   # CORRECT: Use backtick-n for newlines in PowerShell
+   "line1`nline2`nline3"
+   ```
+
+3. **Test Replacement on Single File First**
+   ```powershell
+   # CORRECT: Test before batch processing
+   $testFile = 'team-boundaries.md'
+   $content = Get-Content $testFile -Raw
+   $newContent = $content -replace $pattern, $replacement
+   
+   # Manually verify $newContent before proceeding
+   Write-Host $newContent | Select-String -Pattern '---' -Context 2
+   
+   # Only then apply to all files
+   ```
+
+#### ❌ DANGEROUS Patterns - NEVER USE
+
+1. **Greedy Matches Without Boundaries**
+   ```powershell
+   # WRONG: Will match too much or break structure
+   $content -replace 'config:.*---', $replacement
+   
+   # WRONG: Missing newline before closing ---
+   $replacement = "config:`n  theme: base---"  # Creates: base---
+   
+   # WRONG: No newline after closing ---
+   $replacement = "config:`n---flowchart"  # Creates: ---flowchart
+   ```
+
+2. **Single-Line Mode Without Anchors**
+   ```powershell
+   # WRONG: Can match across diagrams
+   $content -replace 'config:.*', $replacement
+   
+   # CORRECT: Use multiline mode with anchors
+   $content -replace '(?ms)^config:.*?^---', $replacement
+   ```
+
+3. **Replacing Separators Alone**
+   ```powershell
+   # WRONG: Can break other markdown elements
+   $content -replace '---', '___'
+   
+   # CORRECT: Match separator in context
+   $content -replace '^---\s*$', '___'
+   ```
+
+### Batch Edit Validation Checklist
+
+**MANDATORY steps after running ANY batch edit script:**
+
+```powershell
+# 1. Verify YAML frontmatter structure
+grep -n "^---$" docs/diagrams/*.md | head -20
+# Should see pairs: line X: ---, line Y: ---
+
+# 2. Check for concatenated config lines
+grep -n "10---" docs/diagrams/*.md
+grep -n "---flowchart" docs/diagrams/*.md
+grep -n "---gantt" docs/diagrams/*.md
+# Should return NO matches
+
+# 3. Verify config block completeness
+for file in docs/diagrams/*.md; do
+  echo "Checking $file"
+  grep -A 5 "^---$" "$file" | grep -E "^(config:|flowchart|gantt|sequenceDiagram)" | head -2
+done
+# Should show: --- followed by diagram type (not config details)
+
+# 4. Count opening vs closing --- separators
+for file in docs/diagrams/*.md; do
+  open=$(grep -c "^\`\`\`mermaid" "$file")
+  close=$(grep -c "^\`\`\`$" "$file")
+  yaml_open=$(grep -c "^---$" "$file")
+  echo "$file: mermaid blocks=$open/$close, yaml seps=$yaml_open (should be even)"
+done
+
+# 5. Test render in Mermaid Live Editor
+# Copy first diagram from each modified file to https://mermaid.live/
+# Verify no "Diagrams beginning with ---" errors
+
+# 6. Check for malformed YAML
+for file in docs/diagrams/*.md; do
+  echo "Checking $file for YAML issues"
+  awk '/^---$/,/^---$/{print NR": "$0}' "$file" | head -20
+done
+# Look for suspicious patterns like missing colons, weird indentation
+```
+
+### Safe Batch Edit Template
+
+Use this template for all batch diagram modifications:
+
+```powershell
+# 1. DEFINE replacement with explicit structure
+$replacement = @"
+config:
+  theme: base
+  fontSize: 18
+  themeCSS: |
+    .label { font-size: 20px !important; }
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    ...configuration lines...
+    boxMargin: 10
+---
+
+"@  # Note: Empty line after --- is preserved in @" "@ block
+
+# 2. DEFINE safe regex pattern with boundaries
+$pattern = '(?ms)^---\s*\nconfig:.*?^---\s*\n'
+# Explanation:
+# (?ms) - multiline + single-line modes
+# ^---\s*\n - opening --- with newline
+# config:.*? - config block (non-greedy)
+# ^---\s*\n - closing --- with newline
+
+# 3. TEST on one file first
+$testFile = 'docs/diagrams/team-boundaries.md'
+$testContent = Get-Content $testFile -Raw
+$testResult = $testContent -replace $pattern, $replacement
+
+# 4. VERIFY test result
+if ($testResult -match '(?ms)---\s*\n---\s*\nflowchart|gantt|sequenceDiagram') {
+  Write-Host "✓ Replacement looks correct"
+  Write-Host ($testResult -split "`n" | Select-Object -First 10)
+} else {
+  Write-Host "✗ Replacement broken - check pattern"
+  exit 1
+}
+
+# 5. APPLY to all files only if test passed
+$files = @('team-boundaries.md', 'overview.md', 'gnn-molecule.md', 
+           'knowledge-gaps.md', 'cross-system.md', 'transitive-chains.md')
+
+foreach ($file in $files) {
+  $content = Get-Content "docs/diagrams/$file" -Raw
+  $content = $content -replace $pattern, $replacement
+  Set-Content "docs/diagrams/$file" $content
+}
+
+# 6. VALIDATE results
+Write-Host "Running post-edit validation..."
+& grep -n "10---" docs/diagrams/*.md
+& grep -n "---flowchart" docs/diagrams/*.md
+if ($LASTEXITCODE -eq 0) {
+  Write-Host "✗ Found concatenation errors!"
+  exit 1
+} else {
+  Write-Host "✓ No concatenation errors found"
+}
+```
+
+### Common Script Pitfalls
+
+1. **PowerShell String Escaping**
+   ```powershell
+   # WRONG: Double quotes inside double quotes
+   $str = "fontFamily: "Segoe UI""  # Breaks
+   
+   # CORRECT: Escape inner quotes or use single quotes
+   $str = "fontFamily: ""Segoe UI"""  # Escaped
+   $str = "fontFamily: 'Segoe UI'"     # Single quotes inside
+   ```
+
+2. **Newline Handling Across Platforms**
+   ```powershell
+   # WRONG: Using \n (Bash style) in PowerShell
+   $str = "line1\nline2"  # Literal \n characters
+   
+   # CORRECT: Use backtick-n in PowerShell
+   $str = "line1`nline2"  # Actual newline
+   
+   # CORRECT: Use here-strings for multi-line
+   $str = @"
+   line1
+   line2
+   "@
+   ```
+
+3. **Regex Greediness**
+   ```powershell
+   # WRONG: Greedy .* matches too much
+   $content -replace 'config:.*---', $replacement  # Matches multiple blocks
+   
+   # CORRECT: Non-greedy .*? with boundaries
+   $content -replace '(?ms)^config:.*?^---', $replacement
+   ```
+
+4. **File Encoding Issues**
+   ```powershell
+   # WRONG: Default encoding may corrupt UTF-8 files
+   Set-Content $file $content
+   
+   # CORRECT: Specify UTF-8 encoding explicitly
+   Set-Content $file $content -Encoding UTF8
+   
+   # BETTER: Use -NoNewline if controlling newlines
+   Set-Content $file $content -Encoding UTF8 -NoNewline
+   ```
+
+5. **Missing Backup Before Modification**
+   ```powershell
+   # CORRECT: Always backup before batch edits
+   foreach ($file in $files) {
+     Copy-Item "docs/diagrams/$file" "docs/diagrams/$file.backup"
+     # ... perform modifications ...
+   }
+   
+   # After validation passes, remove backups:
+   Remove-Item docs/diagrams/*.backup
+   ```
+
+### Emergency Rollback Procedure
+
+If batch edit breaks all diagrams:
+
+```powershell
+# 1. Check git status
+git status
+
+# 2. View diff to see damage
+git diff docs/diagrams/team-boundaries.md | head -50
+
+# 3. If broken, reset all diagram files
+git checkout -- docs/diagrams/*.md
+
+# 4. If committed, revert commit
+git log --oneline -5  # Find commit hash
+git revert <commit-hash>
+
+# 5. If pushed, force reset (DANGEROUS - coordinate with team)
+git reset --hard HEAD~1
+git push --force-with-lease
+```
+
+### Pre-Commit Hook Recommendation
+
+Add this to `.git/hooks/pre-commit` to catch YAML errors:
+
+```bash
+#!/bin/bash
+
+# Check for broken YAML frontmatter
+if grep -n "10---\|---flowchart\|---gantt" docs/diagrams/*.md; then
+  echo "❌ ERROR: YAML frontmatter concatenation detected!"
+  echo "   Run validation and fix before committing."
+  exit 1
+fi
+
+# Check for unclosed mermaid blocks
+for file in docs/diagrams/*.md; do
+  opens=$(grep -c "^\`\`\`mermaid" "$file")
+  closes=$(grep -c "^\`\`\`$" "$file")
+  if [ "$opens" -ne "$closes" ]; then
+    echo "❌ ERROR: $file has mismatched mermaid blocks ($opens opens, $closes closes)"
+    exit 1
+  fi
+done
+
+echo "✓ Diagram validation passed"
+```
+
+### Key Takeaways
+
+1. **ALWAYS test regex replacements on one file first**
+2. **ALWAYS preserve YAML frontmatter separators with proper newlines**
+3. **ALWAYS validate after batch edits using multiple checks**
+4. **NEVER use greedy regex without anchors/boundaries**
+5. **NEVER skip backup before destructive operations**
+6. **ALWAYS specify UTF-8 encoding explicitly**
+7. **ALWAYS use here-strings (@" "@) for multi-line replacements**
+8. **ALWAYS verify separator counts match expected diagram counts**
+
 ## Critical Syntax Rules
 
 ### 1. NO HTML Tags
