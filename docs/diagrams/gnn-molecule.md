@@ -24,6 +24,9 @@ Think of the truth graph as a molecular structure:
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -130,4 +133,5 @@ A GNN learns which bonds carry the strongest influence. With verified edges and 
 ---
 
 [Back to Home](../index.html)
+
 

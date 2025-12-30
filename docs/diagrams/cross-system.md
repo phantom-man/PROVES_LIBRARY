@@ -61,6 +61,9 @@ Neither F´ documentation nor PROVES Kit documentation mentions the other system
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -198,6 +201,9 @@ Mission continues without IMU (silent failure)
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -314,6 +320,9 @@ No alert that power sequencing is wrong
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -440,6 +449,9 @@ Attitude determination fails
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -571,6 +583,9 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -681,6 +696,9 @@ flowchart LR
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -806,4 +824,5 @@ quadrantChart
 **Confidence Level:** High (human-verified, evidence-based)
 **Impact:** Demonstrates exact Team A/Team B failure mode
 **Date:** December 20, 2024
+
 

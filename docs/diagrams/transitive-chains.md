@@ -39,6 +39,9 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -204,6 +207,9 @@ This sequence diagram shows what happens when your system boots up. The tricky p
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -322,6 +328,9 @@ sequenceDiagram
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -416,6 +425,9 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -550,6 +562,9 @@ This diagram shows how F´'s build system creates your code. When you run `fprim
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -668,6 +683,9 @@ flowchart LR
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -785,4 +803,5 @@ Test suites should:
 **Longest Chain Found:** 13 hops (Application -> Board Configuration)
 **Documentation Gap:** 14 undocumented transitive links
 **Date:** December 20, 2024
+
 

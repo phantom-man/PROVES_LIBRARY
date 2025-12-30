@@ -278,11 +278,24 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
 - `fontFamily` - Font family for diagram text (default: `"trebuchet ms", verdana, arial, sans-serif`)
 
 **Font Size Configuration:**
-- **Global `fontSize`** (config level): Controls overall diagram font size including flowchart nodes (default: `16`, recommend `18`)
+- **Global `fontSize`** (config level): Controls overall diagram font size for certain diagram types (default: `16`, recommend `18`)
   - Place at config level: `config: { fontSize: 18, themeVariables: {...} }`
-- **Theme `fontSize`** (themeVariables level): Theme-specific font styling for certain diagram types
+- **Theme `fontSize`** (themeVariables level): Theme-specific font styling
   - Place in themeVariables: `themeVariables: { fontSize: '18px' }`
-- **Use BOTH** for complete coverage across all diagram types
+- **⚠️ FLOWCHART NODE TEXT:** The above fontSize settings do NOT control flowchart node text!
+  - Flowchart node text size is controlled by CSS classes
+  - Use `themeCSS` to override: `themeCSS: | \n    .nodeLabel { font-size: 18px !important; }`
+  - Example:
+    ```yaml
+    config:
+      theme: base
+      fontSize: 18
+      themeCSS: |
+        .nodeLabel { font-size: 18px !important; }
+        .edgeLabel { font-size: 16px !important; }
+      themeVariables:
+        fontSize: '18px'
+    ```
 
 #### Notes and Labels
 - `noteBkgColor` - Background color for note boxes (default: `#fff5ad`)
@@ -462,6 +475,9 @@ These are complete, ready-to-use theme configurations. Copy the frontmatter for 
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -523,6 +539,9 @@ config:
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -584,6 +603,9 @@ config:
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -645,6 +667,9 @@ config:
 config:
   theme: base
   fontSize: 18
+  themeCSS: |
+    .nodeLabel { font-size: 18px !important; }
+    .edgeLabel { font-size: 16px !important; }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'
