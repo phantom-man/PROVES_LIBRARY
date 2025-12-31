@@ -2439,12 +2439,559 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
    - ✅ `"F´ Core Docs": [0.1, 0.9]`
    - ⚠️ Always quote data point labels, especially with colons or special chars
 
+---
+
+## 📐 Rules for Diagram Creation
+
+**MANDATORY: Follow these rules when creating any Mermaid diagram to ensure consistent, readable, and properly rendered output.**
+
+### Universal Rules (All Diagram Types)
+
+#### REQUIRED Configuration
+
+Every diagram MUST include these settings in the YAML frontmatter:
+
+```yaml
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    fontSize: '24px'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+---
+```
+
+#### REQUIRED classDef Statements
+
+Every flowchart MUST include these classDef statements at the end of the diagram code:
+
+```
+classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
+```
+
+**Why**: CSS external stylesheets are unreliable for Mermaid. The classDef approach ensures font sizes are applied consistently across all rendering environments (GitHub preview, GitHub Pages, local preview).
+
+#### DISALLOWED Practices
+
+| ❌ NEVER DO THIS | ✅ DO THIS INSTEAD | WHY |
+|------------------|--------------------|----|
+| Use `fontSize: 20` or smaller | Use `fontSize: 24` minimum | Smaller fonts are unreadable |
+| Use HTML tags (`<br/>`, `<span>`) in flowcharts | Use newlines in markdown strings | HTML breaks rendering |
+| Use `::` in text | Use `_` or space | Double colons break parser |
+| Use unquoted special characters | Quote all labels with special chars | Parser failures |
+| Use `themeCSS` in individual diagrams | Use classDef or global CSS | themeCSS overrides global settings unpredictably |
+| Skip spacer nodes in subgraphs | Always add spacer nodes | Prevents heading overlap |
+
+---
+
+### Flowchart Rules
+
+#### Mandatory Configuration
+
+```yaml
+---
+config:
+  theme: base
+  fontSize: 24
+  flowchart:
+    htmlLabels: false
+    curve: 'linear'
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+---
+```
+
+**Critical Settings Explained:**
+- `htmlLabels: false` - **MANDATORY** - Prevents HTML rendering issues
+- `padding: 40` - Ensures content doesn't touch subgraph borders
+- `nodeSpacing: 100` - Horizontal space between nodes
+- `rankSpacing: 150` - Vertical space between rows (prevents heading overlap)
+
+#### Subgraph Heading Rules
+
+**Problem**: Subgraph headings overlap with first row of content.
+
+**Solution**: Add invisible spacer nodes after each subgraph declaration:
+
+```mermaid
+flowchart TB
+    subgraph MySection["My Section Title"]
+        spacer1[" "]:::spacer
+        ActualNode1["First real node"]
+        ActualNode2["Second node"]
+    end
+    
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
+```
+
+**Rules for Spacer Nodes:**
+1. Place immediately after the subgraph opening line
+2. Use unique IDs: `spacer1`, `spacer2`, etc.
+3. Content must be a single space: `[" "]`
+4. Always apply `:::spacer` class
+5. Never connect spacer nodes to other nodes
+
+#### Diamond Shape Rules
+
+**Problem**: Diamond shapes have limited space for text.
+
+**Solution**: 
+1. Keep diamond labels SHORT (max 3-4 words)
+2. Use smaller font: `:::diamond` class
+3. Move details to connected nodes or edge labels
+
+```mermaid
+flowchart TD
+    D{"Yes/No?"}:::diamond --> |"Yes: User confirmed"| A["Action"]
+    D --> |"No: User declined"| B["Other"]
+    
+    classDef diamond font-size:22px;
+```
+
+#### Direction Guidelines
+
+| Direction | Best For | Avoid For |
+|-----------|----------|-----------|
+| `TB` or `TD` | Hierarchies, process flows | Wide diagrams |
+| `LR` | Timelines, sequences | Deep hierarchies |
+| `BT` | Bottom-up architectures | General use |
+| `RL` | Right-to-left flows | General use |
+
+#### Node Shape Best Practices
+
+| Shape | Syntax | Use For | Label Length |
+|-------|--------|---------|--------------|
+| Rectangle | `["text"]` | Processes, actions | Medium |
+| Rounded | `("text")` | Start/end points | Short |
+| Diamond | `{"text"}` | Decisions | Very short (3-4 words) |
+| Stadium | `(["text"])` | Terminal points | Short |
+| Hexagon | `{{"text"}}` | Preparation steps | Medium |
+| Database | `[("text")]` | Data storage | Short |
+| Subroutine | `[["text"]]` | Subprocess calls | Medium |
+
+#### Edge Label Rules
+
+1. Keep edge labels SHORT (2-5 words ideal)
+2. Use edge labels for conditions, not full sentences
+3. For longer explanations, add a note node instead
+
+```mermaid
+flowchart LR
+    A --> |"short label"| B
+    B --> C
+    C -.-> Note["Detailed explanation of why C happens"]
+```
+
+---
+
+### Sequence Diagram Rules
+
+#### Mandatory Configuration
+
+```yaml
+---
+config:
+  theme: base
+  fontSize: 24
+  sequence:
+    actorFontSize: 24
+    messageFontSize: 24
+    noteFontSize: 22
+    mirrorActors: false
+---
+```
+
+#### Best Practices
+
+1. **Limit participants**: 5-7 actors maximum for readability
+2. **Use aliases**: Short IDs with descriptive display names
+3. **Group related messages**: Use `rect` for background highlighting
+4. **Number steps**: Use `autonumber` for complex sequences
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant S as Server
+    participant DB as Database
+    
+    U->>S: Request
+    rect rgb(200, 220, 255)
+        S->>DB: Query
+        DB-->>S: Results
+    end
+    S-->>U: Response
+```
+
+#### DISALLOWED in Sequence Diagrams
+
+| ❌ NEVER | ✅ INSTEAD |
+|----------|-----------|
+| `Note over A: Step 1: Details` | `Note over A: Step 1 Details` |
+| More than 10 actors | Split into multiple diagrams |
+| Deeply nested loops | Flatten or split |
+
+---
+
+### Pie Chart Rules
+
+#### Mandatory Configuration
+
+```yaml
+---
+config:
+  theme: base
+  pie:
+    textPosition: 0.75
+---
+```
+
+#### CRITICAL: Always Quote Labels
+
+```
+pie title My Chart
+    "Label One" : 45
+    "Label Two" : 30
+    "Label (with parens)" : 25
+```
+
+**Even simple labels need quotes to prevent parser issues.**
+
+#### Best Practices
+
+1. **5-7 slices maximum** for readability
+2. **Use descriptive labels** - avoid abbreviations
+3. **Order slices** from largest to smallest (clockwise)
+4. **Include title** for context
+
+---
+
+### Gantt Chart Rules
+
+#### Mandatory Configuration
+
+```yaml
+---
+config:
+  theme: base
+  gantt:
+    titleTopMargin: 25
+    barHeight: 30
+    fontSize: 24
+    sectionFontSize: 24
+---
+```
+
+#### Task Definition Rules
+
+```
+gantt
+    dateFormat YYYY-MM-DD
+    title Project Timeline
+    
+    section Phase 1
+    Task Name Here :done, task1, 2024-01-01, 30d
+    Another Task   :active, task2, after task1, 14d
+```
+
+**CRITICAL: No colons in task names before the delimiter colon!**
+
+| ❌ WRONG | ✅ CORRECT |
+|----------|-----------|
+| `Phase 1: Setup :done, t1, 2024-01-01, 5d` | `Phase 1 Setup :done, t1, 2024-01-01, 5d` |
+| `Gap: Team leaves :milestone` | `Gap Team leaves :milestone` |
+
+#### Best Practices
+
+1. **Use task IDs** for dependencies (`after task1`)
+2. **Add sections** to group related tasks
+3. **Use milestones** for key dates: `:milestone, m1, 2024-01-15, 0d`
+4. **Exclude weekends** if relevant: `excludes weekends`
+
+---
+
+### Quadrant Chart Rules
+
+#### Mandatory Configuration
+
+```yaml
+---
+config:
+  theme: base
+  quadrantChart:
+    chartWidth: 500
+    chartHeight: 500
+    titleFontSize: 24
+    quadrantLabelFontSize: 20
+    pointLabelFontSize: 16
+---
+```
+
+#### CRITICAL: Always Quote Data Point Labels
+
+```
+quadrantChart
+    title Risk Assessment
+    x-axis Low Risk --> High Risk
+    y-axis Low Impact --> High Impact
+    quadrant-1 Monitor
+    quadrant-2 Act Now
+    quadrant-3 Ignore
+    quadrant-4 Plan
+    "Point Label": [0.8, 0.3]
+    "Another Point": [0.2, 0.7]
+```
+
+**Labels with colons, special characters, or spaces MUST be quoted.**
+
+---
+
+### State Diagram Rules
+
+#### Mandatory Configuration
+
+```yaml
+---
+config:
+  theme: base
+  state:
+    defaultRenderer: dagre
+---
+```
+
+#### Transition Label Rules
+
+**No colons in transition labels after the separator colon!**
+
+| ❌ WRONG | ✅ CORRECT |
+|----------|-----------|
+| `State1 --> State2: Status: Active` | `State1 --> State2: Status Active` |
+| `A --> B: Error: Connection failed` | `A --> B: Error Connection failed` |
+
+---
+
+## 📊 Rules for Data Conversion for Mermaid Consumption
+
+**When converting data from external sources (databases, APIs, spreadsheets) into Mermaid diagrams, follow these preprocessing rules.**
+
+### Text Sanitization Rules
+
+#### Step 1: Remove/Replace Problematic Characters
+
+| Character | Problem | Replacement |
+|-----------|---------|-------------|
+| `::` | Breaks parser | ` ` (space) or `_` |
+| `:` in labels | Breaks parser | ` - ` or remove |
+| `<` and `>` | HTML interpretation | `lt` and `gt` or remove |
+| `&` | Entity interpretation | `and` |
+| `"` inside quoted text | Breaks quotes | `'` or remove |
+| `\n` newlines | Breaks labels | ` ` (space) |
+| `\t` tabs | Inconsistent spacing | ` ` (space) |
+| `()` unquoted | Breaks parser | Quote entire label |
+| `[]` inside labels | Breaks parser | Quote entire label |
+| `/` in paths | Breaks parser | Quote entire label |
+
+#### Step 2: Truncate Long Text
+
+| Element | Maximum Length | Truncation Strategy |
+|---------|----------------|---------------------|
+| Node labels | 50 characters | Truncate with `...` |
+| Edge labels | 30 characters | Use abbreviations |
+| Diamond labels | 20 characters | Extreme brevity |
+| Subgraph titles | 40 characters | Shorten descriptively |
+| Pie chart labels | 25 characters | Abbreviate |
+| Gantt task names | 40 characters | Truncate |
+
+#### Step 3: Quote All Labels
+
+**Always wrap labels in double quotes, even if they look safe:**
+
+```python
+# Python example
+def sanitize_for_mermaid(text):
+    # Remove dangerous characters
+    text = text.replace('::', '_')
+    text = text.replace('<', '')
+    text = text.replace('>', '')
+    text = text.replace('&', 'and')
+    text = text.replace('\n', ' ')
+    text = text.replace('\t', ' ')
+    
+    # Escape internal quotes
+    text = text.replace('"', "'")
+    
+    # Truncate
+    if len(text) > 50:
+        text = text[:47] + '...'
+    
+    # Always return quoted
+    return f'"{text}"'
+```
+
+### Data Structure Conversion
+
+#### Hierarchical Data → Flowchart
+
+```python
+# Input: Tree structure
+data = {
+    "root": {
+        "child1": ["leaf1", "leaf2"],
+        "child2": ["leaf3"]
+    }
+}
+
+# Output: Mermaid flowchart
+def tree_to_flowchart(data, parent=None):
+    lines = ["flowchart TD"]
+    node_id = 0
+    
+    def process(node, parent_id):
+        nonlocal node_id, lines
+        for key, value in node.items():
+            current_id = f"N{node_id}"
+            node_id += 1
+            lines.append(f'    {current_id}["{sanitize(key)}"]')
+            if parent_id:
+                lines.append(f'    {parent_id} --> {current_id}')
+            if isinstance(value, dict):
+                process(value, current_id)
+            elif isinstance(value, list):
+                for item in value:
+                    leaf_id = f"N{node_id}"
+                    node_id += 1
+                    lines.append(f'    {leaf_id}["{sanitize(item)}"]')
+                    lines.append(f'    {current_id} --> {leaf_id}')
+    
+    process(data, None)
+    return '\n'.join(lines)
+```
+
+#### Tabular Data → Gantt Chart
+
+```python
+# Input: List of tasks
+tasks = [
+    {"name": "Design Phase", "start": "2024-01-01", "duration": 14, "status": "done"},
+    {"name": "Development", "start": "2024-01-15", "duration": 30, "status": "active"},
+]
+
+# Output: Mermaid Gantt
+def tasks_to_gantt(tasks):
+    lines = [
+        "gantt",
+        "    dateFormat YYYY-MM-DD",
+        "    title Project Timeline",
+        ""
+    ]
+    
+    for i, task in enumerate(tasks):
+        name = sanitize_for_mermaid(task["name"]).strip('"')  # Remove quotes for Gantt
+        # Remove colons from name
+        name = name.replace(':', ' ')
+        
+        status = task.get("status", "")
+        status_str = f"{status}, " if status else ""
+        
+        line = f"    {name} :{status_str}t{i}, {task['start']}, {task['duration']}d"
+        lines.append(line)
+    
+    return '\n'.join(lines)
+```
+
+#### Percentage Data → Pie Chart
+
+```python
+# Input: Category percentages
+data = {"Category A": 45.5, "Category B": 30.2, "Other": 24.3}
+
+# Output: Mermaid Pie
+def dict_to_pie(data, title="Distribution"):
+    lines = [f"pie title {title}"]
+    
+    for label, value in data.items():
+        safe_label = sanitize_for_mermaid(label)
+        lines.append(f"    {safe_label} : {value}")
+    
+    return '\n'.join(lines)
+```
+
+#### Coordinate Data → Quadrant Chart
+
+```python
+# Input: Items with x,y scores
+items = [
+    {"name": "Item A", "x": 0.8, "y": 0.3},
+    {"name": "Item B: Special", "x": 0.2, "y": 0.7},
+]
+
+# Output: Mermaid Quadrant
+def items_to_quadrant(items, title="Analysis"):
+    lines = [
+        "quadrantChart",
+        f"    title {title}",
+        "    x-axis Low --> High",
+        "    y-axis Low --> High",
+        "    quadrant-1 Q1",
+        "    quadrant-2 Q2", 
+        "    quadrant-3 Q3",
+        "    quadrant-4 Q4"
+    ]
+    
+    for item in items:
+        # MUST quote and sanitize
+        name = sanitize_for_mermaid(item["name"])
+        x = max(0, min(1, item["x"]))  # Clamp to 0-1
+        y = max(0, min(1, item["y"]))
+        lines.append(f"    {name}: [{x}, {y}]")
+    
+    return '\n'.join(lines)
+```
+
+### Validation After Conversion
+
+Always validate generated diagrams before use:
+
+```python
+def validate_mermaid(diagram_code):
+    errors = []
+    
+    # Check for double colons
+    if '::' in diagram_code and 'classDef' not in diagram_code:
+        errors.append("Found '::' outside classDef - will break")
+    
+    # Check for unquoted special chars in specific contexts
+    lines = diagram_code.split('\n')
+    for i, line in enumerate(lines):
+        # Check pie chart labels
+        if 'pie' in diagram_code and ':' in line and not line.strip().startswith('"'):
+            if not any(kw in line for kw in ['pie', 'title', 'showData']):
+                errors.append(f"Line {i+1}: Pie label may need quotes")
+        
+        # Check for HTML tags
+        if '<br/>' in line or '<span' in line:
+            errors.append(f"Line {i+1}: HTML tags found - may break flowcharts")
+    
+    return errors
+```
+
+---
+
 ## Resources
 
 - [Official Mermaid Docs](https://mermaid.js.org/)
 - [Flowchart Syntax](https://mermaid.js.org/syntax/flowchart.html)
 - [Sequence Diagram Syntax](https://mermaid.js.org/syntax/sequenceDiagram.html)
+- [Pie Chart Syntax](https://mermaid.js.org/syntax/pie.html)
+- [Gantt Chart Syntax](https://mermaid.js.org/syntax/gantt.html)
+- [Quadrant Chart Syntax](https://mermaid.js.org/syntax/quadrantChart.html)
+- [State Diagram Syntax](https://mermaid.js.org/syntax/stateDiagram.html)
 - [Mermaid Live Editor](https://mermaid.live/)
+- [Mermaid Configuration](https://mermaid.js.org/config/setup/index.html)
 
 ---
 
