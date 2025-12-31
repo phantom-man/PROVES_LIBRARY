@@ -47,8 +47,8 @@ This library provides structured knowledge extraction and preservation for techn
 >
 > The agentic system analyzes its own extraction quality and graph structure. Two views are tracked: production extraction status and agent trial-run learning logs.
 >
-> - **[Production Extraction Status Report](testing_data/progress_diagrams/progress_report_2025-12-30_13-30-21.md)** - Generated 2025-12-30 (pipeline + data quality). Snapshot: 92 URLs (68 pending, 24 processed), 74 extractions (73 last 7 days), 15 verified (20%), avg confidence 0.42, components 29, dependencies 30, connections 4.
-> - **[Agent Trial-Run Report](testing_data/progress_diagrams/latest.md)** - Generated 2025-12-30 (agent learning logs). Snapshot: 3 trial runs, 3 sources, 34 couplings.
+> - **[Production Extraction Status Report](testing_data/diagrams/progress_diagrams/progress_report_2025-12-30_13-30-21.md)** - Generated 2025-12-30 (pipeline + data quality). Snapshot: 92 URLs (68 pending, 24 processed), 74 extractions (73 last 7 days), 15 verified (20%), avg confidence 0.42, components 29, dependencies 30, connections 4.
+> - **[Agent Trial-Run Report](testing_data/diagrams/progress_diagrams/latest.md)** - Generated 2025-12-30 (agent learning logs). Snapshot: 3 trial runs, 3 sources, 34 couplings.
 
 ---
 
@@ -162,8 +162,8 @@ System analyzes its own extraction quality:
 
 ### Results to Date (Verifiable)
 
-- Production pipeline snapshot: 92 URLs (68 pending, 24 processed), 74 extractions (73 last 7 days), 15 verified (20%), avg confidence 0.42 (`testing_data/progress_diagrams/progress_report_2025-12-30_13-30-21.md`)
-- Data types collected: 29 components, 30 dependencies, 4 connections, 11 other (`testing_data/progress_diagrams/progress_report_2025-12-30_13-30-21.md`)
+- Production pipeline snapshot: 92 URLs (68 pending, 24 processed), 74 extractions (73 last 7 days), 15 verified (20%), avg confidence 0.42 (`testing_data/diagrams/progress_diagrams/progress_report_2025-12-30_13-30-21.md`)
+- Data types collected: 29 components, 30 dependencies, 4 connections, 11 other (`testing_data/diagrams/progress_diagrams/progress_report_2025-12-30_13-30-21.md`)
 - Agent trial-run logs: 3 runs, 3 sources, 34 couplings (`testing_data/dataset_97e5e162-967f-4399-9037-a9bd1b8cbf6e.jsonl`)
 - Legacy tracker: 1 completed page, 6 extractions (`testing_data/extraction_progress.json`)
 
