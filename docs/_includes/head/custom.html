@@ -47,26 +47,14 @@
     height: auto;
   }
   
-  /* Fix subgraph label positioning - prevent overlap with content */
-  .mermaid .cluster-label {
-    dominant-baseline: text-before-edge !important;
-    font-weight: 600 !important;
-  }
-  
-  /* Add padding/margin to cluster labels to prevent overlap */
-  .mermaid .cluster-label foreignObject {
-    overflow: visible !important;
-    margin-bottom: 20px !important;
-  }
-  
-  /* Increase cluster/subgraph top padding for label space */
-  .mermaid .cluster rect {
-    y: -30px !important;
-  }
-  
-  /* Add spacing after cluster label */
-  .mermaid .cluster-label {
-    transform: translateY(-15px) !important;
+  /* Cluster/subgraph title labels - larger font */
+  .mermaid .cluster-label .nodeLabel,
+  .mermaid .cluster-label foreignObject div,
+  .mermaid .cluster-label span,
+  .mermaid g.cluster-label text {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
   }
   
   /* Consistent font sizing for ALL flowchart nodes including inside subgraphs */
@@ -79,38 +67,21 @@
   .mermaid .flowchart-label,
   .mermaid text.nodeLabel,
   .mermaid .label foreignObject div,
-  .mermaid g.node text {
+  .mermaid g.node text,
+  .mermaid svg .node text,
+  .mermaid svg .cluster .node text {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
     font-size: 24px !important;
     line-height: 1.4 !important;
   }
   
-  /* Cluster/subgraph labels need to be larger and bolder */
-  .mermaid .cluster-label .nodeLabel,
-  .mermaid .cluster-label foreignObject div,
-  .mermaid .cluster-label text {
-    font-size: 26px !important;
-    font-weight: 700 !important;
-  }
-  
-  /* Target SVG text elements directly for nodes */
+  /* Target SVG text elements directly */
   .mermaid svg text {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
   }
   
-  .mermaid svg .node text,
-  .mermaid svg .cluster .node text {
-    font-size: 24px !important;
-  }
-  
-  /* Fix diamond (decision) shape text - allow overflow and increase visibility */
-  .mermaid .node polygon + .label,
-  .mermaid .node.decision .label,
-  .mermaid .node foreignObject {
-    overflow: visible !important;
-  }
-  
-  /* Ensure text in diamonds is visible */
+  /* Fix diamond (decision) shape text - allow overflow */
+  .mermaid .node foreignObject,
   .mermaid .node .label foreignObject {
     overflow: visible !important;
   }
@@ -122,12 +93,6 @@
   
   .mermaid .edgeLabel rect {
     opacity: 0.9 !important;
-  }
-  
-  /* Ensure proper text wrapping in nodes */
-  .mermaid .nodeLabel {
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
   }
 </style>
 
