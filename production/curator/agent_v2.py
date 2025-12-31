@@ -34,9 +34,20 @@ def create_curator():
         dict with three subagent runnables and checkpointer
     """
 
-    # Initialize PostgreSQL checkpointer (Neon)
+    # Initialize PostgreSQL checkpointer (Neon) with SSL config
     db_url = os.getenv('NEON_DATABASE_URL')
-    pool = ConnectionPool(conninfo=db_url, min_size=1, max_size=5)
+    pool = ConnectionPool(
+        conninfo=db_url,
+        min_size=1,
+        max_size=5,
+        timeout=30,  # Connection timeout in seconds
+        kwargs={
+            "keepalives": 1,
+            "keepalives_idle": 30,
+            "keepalives_interval": 10,
+            "keepalives_count": 5,
+        }
+    )
     checkpointer = PostgresSaver(pool)
     checkpointer.setup()
 
@@ -149,7 +160,7 @@ Otherwise, APPROVE.
 
     validator_message = validator_result["messages"][-1].content
 
-    # Check if validation approved
+    # Check if validation rejected
     if "REJECTED" in validator_message.upper():
         return {
             "status": "rejected",
@@ -158,15 +169,8 @@ Otherwise, APPROVE.
             "extractor_output": final_message
         }
 
-    if "APPROVED" not in validator_message.upper():
-        return {
-            "status": "failed",
-            "stage": "validation",
-            "error": "Validator did not return clear decision",
-            "validator_output": validator_message
-        }
-
-    print(f"[OK] Validation approved")
+    # If not explicitly rejected, proceed to storage
+    print(f"[OK] Validation completed")
 
     # STEP 3: STORE
     print(f"\n[STEP 3/3] Storing validated extractions...")

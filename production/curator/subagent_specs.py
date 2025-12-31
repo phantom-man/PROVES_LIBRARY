@@ -116,11 +116,148 @@ Extract COUPLINGS (not just components):
 
 **Optional:** If you need the full FRAMES vocabulary reference, use the get_ontology() tool.
 
+## Knowledge Capture Checklist (REQUIRED for ALL extractions)
+
+For EVERY extraction, you MUST answer the 7-question Knowledge Capture Checklist.
+This preserves epistemic grounding so downstream systems can identify loss modes and interface transfer risks.
+
+### The 7 Questions (Answer ALL for each extraction)
+
+**Question 1: Who knew this, and how close were they?** (Observer coupling)
+   - **CRITICAL EPISTEMIC DISTINCTION:**
+     - **You (the AI) are the RECORDER, not the attributed OBSERVER**
+     - "I am not telling the system what is known; I am recording who claimed to know it and how."
+   - **Who actually documented/observed this knowledge?**
+     - Was it designers? Authors? Maintainers? The system itself? Unknown?
+     - Did THEY touch the real system, or only outputs?
+   - **Fields to populate:**
+     - `observer_id`: WHO claimed to know this (NOT "agent:extractor_v3"!)
+       - "designers" | "authors" | "maintainers" | "system" | "unknown"
+       - Default: "unknown" if you can't determine who documented it
+     - `observer_type`: "human" | "system" | "instrument" | "unknown" (NEVER "ai")
+     - `contact_mode`: How the ATTRIBUTED observer knew this
+       - "direct" (physical), "mediated" (instrumented), "effect_only" (indirect), "derived" (docs-only)
+     - `contact_strength`: How close the ATTRIBUTED observer was (0.00-1.00)
+       - 1.0 = direct physical, 0.2 = derived from docs (default for unknown)
+     - `signal_type`: "text", "code", "spec", "comment", "example", "log", "telemetry", "diagram", "model", "table", "test"
+
+**Question 2: Where does the experience live now?** (Pattern storage location)
+   - Is this skill or judgment carried by people?
+   - Is it written down, modeled, or logged?
+   - **Fields to populate:**
+     - `pattern_storage`: "internalized" (in body/nervous system), "externalized" (in symbols/docs), "mixed", "unknown"
+     - `representation_media`: ["text"], ["code"], ["text", "diagram"], etc.
+
+**Question 3: What has to stay connected for this to work?** (Relational integrity)
+   - Does this depend on sequence, timing, or coordination?
+   - Are pieces stored together or scattered?
+   - **Fields to populate:**
+     - `dependencies`: JSON array of entity keys that must remain connected (e.g., ["component:I2C_Driver", "component:PowerMonitor"])
+     - `sequence_role`: "precondition", "step", "outcome", "postcondition", "none"
+     - `relational_notes`: Freeform description of dependencies
+
+**Question 4: Under what conditions was this true?** (Context preservation)
+   - What assumptions were in place?
+   - What constraints mattered?
+   - **Fields to populate:**
+     - `validity_conditions`: JSON object (e.g., {"fprime_version": "v3.4.0", "hardware_rev": "2.1"})
+     - `assumptions`: Array of strings (e.g., ["Normal temperature", "Standard config"])
+     - `scope`: "local", "subsystem", "system", "general"
+
+**Question 5: When does this stop being reliable?** (Temporal validity)
+   - Does this age out?
+   - Has the system changed since this was learned?
+   - **Fields to populate:**
+     - `observed_at`: Timestamp when source was created (from snapshot metadata)
+     - `valid_from`, `valid_to`: Validity range if known
+     - `refresh_trigger`: "new_rev", "recalibration", "periodic", "after_incident", null
+     - `staleness_risk`: 0.00-1.00 (0.0 = timeless, 1.0 = highly time-sensitive)
+
+**Question 6: Who wrote or taught this, and why?** (Authorship & intent)
+   - Was this exploratory, provisional, or certain?
+   - Was it written to explain, persuade, or comply?
+   - **Fields to populate:**
+     - `author_id`: "doc:fprime_team", "human:engineer_x", "agent:parser_v1"
+     - `intent`: "explain", "instruct", "justify", "explore", "comply", "persuade", "remember", "unknown"
+     - `uncertainty_notes`: What uncertainty was present but not recorded?
+
+**Question 7: Does this only work if someone keeps doing it?** (Reenactment dependency)
+   - Does this knowledge require practice?
+   - Can it be understood without having done it?
+   - **Fields to populate:**
+     - `reenactment_required`: TRUE/FALSE
+     - `practice_interval`: "per-run", "weekly", "per-release", null
+     - `skill_transferability`: "portable", "conditional", "local", "tacit_like", "unknown"
+
+### Default Values for Documentation Extraction
+
+**REMEMBER: You are the RECORDER, not the attributed OBSERVER**
+
+Since you're extracting from documentation where the original observer is usually unknown:
+- `observer_id`: "unknown" (DEFAULT - you don't know who wrote/documented this)
+  - Only use specific values like "designers", "authors" if explicitly stated in text
+- `observer_type`: "unknown" (DEFAULT - or "human" if you can infer it)
+  - NEVER use "ai" - that's you, the recorder, not the attributed observer
+- `contact_mode`: "derived" (DEFAULT - the attributed observer likely learned from docs/specs)
+- `contact_strength`: 0.20 (DEFAULT - low coupling for unknown documentation)
+- `signal_type`: Usually "text", "code", "spec", "diagram"
+- `pattern_storage`: Usually "externalized" (in documentation)
+- `representation_media`: ["text"] or ["code"] or ["text", "diagram"]
+
+### Inference Examples
+
+**Example 1: Technical procedure from documentation**
+Text: "Initialize I2CDriver before PowerMonitor. Send readings every 100ms via address 0x48. If timeout exceeds 500ms, enter safe mode."
+
+Epistemic fields (CORRECT - attributed to original observers, not you):
+- `observer_id`: "unknown" (we don't know who wrote this documentation)
+- `observer_type`: "unknown" (likely human designers, but not stated)
+- `contact_mode`: "derived" (attributed observer likely learned from specs)
+- `contact_strength`: 0.20 (low - derived knowledge, not direct observation)
+- `signal_type`: "spec"
+- `pattern_storage`: "externalized"
+- `representation_media`: ["text", "code"]
+- `dependencies`: ["component:I2CDriver", "component:PowerMonitor"]
+- `sequence_role`: "step"
+- `validity_conditions`: {"fprime_version": "v3.4.0"}  (if version mentioned)
+- `assumptions`: ["Normal operation", "I2C bus functional"]
+- `scope`: "subsystem"
+- `staleness_risk`: 0.4 (could change with new version)
+- `refresh_trigger`: "new_rev"
+- `author_id`: "unknown" (or "designers" if you can infer)
+- `intent`: "instruct"
+- `uncertainty_notes`: "Derived from spec; runtime behavior not observed"
+- `reenactment_required`: FALSE
+- `skill_transferability`: "portable"
+
+**Example 2: Observed hardware behavior (from documentation describing observation)**
+Text: "During RW-3 testing, technician noted unusual bearing sound at spin-down. Pattern differed from nominal units, suggesting early wear."
+
+Epistemic fields (CORRECT - technician is the attributed observer):
+- `observer_id`: "human:technician_unknown" (mentioned in text)
+- `observer_type`: "human"
+- `contact_mode`: "direct" (technician physically present)
+- `contact_strength`: 0.85 (direct sensory observation)
+- `signal_type`: "test" (from testing)
+- `pattern_storage`: "internalized" (technician's pattern recognition)
+- `representation_media`: ["text"]
+- `dependencies`: ["component:RW-3", "component:bearing"]
+- `sequence_role`: "outcome"
+- `scope`: "local"
+- `staleness_risk`: 0.6 (hardware-specific observation)
+- `author_id`: "human:technician_unknown"
+- `intent`: "remember"
+- `uncertainty_notes`: "No quantitative threshold provided, qualitative assessment only"
+- `reenactment_required`: TRUE
+- `practice_interval`: "per-run"
+- `skill_transferability`: "tacit_like"
+
 ## Critical Rules
 
 - ALWAYS cite the source URL in your response
 - Provide exact evidence quotes for each extraction
-- Document your confidence reasoning
+- ALWAYS answer ALL 7 Knowledge Capture Checklist questions for EVERY extraction
+- Document epistemic metadata thoroughly (observer, pattern storage, dependencies, etc.)
 - Note any uncertainties or ambiguities
 - Do NOT assign criticality (that is for humans to decide)
 - Focus on WHAT exists, not on how critical it might be
@@ -129,9 +266,22 @@ Extract COUPLINGS (not just components):
 
 Your final response should be structured text that includes:
 - Source URL (clearly stated)
+- snapshot_id (from fetch_webpage)
 - Extracted entities (components, interfaces, flows, mechanisms)
-- Evidence quotes for each extraction
-- Confidence reasoning
+- For EACH extraction, include:
+  - candidate_type (component, port, dependency, etc.)
+  - candidate_key (entity name)
+  - raw_evidence (exact quote from source)
+  - evidence_type (explicit_requirement, interface_specification, etc.)
+  - confidence_score and confidence_reason
+  - **KNOWLEDGE CAPTURE CHECKLIST (ALL 7 questions answered):**
+    - observer_id, observer_type, contact_mode, contact_strength, signal_type (Q1)
+    - pattern_storage, representation_media (Q2)
+    - dependencies, sequence_role (Q3)
+    - validity_conditions, assumptions, scope (Q4)
+    - observed_at, valid_from, valid_to, refresh_trigger, staleness_risk (Q5)
+    - author_id, intent, uncertainty_notes (Q6)
+    - reenactment_required, practice_interval, skill_transferability (Q7)
 - Any uncertainties or notes
 
 Work step-by-step through the workflow above.""",
@@ -301,7 +451,14 @@ Store extracted entities in staging_extractions for human review.
    - properties (entity-specific JSON)
    - confidence_score and confidence_reason
    - reasoning_trail (your thought process)
-   - lineage_verified, lineage_confidence, evidence_checksum (from validator)
+   - **KNOWLEDGE CAPTURE CHECKLIST (7 questions - REQUIRED):**
+     - observer_id, observer_type, contact_mode, contact_strength, signal_type (Q1)
+     - pattern_storage, representation_media (Q2)
+     - dependencies, sequence_role (Q3)
+     - validity_conditions, assumptions, scope (Q4)
+     - observed_at, valid_from, valid_to, refresh_trigger, staleness_risk (Q5)
+     - author_id, intent, uncertainty_notes (Q6)
+     - reenactment_required, practice_interval, skill_transferability (Q7)
 3. Verify storage using get_staging_statistics() (1 tool call)
 4. Report success/failure with statistics
 
@@ -311,6 +468,7 @@ After 5 tool calls, you MUST return. No exceptions.
 
 - ALWAYS include source_snapshot_id (from the extractor's output)
 - ALWAYS include raw_evidence (exact quotes)
+- ALWAYS include epistemic metadata (all 7 questions answered)
 - Store ALL extractions (don't filter based on importance)
 - Include complete metadata for human verification
 

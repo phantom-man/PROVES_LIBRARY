@@ -1,6 +1,6 @@
 # PROVES Library
 
-**Knowledge graph extraction pipeline for training Graph Neural Networks on CubeSat system dependencies.**
+> Structured knowledge extraction and preservation for satellite development programs
 
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://lizo-roadtown.github.io/PROVES_LIBRARY/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -8,87 +8,51 @@
 
 ---
 
-## Overview
+## The Problem
 
-This repository builds a knowledge graph from technical documentation (F´, PROVES Kit, CubeSat hardware) to train a GraphSAGE neural network for predicting cascade failures in space systems.
+Satellite development requires stable, reliable knowledge. Engineers need to know:
 
-**The problem**: Graph Neural Networks need high-quality training data. Missing edges, inconsistent labels, and unverified relationships teach the model wrong patterns.
+- What actually works (not just what the spec says)
+- Why decisions were made
+- What's been tried and failed
+- What depends on specific conditions
 
-**Our approach**: Multi-agent extraction pipeline with full lineage tracking, human verification, and a five-attribute edge model that captures conditional dependencies.
+But knowledge degrades:
 
-### Why GraphSAGE?
+- Experienced people leave, taking context with them
+- Documentation says "what" but not "why" or "how confident to be"
+- Lessons learned sit in reports nobody reads
+- New engineers can't tell what's reliable vs. what's a guess
 
-GraphSAGE (Graph Sample and Aggregate) learns from both node features and graph structure, making it suitable for predicting how changes propagate through coupled systems (power → thermal → timing → software).
-
-We're using NASA's heterogeneous GNN implementation as a foundation, initially focused on CubeSat systems with potential application to other technical domains with verifiable dependency graphs.
-
----
-
-## What We've Built
-
-A multi-agent extraction pipeline that:
-
-1. **Crawls documentation** - Identifies high-quality technical pages (find_good_urls.py)
-2. **Extracts structure** - LLM agents identify components, interfaces, flows using FRAMES ontology (process_extractions.py)
-3. **Validates lineage** - Tracks every extraction back to source with evidence checksums
-4. **Routes for review** - Staged extractions go to human verification via project management integration
-5. **Analyzes patterns** - Meta-learning loop identifies extraction quality issues (improvement_analyzer.py)
-
-**What makes this different from standard knowledge graphs**: Five-attribute edges (directionality, strength, mechanism, knownness, scope) that let the GNN learn conditional relationships, not just binary connections.
-
-### Current Phase: Graph Embedding Pipeline
-
-We're currently in the **chunking and embedding phase** - preparing the knowledge graph for neural network training:
-
-```mermaid
-graph LR
-    A[Documentation Sources] --> B[Smart Crawler]
-    B --> C[LLM Extraction Agent]
-    C --> D[Validation & Staging]
-    D --> E[Human Verification]
-    E --> F[Knowledge Graph]
-    F --> G[Graph Chunking]
-    G --> H[Vector Embeddings]
-    H --> I[GNN Training Data]
-    I --> J[GraphSAGE Model]
-
-    style F fill:#4D96FF
-    style J fill:#FFD93D
-```
+**Result:** Steep learning curves, repeated mistakes, and failures that could have been prevented.
 
 ---
 
-### 🎯 Current Work: Representation Before Interpretation
+## The Solution
 
-**Inference is intentionally deferred until after knowledge has been represented without interpretation.** This separation enables an embodiment-aware chunking strategy, where chunks are formed based on observed structural boundaries and relationships rather than inferred meaning or semantic similarity.
+This library provides structured knowledge extraction and preservation for technical systems, initially focused on CubeSat development with F´ and PROVES Kit.
 
-This design ensures that chunking reflects **how the system is described**, not how it is prematurely understood. Inference and meaning-making are introduced only after stable representation is established.
+**Core capability:** Extract knowledge from documentation, tag it with context (where it came from, how reliable it is, what it depends on), and make it queryable so engineers can access stable information across personnel transitions.
 
-#### The Inference-Embodiment Boundary
+**Key features:**
 
-**Inference** refers to knowledge that is already expressible symbolically (text, equations, specifications) and can be directly operated on by an AI system. All AI reasoning occurs in this space.
-
-**Embodiment** refers to knowledge that exists through physical interaction, practice, intuition, or lived experience, and is not natively symbolic. For humans, many domains are primarily embodied rather than inferential.
-
-**Domains differ in where the inference–embodiment boundary lies:**
-
-- Domains that are already largely inferential (software APIs, protocol specs) are straightforward to extract and chunk
-- Domains that are highly embodied (brownout behavior under load, thermal coupling in vacuum) make **extraction the primary challenge**, not chunking
-
-**This pipeline treats chunking as a boundary operation**: domain knowledge remains purely inferential up to chunk formation. A central open problem we're addressing is whether embodied knowledge can be extracted in a way that preserves meaning while remaining universally translatable—what we call **embodied inference**.
+- Natural language queries via MCP server ("What do we know about the MS5611 barometer?")
+- Pattern recognition via GraphSAGE neural network (detect hidden couplings, predict cascade risks)
+- Full provenance tracking (every piece of knowledge traces back to source)
+- Human verification layer (engineers confirm what agents extract)
 
 ---
 
-The agents autonomously:
-- Find documentation pages (production/scripts/find_good_urls.py)
-- Extract dependency candidates (production/scripts/process_extractions.py)
-- Flag quality issues and suggest improvements (production/scripts/improvement_analyzer.py)
-- Sync to Notion for human truth establishment
-- Build verified graph nodes and edges with full lineage
+> **dY"S System Self-Analysis: Meta-Learning in Action**
+>
+> The agentic system analyzes its own extraction quality and graph structure. Two views are tracked: production extraction status and agent trial-run learning logs.
+>
+> - **[Production Extraction Status Report](testing_data/diagrams/progress_diagrams/progress_report_2025-12-30_13-30-21.md)** - Generated 2025-12-30 (pipeline + data quality). Snapshot: 92 URLs (68 pending, 24 processed), 74 extractions (73 last 7 days), 15 verified (20%), avg confidence 0.42, components 29, dependencies 30, connections 4.
+> - **[Agent Trial-Run Report](testing_data/diagrams/progress_diagrams/latest.md)** - Generated 2025-12-30 (agent learning logs). Snapshot: 3 trial runs, 3 sources, 34 couplings.
 
 ---
 
-## How It Works: Agent → Graph → Neural Network
+## How It Works
 
 ### 1. Intelligent Source Discovery
 
@@ -96,90 +60,222 @@ The agents autonomously:
 python production/scripts/find_good_urls.py --fprime --proveskit --max-pages 50
 ```
 
-Smart crawler analyzes documentation quality, finds high-signal pages, queues for extraction.
+Smart crawler analyzes documentation quality, identifies high-signal pages, queues for extraction.
 
-### 2. Autonomous Extraction
+### 2. Autonomous Knowledge Extraction
 
 ```bash
 python production/scripts/process_extractions.py --limit 10
 ```
 
-Multi-agent system (Extractor → Validator → Storage) extracts:
+Multi-agent system extracts:
+
 - **Components**: Discrete modules (drivers, sensors, boards)
 - **Interfaces**: Connection points (I2C bus, SPI, power rails)
 - **Flows**: What moves through interfaces (data, power, commands, heat)
-- **Mechanisms**: What maintains connections (protocols, documentation, tests)
+- **Dependencies**: What relies on what, under which conditions
 
-**NOT** "Component A depends on Component B" (too vague)
-**YES** "RadioTX CONSUMES PowerRail_3V3 via electrical mechanism, sometimes (during TX), knownness: verified"
+Every extraction includes:
 
-### 3. Human Truth Layer
+- Source reference (documentation URL, line number)
+- Context (why this matters, what it depends on)
+- Confidence level (verified, likely, assumed)
+- Dimensional metadata (how knowledge was obtained, how reliable it is)
 
-Extracted candidates appear in Notion for human review:
-- Agents provide rich context and confidence scores
-- Humans verify evidence and align across conflicting sources
-- Only human-verified data enters the truth graph
+### 3. Human Verification
 
-**Why this matters**: The GNN learns from verified physics, not agent guesses.
+Extracted knowledge appears in Notion for engineer review:
 
-### 4. Meta-Learning Improvement
+- Agents provide context and confidence scores
+- Engineers verify, correct, or reject
+- Only verified knowledge enters the accessible graph
+
+**Why this matters:** Systems built on verified engineering knowledge, not agent guesses.
+
+### 4. Natural Language Access (MCP Server)
+
+Query the knowledge graph using natural language:
+
+```python
+# Ask questions in plain language
+agent = create_agent("claude-sonnet-4-5-20250929", mcp_tools)
+result = await agent.ainvoke({
+    "messages": [{"role": "user", "content": "What conflicts with the MS5611 barometer?"}]
+})
+```
+
+**Multi-layer queries:**
+
+- Content: "Show me all interface requirements for the power system"
+- Structure: "What knowledge came from direct testing vs. models?"
+- Provenance: "Trace this dependency back to source documentation"
+
+→ **[MCP Integration Guide](mcp-server/docs/MCP_INTEGRATION.md)** | **[Quick Start](mcp-server/examples/quick_start_mcp.py)**
+
+### 5. Pattern Recognition (GraphSAGE Neural Network)
+
+Beyond queries, the system learns patterns:
+
+- Predict cascade failures (if power drops, what else fails?)
+- Detect hidden couplings (unexpected dependencies between subsystems)
+- Suggest testing priorities (which interfaces are most critical?)
+
+**Currently in development:** Graph embedding and neural network training pipeline
+
+→ **[GraphSAGE Implementation](https://github.com/Lizo-RoadTown/Proves_AI)**
+
+### 6. Meta-Learning Improvement
 
 ```bash
 python production/scripts/improvement_analyzer.py
 ```
 
-System analyzes extraction patterns:
-- Which sources yield high-quality data?
-- What extraction patterns lead to validation failures?
-- How can ontology adapt to graph structure?
-- What methodology improvements would increase accuracy?
+System analyzes its own extraction quality:
 
-**The agent is training itself** to become better at preparing GNN training data.
+- Which sources yield reliable data?
+- What extraction patterns lead to verification failures?
+- How can the ontology adapt to actual system structure?
 
-### 5. Graph Embedding (Current Phase)
-
-The verified knowledge graph gets:
-- **Chunked**: Into trainable subgraphs
-- **Embedded**: Node and edge features vectorized
-- **Indexed**: In pgvector database for efficient retrieval
-- **Fed**: To GraphSAGE model for training
+**The system improves itself** by learning what works.
 
 ---
 
-## Why Data Quality Defines GNN Success
+## Current Status
 
-| Bad Data In | Bad Predictions Out |
-|-------------|---------------------|
-| Missing edges | Model can't learn cascade paths |
-| Inconsistent labels | Signal drowns in noise |
-| No lineage | Impossible to debug failures |
-| Unverified "facts" | Model learns hallucinations |
+### Component Status
 
-| Verified Data In | Reliable Predictions Out |
-|------------------|--------------------------|
-| Complete subgraphs | Model learns full cascade chains |
-| Consistent ontology | Clear training signal |
-| Full provenance | Debuggable, improvable |
-| Human-verified truth | Model learns real physics |
+| Component | Status | Notes |
+| --------- | ------ | ----- |
+| **Smart Crawler** | ✅ Production | Quality scoring, URL discovery working |
+| **PostgreSQL Schema** | ✅ Production | Migrations 001-011, full epistemic metadata |
+| **Extraction Pipeline** | ✅ Production | Multi-agent system with Knowledge Capture Checklist |
+| **Staging & Lineage** | ✅ Production | Full provenance tracking to source |
+| **Webhook Server** | ✅ Production | Notion sync (optional, not required for extraction) |
+| **Notion Integration** | ✅ Production | Pre-built verification workflow |
+| **Meta-Learning** | ✅ Production | Self-analysis of extraction quality |
+| **MCP Server (Basic)** | ⚠️ Testing | Fast tools for graph queries |
+| **MCP Server (Deep)** | 🚧 In Progress | Complex graph analysis tools |
+| **GraphSAGE Training** | 🚧 External | [Proves_AI repository](https://github.com/Lizo-RoadTown/Proves_AI) |
+| **Cascade Prediction** | 📋 Planned | Requires trained GNN model |
 
-**Our obsession**: Lineage, verification, provenance. Every graph edge traces to source code, documentation, or test results.
+**Legend:** ✅ Production Ready | ⚠️ Works with Limitations | 🚧 In Development | 📋 Planned
+
+### Results to Date (Verifiable)
+
+- Production pipeline snapshot: 92 URLs (68 pending, 24 processed), 74 extractions (73 last 7 days), 15 verified (20%), avg confidence 0.42 (`testing_data/diagrams/progress_diagrams/progress_report_2025-12-30_13-30-21.md`)
+- Data types collected: 29 components, 30 dependencies, 4 connections, 11 other (`testing_data/diagrams/progress_diagrams/progress_report_2025-12-30_13-30-21.md`)
+- Agent trial-run logs: 3 runs, 3 sources, 34 couplings (`testing_data/dataset_97e5e162-967f-4399-9037-a9bd1b8cbf6e.jsonl`)
+- Legacy tracker: 1 completed page, 6 extractions (`testing_data/extraction_progress.json`)
 
 
+---
+
+## Architecture: Agents → Verification → Access
+
+```mermaid
+graph LR
+    A[Documentation Sources] --> B[Smart Crawler]
+    B --> C[Extraction Agents]
+    C --> D[Staging & Context]
+    D --> E[Human Verification]
+    E --> F[Knowledge Graph]
+    F --> G[MCP Server]
+    F --> H[GraphSAGE Model]
+    G --> I[Natural Language Queries]
+    H --> J[Pattern Detection]
+
+    style F fill:#4D96FF
+    style G fill:#6BCF7F
+    style H fill:#FFD93D
+```
+
+**Key principle:** Agents extract and categorize. Humans establish truth. Systems provide access.
+
+---
+
+## Knowledge Structure
+
+Based on **FRAMES methodology** (Osborn, 2025):
+
+- **Components**: Discrete modules (what exists)
+- **Interfaces**: Connection points (where they connect)
+- **Flows**: What moves through interfaces (data, power, heat)
+- **Mechanisms**: What maintains connections (protocols, documentation, procedures)
+
+Every relationship captures:
+
+1. **Directionality**: Does it flow both ways?
+2. **Strength**: Always, sometimes, never?
+3. **Mechanism**: Electrical, thermal, timing, protocol?
+4. **Knownness**: Verified, assumed, unknown?
+5. **Scope**: Under which conditions? (version, hardware revision, mode)
+
+This structure enables both **precise queries** and **pattern learning**.
+
+---
+
+> **📐 Knowledge Alignment Framework**
+>
+> When you're building satellites, knowledge comes from everywhere: technicians who've worked on hardware for years, software specs, telemetry data, lessons learned from past missions.
+>
+> This project tracks where knowledge came from and what it depends on, so people and AI systems know how to read it, track it, and how much to trust it.
+>
+> **Domains stay different** — Knowledge becomes comparable — **Loss becomes traceable**
+>
+> → **[Read the full Knowledge Alignment Framework](canon/KNOWLEDGE_FRAMEWORK.md)**
+
+---
 
 ## Quickstart
 
 ### Prerequisites
 
-```bash
-# Python 3.11+
-python --version
+**Required:**
 
-# PostgreSQL (Neon cloud database)
-# Anthropic API key (Claude Sonnet for extraction)
-# Notion API key (human verification interface)
-```
+- Python 3.11+
+- PostgreSQL database:
+  - Cloud: Neon.tech (recommended for quick start, free tier available)
+  - Local: Docker + Docker Compose (for development)
+- Anthropic API key (for extraction agents)
+
+**Human Verification Interface:**
+
+- Agents extract knowledge to `staging_extractions` table
+- Humans must verify before knowledge enters the graph
+- **Notion integration provided** (see [Notion Setup Guide](production/docs/NOTION_INTEGRATION_GUIDE.md))
+- Or use any project management tool compatible with your PostgreSQL database
 
 ### Setup
+
+#### Option A: Automated Setup (Recommended)
+
+```bash
+# Clone repository
+git clone https://github.com/Lizo-RoadTown/PROVES_LIBRARY.git
+cd PROVES_LIBRARY
+
+# Run automated setup script
+# Windows:
+setup.bat
+
+# macOS/Linux:
+chmod +x setup.sh
+./setup.sh
+
+# Or directly with Python:
+python setup.py
+```
+
+The setup script will:
+
+- Check Python version (3.11+ required)
+- Install dependencies from requirements.txt
+- Guide you through .env configuration (API keys, database choice)
+- Start Docker Compose if using local PostgreSQL
+- Run database migrations
+- Verify installation
+
+#### Option B: Manual Setup
 
 ```bash
 # Clone repository
@@ -187,61 +283,123 @@ git clone https://github.com/Lizo-RoadTown/PROVES_LIBRARY.git
 cd PROVES_LIBRARY
 
 # Install dependencies
-pip install -r production/pyproject.toml
+pip install -r requirements.txt
 
-# Configure environment (copy .env.template to .env)
-cp .env.template .env
-# Add: NEON_DATABASE_URL, ANTHROPIC_API_KEY, NOTION_API_KEY, LANGCHAIN_API_KEY
+# Configure environment
+cp .env.example .env
+# Edit .env with your configuration
+
+# Choose database option:
+
+# Option A: Cloud PostgreSQL (Neon - recommended for quick start)
+# 1. Sign up at https://neon.tech (free tier available)
+# 2. Create new project, copy connection string
+# 3. Set NEON_DATABASE_URL in .env
+
+# Option B: Local PostgreSQL (Docker - for development)
+docker-compose up -d
+# Connection string: postgresql://proves_user:proves_password@localhost:5432/proves
+# Set this as NEON_DATABASE_URL in .env
+
+# Initialize database schema (REQUIRED - run after database is ready)
+python neon-database/scripts/run_migration.py
 ```
 
-### Run the Pipeline
+### Smoke Test (Optional)
+
+Test the extraction pipeline with a single URL:
 
 ```bash
-# 1. Find high-quality documentation pages
-python production/scripts/find_good_urls.py 
+# Insert test URL into queue
+python -c "
+from neon-database.scripts.db_connector import get_db
+db = get_db()
+db.execute(
+    'INSERT INTO urls_to_process (url, source, quality_score) VALUES (%s, %s, %s)',
+    ('https://nasa.github.io/fprime/UsersGuide/best/app-man-drv.html', 'smoke_test', 0.95)
+)
+print('✓ Test URL added to queue')
+"
 
-# 2. Extract dependency candidates (runs autonomous agent)
-python production/scripts/process_extractions.py 
+# Run extraction on single URL
+python production/scripts/process_extractions.py --limit 1
 
-# 3. Review extractions in Notion (human verification step)
-# Visit your Notion workspace → PROVES Library databases
+# View results in staging
+python -c "
+from neon-database.scripts.db_connector import get_db
+db = get_db()
+results = db.fetch_all(
+    'SELECT candidate_type, candidate_key, confidence_score FROM staging_extractions ORDER BY created_at DESC LIMIT 5'
+)
+for r in results:
+    print(f'{r[\"candidate_type\"]}: {r[\"candidate_key\"]} (confidence: {r[\"confidence_score\"]})')
+"
+```
 
-# 4. Analyze extraction quality and improve
+### Run the Full Pipeline
+
+```bash
+# 1. Find high-quality documentation
+python production/scripts/find_good_urls.py --fprime --proveskit --max-pages 50
+
+# 2. Extract knowledge (autonomous agents)
+python production/scripts/process_extractions.py --limit 10
+
+# 3. Verify extractions
+# Option A: Use provided Notion integration (recommended)
+#   Setup: production/docs/NOTION_INTEGRATION_GUIDE.md
+#   Visit Notion workspace → Review → Approve/Reject
+
+# Option B: Query staging_extractions table directly
+#   Build your own verification workflow
+
+# 4. Query the knowledge graph (verified data only)
+python mcp-server/examples/quick_start_mcp.py
+
+# 5. Analyze and improve extraction quality
 python production/scripts/improvement_analyzer.py
 ```
 
 ---
 
-## Current Status & Results
+## Who This Is For
 
-### Phase 1: Foundation ✅ Complete
+### CubeSat Development Teams
 
-- Multi-agent curator system operational
-- Smart web crawler finding quality sources
-- Lineage tracking and evidence verification
-- Human-in-the-loop via Project Management integration
-- Meta-learning improvement analyzer
-- Error logging and quality monitoring
+- University space labs managing student turnover
+- Small commercial teams with limited staffing
+- Programs using F´, PROVES Kit, or similar frameworks
 
-**Results**:
-- 45+ verified dependencies extracted from CubeSat documentation
-- 4 critical cross-system gaps discovered
-- 23 high-quality pages queued for extraction
-- Agent methodology improving through meta-learning
+### Systems Engineers
 
-### Phase 2: Graph Embedding 🚧 In Progress
+- Anyone analyzing complex technical dependencies
+- Teams that need to preserve knowledge across transitions
+- Programs where learning curves are steep and mistakes costly
 
-- Chunking verified graph into training subgraphs
-- Embedding node/edge features with vector models
-- pgvector integration for efficient retrieval
-- Preparing training data for GraphSAGE model
+### Researchers
 
-### Phase 3: GNN Training 📋 Planned
+- ML applications to technical knowledge
+- Graph neural networks on engineering systems
+- Knowledge preservation in rapidly evolving domains
 
-- GraphSAGE model implementation (see [Proves_AI repo](https://github.com/Lizo-RoadTown/Proves_AI))
-- Cascade risk prediction
-- Hidden coupling detection
-- Multi-domain generalization
+---
+
+## Documentation
+
+- [Architecture](docs/architecture/AGENTIC_ARCHITECTURE.md) - System design
+- [Knowledge Framework](canon/KNOWLEDGE_FRAMEWORK.md) - Theoretical foundation
+- [Knowledge Graph Schema](docs/architecture/KNOWLEDGE_GRAPH_SCHEMA.md) - Data model
+- [MCP Integration](mcp-server/docs/MCP_INTEGRATION.md) - Natural language queries
+- [Production README](production/README.md) - How to run the curator
+- [Notion Setup](production/docs/NOTION_INTEGRATION_GUIDE.md) - Human verification
+
+### Visualizations
+
+- [Dependency Overview](docs/diagrams/overview.md)
+- [Cross-System Dependencies](docs/diagrams/cross-system.md)
+- [Knowledge Gaps](docs/diagrams/knowledge-gaps.md)
+- [Team Boundaries](docs/diagrams/team-boundaries.md)
+- [Transitive Chains](docs/diagrams/transitive-chains.md)
 
 ---
 
@@ -257,29 +415,16 @@ Agents extract and categorize, but humans establish truth. This separation ensur
 
 > "Agents provide context. Humans establish truth."
 
-```
+```text
 Raw Sources → Agent Capture → Agent Staging → Human Verification → Truth Graph
      ↑              ↑               ↑                ↑
   (all data)   (categorize)    (flag/context)   (align/verify)
 ```
 
-### 3. FRAMES Ontology (Foundational)
-
-Based on "FRAMES: A Structural Diagnostic for Resilience in Modular University Space Programs" (Osborn, 2025):
-
-- **Components**: Discrete modules (what exists)
-- **Interfaces**: Connection points (where they touch)
-- **Flows**: What moves through interfaces (data, power, heat, signals)
-- **Mechanisms**: What maintains connections (protocols, docs, processes)
-- **Coupling**: Strength of bonds (measured via graph edge attributes)
-
-**The fundamental question**: "What MOVES through this system, and through which interfaces?"
-
-NOT: "What depends on what?" (human judgment assigns criticality AFTER understanding structure)
-
-### 4. Five-Attribute Edge Model
+### 3. Five-Attribute Edge Model
 
 Every relationship has:
+
 1. **Directionality**: Does it flow both ways?
 2. **Strength**: Always, sometimes, never?
 3. **Mechanism**: Electrical, thermal, timing, protocol, software state?
@@ -287,35 +432,6 @@ Every relationship has:
 5. **Scope**: Version tuple, hardware revision, mission profile?
 
 This granularity lets the GNN learn **conditional dependencies** and **mode-specific behavior**.
-
----
-
-## Who This Is For
-
-- CubeSat teams working with F´, PROVES Kit, or similar modular systems
-- Systems engineers analyzing cascade failures and cross-layer dependencies
-- ML researchers who need graph datasets with provenance and ground truth
-- Students in space systems programs learning how components interact
-
-**Potential applications beyond CubeSat**: The extraction pipeline and five-attribute edge model could work for other domains with technical documentation and verifiable dependencies (manufacturing, infrastructure, software systems). Currently focused on space systems.
-
----
-
-## Documentation
-
-- [Architecture](docs/architecture/AGENTIC_ARCHITECTURE.md) - Full system design
-- [Knowledge Graph Schema](docs/architecture/KNOWLEDGE_GRAPH_SCHEMA.md) - ERV relationship model
-- [CANON](canon/CANON.md) - Permanent design principles
-- [Production README](production/README.md) - How to run the curator
-- [Notion Integration](production/docs/NOTION_INTEGRATION_GUIDE.md) - Human verification setup
-
-### Visualizations
-
-- [Dependency Overview](docs/diagrams/overview.md)
-- [Cross-System Dependencies](docs/diagrams/cross-system.md)
-- [Knowledge Gaps](docs/diagrams/knowledge-gaps.md)
-- [Team Boundaries](docs/diagrams/team-boundaries.md)
-- [Transitive Chains](docs/diagrams/transitive-chains.md)
 
 ---
 
@@ -342,26 +458,30 @@ See [Issues](https://github.com/Lizo-RoadTown/PROVES_LIBRARY/issues) for current
 
 ## Research Foundation
 
-**FRAMES Methodology**:
+**FRAMES Methodology:**
 Osborn, E. (2025). "FRAMES: A Structural Diagnostic for Resilience in Modular University Space Programs."
 
-**GraphSAGE Foundation**:
+**Knowledge Canonicalization:**
+Based on epistemic preservation theory for organizational knowledge systems.
+
+**GraphSAGE:**
 Hamilton, W., Ying, Z., & Leskovec, J. (2017). "Inductive Representation Learning on Large Graphs." NeurIPS.
 
-**NASA GNN Implementation**:
+**NASA GNN Implementation:**
 Mehrabian, A. (2025). nasa-eosdis-heterogeneous-gnn (Revision 7e71e62). Hugging Face. [Model Repository](https://huggingface.co/arminmehrabian/nasa-eosdis-heterogeneous-gnn) DOI: 10.57967/hf/6789
 
-**PROVES Kit Framework**:
+**PROVES Kit Framework:**
 Pham, M. & Bronco Space Lab. (2025). PROVES Kit - Open-Source CubeSat Development Framework. California State Polytechnic University, Pomona. [Documentation](https://docs.proveskit.space/en/latest/)
 
-**Application Domain**:
+**Application Domain:**
 CubeSat systems, F´ framework, PROVES Kit hardware stack.
 
-**Key Contributions**:
+**Key Contributions:**
 
 - Five-attribute edge model for conditional dependencies
 - Inference-embodiment boundary framework for chunking strategy
 - Full lineage tracking from graph edges to source documentation
+- Dual-layer query system (semantic + structural)
 
 ---
 

@@ -2,6 +2,7 @@
 
 Comprehensive rules compiled from official Mermaid documentation (v10+).
 
+<<<<<<< HEAD
 ## 🎨 ACTIVE THEME CONFIGURATION
 
 **Current Active Theme: FALL** (default)
@@ -23,7 +24,108 @@ one of:
 
 See "Seasonal Theme Presets" section below for complete copy-paste configurations.
 
+
+**MANDATORY: Run validation before committing any diagram changes or
+updates to this file.**
+=======
 ## ⚠️ VALIDATION REQUIREMENTS
+
+**MANDATORY: Run validation before committing any diagram changes or updates to this file.**
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
+
+### Validation Checklist
+
+grep -n "<br/>\|<span>\|<div>" docs/diagrams/*.md
+
+# 2. Check for double colons in text (ALWAYS BREAKS)
+<<<<<<< HEAD
+grep -n "::" docs/diagrams/*.md | grep -v "http://" | `
+  grep -v "https://" | grep -v "stateDiagram-v2"
+=======
+grep -n "::" docs/diagrams/*.md | grep -v "http://" | grep -v "https://" | grep -v "stateDiagram-v2"
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
+
+# 3. Check for colons in subgraph labels (BREAKS)
+grep -n "subgraph.*:.*\"" docs/diagrams/*.md
+
+# 4. Check for unquoted forward slashes in node labels (BREAKS)
+grep -n "\[\/.*\]" docs/diagrams/*.md | grep -v "\[\"\/.*\"\]"
+
+# 5. Check for unquoted square brackets inside node labels (BREAKS)
+grep -n "\[[^\"\[]*\[[^\]]*\].*\]" docs/diagrams/*.md
+
+# 6. Check for unquoted parentheses in pie/gantt (BREAKS)
+grep -n "\"[^\"]*([^)]*)\"" docs/diagrams/*.md
+
+# 7. Check for colons in gantt task names after first colon (BREAKS)
+grep -n "^[[:space:]]*[^:]*:.*:.*:" docs/diagrams/*.md | grep -v "http"
+
+<<<<<<< HEAD
+# 8. YAML INDENTATION ERRORS (CRITICAL - BREAKS ALL DIAGRAMS)
+# Check for misaligned config sections
+Select-String -Path docs/diagrams/*.md `
+  -Pattern '      sequence:|      state:|      journey:' `
+  -Exclude MERMAID_RULES.md
+# Should return NO matches - these must be at 2-space indent, not 6
+
+# 9. YAML STRUCTURE VALIDATION
+# Verify config sections are properly separated
+for file in docs/diagrams/*.md; do
+  awk '/^---$/,/^---$/ {print NR": "$0}' "$file" | head -200
+done
+# Check that flowchart:, sequence:, state: etc. all have 2-space
+# indent (not 4 or 6)
+
+# 10. Validate all diagrams render (use Mermaid Live Editor)
+=======
+# 8. Validate all diagrams render (use Mermaid Live Editor)
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
+# Copy each diagram to https://mermaid.live/ and verify no errors
+```
+
+### Validation Rules for MERMAID_RULES.md Itself
+
+When adding examples to this documentation file:
+
+1. **Complete diagrams ONLY as ```mermaid blocks**
+   - Must have proper diagram type declaration (flowchart, sequenceDiagram, etc.)
+   - Must be fully valid and renderable
+   - Test in Mermaid Live Editor first
+
+2. **Syntax examples as plain ``` blocks**
+   - Incomplete snippets showing syntax only
+   - Examples with intentional errors (BAD examples)
+   - Fragments without diagram type declaration
+
+3. **Test this file on GitHub**
+   - Push and verify all diagrams render
+   - GitHub treats ALL ```mermaid blocks as renderable diagrams
+# Mermaid Diagram Syntax Rules
+
+Comprehensive rules compiled from official Mermaid documentation (v10+).
+
+## 3a8 ACTIVE THEME CONFIGURATION
+
+**Current Active Theme: FALL** (default)
+
+To change the active theme, update the "Current Active Theme" line above to
+one of:
+
+- SPRING (default) - Fresh greens, soft pinks, pale yellows
+- SUMMER - Sky blues, sunny yellows, warm corals
+- FALL - Burnt oranges, deep purples, golden yellows
+- WINTER - Ice blues, slate greys, pale cyans
+
+**To apply a theme to your diagrams:**
+
+1. Scroll to the "Seasonal Theme Presets" section below
+2. Copy the YAML frontmatter for your chosen theme
+3. Paste it at the top of your mermaid code block
+4. Replace any existing frontmatter (only one per diagram)
+
+See "Seasonal Theme Presets" section below for complete copy-paste configurations.
+
+## 6a0e0f VALIDATION REQUIREMENTS
 
 **MANDATORY: Run validation before committing any diagram changes or
 updates to this file.**
@@ -37,8 +139,7 @@ Before committing changes, run ALL validation commands below:
 grep -n "<br/>\|<span>\|<div>" docs/diagrams/*.md
 
 # 2. Check for double colons in text (ALWAYS BREAKS)
-grep -n "::" docs/diagrams/*.md | grep -v "http://" | `
-  grep -v "https://" | grep -v "stateDiagram-v2"
+grep -n "::" docs/diagrams/*.md | grep -v "http://" | grep -v "https://" | grep -v "stateDiagram-v2"
 
 # 3. Check for colons in subgraph labels (BREAKS)
 grep -n "subgraph.*:.*\"" docs/diagrams/*.md
@@ -66,31 +167,6 @@ Select-String -Path docs/diagrams/*.md `
 # Verify config sections are properly separated
 for file in docs/diagrams/*.md; do
   awk '/^---$/,/^---$/ {print NR": "$0}' "$file" | head -200
-done
-# Check that flowchart:, sequence:, state: etc. all have 2-space
-# indent (not 4 or 6)
-
-# 10. Validate all diagrams render (use Mermaid Live Editor)
-# Copy each diagram to https://mermaid.live/ and verify no errors
-```
-
-### Validation Rules for MERMAID_RULES.md Itself
-
-When adding examples to this documentation file:
-
-1. **Complete diagrams ONLY as ```mermaid blocks**
-   - Must have proper diagram type declaration (flowchart, sequenceDiagram, etc.)
-   - Must be fully valid and renderable
-   - Test in Mermaid Live Editor first
-
-2. **Syntax examples as plain ``` blocks**
-   - Incomplete snippets showing syntax only
-   - Examples with intentional errors (BAD examples)
-   - Fragments without diagram type declaration
-
-3. **Test this file on GitHub**
-   - Push and verify all diagrams render
-   - GitHub treats ALL ```mermaid blocks as renderable diagrams
    - Incomplete examples will show "Unable to render" errors
 
 ### Common Validation Errors Found
@@ -105,6 +181,7 @@ Based on production issues discovered:
 - **Square brackets inside node labels** → Wrap entire label in quotes
 - **Parentheses in pie/gantt labels** → Wrap entire label in quotes
 - **State transition colons** → Keep only label separator colon
+<<<<<<< HEAD
 - **Incomplete ```mermaid examples** → Convert to plain``` blocks
 - **YAML indentation errors** → Config sections must be at 2-space indent (flowchart:, sequence:, state:, etc.)
 
@@ -508,11 +585,17 @@ echo "✓ Diagram validation passed"
 6. **ALWAYS specify UTF-8 encoding explicitly**
 7. **ALWAYS use here-strings (@" "@) for multi-line replacements**
 8. **ALWAYS verify separator counts match expected diagram counts**
+=======
+- **Incomplete ```mermaid examples** → Convert to plain ``` blocks
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 
 ## Critical Syntax Rules
 
 ### 1. NO HTML Tags
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ❌ **NEVER use `<br/>`, `<span>`, `<div>`, or any HTML tags** in flowchart nodes
 - ✅ Use simple text or markdown formatting with backticks
 - Exception: `<br/>` is ONLY allowed in sequence diagrams for line breaks
@@ -520,7 +603,10 @@ echo "✓ Diagram validation passed"
 ### 2. Special Characters - CRITICAL
 
 #### Colons (`:`) - Multiple Breaking Contexts
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ❌ **Colons in subgraph labels break parsing**: `subgraph "Layer 1: App"` → FAILS
 - ✅ **Remove colons from subgraph labels**: `subgraph "Layer 1 App"` → WORKS
 - ❌ **Double colons in text ALWAYS break**: `Status::OK` → FAILS
@@ -531,7 +617,10 @@ echo "✓ Diagram validation passed"
 - ✅ **Colons OK in link text**: `A -->|Status: OK| B` → WORKS
 
 #### Square Brackets (`[]`) - Breaking in Node Labels
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ❌ **Brackets inside node text break parsing**: `NODE[Status [YES] OK]` → FAILS
 - ✅ **Quote labels with nested brackets**: `NODE["Status [YES] OK"]` → WORKS
 - ❌ **Multiple bracket markers unquoted**: `NODE[Doc [WARNING] Incomplete]` → FAILS
@@ -539,7 +628,10 @@ echo "✓ Diagram validation passed"
 - ✅ **Outer brackets define node - inner brackets need quotes**
 
 #### Forward Slashes (`/`) - Breaking in Node Labels
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ❌ **File paths without quotes break parsing**: `DEV[/dev/i2c-1]` → FAILS
 - ✅ **Quote all paths with slashes**: `DEV["/dev/i2c-1"]` → WORKS
 - ❌ **URLs without quotes can break**: `NODE[http://example.com]` → FAILS
@@ -548,7 +640,10 @@ echo "✓ Diagram validation passed"
 - ⚠️ **Slashes in plain text or tables are OK** (not in diagram code)
 
 #### Quotes - When Required
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ✅ **Quote text with forward slashes**: `id["/path/to/file"]`
 - ✅ **Quote text with parentheses**: `id["Text with (parens)"]`
 - ✅ **Quote text with square brackets**: `id["Status [YES] Complete"]`
@@ -557,18 +652,27 @@ echo "✓ Diagram validation passed"
 - ✅ For markdown: Use backticks: `` id["`**Bold** text`"] ``
 
 #### Reserved Words
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ❌ Word "end" must be capitalized or quoted: `End`, `[end]`, `{end}`
 - ❌ Starting with "o" or "x" creates special edges: `A---oB` = circle edge
 
 ### 3. Subgraph Syntax
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 subgraph id [Label Text]
     nodes...
 end
 ```
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ✅ Must have space between id and bracket
 - ❌ **NO colons in labels**: `subgraph "Layer 1: App"` → BREAKS - use `subgraph "Layer 1 App"`
 - ✅ Labels can be quoted for special chars: `subgraph "System/Network"`
@@ -577,7 +681,10 @@ end
 ### 4. Node Labels
 
 #### Simple text
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 id[This is text]
 id(Round edges)
@@ -585,14 +692,20 @@ id{Diamond shape}
 ```
 
 #### Unicode/Special characters
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 id["Unicode: ❤ works"]
 id["Escaped: #9829;"]
 ```
 
 #### Markdown formatting (requires config)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```mermaid
 ---
 config:
@@ -606,10 +719,15 @@ flowchart LR
 ### 5. Line Breaks
 
 #### Flowcharts
+<<<<<<< HEAD
 
 - ❌ NO `<br/>` tags
 - ✅ Markdown formatting with newlines:
 
+=======
+- ❌ NO `<br/>` tags
+- ✅ Markdown formatting with newlines:
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 id["`Line 1
 Line 2
@@ -617,6 +735,7 @@ Line 3`"]
 ```
 
 #### Sequence Diagrams
+<<<<<<< HEAD
 
 - ✅ `<br/>` is allowed:
 
@@ -626,6 +745,13 @@ Alice->John: Hello<br/>World
 
 - ✅ In participant aliases:
 
+=======
+- ✅ `<br/>` is allowed:
+```
+Alice->John: Hello<br/>World
+```
+- ✅ In participant aliases:
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 participant A as Alice<br/>Johnson
 ```
@@ -633,7 +759,10 @@ participant A as Alice<br/>Johnson
 ### 6. Links/Edges
 
 #### Arrow types
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 -->  solid with arrow
 ---  solid no arrow
@@ -647,7 +776,10 @@ participant A as Alice<br/>Johnson
 ```
 
 #### Link text
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 A -->|Text on link| B
 A -- Text --- B
@@ -655,14 +787,20 @@ A ---|Text| B
 ```
 
 #### Edge IDs (v11.3.0+)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 A e1@--> B
 e1@{ animate: true }
 ```
 
 ### 7. Comments
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 %% This is a comment
 %% Must start line with %%
@@ -673,13 +811,19 @@ flowchart LR
 ### 8. Styling
 
 #### Node styling
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 style id1 fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 #### Classes
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 classDef className fill:#f9f
 class nodeId className
@@ -687,11 +831,15 @@ A:::className --> B
 ```
 
 #### Link styling
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
 
+<<<<<<< HEAD
 ## Theme Variables Reference
 
 Complete reference of all available Mermaid theme variables. Use these to create custom themes or modify the seasonal presets above.
@@ -2125,6 +2273,11 @@ flowchart TD
 
 ### Node Shapes
 
+=======
+## Flowchart-Specific Rules
+
+### Node Shapes
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 id[Rectangle]
 id(Round edges)
@@ -2143,7 +2296,10 @@ id(((Double circle)))
 ```
 
 ### Direction
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 flowchart TB   %% Top to Bottom
 flowchart TD   %% Top-Down (same as TB)
@@ -2153,7 +2309,10 @@ flowchart RL   %% Right to Left
 ```
 
 ### Subgraph Direction
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```mermaid
 flowchart LR
     subgraph id
@@ -2165,7 +2324,10 @@ flowchart LR
 ## Sequence Diagram-Specific Rules
 
 ### Participants
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 participant A as Alice
 actor B as Bob
@@ -2174,7 +2336,10 @@ participant D@{ "type" : "database" }
 ```
 
 ### Messages
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 ->   solid no arrow
 -->  dotted no arrow
@@ -2188,7 +2353,10 @@ participant D@{ "type" : "database" }
 ```
 
 ### Activations
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 activate Alice
 deactivate Alice
@@ -2198,20 +2366,31 @@ Bob-->>-Alice: Reply
 ```
 
 ### Notes
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 Note right of Alice: Text
 Note left of Alice: Text
 Note over Alice,Bob: Text
 ```
+<<<<<<< HEAD
 
 - ⚠️ **CRITICAL**: Text after first colon cannot contain more colons
 - ❌ **BREAKS**: `Note over A: Step 1: Initialize device`
+=======
+- ⚠️ **CRITICAL**: Text after first colon cannot contain more colons
+- ❌ **BREAKS**: `Note over A: Step 1: Initialize device` 
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ✅ **WORKS**: `Note over A: Step 1 Initialize device`
 - ✅ **Single colon separating label is OK**: `Note over A: Any text here`
 
 ### Loops/Alt/Par
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 loop Every minute
     A->>B: Check
@@ -2233,21 +2412,30 @@ end
 ## State Diagram-Specific Rules
 
 ### Transitions
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```mermaid
 stateDiagram-v2
     [*] --> State1
     State1 --> State2: Transition label
     State2 --> [*]
 ```
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - ⚠️ **CRITICAL**: Transition labels after colon cannot contain more colons
 - ❌ **BREAKS**: `State1 --> State2: Currently: No recovery`
 - ✅ **WORKS**: `State1 --> State2: Currently No recovery`
 - ✅ **Single colon for label is OK**: `State1 --> State2: Any text`
 
 ### Composite States
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```mermaid
 stateDiagram-v2
     state "Complex State" as CS {
@@ -2259,15 +2447,22 @@ stateDiagram-v2
 ## Common Errors and Fixes
 
 ### Error: "Unable to render rich display"
+<<<<<<< HEAD
 
 **Causes:**
 
+=======
+**Causes:** 
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - HTML tags like `<br/>` in flowcharts
 - Colons in subgraph labels or node text
 - Unquoted special characters
 
 **Fix:**
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 %% BAD
 flowchart LR
@@ -2286,15 +2481,22 @@ flowchart LR
 ```
 
 ### Error: "Unexpected character at offset X"
+<<<<<<< HEAD
 
 **Causes:**
 
+=======
+**Causes:**
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - Colons in subgraph labels: `subgraph "Layer 1: App"`
 - Colons after colon in sequence notes: `Note over A: Step 1: Details`
 - Unquoted forward slashes: `/dev/i2c-1`
 
 **Fix:**
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 %% BAD
 subgraph "API: v2"
@@ -2310,14 +2512,21 @@ Note over A: Step 1 Initialize
 ```
 
 ### Error: "Lexical error on line X. Unrecognized text"
+<<<<<<< HEAD
 
 **Causes:**
 
+=======
+**Causes:**
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - Forward slashes without quotes: `node[/path/to/file]`
 - File paths or URLs without quotes: `/dev/i2c-1`
 
 **Fix:**
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 %% BAD
 flowchart LR
@@ -2336,11 +2545,17 @@ end
 ```
 
 ### Error: Nodes not rendering
+<<<<<<< HEAD
 
 **Cause:** Reserved word "end" or starting with "o"/"x"
 
 **Fix:**
 
+=======
+**Cause:** Reserved word "end" or starting with "o"/"x"
+
+**Fix:**
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 %% BAD
 A --> end
@@ -2354,7 +2569,10 @@ dev --> Ops
 ## Configuration
 
 ### Frontmatter
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```mermaid
 ---
 title: My Diagram
@@ -2364,14 +2582,21 @@ config:
   layout: elk
 flowchart:
   htmlLabels: false
+<<<<<<< HEAD
   curve: 'linear'
+=======
+  curve: linear
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ---
 flowchart LR
     A --> B
 ```
 
 ### Directives
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```mermaid
 %%{init: {'theme':'forest', 'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
@@ -2383,19 +2608,29 @@ flowchart LR
 **To force straight lines instead of curved:**
 
 #### Method 1: Frontmatter (affects entire diagram)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```mermaid
 ---
 config:
   flowchart:
+<<<<<<< HEAD
     curve: 'linear'
+=======
+    curve: linear
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ---
 flowchart LR
     A --> B --> C
 ```
 
 #### Method 2: Directive (inline)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 ```
 %%{init: {'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
@@ -2403,7 +2638,10 @@ flowchart LR
 ```
 
 **Curve options:**
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - `linear` - Straight lines (no curves)
 - `basis` - Smooth curves (default)
 - `step` - Step-like connections
@@ -2432,7 +2670,10 @@ flowchart LR
 Run these checks BEFORE committing any Mermaid diagrams:
 
 #### 1. Flowchart Validation
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - [ ] **No HTML tags**: Search for `<br/>`, `<span>`, `<div>` in flowchart nodes
 - [ ] **No unquoted paths**: Search for `/dev/`, `/sys/`, file paths without quotes
 - [ ] **No unquoted brackets**: Search for `[YES]`, `[NO]`, `[WARNING]` inside node labels
@@ -2443,27 +2684,41 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Word "end" capitalized or quoted**
 
 #### 2. Sequence Diagram Validation  
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - [ ] **No colons in note text**: `Note over A: Step 1: Details` → FAILS (use `Step 1 Details`)
 - [ ] **`<br/>` allowed**: Line breaks are OK in sequence diagrams
 - [ ] **No double colons in messages**
 
 #### 3. Pie Chart Validation
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - [ ] **ALWAYS quote all labels**: Even simple labels like `HIGH` need quotes
 - [ ] **Proper syntax**: `"Label text" : value` (always with quotes)
 - [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS without quotes
 - [ ] **Quote labels with special chars**: Spaces, colons, symbols all need quotes
+<<<<<<< HEAD
 - [ ] **Use descriptive labels**: Avoid short labels starting with quotes that may be hidden by legend box
 
 #### 4. State Diagram Validation
 
+=======
+
+#### 4. State Diagram Validation
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - [ ] **No colons in transition labels**: `State1 --> State2: Text: More` → FAILS
 - [ ] **Single colon for label OK**: `State1 --> State2: Text` → WORKS
 - [ ] **Same rule as sequence notes**: Text after colon cannot have more colons
 
 #### 5. Gantt Chart Validation
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - [ ] **No colons in task descriptions**: `Gap: Team leaves` → FAILS (use `Gap Team leaves`)
 - [ ] **Colon delimiter required**: `Task name :milestone, crit, 2024-01, 0d` (colon after name is syntax)
 - [ ] **Avoid colons before delimiter colon**: Having `Task: Name :milestone` confuses parser
@@ -2471,14 +2726,21 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Section names**: Plain text, no quotes needed
 
 #### 5. Quadrant Chart Validation
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - [ ] **Quote all data point labels**: Especially those with colons or special characters
 - [ ] **Syntax**: `"Label text": [x, y]` with quotes
 - [ ] **Special characters**: Unicode like `F´` needs quotes if label has colons
 
 #### 6. Universal Checks (All Diagram Types)
+<<<<<<< HEAD
 
 - [ ] **Test in Mermaid Live Editor**: <https://mermaid.live/>
+=======
+- [ ] **Test in Mermaid Live Editor**: https://mermaid.live/
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 - [ ] **Check rendering on GitHub**: After push, verify actual rendering
 - [ ] **All quotes properly closed**: Balance `"` marks
 - [ ] **Comments start with `%%`**: Inline comments not supported
@@ -2518,6 +2780,7 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 
 ### Common Issues Found During Validation
 
+<<<<<<< HEAD
 1. **Flowchart curve parameter must be quoted string**
    - ❌ `curve: linear`
    - ✅ `curve: 'linear'`
@@ -2560,10 +2823,34 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
    - ✅ `Note over A: Step 1 Initialize`
 
 8. **Colons in state transition labels**
+=======
+1. **Parentheses without quotes** (pie charts, node labels)
+   - ❌ `Direct (visible) : 15`
+   - ✅ `"Direct (visible)" : 15`
+
+2. **Square brackets without quotes** (node labels)
+   - ❌ `NODE[Status [YES] Complete]`
+   - ✅ `NODE["Status [YES] Complete"]`
+
+3. **Forward slashes without quotes**
+   - ❌ `DEV[/dev/i2c-1]`
+   - ✅ `DEV["/dev/i2c-1"]`
+
+4. **Colons in subgraph labels**
+   - ❌ `subgraph "Layer 1: Application"`
+   - ✅ `subgraph "Layer 1 Application"`
+
+5. **Colons in sequence notes**
+   - ❌ `Note over A: Step 1: Initialize`
+   - ✅ `Note over A: Step 1 Initialize`
+
+6. **Colons in state transition labels**
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
    - ❌ `State1 --> State2: Currently: No recovery`
    - ✅ `State1 --> State2: Currently No recovery`
    - ⚠️ Same rule as sequence notes
 
+<<<<<<< HEAD
 9. **Double colons**
    - ❌ `I2cStatus::OK`
    - ✅ `I2C_OK`
@@ -3124,18 +3411,37 @@ def validate_mermaid(diagram_code):
 ```
 
 ---
+=======
+7. **Double colons**
+   - ❌ `I2cStatus::OK`
+   - ✅ `I2C_OK`
+
+8. **Gantt task names with colons**
+   - ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
+   - ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
+   - ⚠️ Colon in task description before delimiter confuses parser
+
+9. **Quadrant chart labels without quotes**
+   - ❌ `F´ Core Docs: [0.1, 0.9]`
+   - ✅ `"F´ Core Docs": [0.1, 0.9]`
+   - ⚠️ Always quote data point labels, especially with colons or special chars
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 
 ## Resources
 
 - [Official Mermaid Docs](https://mermaid.js.org/)
 - [Flowchart Syntax](https://mermaid.js.org/syntax/flowchart.html)
 - [Sequence Diagram Syntax](https://mermaid.js.org/syntax/sequenceDiagram.html)
+<<<<<<< HEAD
 - [Pie Chart Syntax](https://mermaid.js.org/syntax/pie.html)
 - [Gantt Chart Syntax](https://mermaid.js.org/syntax/gantt.html)
 - [Quadrant Chart Syntax](https://mermaid.js.org/syntax/quadrantChart.html)
 - [State Diagram Syntax](https://mermaid.js.org/syntax/stateDiagram.html)
 - [Mermaid Live Editor](https://mermaid.live/)
 - [Mermaid Configuration](https://mermaid.js.org/config/setup/index.html)
+=======
+- [Mermaid Live Editor](https://mermaid.live/)
+>>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 
 ---
 

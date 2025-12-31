@@ -953,73 +953,24 @@ def query_staging_history(
 
 
 @traceable(name="extractor_subagent")
-def create_extractor_agent():
+def create_extractor_agent(checkpointer=None):
     """
-    [DEPRECATED] Create the extractor sub-agent using old architecture.
+    Create the extractor sub-agent with full Knowledge Capture Checklist training.
 
-    This function is NOT used by agent_v2.py (which uses SubAgentMiddleware).
-    Kept for backward compatibility with old scripts.
-
-    Use subagent_specs.get_extractor_spec() for agent_v2 instead.
+    Args:
+        checkpointer: Optional LangGraph checkpointer (e.g., PostgresSaver) for state persistence
     """
-    # NOTE: Ontology removed to reduce token usage
-    # Extractor can call get_ontology() tool if needed
-    ontology = ""
+    from langchain.agents import create_agent
+    from ..subagent_specs import get_extractor_spec
 
-    system_prompt = f"""You are the Extractor Agent for the PROVES Library.
+    spec = get_extractor_spec()
 
-## Your Mission
-
-Extract system architecture from documentation using FRAMES methodology.
-
-FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
-
-## Workflow
-
-1. **Parse the URL** from the task you receive
-2. **Fetch the page** using fetch_webpage tool
-3. **Extract architecture** using extract_architecture_using_claude tool
-4. **Return results** with the source URL clearly stated
-
-## FRAMES Extraction Vocabulary
-
-{ontology}
-
-## Critical Rules
-
-- ALWAYS cite the source URL in your response
-- Provide exact evidence quotes for each extraction
-- Document your confidence reasoning
-- Note any uncertainties or ambiguities
-- Do NOT assign criticality (that is for humans to decide)
-- Focus on WHAT exists, not on how critical it might be
-
-## Output Format
-
-Your final response should be structured text that includes:
-- Source URL (clearly stated)
-- Extracted entities (components, interfaces, flows, mechanisms)
-- Evidence quotes for each extraction
-- Confidence reasoning
-- Any uncertainties or notes
-
-Work step-by-step through the workflow above."""
-
-    # Create agent with extraction tools
-    model = ChatAnthropic(
-        model="claude-sonnet-4-5-20250929",
-        temperature=0.1,
+    # Create agent with system prompt and optional checkpointer
+    agent = create_agent(
+        model=ChatAnthropic(model=spec["model"], temperature=0.1),
+        system_prompt=spec["system_prompt"],
+        tools=spec["tools"],
+        checkpointer=checkpointer,
     )
 
-    tools = [
-        fetch_webpage,
-        extract_architecture_using_claude,
-        # Query tools for confidence calibration
-        query_verified_entities,
-        query_staging_history,
-    ]
-
-    # Note: create_react_agent doesn't support system prompts directly
-    # System instructions are embedded in tool descriptions
-    agent = create_react_agent(model, tools)
     return agent

@@ -154,7 +154,9 @@ sequenceDiagram
 
 ## Documentation
 
-- [Trial Mapping Design Document](TRIAL_MAPPING_DESIGN.html)
-- [Comprehensive Dependency Map](../trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.html)
-- [Original FA' Documentation](../trial_docs/fprime_i2c_driver_full.html)
-- [Original PROVES Kit Documentation](../trial_docs/proves_power_full.html)
+- [**Getting Started Guide**](getting-started/) - New user walkthrough
+- [**Quick Reference**](getting-started/QUICK_REFERENCE.html) - Command cheat sheet
+- [Trial Mapping Design Document](../testing_data/diagrams/TRIAL_MAPPING_DESIGN.html)
+- [Comprehensive Dependency Map](../testing_data/diagrams/COMPREHENSIVE_DEPENDENCY_MAP.html)
+- [Original F´ Documentation](../testing_data/diagrams/fprime_i2c_driver_full.html)
+- [Original PROVES Kit Documentation](../testing_data/diagrams/proves_power_full.html)

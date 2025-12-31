@@ -17,80 +17,10 @@ from dotenv import load_dotenv
 import psycopg
 
 # Setup paths
-# production/scripts/ - need to add production/ to path for curator module
-production_root = Path(__file__).parent.parent  # production/
-project_root = production_root.parent  # PROVES_LIBRARY/
-sys.path.insert(0, str(production_root))
-load_dotenv(project_root / '.env')
+sys.path.insert(0, str(Path(__file__).parent.parent))
+load_dotenv(os.path.join(Path(__file__).parent.parent, '.env'))
 
-from curator.agent_v2 import graph
-
-
-def ensure_webhook_server_running():
-    """
-    Ensure the Notion webhook server is running.
-    If not, start it as a background process.
-    """
-    import subprocess
-    import requests
-    import time
-
-    # Check if webhook server is already running by trying to connect
-    try:
-        response = requests.get('http://localhost:8000/health', timeout=2)
-        if response.status_code == 200:
-            print("[OK] Notion webhook server is already running")
-            return True
-    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-        pass
-
-    # Server not running, start it
-    print("Starting Notion webhook server...")
-    webhook_script = project_root / 'notion' / 'scripts' / 'notion_webhook_server.py'
-
-    if not webhook_script.exists():
-        print(f"Warning: Webhook server script not found at {webhook_script}")
-        return False
-
-    # Start webhook server as background process
-    try:
-        if sys.platform == 'win32':
-            # Windows: use CREATE_NEW_PROCESS_GROUP to detach
-            subprocess.Popen(
-                [sys.executable, str(webhook_script)],
-                creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-                cwd=str(webhook_script.parent)
-            )
-        else:
-            # Unix: use start_new_session to detach
-            subprocess.Popen(
-                [sys.executable, str(webhook_script)],
-                start_new_session=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-                cwd=str(webhook_script.parent)
-            )
-
-        # Wait a moment for server to start
-        print("Waiting for webhook server to start...")
-        for _ in range(10):
-            time.sleep(1)
-            try:
-                response = requests.get('http://localhost:8000/health', timeout=2)
-                if response.status_code == 200:
-                    print("[OK] Notion webhook server started successfully")
-                    return True
-            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-                continue
-
-        print("Warning: Webhook server may not have started properly")
-        return False
-
-    except Exception as e:
-        print(f"Error starting webhook server: {e}")
-        return False
+from src.curator.agent_v2 import graph
 
 
 def safe_print(text):
@@ -298,10 +228,6 @@ def main():
     print(f"\n{'='*80}")
     print("CURATOR AGENT - BATCH PROCESSING FROM QUEUE")
     print(f"{'='*80}")
-
-    # Ensure Notion webhook server is running for automatic sync
-    ensure_webhook_server_running()
-    print()
 
     if args.continuous:
         print("\nMode: Continuous (process until queue empty)")

@@ -17,9 +17,9 @@ from dotenv import load_dotenv
 import psycopg
 
 # Setup paths
-# production/scripts/ - need to add production/ to path for curator module
-production_root = Path(__file__).parent.parent  # production/
-project_root = production_root.parent  # PROVES_LIBRARY/
+# Test script in testing/ folder - need to add production/ to path for curator module
+project_root = Path(__file__).parent.parent  # PROVES_LIBRARY/
+production_root = project_root / 'production'  # production/
 sys.path.insert(0, str(production_root))
 load_dotenv(project_root / '.env')
 
@@ -54,13 +54,17 @@ def ensure_webhook_server_running():
 
     # Start webhook server as background process
     try:
+        # Create log file for webhook server output
+        webhook_log = project_root / 'webhook_server.log'
+        log_file = open(webhook_log, 'w')
+
         if sys.platform == 'win32':
             # Windows: use CREATE_NEW_PROCESS_GROUP to detach
             subprocess.Popen(
                 [sys.executable, str(webhook_script)],
                 creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
                 cwd=str(webhook_script.parent)
             )
         else:
@@ -68,10 +72,12 @@ def ensure_webhook_server_running():
             subprocess.Popen(
                 [sys.executable, str(webhook_script)],
                 start_new_session=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
                 cwd=str(webhook_script.parent)
             )
+
+        print(f"Webhook server output: {webhook_log}")
 
         # Wait a moment for server to start
         print("Waiting for webhook server to start...")
@@ -244,7 +250,7 @@ Then store ALL extractions in staging_extractions. Work autonomously - no approv
         thread_id = f"batch-{uuid.uuid4().hex[:8]}"
         config = {
             "configurable": {"thread_id": thread_id},
-            "recursion_limit": 20  # Extractor(5) + Validator(5) + Storage(5) + overhead(5)
+            "recursion_limit": 20  # Limit API calls to prevent expensive loops
         }
 
         result = graph.invoke(

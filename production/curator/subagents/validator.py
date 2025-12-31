@@ -598,42 +598,24 @@ def query_raw_snapshots(
 
 
 @traceable(name="validator_subagent")
-def create_validator_agent():
+def create_validator_agent(checkpointer=None):
     """
-    Create the validator sub-agent
+    Create the validator sub-agent with validation training.
 
-    This agent specializes in:
-    - get_pending_extractions() -> review staging_extractions
-    - record_validation_decision() -> approve/reject with audit trail
-    - check_for_duplicates() -> detect entities already in core
-
-    Legacy tools (for backward compatibility):
-    - check_if_dependency_exists() -> kg_nodes lookup
-    - verify_schema_compliance() -> ERV schema validation
-    - search_similar_dependencies() -> kg_nodes search
-
-    Uses Claude Haiku 3.5 for cost optimization (validation is pattern matching)
+    Args:
+        checkpointer: Optional LangGraph checkpointer (e.g., PostgresSaver) for state persistence
     """
-    model = ChatAnthropic(
-        model="claude-3-5-haiku-20241022",
-        temperature=0.1,
+    from langchain.agents import create_agent
+    from ..subagent_specs import get_validator_spec
+
+    spec = get_validator_spec()
+
+    # Create agent with system prompt and optional checkpointer
+    agent = create_agent(
+        model=ChatAnthropic(model=spec["model"], temperature=0.1),
+        system_prompt=spec["system_prompt"],
+        tools=spec["tools"],
+        checkpointer=checkpointer,
     )
 
-    tools = [
-        # NEW domain table workflow
-        get_pending_extractions,
-        record_validation_decision,
-        check_for_duplicates,
-        # Database query tools for confidence calibration
-        query_verified_entities,
-        query_staging_history,
-        query_validation_decisions,
-        query_raw_snapshots,
-        # Legacy kg_nodes tools
-        check_if_dependency_exists,
-        verify_schema_compliance,
-        search_similar_dependencies,
-    ]
-
-    agent = create_react_agent(model, tools)
     return agent
