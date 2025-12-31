@@ -20,6 +20,7 @@ And generates suggestions for:
 """
 
 import os
+import sys
 import psycopg
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple, Any
@@ -27,12 +28,14 @@ from collections import defaultdict, Counter
 from dotenv import load_dotenv
 from pathlib import Path
 
-# Load environment
-env_path = Path(__file__).parent.parent / '.env' if (Path(__file__).parent.parent / '.env').exists() else Path(__file__).parent / '.env'
-load_dotenv(env_path)
+# Setup paths
+production_root = Path(__file__).parent.parent  # production/
+project_root = production_root.parent  # PROVES_LIBRARY/
+sys.path.insert(0, str(production_root))
+load_dotenv(project_root / '.env')
 
 # Import our sync module
-from src.curator.suggestion_sync import SuggestionSync
+from curator.suggestion_sync import SuggestionSync
 
 DATABASE_URL = os.getenv('NEON_DATABASE_URL')
 
@@ -379,8 +382,6 @@ class ImprovementAnalyzer:
 
 
 if __name__ == "__main__":
-    import sys
-
     lookback_days = 7
     if len(sys.argv) > 1:
         try:

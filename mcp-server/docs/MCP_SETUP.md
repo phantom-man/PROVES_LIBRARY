@@ -204,6 +204,6 @@ npx @modelcontextprotocol/server-filesystem --help
 ## References
 
 - [LangChain MCP Documentation](https://python.langchain.com/docs/integrations/tools/mcp)
-- [PROVES MCP Integration Guide](../docs/MCP_INTEGRATION.md)
+- [PROVES MCP Integration Guide](../mcp-server/docs/MCP_INTEGRATION.md)
 - [FastMCP Documentation](https://gofastmcp.com)
 - [Model Context Protocol Spec](https://modelcontextprotocol.io/introduction)

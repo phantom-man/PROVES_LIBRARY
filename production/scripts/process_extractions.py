@@ -39,7 +39,7 @@ def ensure_webhook_server_running():
     try:
         response = requests.get('http://localhost:8000/health', timeout=2)
         if response.status_code == 200:
-            print("✓ Notion webhook server is already running")
+            print("[OK] Notion webhook server is already running")
             return True
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
         pass
@@ -80,7 +80,7 @@ def ensure_webhook_server_running():
             try:
                 response = requests.get('http://localhost:8000/health', timeout=2)
                 if response.status_code == 200:
-                    print("✓ Notion webhook server started successfully")
+                    print("[OK] Notion webhook server started successfully")
                     return True
             except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
                 continue

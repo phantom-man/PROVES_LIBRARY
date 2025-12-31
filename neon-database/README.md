@@ -25,11 +25,9 @@ SQL migration files in numbered order:
 
 ### docs/
 
-Database documentation (to be added):
+Database documentation:
 
-- Schema diagrams
-- Migration guides
-- Query examples
+- **webhook_pattern.md** - Neon's recommended webhook implementation pattern (FastAPI + HTTP endpoints + database polling)
 
 ## Database Connection
 
