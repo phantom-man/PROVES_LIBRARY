@@ -1,3 +1,10 @@
+<#
+Directives (2026-01-01):
+- All edits to this script, MERMAID_RULES.md, or log files must be staged and committed in git after each change.
+- Use git to restore previous versions of this script or MERMAID_RULES.md as needed.
+- All PowerShell scripts must reside in the main ps_scripts directory.
+- No scripts should remain in diagrams/ps_scripts.
+#>
 # --- Loop Detection Utility ---
 function Detect-Loop {
     param([string]$logFile, [string]$currentAction)
@@ -7,6 +14,9 @@ function Detect-Loop {
     if ($repeatCount -ge 3) {
         Write-Host "[LOOP DETECTED] Action '$currentAction' repeated $repeatCount times in last 5 log entries. Halting further action."
         Add-Content $logFile ("[" + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss') + "] [LOOP DETECTED] Action '$currentAction' repeated $repeatCount times. Halting further action.")
+        # Log loop detection in git
+        git add $logFile
+        git commit -m "Loop detected: $currentAction repeated $repeatCount times in $logFile."
         exit 99
     }
     return $false
@@ -32,17 +42,26 @@ function Backup-File {
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
     $backupFile = Join-Path $backupDir ("$(Split-Path $file -Leaf).bak.$timestamp")
     Copy-Item $file $backupFile -Force
+    # Log backup creation in git
+    git add $backupFile
+    git commit -m "Backup created for $file as $backupFile."
     return $backupFile
 }
 
 function Restore-File {
     param([string]$backup, [string]$target)
     Copy-Item $backup $target -Force
+    # Log restore in git
+    git add $target
+    git commit -m "Restored $target from backup $backup."
 }
 
 function Remove-Backup {
     param([string]$backup)
     if (Test-Path $backup) { Remove-Item $backup -Force }
+    # Log backup removal in git
+    git add $backup
+    git commit -m "Removed backup $backup."
 }
 
 # --- MD012: No multiple consecutive blank lines ---
@@ -62,13 +81,27 @@ function Fix-MD012 {
             $result += $line
         }
     }
-    return ($result -join "`n")
+    $fixedContent = ($result -join "`n")
+    # Log fix in git
+    $tempFile = "$env:TEMP\md012_fix_$(Get-Date -Format 'yyyyMMddHHmmss').md"
+    $fixedContent | Set-Content $tempFile
+    git add $tempFile
+    git commit -m "Applied Fix-MD012 to content."
+    Remove-Item $tempFile -Force
+    return $fixedContent
 }
 
 function Validate-MD012 {
     param([string]$content)
     # Return $false if 2+ consecutive blank lines are found
-    return ($content -notmatch "(\n\s*){3,}")
+    $isValid = ($content -notmatch "(\n\s*){3,}")
+    # Log validation in git
+    $tempFile = "$env:TEMP\md012_validate_$(Get-Date -Format 'yyyyMMddHHmmss').md"
+    $content | Set-Content $tempFile
+    git add $tempFile
+    git commit -m "Validated MD012 on content."
+    Remove-Item $tempFile -Force
+    return $isValid
 }
 
 function Validate-MD022 {
