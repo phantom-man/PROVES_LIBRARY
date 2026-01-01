@@ -146,25 +146,20 @@ function Fix-MD022 {
             $result += $line
             continue
         }
-        if ($line -match '^#+ ') {
+        if ($line -match '^#+(\s+|```|```mermaid|```yaml|\s*curve:|\s*theme:|\s*fontSize:|\s*title:|\s*config:|\s*flowchart:|\s*gantt:|\s*sequence:|\s*state:|\s*class:|\s*er:|\s*journey:|\s*pie:|\s*quadrant:|\s*requirement:|\s*gitGraph:|\s*c4:)?$') {
             $prev = if ($result.Count -gt 0) { $result[$result.Count-1] } else { '' }
             $next = if ($i+1 -lt $lines.Length) { $lines[$i+1] } else { '' }
-            Write-Host ("[Fix-MD022] Heading at index " + $i + ": '" + $line + "'")
-            Write-Host ("[Fix-MD022] Prev line (" + ($result.Count-1) + "): '" + $prev + "'")
-            Write-Host ("[Fix-MD022] Next line (" + ($i+1) + "): '" + $next + "'")
-            # Ensure blank line before heading (unless at file start or after YAML/code block)
-            if ($result.Count -eq 0 -or $prev -match '^(---|```|\s*\w+:\s*)$') {
+            # Always insert blank line before heading unless at file start
+            if ($result.Count -eq 0) {
                 # OK, do nothing
-            } elseif ($prev -ne '') {
-                Write-Host "[Fix-MD022] Inserting blank line before heading at $i"
+            } elseif ($prev -notmatch '^\s*$') {
                 $result += ''
             }
             $result += $line
-            # Ensure blank line after heading (unless at end or next is code block/YAML)
-            if ($i+1 -ge $lines.Length -or $next -match '^(---|```|\s*\w+:\s*)$') {
+            # Always insert blank line after heading unless at end
+            if ($i+1 -ge $lines.Length) {
                 # OK, do nothing
-            } elseif ($next -ne '') {
-                Write-Host "[Fix-MD022] Inserting blank line after heading at $i"
+            } elseif ($next -notmatch '^\s*$') {
                 $result += ''
             }
         } else {
@@ -307,17 +302,16 @@ function Fix-MD055MD056 {
     while ($i -lt $lines.Length) {
         $line = $lines[$i]
         # Detect table header (must have at least one pipe, not code block)
-        if ($line -match '^[^|\n]*\|[^|\n]*$' -and $line.Trim() -notmatch '^\|.*\|$' -and $line -notmatch '^```') {
+        if ($line -match '^\s*\S.*\|.*$' -and $line -notmatch '^```') {
             # Table block: collect all contiguous lines with at least one pipe
             $table = @($line)
             $j = $i+1
-            while ($j -lt $lines.Length -and $lines[$j] -match '^[^|\n]*\|[^|\n]*$' -and $lines[$j] -notmatch '^```') {
+            while ($j -lt $lines.Length -and $lines[$j] -match '^\s*\S.*\|.*$' -and $lines[$j] -notmatch '^```') {
                 $table += $lines[$j]
                 $j++
             }
-            # Determine max columns from header
-            $header = $table[0].Trim()
-            $headerCols = ($header -split '\|').Count
+            # Determine max columns from header or max row
+            $headerCols = ($table | ForEach-Object { ($_ -split '\|').Count }) | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
             # Fix each row
             for ($k = 0; $k -lt $table.Count; $k++) {
                 $row = $table[$k].Trim()
@@ -331,6 +325,7 @@ function Fix-MD055MD056 {
                 } elseif ($rowCells.Count -gt $headerCols) {
                     $rowCells = $rowCells[0..($headerCols-1)]
                 }
+                # Always add leading/trailing pipes
                 $fixedRow = '|' + ($rowCells -join '|') + '|'
                 $out.Add($fixedRow) | Out-Null
             }
@@ -339,6 +334,22 @@ function Fix-MD055MD056 {
             $out.Add($line) | Out-Null
             $i++
         }
+    function Fix-MD019 {
+        param([string]$content)
+        # Remove multiple spaces after hash in headings
+        $lines = $content -split "\n"
+        $result = @()
+        foreach ($line in $lines) {
+            if ($line -match '^(#+)\s{2,}') {
+                $fixed = $line -replace '^(#+)\s{2,}', '$1 '
+                Write-Host "MD019 fix: '$line' -> '$fixed'"
+                $result += $fixed
+            } else {
+                $result += $line
+            }
+        }
+        return ($result -join "`n")
+    }
     }
     return ($out -join "`n")
 }
