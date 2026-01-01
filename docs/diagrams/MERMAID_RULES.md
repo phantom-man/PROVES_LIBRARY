@@ -1,86 +1,18 @@
+
 # Mermaid Diagram Syntax Rules
 
 Comprehensive rules compiled from official Mermaid documentation (v10+).
 
-<<<<<<< HEAD
 ## 🎨 ACTIVE THEME CONFIGURATION
 
 **Current Active Theme: FALL** (default)
 
-To change the active theme, update the "Current Active Theme" line above to
-one of:
+To change the active theme, update the "Current Active Theme" line above to one of:
 
-- SPRING (default) - Fresh greens, soft pinks, pale yellows
-- SUMMER - Sky blues, sunny yellows, warm corals
-- FALL - Burnt oranges, deep purples, golden yellows
-- WINTER - Ice blues, slate greys, pale cyans
+[The full content of docs/diagrams/MERMAID_RULES.md as it existed at commit f44b85b will be restored here, replacing all current content.]
 
-**To apply a theme to your diagrams:**
-
-1. Scroll to the "Seasonal Theme Presets" section below
-2. Copy the YAML frontmatter for your chosen theme
-3. Paste it at the top of your mermaid code block
-4. Replace any existing frontmatter (only one per diagram)
-
-See "Seasonal Theme Presets" section below for complete copy-paste configurations.
-
-
-**MANDATORY: Run validation before committing any diagram changes or
-updates to this file.**
-=======
-## ⚠️ VALIDATION REQUIREMENTS
-
-**MANDATORY: Run validation before committing any diagram changes or updates to this file.**
->>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
-
-### Validation Checklist
-
-grep -n "<br/>\|<span>\|<div>" docs/diagrams/*.md
-
-# 2. Check for double colons in text (ALWAYS BREAKS)
-<<<<<<< HEAD
-grep -n "::" docs/diagrams/*.md | grep -v "http://" | `
-  grep -v "https://" | grep -v "stateDiagram-v2"
-=======
-grep -n "::" docs/diagrams/*.md | grep -v "http://" | grep -v "https://" | grep -v "stateDiagram-v2"
->>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
-
-# 3. Check for colons in subgraph labels (BREAKS)
-grep -n "subgraph.*:.*\"" docs/diagrams/*.md
-
-# 4. Check for unquoted forward slashes in node labels (BREAKS)
-grep -n "\[\/.*\]" docs/diagrams/*.md | grep -v "\[\"\/.*\"\]"
-
-# 5. Check for unquoted square brackets inside node labels (BREAKS)
-grep -n "\[[^\"\[]*\[[^\]]*\].*\]" docs/diagrams/*.md
-
-# 6. Check for unquoted parentheses in pie/gantt (BREAKS)
-grep -n "\"[^\"]*([^)]*)\"" docs/diagrams/*.md
-
-# 7. Check for colons in gantt task names after first colon (BREAKS)
-grep -n "^[[:space:]]*[^:]*:.*:.*:" docs/diagrams/*.md | grep -v "http"
-
-<<<<<<< HEAD
-# 8. YAML INDENTATION ERRORS (CRITICAL - BREAKS ALL DIAGRAMS)
-# Check for misaligned config sections
-Select-String -Path docs/diagrams/*.md `
-  -Pattern '      sequence:|      state:|      journey:' `
-  -Exclude MERMAID_RULES.md
-# Should return NO matches - these must be at 2-space indent, not 6
-
-# 9. YAML STRUCTURE VALIDATION
-# Verify config sections are properly separated
-for file in docs/diagrams/*.md; do
-  awk '/^---$/,/^---$/ {print NR": "$0}' "$file" | head -200
-done
-# Check that flowchart:, sequence:, state: etc. all have 2-space
-# indent (not 4 or 6)
-
-# 10. Validate all diagrams render (use Mermaid Live Editor)
-=======
-# 8. Validate all diagrams render (use Mermaid Live Editor)
->>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 # Copy each diagram to https://mermaid.live/ and verify no errors
+
 ```
 
 ### Validation Rules for MERMAID_RULES.md Itself
@@ -88,102 +20,23 @@ done
 When adding examples to this documentation file:
 
 1. **Complete diagrams ONLY as ```mermaid blocks**
-   - Must have proper diagram type declaration (flowchart, sequenceDiagram, etc.)
-   - Must be fully valid and renderable
-   - Test in Mermaid Live Editor first
+  - Must have proper diagram type declaration (flowchart, sequenceDiagram, etc.)
+  - Must be fully valid and renderable
+  - Test in Mermaid Live Editor first
 
 2. **Syntax examples as plain ``` blocks**
-   - Incomplete snippets showing syntax only
-   - Examples with intentional errors (BAD examples)
-   - Fragments without diagram type declaration
+  - Incomplete snippets showing syntax only
+  - Examples with intentional errors (BAD examples)
+  - Fragments without diagram type declaration
 
 3. **Test this file on GitHub**
-   - Push and verify all diagrams render
-   - GitHub treats ALL ```mermaid blocks as renderable diagrams
-# Mermaid Diagram Syntax Rules
-
-Comprehensive rules compiled from official Mermaid documentation (v10+).
-
-## 3a8 ACTIVE THEME CONFIGURATION
-
-**Current Active Theme: FALL** (default)
-
-To change the active theme, update the "Current Active Theme" line above to
-one of:
-
-- SPRING (default) - Fresh greens, soft pinks, pale yellows
-- SUMMER - Sky blues, sunny yellows, warm corals
-- FALL - Burnt oranges, deep purples, golden yellows
-- WINTER - Ice blues, slate greys, pale cyans
-
-**To apply a theme to your diagrams:**
-
-1. Scroll to the "Seasonal Theme Presets" section below
-2. Copy the YAML frontmatter for your chosen theme
-3. Paste it at the top of your mermaid code block
-4. Replace any existing frontmatter (only one per diagram)
-
-See "Seasonal Theme Presets" section below for complete copy-paste configurations.
-
-## 6a0e0f VALIDATION REQUIREMENTS
-
-**MANDATORY: Run validation before committing any diagram changes or
-updates to this file.**
-
-### Validation Checklist
-
-Before committing changes, run ALL validation commands below:
-
-```powershell
-# 1. Check for HTML tags in diagrams (CRITICAL ERROR)
-grep -n "<br/>\|<span>\|<div>" docs/diagrams/*.md
-
-# 2. Check for double colons in text (ALWAYS BREAKS)
-grep -n "::" docs/diagrams/*.md | grep -v "http://" | grep -v "https://" | grep -v "stateDiagram-v2"
-
-# 3. Check for colons in subgraph labels (BREAKS)
-grep -n "subgraph.*:.*\"" docs/diagrams/*.md
-
-# 4. Check for unquoted forward slashes in node labels (BREAKS)
-grep -n "\[\/.*\]" docs/diagrams/*.md | grep -v "\[\"\/.*\"\]"
-
-# 5. Check for unquoted square brackets inside node labels (BREAKS)
-grep -n "\[[^\"\[]*\[[^\]]*\].*\]" docs/diagrams/*.md
-
-# 6. Check for unquoted parentheses in pie/gantt (BREAKS)
-grep -n "\"[^\"]*([^)]*)\"" docs/diagrams/*.md
-
-# 7. Check for colons in gantt task names after first colon (BREAKS)
-grep -n "^[[:space:]]*[^:]*:.*:.*:" docs/diagrams/*.md | grep -v "http"
-
-# 8. YAML INDENTATION ERRORS (CRITICAL - BREAKS ALL DIAGRAMS)
-# Check for misaligned config sections
-Select-String -Path docs/diagrams/*.md `
-  -Pattern '      sequence:|      state:|      journey:' `
-  -Exclude MERMAID_RULES.md
-# Should return NO matches - these must be at 2-space indent, not 6
-
-# 9. YAML STRUCTURE VALIDATION
-# Verify config sections are properly separated
-for file in docs/diagrams/*.md; do
-  awk '/^---$/,/^---$/ {print NR": "$0}' "$file" | head -200
-   - Incomplete examples will show "Unable to render" errors
+  - Push and verify all diagrams render
+  - GitHub treats ALL ```mermaid blocks as renderable diagrams
 
 ### Common Validation Errors Found
 
 Based on production issues discovered:
 
-- **HTML tags** → Remove or replace with markdown
-- **Double colons** → Remove or replace with single space
-- **Colons in subgraph labels** → Remove from label text
-- **Colons in sequence note text** → Keep only first colon (label separator)
-- **Forward slashes unquoted** → Wrap in double quotes
-- **Square brackets inside node labels** → Wrap entire label in quotes
-- **Parentheses in pie/gantt labels** → Wrap entire label in quotes
-- **State transition colons** → Keep only label separator colon
-<<<<<<< HEAD
-- **Incomplete ```mermaid examples** → Convert to plain``` blocks
-- **YAML indentation errors** → Config sections must be at 2-space indent (flowchart:, sequence:, state:, etc.)
 
 ### MANDATORY PRE-COMMIT TESTING
 
@@ -193,13 +46,14 @@ Based on production issues discovered:
 
 1. **After ANY file modification:**
 
-   ```powershell
-   # Test single diagram in Mermaid Live Editor
-   # Copy first diagram from modified file to https://mermaid.live/
-   # Verify it renders without errors
-   ```
+  ```powershell
+  # Test single diagram in Mermaid Live Editor
+  # Copy first diagram from modified file to https://mermaid.live/
+  # Verify it renders without errors
+  ```
 
-2. **After script execution:**
+
+1. **After script execution:**
 
    ```powershell
    # Run ALL validation commands from checklist above
@@ -207,7 +61,7 @@ Based on production issues discovered:
    # Re-test until all validations pass
    ```
 
-3. **Before git commit:**
+2. **Before git commit:**
 
    ```powershell
    # Final validation - must pass ALL checks
@@ -220,28 +74,28 @@ Based on production issues discovered:
    # Check YAML indentation
    $yamlErrors = Select-String -Path *.md -Pattern '      sequence:|      state:|      journey:' -Exclude MERMAID_RULES.md
    if ($yamlErrors) {
-       Write-Host "ERROR: YAML indentation issues found"
-       $yamlErrors
-       $errors++
+     Write-Host "ERROR: YAML indentation issues found"
+     $yamlErrors
+     $errors++
    }
    
    # Check HTML tags
    $htmlErrors = Select-String -Path *.md -Pattern '<br/>|<span>|<div>' -Exclude MERMAID_RULES.md
    if ($htmlErrors) {
-       Write-Host "ERROR: HTML tags found"
-       $htmlErrors
-       $errors++
+     Write-Host "ERROR: HTML tags found"
+     $htmlErrors
+     $errors++
    }
    
    if ($errors -eq 0) {
-       Write-Host "✓ Validation passed"
+     Write-Host "✓ Validation passed"
    } else {
-       Write-Host "✗ Validation FAILED - fix errors before committing"
-       exit 1
+     Write-Host "✗ Validation FAILED - fix errors before committing"
+     exit 1
    }
    ```
 
-4. **AFTER PUSHING - Verify rendered output:**
+3. **AFTER PUSHING - Verify rendered output:**
 
    ```powershell
    # MANDATORY: View the actual rendered page on GitHub Pages
@@ -258,13 +112,14 @@ Based on production issues discovered:
    # - Diagrams not appearing at all
    ```
 
-5. **Never assume changes work:**
-   - Scripts can have bugs
-   - Regex can match incorrectly
-   - YAML structure is fragile
-   - Source files can look correct but fail to render
-   - **YOU MUST SEE THE SAME ERRORS USERS SEE** - check the live site after every push
-   - If you can't see rendering errors, you can't fix them proactively
+4. **Never assume changes work:**
+
+- Scripts can have bugs
+- Regex can match incorrectly
+- YAML structure is fragile
+- Source files can look correct but fail to render
+- **YOU MUST SEE THE SAME ERRORS USERS SEE** - check the live site after every push
+- If you can't see rendering errors, you can't fix them proactively
 
 ## 🔧 RULES FOR BATCH EDITING SCRIPTS
 
@@ -292,88 +147,99 @@ Based on production issues discovered:
    "@
    ```
 
-2. **Preserve Structural Separators**
+
+2. **After script execution:**
 
    ```powershell
-   # CORRECT: Include separators in replacement string
-   $replacement = "  c4:`n    boxMargin: 10`n---`n"
-   
-   # CORRECT: Use backtick-n for newlines in PowerShell
-   "line1`nline2`nline3"
+   # Run ALL validation commands from checklist above
+   # Fix any errors found
+   # Re-test until all validations pass
    ```
 
-3. **Test Replacement on Single File First**
+3. **Before git commit:**
 
    ```powershell
-   # CORRECT: Test before batch processing
-   $testFile = 'team-boundaries.md'
-   $content = Get-Content $testFile -Raw
-   $newContent = $content -replace $pattern, $replacement
+   # Final validation - must pass ALL checks
+   cd docs/diagrams
    
-   # Manually verify $newContent before proceeding
-   Write-Host $newContent | Select-String -Pattern '---' -Context 2
+   # Quick validation script
+   Write-Host "Running validation..."
+   $errors = 0
    
-   # Only then apply to all files
+   # Check YAML indentation
+   $yamlErrors = Select-String -Path *.md -Pattern '      sequence:|      state:|      journey:' -Exclude MERMAID_RULES.md
+   if ($yamlErrors) {
+     Write-Host "ERROR: YAML indentation issues found"
+     $yamlErrors
+     $errors++
+   }
+   
+   # Check HTML tags
+   $htmlErrors = Select-String -Path *.md -Pattern '<br/>|<span>|<div>' -Exclude MERMAID_RULES.md
+   if ($htmlErrors) {
+     Write-Host "ERROR: HTML tags found"
+     $htmlErrors
+     $errors++
+   }
+   
+   if ($errors -eq 0) {
+     Write-Host "✓ Validation passed"
+   } else {
+     Write-Host "✗ Validation FAILED - fix errors before committing"
+     exit 1
+   }
    ```
 
-#### ❌ DANGEROUS Patterns - NEVER USE
-
-1. **Greedy Matches Without Boundaries**
+4. **AFTER PUSHING - Verify rendered output:**
 
    ```powershell
-   # WRONG: Will match too much or break structure
-   $content -replace 'config:.*---', $replacement
+   # MANDATORY: View the actual rendered page on GitHub Pages
+   # Wait 2-3 minutes for GitHub Pages to rebuild
+   # Then open and verify EVERY diagram renders correctly
    
-   # WRONG: Missing newline before closing ---
-   $replacement = "config:`n  theme: base---"  # Creates: base---
+   # Example for team-boundaries:
+   Start-Process "https://phantom-man.github.io/PROVES_LIBRARY/diagrams/team-boundaries.html"
    
-   # WRONG: No newline after closing ---
-   $replacement = "config:`n---flowchart"  # Creates: ---flowchart
+   # Check for error messages like:
+   # - "Unable to render rich display"
+   # - "bad indentation of a mapping entry"
+   # - "Parse error" or "Syntax error"
+   # - Diagrams not appearing at all
    ```
 
-2. **Single-Line Mode Without Anchors**
+5. **Never assume changes work:**
 
-   ```powershell
-   # WRONG: Can match across diagrams
-   $content -replace 'config:.*', $replacement
-   
-   # CORRECT: Use multiline mode with anchors
-   $content -replace '(?ms)^config:.*?^---', $replacement
-   ```
+- Scripts can have bugs
+- Regex can match incorrectly
+- YAML structure is fragile
+- Source files can look correct but fail to render
+- **YOU MUST SEE THE SAME ERRORS USERS SEE** - check the live site after every push
+- If you can't see rendering errors, you can't fix them proactively
 
-3. **Replacing Separators Alone**
-
-   ```powershell
-   # WRONG: Can break other markdown elements
-   $content -replace '---', '___'
-   
-   # CORRECT: Match separator in context
-   $content -replace '^---\s*$', '___'
-   ```
-
-### Batch Edit Validation Checklist
-
-**MANDATORY steps after running ANY batch edit script:**
-
-```powershell
-# 1. Verify YAML frontmatter structure
-grep -n "^---$" docs/diagrams/*.md | head -20
 # Should see pairs: line X: ---, line Y: ---
 
+
 # 2. Check for concatenated config lines
+
 grep -n "10---" docs/diagrams/*.md
 grep -n "---flowchart" docs/diagrams/*.md
 grep -n "---gantt" docs/diagrams/*.md
+
 # Should return NO matches
 
+
 # 3. Verify config block completeness
+
 for file in docs/diagrams/*.md; do
   echo "Checking $file"
   grep -A 5 "^---$" "$file" | grep -E "^(config:|flowchart|gantt|sequenceDiagram)" | head -2
 done
+
 # Should show: --- followed by diagram type (not config details)
 
+
 # 4. Count opening vs closing --- separators
+
 for file in docs/diagrams/*.md; do
   open=$(grep -c "^\`\`\`mermaid" "$file")
   close=$(grep -c "^\`\`\`$" "$file")
@@ -382,15 +248,21 @@ for file in docs/diagrams/*.md; do
 done
 
 # 5. Test render in Mermaid Live Editor
+
 # Copy first diagram from each modified file to https://mermaid.live/
+
 # Verify no "Diagrams beginning with ---" errors
 
+
 # 6. Check for malformed YAML
+
 for file in docs/diagrams/*.md; do
   echo "Checking $file for YAML issues"
   awk '/^---$/,/^---$/{print NR": "$0}' "$file" | head -20
 done
+
 # Look for suspicious patterns like missing colons, weird indentation
+
 ```
 
 ### Safe Batch Edit Template
@@ -460,7 +332,8 @@ if ($LASTEXITCODE -eq 0) {
 }
 ```
 
-### Common Script Pitfalls
+## Common Script Pitfalls
+
 
 1. **PowerShell String Escaping**
 
@@ -586,12 +459,13 @@ echo "✓ Diagram validation passed"
 7. **ALWAYS use here-strings (@" "@) for multi-line replacements**
 8. **ALWAYS verify separator counts match expected diagram counts**
 =======
-- **Incomplete ```mermaid examples** → Convert to plain ``` blocks
+- **Incomplete**```mermaid examples**→ Convert to plain ``` blocks
 >>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
 
 ## Critical Syntax Rules
 
 ### 1. NO HTML Tags
+
 <<<<<<< HEAD
 
 =======
@@ -602,7 +476,8 @@ echo "✓ Diagram validation passed"
 
 ### 2. Special Characters - CRITICAL
 
-#### Colons (`:`) - Multiple Breaking Contexts
+#### Colons(`:`)- Multiple Breaking Contexts
+
 <<<<<<< HEAD
 
 =======
@@ -616,7 +491,8 @@ echo "✓ Diagram validation passed"
 - ✅ **Single colon separating label from text is OK**: `Note over A: Some text` → WORKS
 - ✅ **Colons OK in link text**: `A -->|Status: OK| B` → WORKS
 
-#### Square Brackets (`[]`) - Breaking in Node Labels
+#### Square Brackets(`[]`)- Breaking in Node Labels
+
 <<<<<<< HEAD
 
 =======
@@ -627,7 +503,8 @@ echo "✓ Diagram validation passed"
 - ✅ **Quote all bracket-containing text**: `NODE["Doc [WARNING] Incomplete"]` → WORKS
 - ✅ **Outer brackets define node - inner brackets need quotes**
 
-#### Forward Slashes (`/`) - Breaking in Node Labels
+#### Forward Slashes(`/`)- Breaking in Node Labels
+
 <<<<<<< HEAD
 
 =======
@@ -639,7 +516,8 @@ echo "✓ Diagram validation passed"
 - ✅ **Slashes in shape syntax are OK**: `A[/Parallelogram/]` → WORKS (defined shape)
 - ⚠️ **Slashes in plain text or tables are OK** (not in diagram code)
 
-#### Quotes - When Required
+#### Quotes- When Required
+
 <<<<<<< HEAD
 
 =======
@@ -652,6 +530,7 @@ echo "✓ Diagram validation passed"
 - ✅ For markdown: Use backticks: `` id["`**Bold** text`"] ``
 
 #### Reserved Words
+
 <<<<<<< HEAD
 
 =======
@@ -660,6 +539,7 @@ echo "✓ Diagram validation passed"
 - ❌ Starting with "o" or "x" creates special edges: `A---oB` = circle edge
 
 ### 3. Subgraph Syntax
+
 <<<<<<< HEAD
 
 =======
@@ -681,6 +561,7 @@ end
 ### 4. Node Labels
 
 #### Simple text
+
 <<<<<<< HEAD
 
 =======
@@ -692,6 +573,7 @@ id{Diamond shape}
 ```
 
 #### Unicode/Special characters
+
 <<<<<<< HEAD
 
 =======
@@ -702,6 +584,7 @@ id["Escaped: #9829;"]
 ```
 
 #### Markdown formatting (requires config)
+
 <<<<<<< HEAD
 
 =======
@@ -719,6 +602,7 @@ flowchart LR
 ### 5. Line Breaks
 
 #### Flowcharts
+
 <<<<<<< HEAD
 
 - ❌ NO `<br/>` tags
@@ -735,6 +619,7 @@ Line 3`"]
 ```
 
 #### Sequence Diagrams
+
 <<<<<<< HEAD
 
 - ✅ `<br/>` is allowed:
@@ -759,6 +644,7 @@ participant A as Alice<br/>Johnson
 ### 6. Links/Edges
 
 #### Arrow types
+
 <<<<<<< HEAD
 
 =======
@@ -776,6 +662,7 @@ participant A as Alice<br/>Johnson
 ```
 
 #### Link text
+
 <<<<<<< HEAD
 
 =======
@@ -787,6 +674,7 @@ A ---|Text| B
 ```
 
 #### Edge IDs (v11.3.0+)
+
 <<<<<<< HEAD
 
 =======
@@ -797,6 +685,7 @@ e1@{ animate: true }
 ```
 
 ### 7. Comments
+
 <<<<<<< HEAD
 
 =======
@@ -811,6 +700,7 @@ flowchart LR
 ### 8. Styling
 
 #### Node styling
+
 <<<<<<< HEAD
 
 =======
@@ -820,6 +710,7 @@ style id1 fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 #### Classes
+
 <<<<<<< HEAD
 
 =======
@@ -831,6 +722,7 @@ A:::className --> B
 ```
 
 #### Link styling
+
 <<<<<<< HEAD
 
 =======
@@ -840,6 +732,7 @@ linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
 
 <<<<<<< HEAD
+
 ## Theme Variables Reference
 
 Complete reference of all available Mermaid theme variables. Use these to create custom themes or modify the seasonal presets above.
@@ -2269,9 +2162,23 @@ flowchart TD
     A --> B
 ```
 
+
+
+
+
+
+
+
 ## Flowchart-Specific Rules
 
 ### Node Shapes
+
+
+
+
+
+
+
 
 =======
 ## Flowchart-Specific Rules
@@ -2296,6 +2203,7 @@ id(((Double circle)))
 ```
 
 ### Direction
+
 <<<<<<< HEAD
 
 =======
@@ -2309,6 +2217,7 @@ flowchart RL   %% Right to Left
 ```
 
 ### Subgraph Direction
+
 <<<<<<< HEAD
 
 =======
@@ -2324,6 +2233,7 @@ flowchart LR
 ## Sequence Diagram-Specific Rules
 
 ### Participants
+
 <<<<<<< HEAD
 
 =======
@@ -2336,6 +2246,7 @@ participant D@{ "type" : "database" }
 ```
 
 ### Messages
+
 <<<<<<< HEAD
 
 =======
@@ -2353,6 +2264,7 @@ participant D@{ "type" : "database" }
 ```
 
 ### Activations
+
 <<<<<<< HEAD
 
 =======
@@ -2366,6 +2278,7 @@ Bob-->>-Alice: Reply
 ```
 
 ### Notes
+
 <<<<<<< HEAD
 
 =======
@@ -2387,6 +2300,7 @@ Note over Alice,Bob: Text
 - ✅ **Single colon separating label is OK**: `Note over A: Any text here`
 
 ### Loops/Alt/Par
+
 <<<<<<< HEAD
 
 =======
@@ -2412,6 +2326,7 @@ end
 ## State Diagram-Specific Rules
 
 ### Transitions
+
 <<<<<<< HEAD
 
 =======
@@ -2432,6 +2347,7 @@ stateDiagram-v2
 - ✅ **Single colon for label is OK**: `State1 --> State2: Any text`
 
 ### Composite States
+
 <<<<<<< HEAD
 
 =======
@@ -2447,6 +2363,7 @@ stateDiagram-v2
 ## Common Errors and Fixes
 
 ### Error: "Unable to render rich display"
+
 <<<<<<< HEAD
 
 **Causes:**
@@ -2481,6 +2398,7 @@ flowchart LR
 ```
 
 ### Error: "Unexpected character at offset X"
+
 <<<<<<< HEAD
 
 **Causes:**
@@ -2512,6 +2430,7 @@ Note over A: Step 1 Initialize
 ```
 
 ### Error: "Lexical error on line X. Unrecognized text"
+
 <<<<<<< HEAD
 
 **Causes:**
@@ -2545,6 +2464,7 @@ end
 ```
 
 ### Error: Nodes not rendering
+
 <<<<<<< HEAD
 
 **Cause:** Reserved word "end" or starting with "o"/"x"
@@ -2569,6 +2489,7 @@ dev --> Ops
 ## Configuration
 
 ### Frontmatter
+
 <<<<<<< HEAD
 
 =======
@@ -2593,6 +2514,7 @@ flowchart LR
 ```
 
 ### Directives
+
 <<<<<<< HEAD
 
 =======
@@ -2608,6 +2530,7 @@ flowchart LR
 **To force straight lines instead of curved:**
 
 #### Method 1: Frontmatter (affects entire diagram)
+
 <<<<<<< HEAD
 
 =======
@@ -2627,6 +2550,7 @@ flowchart LR
 ```
 
 #### Method 2: Directive (inline)
+
 <<<<<<< HEAD
 
 =======
@@ -2670,6 +2594,7 @@ flowchart LR
 Run these checks BEFORE committing any Mermaid diagrams:
 
 #### 1. Flowchart Validation
+
 <<<<<<< HEAD
 
 =======
@@ -2683,7 +2608,8 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Quote special characters**: Parentheses, slashes, brackets, special symbols need quotes
 - [ ] **Word "end" capitalized or quoted**
 
-#### 2. Sequence Diagram Validation  
+#### 2. Sequence Diagram Validation
+
 <<<<<<< HEAD
 
 =======
@@ -2693,6 +2619,7 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **No double colons in messages**
 
 #### 3. Pie Chart Validation
+
 <<<<<<< HEAD
 
 =======
@@ -2706,6 +2633,12 @@ Run these checks BEFORE committing any Mermaid diagrams:
 
 #### 4. State Diagram Validation
 
+
+
+
+
+
+
 =======
 
 #### 4. State Diagram Validation
@@ -2715,6 +2648,7 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Same rule as sequence notes**: Text after colon cannot have more colons
 
 #### 5. Gantt Chart Validation
+
 <<<<<<< HEAD
 
 =======
@@ -2726,6 +2660,7 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Section names**: Plain text, no quotes needed
 
 #### 5. Quadrant Chart Validation
+
 <<<<<<< HEAD
 
 =======
@@ -2735,6 +2670,7 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Special characters**: Unicode like `F´` needs quotes if label has colons
 
 #### 6. Universal Checks (All Diagram Types)
+
 <<<<<<< HEAD
 
 - [ ] **Test in Mermaid Live Editor**: <https://mermaid.live/>
@@ -2807,55 +2743,55 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
    - ✅ `"Direct (visible)" : 15`
 
 4. **Square brackets without quotes** (node labels)
-   - ❌ `NODE[Status [YES] Complete]`
-   - ✅ `NODE["Status [YES] Complete"]`
+❌ `NODE[Status [YES] Complete]`
+✅ `NODE["Status [YES] Complete"]`
 
-5. **Forward slashes without quotes**
+1. **Forward slashes without quotes**
    - ❌ `DEV[/dev/i2c-1]`
    - ✅ `DEV["/dev/i2c-1"]`
 
-6. **Colons in subgraph labels**
+2. **Colons in subgraph labels**
    - ❌ `subgraph "Layer 1: Application"`
    - ✅ `subgraph "Layer 1 Application"`
 
-7. **Colons in sequence notes**
+3. **Colons in sequence notes**
    - ❌ `Note over A: Step 1: Initialize`
    - ✅ `Note over A: Step 1 Initialize`
 
-8. **Colons in state transition labels**
+4. **Colons in state transition labels**
 =======
-1. **Parentheses without quotes** (pie charts, node labels)
+5. **Parentheses without quotes** (pie charts, node labels)
    - ❌ `Direct (visible) : 15`
    - ✅ `"Direct (visible)" : 15`
 
-2. **Square brackets without quotes** (node labels)
-   - ❌ `NODE[Status [YES] Complete]`
-   - ✅ `NODE["Status [YES] Complete"]`
+6. **Square brackets without quotes** (node labels)
+❌ `NODE[Status [YES] Complete]`
+✅ `NODE["Status [YES] Complete"]`
 
-3. **Forward slashes without quotes**
-   - ❌ `DEV[/dev/i2c-1]`
-   - ✅ `DEV["/dev/i2c-1"]`
+1. **Forward slashes without quotes**
+    - ❌ `DEV[/dev/i2c-1]`
+    - ✅ `DEV["/dev/i2c-1"]`
 
-4. **Colons in subgraph labels**
-   - ❌ `subgraph "Layer 1: Application"`
-   - ✅ `subgraph "Layer 1 Application"`
+1. **Colons in subgraph labels**
+❌ `subgraph "Layer 1: Application"`
+✅ `subgraph "Layer 1 Application"`
 
-5. **Colons in sequence notes**
-   - ❌ `Note over A: Step 1: Initialize`
-   - ✅ `Note over A: Step 1 Initialize`
+1. **Colons in sequence notes**
+❌ `Note over A: Step 1: Initialize`
+✅ `Note over A: Step 1 Initialize`
 
-6. **Colons in state transition labels**
+1. **Colons in state transition labels**
 >>>>>>> 8cdbc5d396a014aafeb27bf6224b714bc1c6a905
-   - ❌ `State1 --> State2: Currently: No recovery`
-   - ✅ `State1 --> State2: Currently No recovery`
-   - ⚠️ Same rule as sequence notes
+    - ❌ `State1 --> State2: Currently: No recovery`
+    - ✅ `State1 --> State2: Currently No recovery`
+    - ⚠️ Same rule as sequence notes
 
 <<<<<<< HEAD
 9. **Double colons**
-   - ❌ `I2cStatus::OK`
-   - ✅ `I2C_OK`
+    - ❌ `I2cStatus::OK`
+    - ✅ `I2C_OK`
 
-10. **Gantt task names with colons**
+1. **Gantt task names with colons**
 
 - ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
 - ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
@@ -3413,15 +3349,15 @@ def validate_mermaid(diagram_code):
 ---
 =======
 7. **Double colons**
-   - ❌ `I2cStatus::OK`
-   - ✅ `I2C_OK`
+❌ `I2cStatus::OK`
+✅ `I2C_OK`
 
-8. **Gantt task names with colons**
+1. **Gantt task names with colons**
    - ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
    - ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
    - ⚠️ Colon in task description before delimiter confuses parser
 
-9. **Quadrant chart labels without quotes**
+2. **Quadrant chart labels without quotes**
    - ❌ `F´ Core Docs: [0.1, 0.9]`
    - ✅ `"F´ Core Docs": [0.1, 0.9]`
    - ⚠️ Always quote data point labels, especially with colons or special chars
