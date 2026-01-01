@@ -45,7 +45,6 @@ cross-team failures when critical knowledge disappears.
 ## dY?-‹,? Agentic AI Structure
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
   subgraph Sources
     A1[F Prime docs]
@@ -112,14 +111,14 @@ sequenceDiagram
   participant Graph as Knowledge Graph
 
   Doc->>Curator: Ingest source
-  Curator->>Extractor: Capture ALL dependencies + citations
+  Curator->>Extractor: Capture ALL dependencies with citations
   Extractor-->>Curator: Raw data with context
-  Curator->>Validator: Flag anomalies, check patterns
-  Validator-->>Curator: Staged with flags/notes
+  Curator->>Validator: Flag anomalies check patterns
+  Validator-->>Curator: Staged with flags and notes
   Curator->>Staging: Store ALL to staging tables
   Staging-->>Review: Human verifies EVERY piece
   Review-->>Graph: Only verified data enters truth
-  Graph->>Graph: Align sources, establish truth
+  Graph->>Graph: Align sources establish truth
   Graph-->>Storage: Ack
   Storage-->>Curator: Stored summary
 ```
