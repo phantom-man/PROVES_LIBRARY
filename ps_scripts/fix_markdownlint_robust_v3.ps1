@@ -110,23 +110,23 @@ function Test-MD012 {
 function Test-MD022 {
     param([string]$content)
     $lines = $content -split "\n"
+    $inCode = $false
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = $lines[$i]
-        $prev = if ($i -gt 0) { $lines[$i-1] } else { '' }
-        $next = if ($i+1 -lt $lines.Length) { $lines[$i+1] } else { '' }
-        if ($line -match '^#') {
-            Write-Information ("[Test-MD022Valid] Prev line (" + ($i-1) + "): '" + $prev + "'")
-            Write-Information ("[Test-MD022Valid] Next line (" + ($i+1) + "): '" + $next + "'")
-            if ($i -eq 0 -or $prev -match '^(---|```|\s*\w+:\s*)$' -or $prev -eq '') {
-                # OK
-            } else {
-                Write-Information "[Test-MD022Valid] FAIL: No blank/YAML/code before heading at $i"
+        if ($line -match '^\s*```') {
+            $inCode = -not $inCode
+            continue
+        }
+        if ($inCode) { continue }
+        if ($line -match '^\s{0,3}#+') {
+            $prev = if ($i -gt 0) { $lines[$i-1] } else { '' }
+            if ($i -gt 0 -and $prev.Trim() -ne '') {
+                Write-Information "[Test-MD022Valid] FAIL: No blank line before heading at $i"
                 return $false
             }
-            if ($i+1 -ge $lines.Length -or $next -match '^(---|```|\s*\w+:\s*)$' -or $next -eq '') {
-                # OK
-            } else {
-                Write-Information "[Test-MD022Valid] FAIL: No blank/YAML/code after heading at $i"
+            $next = if ($i+1 -lt $lines.Length) { $lines[$i+1] } else { '' }
+            if ($i+1 -lt $lines.Length -and $next.Trim() -ne '') {
+                Write-Information "[Test-MD022Valid] FAIL: No blank line after heading at $i"
                 return $false
             }
         }
@@ -141,7 +141,7 @@ function Set-MD022 {
     $lines = $content -split "\n"
     $result = [System.Collections.Generic.List[string]]::new()
     $inCode = $false
-    $headingPattern = '^(#+)(\s+|\s*```|\s*```mermaid|\s*```yaml|\s*curve:|\s*theme:|\s*fontSize:|\s*title:|\s*config:|\s*flowchart:|\s*gantt:|\s*sequence:|\s*state:|\s*class:|\s*er:|\s*journey:|\s*pie:|\s*quadrant:|\s*requirement:|\s*gitGraph:|\s*c4:|\s*\w+:)?$'
+    $headingPattern = '^\s{0,3}#+(?:\s+.+|$)'
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = $lines[$i]
         if ($line -match '^\s*```') { $inCode = -not $inCode }
@@ -150,24 +150,16 @@ function Set-MD022 {
             continue
         }
         if ($line -match $headingPattern) {
-            # Always insert a blank line above unless at file start
-            if ($result.Count -eq 0 -or $result[$result.Count-1] -notmatch '^\s*$') {
+            if ($result.Count -gt 0 -and $result[$result.Count-1].Trim() -ne '') {
                 $null = $result.Add('')
             }
             $null = $result.Add($line)
-            # Always insert a blank line below unless at file end or next is heading
-            $nextIdx = $i+1
-            while ($nextIdx -lt $lines.Length -and $lines[$nextIdx] -match '^\s*$') { $nextIdx++ }
-            $nextLine = if ($nextIdx -lt $lines.Length) { $lines[$nextIdx] } else { '' }
-            if ($nextIdx -ge $lines.Length -or $nextLine -match $headingPattern) {
-                # End of file or next is heading: still insert blank line for MD022 compliance
-                $null = $result.Add('')
-            } elseif ($nextLine -notmatch '^\s*$' -and $nextLine -notmatch $headingPattern) {
+            if ($i+1 -lt $lines.Length -and $lines[$i+1].Trim() -ne '') {
                 $null = $result.Add('')
             }
-        } else {
-            $null = $result.Add($line)
+            continue
         }
+        $null = $result.Add($line)
     }
     # Remove leading blank lines at file start
     while ($result.Count -gt 0 -and $result[0] -match '^\s*$') { $result.RemoveAt(0) }

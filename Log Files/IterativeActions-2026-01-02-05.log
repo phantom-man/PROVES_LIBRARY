@@ -12,3 +12,6 @@
 2026-01-02 05:43:46 - Rerunning fix_markdownlint_robust_v3.ps1 on docs/diagrams/MERMAID_RULES.md to verify MD022 now passes and other rules stay clean.
 2026-01-02 05:44:37 - Identified MD022 validator ignores indented code fences; updating fix_markdownlint_robust_v3.ps1 to treat lines starting with whitespace + ``` as code blocks.
 2026-01-02 05:45:09 - Updated all code-fence detection regexes in fix_markdownlint_robust_v3.ps1 to allow leading whitespace so MD022 and related rules respect indented blocks.
+2026-01-02 05:45:33 - Re-running fix_markdownlint_robust_v3.ps1 on docs/diagrams/MERMAID_RULES.md to confirm MD022 passes with the improved code-fence handling.
+2026-01-02 05:50:11 - Run still reported MD022 because Set/Test-MD022 only recognized empty headings; refactoring both functions to detect real headings and enforce true blank lines.
+2026-01-02 05:50:22 - Updated Set-MD022/Test-MD022 to skip indented code blocks, detect actual headings, and insert blank lines only when necessary.
