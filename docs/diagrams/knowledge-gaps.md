@@ -3,6 +3,8 @@ layout: article
 title: Knowledge Gaps
 ---
 
+
+
 # Knowledge Gaps
 
 What's NOT documented: power-on timing, voltage stability, error recovery, bus sharing conflicts, and platform integration.
@@ -19,9 +21,11 @@ What's NOT documented: power-on timing, voltage stability, error recovery, bus s
 3. **Can cause mission failures** if unknown
 4. **Are at risk of loss** during team turnover
 
-This analysis found **5 major knowledge gaps** in the F´ + PROVES Kit integration.
+This analysis found **5 major knowledge gaps** in the F-Prime + PROVES Kit integration.
 
 ---
+
+
 
 ## Gap 1: Power-On Timing Requirements
 
@@ -34,39 +38,218 @@ This sequence diagram shows the power-on process for an I2C device, with all the
 ### The Missing Specification
 
 ```mermaid
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 sequenceDiagram
     participant LSM as LoadSwitchManager
     participant Power as Power Supply
     participant Device as I2C Device
     participant Driver as I2C Bus Driver
 
-    LSM->>Power: turn_on("imu")
+    LSM->>Power: turn_on imu
     Power->>Power: GPIO goes HIGH
     Power->>Device: Voltage ramps up
 
-    Note over Power,Device: [NO] GAP: How long does this take?
+    Note over Power,Device: GAP: How long does this take?
     rect rgb(255, 200, 200)
         Power-->>Device: t_rise = ??? ms
         Device-->>Device: Internal power-on reset
-        Note over Device: [NO] GAP: How long for POR?
+        Note over Device: GAP: How long for POR?
         Device-->>Device: t_por = ??? ms
         Device-->>Device: Initialize registers
-        Note over Device: [NO] GAP: Ready delay?
+        Note over Device: GAP: Ready delay?
         Device-->>Device: t_ready = ??? ms
     end
 
-    Note over Device,Driver: [NO] GAP: Total delay unknown
+    Note over Device,Driver: GAP: Total delay unknown
     Driver->>Device: I2C address probe
     alt Device Ready
         Device-->>Driver: ACK
     else Device Not Ready
-        Device-->>Driver: No response (bus timeout)
+        Device-->>Driver: No response - bus timeout
     end
 ```
 
 ### What's NOT Documented
 
-| Parameter | F´ Docs | PROVES Docs | Typical Value | Impact if Unknown |
+| Parameter | F-Prime Docs | PROVES Docs | Typical Value | Impact if Unknown |
 |-----------|---------|-------------|---------------|-------------------|
 | **t_rise** - Voltage rise time | [NO] | [NO] | 1-10ms | Race condition |
 | **t_por** - Power-on reset duration | [NO] | [NO] | 10-100ms | Device not initialized |
@@ -86,24 +269,202 @@ sequenceDiagram
 ### Real-World Impact
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 flowchart TB
     START[New developer integrates IMU]
 
-    CASE1{Does developer<br/>add delay?}
-    CASE2{What delay<br/>value?}
-    CASE3{Test coverage?}
+    CASE1{Does developer add delay?}:::diamond
+    CASE2{What delay value?}:::diamond
+    CASE3{Test coverage?}:::diamond
 
-    TOO_SHORT[Delay too short<br/>50ms]
-    WORKS_BENCH[[YES] Works on bench<br/>warm start]
-    FAILS_FLIGHT[[NO] Fails in flight<br/>cold start slower]
+    TOO_SHORT[Delay too short 50ms]
+    WORKS_BENCH["✓ Works on bench<br/>warm start"]
+    FAILS_FLIGHT["✗ Fails in flight<br/>cold start slower"]
 
     NO_DELAY[No delay added]
-    WORKS_LINUX[[YES] Works on Linux<br/>scheduler slow enough]
-    FAILS_RTOS[[NO] Fails on RTOS<br/>too fast]
+    WORKS_LINUX["✓ Works on Linux<br/>scheduler slow enough"]
+    FAILS_RTOS["✗ Fails on RTOS<br/>too fast"]
 
     CORRECT[Delay adequate<br/>200ms]
-    SUCCESS[[YES] Always works]
+    SUCCESS["✓ Always works"]
 
     START --> CASE1
     CASE1 -->|Yes| CASE2
@@ -124,6 +485,10 @@ flowchart TB
     style FAILS_FLIGHT fill:#ffcdd2
     style FAILS_RTOS fill:#ffcdd2
     style SUCCESS fill:#c8e6c9
+    %% Font sizing classes for consistency
+    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Probability:** 70% of developers will get this wrong without documentation.
@@ -131,6 +496,8 @@ flowchart TB
 > **Why This Matters:** This is the EXACT failure mode from the Team A/Team B scenario. Team A knew the 200ms delay was needed (through trial and error). Team B saw it, thought "that's too slow," changed it to 10ms, tested on a warm system (worked), then failed in orbit on a cold boot. All because the timing requirement wasn't documented.
 
 ---
+
+
 
 ## Gap 2: Voltage Stability Requirements
 
@@ -143,25 +510,206 @@ This diagram shows electrical characteristics that software developers never thi
 ### The Missing Specification
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 flowchart TB
     subgraph "Power Supply Characteristics"
-        V_NOM[Nominal Voltage<br/>3.3V]
-        V_RIPPLE[Ripple: ??? mV]
-        V_DROPOUT[Dropout: ??? mV]
-        I_SPIKE[Current spike: ??? mA]
+        spacer25[ ]:::spacer
+        V_NOM[Nominal Voltage 3.3V]
+        V_RIPPLE[Ripple ??? mV]
+        V_DROPOUT[Dropout ??? mV]
+        I_SPIKE[Current spike ??? mA]
     end
 
     subgraph "I2C Bus Requirements"
-        V_IH[V_IH: Input High<br/>??? V minimum]
-        V_IL[V_IL: Input Low<br/>??? V maximum]
-        V_MARGIN[Noise Margin<br/>???]
+        spacer26[ ]:::spacer
+        V_IH[V_IH Input High ??? V minimum]
+        V_IL[V_IL Input Low ??? V maximum]
+        V_MARGIN[Noise Margin ???]
     end
 
     subgraph "Load Switch Characteristics"
-        R_ON[R_ON: ??? mΩ]
-        I_MAX[I_MAX: ??? mA]
-        T_SWITCH[Switch time: ??? μs]
+        spacer27[ ]:::spacer
+        R_ON[R_ON ??? mΩ]
+        I_MAX[I_MAX ??? mA]
+        T_SWITCH[Switch time ??? μs]
     end
 
     V_NOM -.->|minus dropout| V_DROPOUT
@@ -175,11 +723,15 @@ flowchart TB
     style V_IH fill:#fff9c4
     style V_MARGIN fill:#fff9c4
     style R_ON fill:#e1f5ff
+    %% Font sizing classes for consistency
+    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 ### What's NOT Documented
 
-| Parameter | Required For | F´ Docs | PROVES Docs | Impact |
+| Parameter | Required For | F-Prime Docs | PROVES Docs | Impact |
 |-----------|--------------|---------|-------------|--------|
 | **V_ripple** | Clean I2C signals | [NO] | [NO] | Bit errors |
 | **V_dropout** | Load regulation | [NO] | [NO] | Brownout |
@@ -223,6 +775,8 @@ Mission loss
 
 ---
 
+
+
 ## Gap 3: Error Recovery Strategies
 
 ### What You're Looking At
@@ -234,11 +788,190 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ### The Missing Integration
 
 ```mermaid
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 stateDiagram-v2
     [*] --> Normal: System boot
 
     Normal --> I2C_Error: I2C read fails
-    I2C_Error --> Log_Warning: F´ logs event
+    I2C_Error --> Log_Warning: F-Prime logs event
 
     state "KNOWLEDGE GAP" as GAP {
         Log_Warning --> Should_Power_Cycle: Decision point
@@ -258,7 +991,7 @@ stateDiagram-v2
 
     Give_Up --> Degraded_Mode: Continue without IMU
 
-    Log_Warning --> [*]: Currently: No recovery implemented
+    Log_Warning --> [*]: Currently No recovery implemented
 
     style GAP fill:#ffebee
     style Log_Warning fill:#fff9c4
@@ -268,7 +1001,7 @@ stateDiagram-v2
 
 ### What's NOT Documented
 
-| Decision Point | Question | F´ Docs | PROVES Docs | Current Reality |
+| Decision Point | Question | F-Prime Docs | PROVES Docs | Current Reality |
 |----------------|----------|---------|-------------|-----------------|
 | **Error Detection** | Which errors are recoverable? | Logs error | N/A | Unknown |
 | **Recovery Strategy** | Should power cycle on I2C error? | [NO] | [NO] | No recovery |
@@ -316,6 +1049,8 @@ IF I2cStatus == I2C_READ_ERR:
 
 ---
 
+
+
 ## Gap 4: Bus Sharing and Conflicts
 
 ### What You're Looking At
@@ -327,24 +1062,205 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ### The Missing Architecture
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
-        BUS[I2C Bus /dev/i2c-1<br/>SDA/SCL]
+        spacer28[ ]:::spacer
+        BUS["I2C Bus /dev/i2c-1 SDA/SCL"]
 
-        DEV1[Device 1: IMU<br/>Addr: 0x68]
-        DEV2[Device 2: Magnetometer<br/>Addr: ???]
-        DEV3[Device 3: Camera<br/>Addr: ???]
-        DEV4[Device 4: ???<br/>Addr: ???]
+        DEV1[Device 1 IMU Addr 0x68]
+        DEV2[Device 2 Magnetometer Addr ???]
+        DEV3[Device 3 Camera Addr ???]
+        DEV4[Device 4 ??? Addr ???]
     end
 
     subgraph "Power Control"
+        spacer29[ ]:::spacer
         LSM1[IMU_ENABLE]
         LSM2[MAG_ENABLE]
         LSM3[CAM_ENABLE]
     end
 
     subgraph "Questions"
+        spacer30[ ]:::spacer
         Q1[Are devices on<br/>same bus?]
         Q2[Can addresses<br/>conflict?]
         Q3[Power-on<br/>sequence?]
@@ -370,11 +1286,15 @@ flowchart TB
     style Q2 fill:#fff9c4
     style Q3 fill:#fff9c4
     style Q4 fill:#fff9c4
+    %% Font sizing classes for consistency
+    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 ### What's NOT Documented
 
-| Aspect | Information Needed | F´ Docs | PROVES Docs | Impact if Unknown |
+| Aspect | Information Needed | F-Prime Docs | PROVES Docs | Impact if Unknown |
 |--------|-------------------|---------|-------------|-------------------|
 | **Bus Topology** | Which devices on which bus? | [NO] | [NO] | Wrong bus configured |
 | **Address Map** | All I2C addresses | Partial (0x68) | [NO] | Address conflicts |
@@ -385,6 +1305,185 @@ flowchart TB
 ### Conflict Scenarios
 
 ```mermaid
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 sequenceDiagram
     participant App as Application
     participant IMU as IMU Manager
@@ -401,15 +1500,15 @@ sequenceDiagram
     par Simultaneous I2C Transactions
         IMU->>Bus: Start transaction to 0x68
     and
-        Mag->>Bus: Start transaction to 0x68 (conflict!)
+        Mag->>Bus: Start transaction to 0x68 conflict
     end
 
     Bus-->>IMU: Data corrupted
     Bus-->>Mag: Data corrupted
 
-    Note over App,HW_MAG: [NO] Both reads fail, no indication why
+    Note over App,HW_MAG: Both reads fail no indication why
 
-    Note over App,HW_MAG: Scenario 2: Power-On Glitch (UNDOCUMENTED)
+    Note over App,HW_MAG: Scenario 2 Power-On Glitch UNDOCUMENTED
 
     App->>IMU: turn_on IMU
     App->>Mag: turn_on MAG
@@ -420,7 +1519,7 @@ sequenceDiagram
         HW_MAG->>HW_MAG: Inrush current spike
     end
 
-    Note over HW_IMU,HW_MAG: Combined current exceeds<br/>load switch rating
+    Note over HW_IMU,HW_MAG: Combined current exceeds load switch rating
 
     HW_IMU--XHW_IMU: Brownout / latchup
     HW_MAG--XHW_MAG: Brownout / latchup
@@ -442,35 +1541,218 @@ sequenceDiagram
 
 ---
 
+
+
 ## Gap 5: Platform-Specific Integration
 
 ### What You're Looking At
 
-This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare metal) and PROVES Kit supports multiple languages (CircuitPython, C), but there's no documentation on how to combine them. Each box is a valid configuration, but the arrows with "how to combine?" show that the integration patterns are undocumented.
+This diagram shows how F-Prime supports multiple platforms (Linux, Zephyr, bare metal) and PROVES Kit supports multiple languages (CircuitPython, C), but there's no documentation on how to combine them. Each box is a valid configuration, but the arrows with "how to combine?" show that the integration patterns are undocumented.
 
-**Think of it like:** You have IKEA furniture (F´) and tools from Home Depot (PROVES Kit). Both are good products with instructions, but there's no guide for "how to use Home Depot tools to assemble IKEA furniture." Every team figures it out themselves, often differently.
+**Think of it like:** You have IKEA furniture (F-Prime) and tools from Home Depot (PROVES Kit). Both are good products with instructions, but there's no guide for "how to use Home Depot tools to assemble IKEA furniture." Every team figures it out themselves, often differently.
 
 ### The Missing Cross-Platform Guide
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 flowchart LR
-    subgraph "F´ Framework"
+    subgraph "F-Prime Framework"
+        spacer31[ ]:::spacer
         F_LINUX[LinuxI2cDriver<br/>Linux]
         F_ZEPHYR[ZephyrI2cDriver<br/>Zephyr RTOS]
         F_BAREMETAL[Custom Driver<br/>Bare Metal]
     end
 
     subgraph "PROVES Kit"
+        spacer32[ ]:::spacer
         P_CIRCUITPY[CircuitPython<br/>board.IMU_ENABLE]
         P_MICROPYTHON[MicroPython<br/>???]
         P_C[C/C++<br/>???]
     end
 
     subgraph "Integration Patterns"
-        INT1[F´ Linux +<br/>PROVES CircuitPython]
-        INT2[F´ Zephyr +<br/>PROVES C]
-        INT3[F´ Bare Metal +<br/>???]
+        spacer33[ ]:::spacer
+        INT1[F-Prime Linux +<br/>PROVES CircuitPython]
+        INT2[F-Prime Zephyr +<br/>PROVES C]
+        INT3[F-Prime Bare Metal +<br/>???]
     end
 
     F_LINUX -.->|how to combine?| P_CIRCUITPY
@@ -486,11 +1768,15 @@ flowchart LR
     style INT1 fill:#ffebee
     style INT2 fill:#ffebee
     style INT3 fill:#ffebee
+    %% Font sizing classes for consistency
+    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 ### What's NOT Documented
 
-| Integration | F´ Platform | PROVES Platform | Documented? | Challenge |
+| Integration | F-Prime Platform | PROVES Platform | Documented? | Challenge |
 |-------------|-------------|-----------------|-------------|-----------|
 | **Desktop Sim** | Linux + Python | CircuitPython sim | [NO] | How to mock hardware? |
 | **Flight Target** | Zephyr RTOS + C++ | C + registers | [NO] | How to share GPIO? |
@@ -500,10 +1786,10 @@ flowchart LR
 
 **No documentation exists for:**
 
-1. **How F´ C++ calls PROVES CircuitPython:**
+1. **How F-Prime C++ calls PROVES CircuitPython:**
    ```cpp
    // [NO] NOT DOCUMENTED
-   // In F´ configureTopology():
+   // In F-Prime configureTopology():
    void configureTopology() {
        // How to call Python LoadSwitchManager from C++?
        // - Embed Python interpreter?
@@ -516,8 +1802,8 @@ flowchart LR
 2. **How to share GPIO control:**
    ```
    [NO] NOT DOCUMENTED
-   - Does F´ control GPIO directly?
-   - Does PROVES control GPIO and F´ requests power?
+   - Does F-Prime control GPIO directly?
+   - Does PROVES control GPIO and F-Prime requests power?
    - Is there a hardware abstraction layer?
    - Who owns the GPIO driver?
    ```
@@ -525,7 +1811,7 @@ flowchart LR
 3. **Build system integration:**
    ```cmake
    # [NO] NOT DOCUMENTED
-   # How to build F´ + PROVES together?
+   # How to build F-Prime + PROVES together?
    # - Separate processes?
    # - Linked libraries?
    # - Microservice architecture?
@@ -541,16 +1827,196 @@ flowchart LR
 
 **Risk:** No standard integration pattern, constant rework.
 
-> **Why This Matters:** Every mission team is reinventing the wheel. One team builds F´+PROVES as separate processes communicating over sockets. Another compiles PROVES to C and links it with F´. A third uses Python embedding. Without a documented pattern, teams waste months on integration instead of working on their actual mission.
+> **Why This Matters:** Every mission team is reinventing the wheel. One team builds F-Prime+PROVES as separate processes communicating over sockets. Another compiles PROVES to C and links it with F-Prime. A third uses Python embedding. Without a documented pattern, teams waste months on integration instead of working on their actual mission.
 
 ---
+
+
 
 ## Summary: Knowledge Gap Impact
 
 ### Gap Distribution
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#ff6b6b', 'pie2':'#ffa500', 'pie3':'#ffd700', 'pie4':'#ff8c42', 'pie5':'#ffb347'}}}%%
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5
@@ -572,6 +2038,185 @@ pie title Knowledge Gaps by Category
 ### Time to Discover
 
 ```mermaid
+---
+config:
+  theme: base
+  fontSize: 24
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '24px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 24
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartpadding: 40
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagrampadding: 40
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titlefontSize: 24
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4Shapepadding: 40
+    width: 216
+    height: 60
+    boxMargin: 10
+---
 gantt
     title Typical Discovery Timeline for Knowledge Gaps
     dateFormat YYYY-MM-DD
@@ -581,16 +2226,16 @@ gantt
     Code implementation     :2024-01-08, 14d
     section Testing
     Bench testing          :2024-01-22, 7d
-    Discovery: Timing gap  :milestone, 2024-01-26, 0d
+    Discovery Timing gap  :milestone, 2024-01-26, 0d
     section Integration
     System integration     :2024-01-29, 14d
-    Discovery: Bus conflict:milestone, 2024-02-05, 0d
+    Discovery Bus conflict:milestone, 2024-02-05, 0d
     section Flight Prep
     Environmental testing  :2024-02-12, 21d
-    Discovery: Voltage gap :milestone, 2024-02-28, 0d
+    Discovery Voltage gap :milestone, 2024-02-28, 0d
     section Operations
     Launch and operations  :2024-03-05, 7d
-    Discovery: Error handling gap :crit, 2024-03-08, 0d
+    Discovery Error handling gap :crit, 2024-03-08, 0d
 ```
 
 **Average Discovery Time:** 45-60 days after project start
@@ -602,6 +2247,8 @@ gantt
 - **Flight: Mission loss**
 
 ---
+
+
 
 ## Recommendations
 
@@ -655,7 +2302,20 @@ gantt
 
 ---
 
+
+
 **Analysis Method:** Negative space analysis, gap identification
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
+
+
+
+
+
+
+
+
+
+
+
