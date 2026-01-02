@@ -66,7 +66,7 @@ function Set-MD012 {
     param([string]$content)
     # Replace 2+ consecutive blank lines (including whitespace-only lines) with a single blank line, including at file start/end
     $lines = $content -split "\n"
-    $result = @()
+    $result = [System.Collections.Generic.List[string]]::new()
     $blankCount = 0
     foreach ($line in $lines) {
         if ($line -match '^\s*$') {
@@ -75,14 +75,14 @@ function Set-MD012 {
             $blankCount = 0
         }
         if ($blankCount -le 1) {
-            $result += $line
+            $null = $result.Add($line)
         }
     }
     # Remove leading blank lines at file start
     while ($result.Count -gt 0 -and $result[0] -match '^\s*$') { $result.RemoveAt(0) }
     # Remove trailing blank lines at file end
     while ($result.Count -gt 0 -and $result[$result.Count-1] -match '^\s*$') { $result.RemoveAt($result.Count-1) }
-    $fixedContent = ($result -join "`n")
+    $fixedContent = ($result.ToArray() -join "`n")
     if ($PSCmdlet.ShouldProcess("MD012", "Apply markdownlint fix for MD012")) {
         # Log set in git
         $tempFile = "$env:TEMP\md012set_$(Get-Date -Format 'yyyyMMddHHmmss').md"
@@ -151,41 +151,41 @@ function Set-MD022 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     $lines = $content -split "\n"
-    $result = @()
+    $result = [System.Collections.Generic.List[string]]::new()
     $inCode = $false
     $headingPattern = '^(#+)(\s+|\s*```|\s*```mermaid|\s*```yaml|\s*curve:|\s*theme:|\s*fontSize:|\s*title:|\s*config:|\s*flowchart:|\s*gantt:|\s*sequence:|\s*state:|\s*class:|\s*er:|\s*journey:|\s*pie:|\s*quadrant:|\s*requirement:|\s*gitGraph:|\s*c4:|\s*\w+:)?$'
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = $lines[$i]
         if ($line -match '^```') { $inCode = -not $inCode }
         if ($inCode) {
-            $result += $line
+            $null = $result.Add($line)
             continue
         }
         if ($line -match $headingPattern) {
             # Always insert a blank line above unless at file start
             if ($result.Count -eq 0 -or $result[$result.Count-1] -notmatch '^\s*$') {
-                $result += ''
+                $null = $result.Add('')
             }
-            $result += $line
+            $null = $result.Add($line)
             # Always insert a blank line below unless at file end or next is heading
             $nextIdx = $i+1
             while ($nextIdx -lt $lines.Length -and $lines[$nextIdx] -match '^\s*$') { $nextIdx++ }
             $nextLine = if ($nextIdx -lt $lines.Length) { $lines[$nextIdx] } else { '' }
             if ($nextIdx -ge $lines.Length -or $nextLine -match $headingPattern) {
                 # End of file or next is heading: still insert blank line for MD022 compliance
-                $result += ''
+                $null = $result.Add('')
             } elseif ($nextLine -notmatch '^\s*$' -and $nextLine -notmatch $headingPattern) {
-                $result += ''
+                $null = $result.Add('')
             }
         } else {
-            $result += $line
+            $null = $result.Add($line)
         }
     }
     # Remove leading blank lines at file start
     while ($result.Count -gt 0 -and $result[0] -match '^\s*$') { $result.RemoveAt(0) }
     # Remove trailing blank lines at file end
     while ($result.Count -gt 0 -and $result[$result.Count-1] -match '^\s*$') { $result.RemoveAt($result.Count-1) }
-    $fixedContent = ($result -join "`n")
+    $fixedContent = ($result.ToArray() -join "`n")
     if ($PSCmdlet.ShouldProcess("MD022", "Apply markdownlint fix for MD022")) {
         # Could add logging here if desired
     }

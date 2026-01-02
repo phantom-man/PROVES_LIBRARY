@@ -2,3 +2,4 @@
 2026-01-02 05:26:10 - Added Test-MD055MD056 validator to fix_markdownlint_robust_v3.ps1 so MD055/MD056 checks stop failing; will rerun the script on docs/diagrams/MERMAID_RULES.md to verify fixes now persist.
 2026-01-02 05:30:36 - Rerunning revealed Main never accepts FilePath because it lacks parameters and the script never invokes Main; need to add a script-level param block and call Main with the provided FilePath.
 2026-01-02 05:31:01 - Added a script-level FilePath parameter, updated Main to accept it, and appended a Main invocation so the script now runs when executed with -FilePath.
+2026-01-02 05:32:19 - Updated Set-MD012 and Set-MD022 to use mutable string lists so their RemoveAt operations no longer throw when trimming blank lines; retrying the script next.
