@@ -9,6 +9,12 @@ Universal Markdownlint Rule Script (PowerShell)
 Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>
 #>
 
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$FilePath
+)
+
 # --- Robust Backup/Restore Functions ---
 function Backup-File {
     [CmdletBinding(SupportsShouldProcess=$true)]
@@ -501,12 +507,10 @@ function Set-MD019 {
 # Main entry point
 ###############################################################
 function Main {
-    param()
-    # Check for required parameter
-    if (-not $PSBoundParameters.ContainsKey('FilePath')) {
-        Write-Information "Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>"
-        return
-    }
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$FilePath
+    )
     $content = Get-Content $FilePath -Raw
     $backup = Backup-File $FilePath
     try {
@@ -537,6 +541,13 @@ function Main {
         Write-Information "Rolled back to original file due to error. Please review the script section for improvements."
     }
 }
+
+
+
+
+
+
+Main -FilePath $FilePath
 
 
 
