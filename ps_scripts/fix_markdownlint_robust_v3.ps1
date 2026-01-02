@@ -108,7 +108,7 @@ function Validate-MD022 {
     param([string]$content)
     $lines = $content -split "\n"
     for ($i = 0; $i -lt $lines.Length; $i++) {
-        if ($lines[$i] -match '^#+ ') {
+        if ($lines[$i] -match '^#+ ' -and $lines[$i] -notmatch '^#+ ```(mermaid|yaml)?$') {
             $prev = if ($i -gt 0) { $lines[$i-1] } else { '' }
             $next = if ($i+1 -lt $lines.Length) { $lines[$i+1] } else { '' }
             Write-Host ("[Validate-MD022] Heading at index " + $i + ": '" + $lines[$i] + "'")
@@ -146,7 +146,7 @@ function Fix-MD022 {
             $result += $line
             continue
         }
-        if ($line -match '^#+(\s+|```|```mermaid|```yaml|\s*curve:|\s*theme:|\s*fontSize:|\s*title:|\s*config:|\s*flowchart:|\s*gantt:|\s*sequence:|\s*state:|\s*class:|\s*er:|\s*journey:|\s*pie:|\s*quadrant:|\s*requirement:|\s*gitGraph:|\s*c4:)?$') {
+        if ($line -match '^#+(\s+|```|```mermaid|```yaml|\s*curve:|\s*theme:|\s*fontSize:|\s*title:|\s*config:|\s*flowchart:|\s*gantt:|\s*sequence:|\s*state:|\s*class:|\s*er:|\s*journey:|\s*pie:|\s*quadrant:|\s*requirement:|\s*gitGraph:|\s*c4:)?$' -and $line -notmatch '^#+ ```(mermaid|yaml)?$') {
             $prev = if ($result.Count -gt 0) { $result[$result.Count-1] } else { '' }
             $next = if ($i+1 -lt $lines.Length) { $lines[$i+1] } else { '' }
             # Always insert blank line before heading unless at file start
@@ -303,6 +303,8 @@ function Fix-MD055MD056 {
         $line = $lines[$i]
         # Detect table header (must have at least one pipe, not code block)
         if ($line -match '^\s*\S.*\|.*$' -and $line -notmatch '^```') {
+            # Skip lines that are headings, not table rows
+            if ($line -match '^#+ ') { $out.Add($line) | Out-Null; $i++; continue }
             # Table block: collect all contiguous lines with at least one pipe
             $table = @($line)
             $j = $i+1
