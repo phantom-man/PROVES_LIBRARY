@@ -144,7 +144,7 @@ function Set-MD022 {
     $headingPattern = '^(#+)(\s+|\s*```|\s*```mermaid|\s*```yaml|\s*curve:|\s*theme:|\s*fontSize:|\s*title:|\s*config:|\s*flowchart:|\s*gantt:|\s*sequence:|\s*state:|\s*class:|\s*er:|\s*journey:|\s*pie:|\s*quadrant:|\s*requirement:|\s*gitGraph:|\s*c4:|\s*\w+:)?$'
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = $lines[$i]
-        if ($line -match '^```') { $inCode = -not $inCode }
+        if ($line -match '^\s*```') { $inCode = -not $inCode }
         if ($inCode) {
             $null = $result.Add($line)
             continue
@@ -272,7 +272,7 @@ function Set-MD038 {
     $inCode = $false
     $result = @()
     foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
+        if ($line -match '^\s*```') { $inCode = -not $inCode }
         if ($inCode) { $result += $line; continue }
         # Replace all inline code spans with spaces inside (greedy, robust)
         $fixedLine = $line
@@ -294,7 +294,7 @@ function Test-MD038 {
     $lines = $content -split "\n"
     $inCode = $false
     foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
+        if ($line -match '^\s*```') { $inCode = -not $inCode }
         if ($inCode) { continue }
         if ($line -match '` [^`]+ `') { return $false }
     }
@@ -314,7 +314,7 @@ function Set-MD007 {
     $inCode = $false
     $result = @()
     foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
+        if ($line -match '^\s*```') { $inCode = -not $inCode }
         if ($inCode) { $result += $line; continue }
         # Only fix unordered lists outside code blocks
         if ($line -match '^(\s*)[-*+] ') {
@@ -347,7 +347,7 @@ function Test-MD007 {
     $lines = $content -split "\n"
     $inCode = $false
     foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
+        if ($line -match '^\s*```') { $inCode = -not $inCode }
         if ($inCode) { continue }
         # Only check outside code blocks
         if ($line -match '^(\s{3,})[-*+] ') { return $false }
@@ -370,13 +370,13 @@ function Set-MD055MD056 {
     while ($i -lt $lines.Length) {
         $line = $lines[$i]
         # Detect table header (must have at least one pipe, not code block)
-        if ($line -match '^\s*\S.*\|.*$' -and $line -notmatch '^```') {
+        if ($line -match '^\s*\S.*\|.*$' -and $line -notmatch '^\s*```') {
             # Skip lines that are headings, not table rows
             if ($line -match '^#+ ') { $out.Add($line) | Out-Null; $i++; continue }
             # Table block: collect all contiguous lines with at least one pipe
             $table = @($line)
             $j = $i+1
-            while ($j -lt $lines.Length -and $lines[$j] -match '^\s*\S.*\|.*$' -and $lines[$j] -notmatch '^```') {
+            while ($j -lt $lines.Length -and $lines[$j] -match '^\s*\S.*\|.*$' -and $lines[$j] -notmatch '^\s*```') {
                 $table += $lines[$j]
                 $j++
             }
@@ -419,7 +419,7 @@ function Test-MD055MD056 {
     $inCode = $false
     while ($i -lt $lines.Length) {
         $line = $lines[$i]
-        if ($line -match '^```') {
+        if ($line -match '^\s*```') {
             $inCode = -not $inCode
             $i++
             continue
@@ -434,7 +434,7 @@ function Test-MD055MD056 {
             $j = $i + 1
             while ($j -lt $lines.Length) {
                 $next = $lines[$j]
-                if ($next -match '^```') { break }
+                if ($next -match '^\s*```') { break }
                 if ($next -notmatch '^\s*\S.*\|.*$') { break }
                 $table += $next
                 $j++

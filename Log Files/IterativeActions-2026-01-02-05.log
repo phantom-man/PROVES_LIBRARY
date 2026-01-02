@@ -9,3 +9,6 @@
 2026-01-02 05:35:42 - Ran fix_markdownlint_robust_v3.ps1 against docs/diagrams/MERMAID_RULES.md; it completed with only MD022 warnings, so content updates were written for further review.
 2026-01-02 05:41:24 - Preparing to clean literal "\\n" prefixes in docs/diagrams/MERMAID_RULES.md headings to resolve remaining MD022 warnings.
 2026-01-02 05:42:28 - Rewrote docs/diagrams/MERMAID_RULES.md to convert leading literal "\\n" tokens into real blank lines so headings meet MD022 spacing rules.
+2026-01-02 05:43:46 - Rerunning fix_markdownlint_robust_v3.ps1 on docs/diagrams/MERMAID_RULES.md to verify MD022 now passes and other rules stay clean.
+2026-01-02 05:44:37 - Identified MD022 validator ignores indented code fences; updating fix_markdownlint_robust_v3.ps1 to treat lines starting with whitespace + ``` as code blocks.
+2026-01-02 05:45:09 - Updated all code-fence detection regexes in fix_markdownlint_robust_v3.ps1 to allow leading whitespace so MD022 and related rules respect indented blocks.
