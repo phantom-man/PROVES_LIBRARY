@@ -1,11 +1,14 @@
 [build]
-  # No build command needed for functions-only deployment
+  # Skip root requirements.txt - only use function-specific requirements
+  command = "echo 'Skipping root dependencies - using function requirements only'"
   publish = "."
+  # Don't auto-install from root requirements.txt
+  ignore = "requirements.txt"
 
 [functions]
   # Python functions directory
   directory = "netlify/functions"
-  # Use Python 3.11 runtime
+  # Each function has its own requirements.txt
   node_bundler = "esbuild"
 
 # Environment variables (set these in Netlify dashboard)
