@@ -7,3 +7,4 @@
 2026-01-02 05:34:11 - Script run still fails because Backup-File/Restore-File emit git output, causing non-string values to propagate; need to silence their git add/commit output so backup paths stay as simple strings.
 2026-01-02 05:34:35 - Quieted git add/commit calls in Backup-File/Restore-File/Remove-Backup so the helper returns clean string paths.
 2026-01-02 05:35:42 - Ran fix_markdownlint_robust_v3.ps1 against docs/diagrams/MERMAID_RULES.md; it completed with only MD022 warnings, so content updates were written for further review.
+2026-01-02 05:41:24 - Preparing to clean literal "\\n" prefixes in docs/diagrams/MERMAID_RULES.md headings to resolve remaining MD022 warnings.
