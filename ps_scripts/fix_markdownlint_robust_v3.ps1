@@ -41,15 +41,22 @@ function Remove-Backup {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$backup)
     if ($PSCmdlet.ShouldProcess($backup, "Remove backup file")) {
-        if (Test-Path $backup) { Remove-Item $backup -Force }
-        # Log backup removal in git
-        git add $backup
-        git commit -m "Removed backup $backup."
+        if (Test-Path $backup) {
+            Remove-Item $backup -Force
+            # Log backup removal in git
+            git add $backup
+            git commit -m "Removed backup $backup."
+        }
+    }
+    else {
+        # No state change if ShouldProcess returns false
+        return
     }
 }
 
 # --- MD012: No multiple consecutive blank lines ---
 function Set-MD012 {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Replace 2+ consecutive blank lines (including whitespace-only lines) with a single blank line
     $lines = $content -split "\n"
@@ -66,12 +73,14 @@ function Set-MD012 {
         }
     }
     $fixedContent = ($result -join "`n")
-    # Log set in git
-    $tempFile = "$env:TEMP\md012set_$(Get-Date -Format 'yyyyMMddHHmmss').md"
-    $fixedContent | Set-Content $tempFile
-    git add $tempFile
-    git commit -m "Set-MD012 applied to content."
-    Remove-Item $tempFile -Force
+    if ($PSCmdlet.ShouldProcess("MD012", "Apply markdownlint fix for MD012")) {
+        # Log set in git
+        $tempFile = "$env:TEMP\md012set_$(Get-Date -Format 'yyyyMMddHHmmss').md"
+        $fixedContent | Set-Content $tempFile
+        git add $tempFile
+        git commit -m "Set-MD012 applied to content."
+        Remove-Item $tempFile -Force
+    }
     return $fixedContent
 }
 
@@ -103,7 +112,6 @@ function Test-MD012 {
 function Test-MD022 {
     param([string]$content)
     $lines = $content -split "\n"
-    $blankCount = 0
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = $lines[$i]
         $prev = if ($i -gt 0) { $lines[$i-1] } else { '' }
@@ -130,6 +138,7 @@ function Test-MD022 {
 
 # --- MD022: Headings must be surrounded by blank lines ---
 function Set-MD022 {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     $lines = $content -split "\n"
     $result = @()
@@ -161,7 +170,11 @@ function Set-MD022 {
             $result += $line
         }
     }
-    return ($result -join "`n")
+    $fixedContent = ($result -join "`n")
+    if ($PSCmdlet.ShouldProcess("MD022", "Apply markdownlint fix for MD022")) {
+        # Could add logging here if desired
+    }
+    return $fixedContent
 }
 
 # --- MD023: Headings must start at beginning of line ---
@@ -170,9 +183,14 @@ function Set-MD022 {
 # MD023: Headings must start at beginning of line
 ###############################################################
 function Set-MD023 {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Remove leading whitespace before heading hashes
-    return ($content -replace "(?m)^\s+(#+)", '$1')
+    $fixedContent = ($content -replace "(?m)^\s+(#+)", '$1')
+    if ($PSCmdlet.ShouldProcess("MD023", "Apply markdownlint fix for MD023")) {
+        # Could add logging here if desired
+    }
+    return $fixedContent
 }
 
 function Test-MD023 {
@@ -191,6 +209,7 @@ function Test-MD023 {
 # MD029: Ordered list item prefix
 ###############################################################
 function Set-MD029 {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Normalize ordered list numbers so each list starts at 1 and increments
     $lines = $content -split "\n"
@@ -209,7 +228,11 @@ function Set-MD029 {
         }
         $i++
     }
-    return ($lines -join "`n")
+    $fixedContent = ($lines -join "`n")
+    if ($PSCmdlet.ShouldProcess("MD029", "Apply markdownlint fix for MD029")) {
+        # Could add logging here if desired
+    }
+    return $fixedContent
 }
 
 function Test-MD029 {
@@ -239,6 +262,7 @@ function Test-MD029 {
 # MD038: No space in code span (robust)
 ###############################################################
 function Set-MD038 {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Remove spaces inside inline code spans (e.g., ` code ` -> `code`), outside code blocks
     $lines = $content -split "\n"
@@ -254,7 +278,11 @@ function Set-MD038 {
         }
         $result += $fixedLine
     }
-    return ($result -join "`n")
+    $fixedContent = ($result -join "`n")
+    if ($PSCmdlet.ShouldProcess("MD038", "Apply markdownlint fix for MD038")) {
+        # Could add logging here if desired
+    }
+    return $fixedContent
 }
 
 function Test-MD038 {
@@ -276,6 +304,7 @@ function Test-MD038 {
 # MD007: Unordered list indentation (robust)
 ###############################################################
 function Set-MD007 {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Fix unordered list indentation (2 spaces per nesting level), outside code blocks
     $lines = $content -split "\n"
@@ -302,7 +331,11 @@ function Set-MD007 {
             $result += $line
         }
     }
-    return ($result -join "`n")
+    $fixedContent = ($result -join "`n")
+    if ($PSCmdlet.ShouldProcess("MD007", "Apply markdownlint fix for MD007")) {
+        # Could add logging here if desired
+    }
+    return $fixedContent
 }
 
 function Test-MD007 {
@@ -325,6 +358,7 @@ function Test-MD007 {
 # MD055/MD056: Table pipe style and column count
 ###############################################################
 function Set-MD055MD056 {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Normalize table rows to have consistent pipe style and column count
     $lines = $content -split "\n"
@@ -368,7 +402,11 @@ function Set-MD055MD056 {
             $i++
         }
     }
-    return ($out -join "`n")
+    $fixedContent = ($out -join "`n")
+    if ($PSCmdlet.ShouldProcess("MD055MD056", "Apply markdownlint fix for MD055/MD056")) {
+        # Could add logging here if desired
+    }
+    return $fixedContent
 }
 
 
@@ -376,20 +414,25 @@ function Set-MD055MD056 {
 # MD019: No multiple spaces after hash in headings
 ###############################################################
 function Set-MD019 {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Remove multiple spaces after hash in headings
-    $lines = $content -split "\n"
-    $result = @()
-    foreach ($line in $lines) {
-        if ($line -match '^(#+)\s{2,}') {
-            $fixed = $line -replace '^(#+)\s{2,}', '$1 '
-            Write-Host "MD019 set: '$line' -> '$fixed'"
-            $result += $fixed
-        } else {
-            $result += $line
+    if ($PSCmdlet.ShouldProcess("Content", "Apply markdownlint fix for MD019")) {
+        $lines = $content -split "\n"
+        $result = @()
+        foreach ($line in $lines) {
+            if ($line -match '^(#+)\s{2,}') {
+                $fixed = $line -replace '^(#+)\s{2,}', '$1 '
+                Write-Information "MD019 set: '$line' -> '$fixed'"
+                $result += $fixed
+            } else {
+                $result += $line
+            }
         }
+        return ($result -join "`n")
+    } else {
+        return $content
     }
-    return ($result -join "`n")
 }
 
 # --- Main entry point ---
