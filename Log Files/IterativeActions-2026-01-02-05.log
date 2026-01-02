@@ -17,3 +17,4 @@
 2026-01-02 05:50:22 - Updated Set-MD022/Test-MD022 to skip indented code blocks, detect actual headings, and insert blank lines only when necessary.
 2026-01-02 05:50:43 - Re-running fix_markdownlint_robust_v3.ps1 on docs/diagrams/MERMAID_RULES.md with the new MD022 logic.
 2026-01-02 05:51:02 - Script completed with no MD022 warnings; confirming resulting doc before finalizing.
+2026-01-02 05:58:40 - Reverted commit 0d7ca80 so docs/diagrams/MERMAID_RULES.md returns to the pre-normalization state the user preferred; fix_markdownlint_robust_v3.ps1 remains available for other files.
