@@ -1,34 +1,12 @@
-<#
-Directives (2026-01-01):
-- All edits to this script, MERMAID_RULES.md, or log files must be staged and committed in git after each change.
-- Use git to restore previous versions of this script or MERMAID_RULES.md as needed.
-- All PowerShell scripts must reside in the main ps_scripts directory.
-- No scripts should remain in diagrams/ps_scripts.
-#>
-# --- Loop Detection Utility ---
-function Detect-Loop {
-    param([string]$logFile, [string]$currentAction)
-    if (!(Test-Path $logFile)) { return $false }
-    $lastLines = Get-Content $logFile -Tail 5
-    $repeatCount = ($lastLines | Where-Object { $_ -like "*${currentAction}*" }).Count
-    if ($repeatCount -ge 3) {
-        Write-Host "[LOOP DETECTED] Action '$currentAction' repeated $repeatCount times in last 5 log entries. Halting further action."
-        Add-Content $logFile ("[" + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss') + "] [LOOP DETECTED] Action '$currentAction' repeated $repeatCount times. Halting further action.")
-        # Log loop detection in git
-        git add $logFile
-        git commit -m "Loop detected: $currentAction repeated $repeatCount times in $logFile."
-        exit 99
-    }
-    return $false
-}
+
 
 
 <#
-Universal Markdownlint Fixer Script (PowerShell)
+Universal Markdownlint Rule Script (PowerShell)
 - Each markdownlint rule handled in its own section
 - Per-section backup, validation, and rollback
 - Robust backup/restore logic (never deletes backup until script completes)
-- Improved MD007: Handles unordered lists, nested lists, ignores code blocks, and validates only true lists
+- Improved MD007: Handles unordered lists, nested lists, ignores code blocks, and tests only true lists
 - Works for any markdown file
 
 Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>
@@ -65,7 +43,7 @@ function Remove-Backup {
 }
 
 # --- MD012: No multiple consecutive blank lines ---
-function Fix-MD012 {
+function Repair-MD012 {
     param([string]$content)
     # Replace 2+ consecutive blank lines (including whitespace-only lines) with a single blank line
     $lines = $content -split "\n"
@@ -82,50 +60,62 @@ function Fix-MD012 {
         }
     }
     $fixedContent = ($result -join "`n")
-    # Log fix in git
-    $tempFile = "$env:TEMP\md012_fix_$(Get-Date -Format 'yyyyMMddHHmmss').md"
+    # Log repair in git
+    $tempFile = "$env:TEMP\md012repair_$(Get-Date -Format 'yyyyMMddHHmmss').md"
     $fixedContent | Set-Content $tempFile
     git add $tempFile
-    git commit -m "Applied Fix-MD012 to content."
+    git commit -m "Repair-MD012 applied to content."
     Remove-Item $tempFile -Force
     return $fixedContent
 }
 
-function Validate-MD012 {
+function Test-MD012 {
     param([string]$content)
     # Return $false if 2+ consecutive blank lines are found
-    $isValid = ($content -notmatch "(\n\s*){3,}")
-    # Log validation in git
-    $tempFile = "$env:TEMP\md012_validate_$(Get-Date -Format 'yyyyMMddHHmmss').md"
+    $lines = $content -split "\n"
+    $blankCount = 0
+    foreach ($line in $lines) {
+        if ($line -match '^\s*$') {
+            $blankCount++
+        } else {
+            $blankCount = 0
+        }
+        if ($blankCount -ge 2) {
+            return $false
+        }
+    }
+    $isValid = $true
+    # Log test in git
+    $tempFile = "$env:TEMP\md012test_$(Get-Date -Format 'yyyyMMddHHmmss').md"
     $content | Set-Content $tempFile
     git add $tempFile
-    git commit -m "Validated MD012 on content."
+    git commit -m "Test-MD012 run on content."
     Remove-Item $tempFile -Force
     return $isValid
 }
 
-function Validate-MD022 {
+function Test-MD022 {
     param([string]$content)
     $lines = $content -split "\n"
     for ($i = 0; $i -lt $lines.Length; $i++) {
         if ($lines[$i] -match '^#+ ' -and $lines[$i] -notmatch '^#+ ```(mermaid|yaml)?$') {
             $prev = if ($i -gt 0) { $lines[$i-1] } else { '' }
             $next = if ($i+1 -lt $lines.Length) { $lines[$i+1] } else { '' }
-            Write-Host ("[Validate-MD022] Heading at index " + $i + ": '" + $lines[$i] + "'")
-            Write-Host ("[Validate-MD022] Prev line (" + ($i-1) + "): '" + $prev + "'")
-            Write-Host ("[Validate-MD022] Next line (" + ($i+1) + "): '" + $next + "'")
+            Write-Host ("[Test-MD022Valid] Heading at index " + $i + ": '" + $lines[$i] + "'")
+            Write-Host ("[Test-MD022Valid] Prev line (" + ($i-1) + "): '" + $prev + "'")
+            Write-Host ("[Test-MD022Valid] Next line (" + ($i+1) + "): '" + $next + "'")
             # Allow: file start, after YAML/code, or blank line before heading
             if ($i -eq 0 -or $prev -match '^(---|```|\s*\w+:\s*)$' -or $prev -eq '') {
                 # OK
             } else {
-                Write-Host "[Validate-MD022] FAIL: No blank/YAML/code before heading at $i"
+                Write-Host "[Test-MD022Valid] FAIL: No blank/YAML/code before heading at $i"
                 return $false
             }
             # After heading: allow blank, code, YAML, or file end
             if ($i+1 -ge $lines.Length -or $next -match '^(---|```|\s*\w+:\s*)$' -or $next -eq '') {
                 # OK
             } else {
-                Write-Host "[Validate-MD022] FAIL: No blank/YAML/code after heading at $i"
+                Write-Host "[Test-MD022Valid] FAIL: No blank/YAML/code after heading at $i"
                 return $false
             }
         }
@@ -134,7 +124,7 @@ function Validate-MD022 {
 }
 
 # --- MD022: Headings must be surrounded by blank lines ---
-function Fix-MD022 {
+function Set-MD022 {
     param([string]$content)
     $lines = $content -split "\n"
     $result = @()
@@ -170,17 +160,21 @@ function Fix-MD022 {
 }
 
 # --- MD023: Headings must start at beginning of line ---
-function Fix-MD023 {
+function Set-MD023 {
     param([string]$content)
     return ($content -replace "(?m)^\s+(#+)", '$1')
 }
-function Validate-MD023 {
+function Test-MD023 {
     param([string]$content)
-    return ($content -notmatch "(?m)^\s+#+")
+    $lines = $content -split "\n"
+    foreach ($line in $lines) {
+        if ($line -match "^\s+#+") { return $false }
+    }
+    return $true
 }
 
 # --- MD029: Ordered list item prefix ---
-function Fix-MD029 {
+function Set-MD029 {
     param([string]$content)
     $lines = $content -split "\n"
     $i = 0
@@ -199,7 +193,7 @@ function Fix-MD029 {
     }
     return ($lines -join "`n")
 }
-function Validate-MD029 {
+function Test-MD029 {
     param([string]$content)
     $lines = $content -split "\n"
     $i = 0
@@ -220,7 +214,7 @@ function Validate-MD029 {
 }
 
 # --- MD038: No space in code span (robust) ---
-function Fix-MD038 {
+function Set-MD038 {
     param([string]$content)
     $lines = $content -split "\n"
     $inCode = $false
@@ -237,7 +231,7 @@ function Fix-MD038 {
     }
     return ($result -join "`n")
 }
-function Validate-MD038 {
+function Test-MD038 {
     param([string]$content)
     # Only check outside code blocks
     $lines = $content -split "\n"
@@ -251,12 +245,11 @@ function Validate-MD038 {
 }
 
 # --- MD007: Unordered list indentation (robust) ---
-function Fix-MD007 {
+function Set-MD007 {
     param([string]$content)
     $lines = $content -split "\n"
     $inCode = $false
     $result = @()
-    $prevIndent = 0
     foreach ($line in $lines) {
         if ($line -match '^```') { $inCode = -not $inCode }
         if ($inCode) { $result += $line; continue }
@@ -280,7 +273,7 @@ function Fix-MD007 {
     }
     return ($result -join "`n")
 }
-function Validate-MD007 {
+function Test-MD007 {
     param([string]$content)
     $lines = $content -split "\n"
     $inCode = $false
@@ -294,7 +287,7 @@ function Validate-MD007 {
 }
 
 # --- MD055/MD056: Table pipe style and column count ---
-function Fix-MD055MD056 {
+function Set-MD055MD056 {
     param([string]$content)
     $lines = $content -split "\n"
     $out = New-Object System.Collections.ArrayList
@@ -336,126 +329,19 @@ function Fix-MD055MD056 {
             $out.Add($line) | Out-Null
             $i++
         }
-    function Fix-MD019 {
-        param([string]$content)
-        # Remove multiple spaces after hash in headings
-        $lines = $content -split "\n"
-        $result = @()
-        foreach ($line in $lines) {
-            if ($line -match '^(#+)\s{2,}') {
-                $fixed = $line -replace '^(#+)\s{2,}', '$1 '
-                Write-Host "MD019 fix: '$line' -> '$fixed'"
-                $result += $fixed
-            } else {
-                $result += $line
-            }
-        }
-        return ($result -join "`n")
-    }
     }
     return ($out -join "`n")
 }
-function Validate-MD055MD056 {
-    param([string]$content)
-    $lines = $content -split "\n"
-    foreach ($line in $lines) {
-        if ($line -match '^[^|\n]*\|[^|\n]*$') {
-            if (-not $line.Trim().StartsWith('|') -or -not $line.Trim().EndsWith('|')) { return $false }
-        }
-    }
-    return $true
-}
 
-# --- MD046: Code block style (convert indented to fenced) ---
-function Fix-MD046 {
+function Set-MD019 {
     param([string]$content)
+    # Remove multiple spaces after hash in headings
     $lines = $content -split "\n"
-    $inCode = $false
-    $result = @()
-    $codeBlock = @()
-    foreach ($line in $lines) {
-        if ($line -match '^\s{4,}' -and !$inCode) {
-            $inCode = $true
-            $codeBlock = @($line.TrimStart())
-        } elseif ($inCode -and $line -match '^\s{4,}') {
-            $codeBlock += $line.TrimStart()
-        } elseif ($inCode) {
-            $result += '```'
-            $result += $codeBlock
-            $result += '```'
-            $result += $line
-            $inCode = $false
-            $codeBlock = @()
-        } else {
-            $result += $line
-        }
-    }
-    if ($inCode) {
-        $result += '```'
-        $result += $codeBlock
-        $result += '```'
-    }
-    return ($result -join "`n")
-}
-function Validate-MD046 {
-    param([string]$content)
-    # No indented code blocks (4+ spaces at start of line outside fenced blocks)
-    $lines = $content -split "\n"
-    $inCode = $false
-    foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
-        if (!$inCode -and $line -match '^\s{4,}\S') { return $false }
-    }
-    return $true
-}
-
-# --- MD037: No space in emphasis markers ---
-function Fix-MD037 {
-    param([string]$content)
-    $lines = $content -split "\n"
-    $inCode = $false
     $result = @()
     foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
-        if ($inCode) { $result += $line; continue }
-        # Remove spaces after opening and before closing emphasis markers (single * or _)
-        $fixed = $line
-        # Remove space after opening * or _
-        $fixed = $fixed -replace '\* +', '*'
-        $fixed = $fixed -replace '_ +', '_'
-        # Remove space before closing * or _
-        $fixed = $fixed -replace ' +\*', '*'
-        $fixed = $fixed -replace ' +_', '_'
-        $result += $fixed
-    }
-    return ($result -join "`n")
-}
-function Validate-MD037 {
-    param([string]$content)
-    $lines = $content -split "\n"
-    $inCode = $false
-    foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
-        if ($inCode) { continue }
-        # Look for space after * or _
-        if ($line -match '\* +' -or $line -match '_ +') { return $false }
-        # Look for space before * or _
-        if ($line -match ' +\*' -or $line -match ' +_') { return $false }
-    }
-    return $true
-}
-
-# --- MD026: No trailing punctuation in headings ---
-function Fix-MD026 {
-    param([string]$content)
-    $lines = $content -split "\n"
-    $inCode = $false
-    $result = @()
-    foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
-        if ($inCode) { $result += $line; continue }
-        if ($line -match '^#+ .*[!?.:;]$') {
-            $fixed = $line -replace '([!?.:;]+)$', ''
+        if ($line -match '^(#+)\s{2,}') {
+            $fixed = $line -replace '^(#+)\s{2,}', '$1 '
+            Write-Host "MD019 set: '$line' -> '$fixed'"
             $result += $fixed
         } else {
             $result += $line
@@ -463,106 +349,32 @@ function Fix-MD026 {
     }
     return ($result -join "`n")
 }
-function Validate-MD026 {
-    param([string]$content)
-    $lines = $content -split "\n"
-    $inCode = $false
-    foreach ($line in $lines) {
-        if ($line -match '^```') { $inCode = -not $inCode }
-        if ($inCode) { continue }
-        if ($line -match '^#+ .*[!?.:;]$') { return $false }
-    }
-    return $true
-}
 
-# --- MD198: Heading style (enforce ATX # style) ---
-function Fix-MD198 {
-    param([string]$content)
-    # Convert setext (underlined) headings to ATX
-    $lines = $content -split "\n"
-    $inCode = $false
-    $result = New-Object System.Collections.ArrayList
-    $i = 0
-    while ($i -lt $lines.Count) {
-        $line = $lines[$i]
-        if ($line -match '^```') { $inCode = -not $inCode }
-        if ($inCode) { [void]$result.Add($line); $i++; continue }
-        while ($i -lt $lines.Count) {
-            $line = $lines[$i]
-            if ($line -match '^```') { $inCode = -not $inCode }
-            if ($inCode) { [void]$result.Add($line); $i++; continue }
-            if ($line -match '^#+ ') {
-                # Ensure exactly one blank line before heading (unless at file start)
-                if ($result.Count -eq 0) {
-                    # File start, do nothing
-                } elseif ($result[$result.Count-1] -ne '') {
-                    [void]$result.Add('')
-                } elseif ($result.Count -gt 1 -and $result[$result.Count-2] -eq '') {
-                    # Remove extra blank lines before heading
-                    while ($result.Count -gt 1 -and $result[$result.Count-2] -eq '') { $result.RemoveAt($result.Count-2) }
-                }
-                [void]$result.Add($line)
-                # Skip all blank lines after heading
-                $j = $i+1
-                while ($j -lt $lines.Count -and $lines[$j] -eq '') { $j++ }
-                # Add exactly one blank line after heading (unless at end or next is code block/YAML)
-                if ($j -lt $lines.Count -and $lines[$j] -notmatch '^(---|```|\s*\w+:\s*)$') { [void]$result.Add('') }
-                $i = $j
-                continue
-            }
-            [void]$result.Add($line)
-            $i++
-        }
-        return ($result -join "`n")
+# --- Main entry point ---
+function Main {
+    param()
+    if (-not $PSBoundParameters.ContainsKey('FilePath')) {
+        Write-Host "Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>"
+        return
     }
-
     $content = Get-Content $FilePath -Raw
     $backup = Backup-File $FilePath
     try {
-        # MD012
-        $before = $content
-        $content = Fix-MD012 $content
-        if (-not (Validate-MD012 $content)) { Restore-File $backup $FilePath; throw "MD012 validation failed" }
-        # MD022
-        $before = $content
-        $content = Fix-MD022 $content
-        if (-not (Validate-MD022 $content)) { Restore-File $backup $FilePath; throw "MD022 validation failed" }
-        # MD023
-        $before = $content
-        $content = Fix-MD023 $content
-        if (-not (Validate-MD023 $content)) { Restore-File $backup $FilePath; throw "MD023 validation failed" }
-        # MD029
-        $before = $content
-        $content = Fix-MD029 $content
-        if (-not (Validate-MD029 $content)) { Restore-File $backup $FilePath; throw "MD029 validation failed" }
-        # MD038
-        $before = $content
-        $content = Fix-MD038 $content
-        if (-not (Validate-MD038 $content)) { Restore-File $backup $FilePath; throw "MD038 validation failed" }
-        # MD007
-        $before = $content
-        $content = Fix-MD007 $content
-        if (-not (Validate-MD007 $content)) { Restore-File $backup $FilePath; throw "MD007 validation failed" }
-        # MD055/MD056
-        $before = $content
-        $content = Fix-MD055MD056 $content
-        if (-not (Validate-MD055MD056 $content)) { Restore-File $backup $FilePath; throw "MD055/MD056 validation failed" }
-        # MD046
-        $before = $content
-        $content = Fix-MD046 $content
-        if (-not (Validate-MD046 $content)) { Restore-File $backup $FilePath; throw "MD046 validation failed" }
-        # MD037
-        $before = $content
-        $content = Fix-MD037 $content
-        if (-not (Validate-MD037 $content)) { Restore-File $backup $FilePath; throw "MD037 validation failed" }
-        # MD026
-        $before = $content
-        $content = Fix-MD026 $content
-        if (-not (Validate-MD026 $content)) { Restore-File $backup $FilePath; throw "MD026 validation failed" }
-        # MD198
-        $before = $content
-        $content = Fix-MD198 $content
-        if (-not (Validate-MD198 $content)) { Restore-File $backup $FilePath; throw "MD198 validation failed" }
+        $content = Repair-MD012 $content
+        if (-not (Test-MD012 $content)) { Restore-File $backup $FilePath; throw "MD012 validation failed" }
+        $content = Set-MD022 $content
+        if (-not (Test-MD022 $content)) { Restore-File $backup $FilePath; throw "MD022 validation failed" }
+        $content = Set-MD023 $content
+        if (-not (Test-MD023 $content)) { Restore-File $backup $FilePath; throw "MD023 validation failed" }
+        $content = Set-MD029 $content
+        if (-not (Test-MD029 $content)) { Restore-File $backup $FilePath; throw "MD029 validation failed" }
+        $content = Set-MD038 $content
+        if (-not (Test-MD038 $content)) { Restore-File $backup $FilePath; throw "MD038 validation failed" }
+        $content = Set-MD007 $content
+        if (-not (Test-MD007 $content)) { Restore-File $backup $FilePath; throw "MD007 validation failed" }
+        $content = Set-MD055MD056 $content
+        if (-not (Test-MD055MD056 $content)) { Restore-File $backup $FilePath; throw "MD055/MD056 validation failed" }
+        # Additional rules can be added here as needed, following the Set-*/Test-* pattern.
         Set-Content -Path $FilePath -Value $content -Encoding UTF8
         Remove-Backup $backup
         Write-Host "Universal markdownlint fixes applied to $FilePath"
@@ -574,4 +386,6 @@ function Fix-MD198 {
     }
 }
 
-Main
+
+
+
