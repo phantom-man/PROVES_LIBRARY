@@ -1,6 +1,3 @@
-
-
-
 <#
 Universal Markdownlint Rule Script (PowerShell)
 - Each markdownlint rule handled in its own section
@@ -14,36 +11,45 @@ Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>
 
 # --- Robust Backup/Restore Functions ---
 function Backup-File {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$file)
     $backupDir = Join-Path -Path (Split-Path $file -Parent) -ChildPath ".backups"
     if (!(Test-Path $backupDir)) { New-Item -ItemType Directory -Path $backupDir | Out-Null }
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-    $backupFile = Join-Path $backupDir ("$(Split-Path $file -Leaf).bak.$timestamp")
-    Copy-Item $file $backupFile -Force
-    # Log backup creation in git
-    git add $backupFile
-    git commit -m "Backup created for $file as $backupFile."
+    $backupFile = Join-Path $backupDir ("$(Split-Path $file -Leaf).$timestamp.bak")
+    if ($PSCmdlet.ShouldProcess($file, "Backup file to $backupFile")) {
+        Copy-Item $file $backupFile -Force
+        # Log backup creation in git
+        git add $backupFile
+        git commit -m "Backup created for $file as $backupFile."
+    }
     return $backupFile
 }
 
 function Restore-File {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$backup, [string]$target)
-    Copy-Item $backup $target -Force
-    # Log restore in git
-    git add $target
-    git commit -m "Restored $target from backup $backup."
+    if ($PSCmdlet.ShouldProcess($target, "Restore file from $backup")) {
+        Copy-Item $backup $target -Force
+        # Log restore in git
+        git add $target
+        git commit -m "Restored $target from backup $backup."
+    }
 }
 
 function Remove-Backup {
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$backup)
-    if (Test-Path $backup) { Remove-Item $backup -Force }
-    # Log backup removal in git
-    git add $backup
-    git commit -m "Removed backup $backup."
+    if ($PSCmdlet.ShouldProcess($backup, "Remove backup file")) {
+        if (Test-Path $backup) { Remove-Item $backup -Force }
+        # Log backup removal in git
+        git add $backup
+        git commit -m "Removed backup $backup."
+    }
 }
 
 # --- MD012: No multiple consecutive blank lines ---
-function Repair-MD012 {
+function Set-MD012 {
     param([string]$content)
     # Replace 2+ consecutive blank lines (including whitespace-only lines) with a single blank line
     $lines = $content -split "\n"
@@ -60,11 +66,11 @@ function Repair-MD012 {
         }
     }
     $fixedContent = ($result -join "`n")
-    # Log repair in git
-    $tempFile = "$env:TEMP\md012repair_$(Get-Date -Format 'yyyyMMddHHmmss').md"
+    # Log set in git
+    $tempFile = "$env:TEMP\md012set_$(Get-Date -Format 'yyyyMMddHHmmss').md"
     $fixedContent | Set-Content $tempFile
     git add $tempFile
-    git commit -m "Repair-MD012 applied to content."
+    git commit -m "Set-MD012 applied to content."
     Remove-Item $tempFile -Force
     return $fixedContent
 }
@@ -97,25 +103,24 @@ function Test-MD012 {
 function Test-MD022 {
     param([string]$content)
     $lines = $content -split "\n"
+    $blankCount = 0
     for ($i = 0; $i -lt $lines.Length; $i++) {
-        if ($lines[$i] -match '^#+ ' -and $lines[$i] -notmatch '^#+ ```(mermaid|yaml)?$') {
-            $prev = if ($i -gt 0) { $lines[$i-1] } else { '' }
-            $next = if ($i+1 -lt $lines.Length) { $lines[$i+1] } else { '' }
-            Write-Host ("[Test-MD022Valid] Heading at index " + $i + ": '" + $lines[$i] + "'")
-            Write-Host ("[Test-MD022Valid] Prev line (" + ($i-1) + "): '" + $prev + "'")
-            Write-Host ("[Test-MD022Valid] Next line (" + ($i+1) + "): '" + $next + "'")
-            # Allow: file start, after YAML/code, or blank line before heading
+        $line = $lines[$i]
+        $prev = if ($i -gt 0) { $lines[$i-1] } else { '' }
+        $next = if ($i+1 -lt $lines.Length) { $lines[$i+1] } else { '' }
+        if ($line -match '^#') {
+            Write-Information ("[Test-MD022Valid] Prev line (" + ($i-1) + "): '" + $prev + "'")
+            Write-Information ("[Test-MD022Valid] Next line (" + ($i+1) + "): '" + $next + "'")
             if ($i -eq 0 -or $prev -match '^(---|```|\s*\w+:\s*)$' -or $prev -eq '') {
                 # OK
             } else {
-                Write-Host "[Test-MD022Valid] FAIL: No blank/YAML/code before heading at $i"
+                Write-Information "[Test-MD022Valid] FAIL: No blank/YAML/code before heading at $i"
                 return $false
             }
-            # After heading: allow blank, code, YAML, or file end
             if ($i+1 -ge $lines.Length -or $next -match '^(---|```|\s*\w+:\s*)$' -or $next -eq '') {
                 # OK
             } else {
-                Write-Host "[Test-MD022Valid] FAIL: No blank/YAML/code after heading at $i"
+                Write-Information "[Test-MD022Valid] FAIL: No blank/YAML/code after heading at $i"
                 return $false
             }
         }
@@ -160,12 +165,19 @@ function Set-MD022 {
 }
 
 # --- MD023: Headings must start at beginning of line ---
+
+###############################################################
+# MD023: Headings must start at beginning of line
+###############################################################
 function Set-MD023 {
     param([string]$content)
+    # Remove leading whitespace before heading hashes
     return ($content -replace "(?m)^\s+(#+)", '$1')
 }
+
 function Test-MD023 {
     param([string]$content)
+    # Return $false if any heading does not start at the beginning of the line
     $lines = $content -split "\n"
     foreach ($line in $lines) {
         if ($line -match "^\s+#+") { return $false }
@@ -174,14 +186,20 @@ function Test-MD023 {
 }
 
 # --- MD029: Ordered list item prefix ---
+
+###############################################################
+# MD029: Ordered list item prefix
+###############################################################
 function Set-MD029 {
     param([string]$content)
+    # Normalize ordered list numbers so each list starts at 1 and increments
     $lines = $content -split "\n"
     $i = 0
     while ($i -lt $lines.Length) {
         if ($lines[$i] -match "^\d+\. ") {
             $num = 1
             $j = $i
+            # For each contiguous block of ordered list items
             while ($j -lt $lines.Length -and $lines[$j] -match "^\d+\. ") {
                 $lines[$j] = $lines[$j] -replace "^\d+\. ", "$num. "
                 $num++
@@ -193,8 +211,10 @@ function Set-MD029 {
     }
     return ($lines -join "`n")
 }
+
 function Test-MD029 {
     param([string]$content)
+    # Return $false if any ordered list does not increment properly
     $lines = $content -split "\n"
     $i = 0
     while ($i -lt $lines.Length) {
@@ -214,8 +234,13 @@ function Test-MD029 {
 }
 
 # --- MD038: No space in code span (robust) ---
+
+###############################################################
+# MD038: No space in code span (robust)
+###############################################################
 function Set-MD038 {
     param([string]$content)
+    # Remove spaces inside inline code spans (e.g., ` code ` -> `code`), outside code blocks
     $lines = $content -split "\n"
     $inCode = $false
     $result = @()
@@ -231,9 +256,10 @@ function Set-MD038 {
     }
     return ($result -join "`n")
 }
+
 function Test-MD038 {
     param([string]$content)
-    # Only check outside code blocks
+    # Only check outside code blocks for code spans with spaces
     $lines = $content -split "\n"
     $inCode = $false
     foreach ($line in $lines) {
@@ -245,8 +271,13 @@ function Test-MD038 {
 }
 
 # --- MD007: Unordered list indentation (robust) ---
+
+###############################################################
+# MD007: Unordered list indentation (robust)
+###############################################################
 function Set-MD007 {
     param([string]$content)
+    # Fix unordered list indentation (2 spaces per nesting level), outside code blocks
     $lines = $content -split "\n"
     $inCode = $false
     $result = @()
@@ -273,8 +304,10 @@ function Set-MD007 {
     }
     return ($result -join "`n")
 }
+
 function Test-MD007 {
     param([string]$content)
+    # Only check outside code blocks for unordered list indentation
     $lines = $content -split "\n"
     $inCode = $false
     foreach ($line in $lines) {
@@ -287,8 +320,13 @@ function Test-MD007 {
 }
 
 # --- MD055/MD056: Table pipe style and column count ---
+
+###############################################################
+# MD055/MD056: Table pipe style and column count
+###############################################################
 function Set-MD055MD056 {
     param([string]$content)
+    # Normalize table rows to have consistent pipe style and column count
     $lines = $content -split "\n"
     $out = New-Object System.Collections.ArrayList
     $i = 0
@@ -333,6 +371,10 @@ function Set-MD055MD056 {
     return ($out -join "`n")
 }
 
+
+###############################################################
+# MD019: No multiple spaces after hash in headings
+###############################################################
 function Set-MD019 {
     param([string]$content)
     # Remove multiple spaces after hash in headings
@@ -351,16 +393,22 @@ function Set-MD019 {
 }
 
 # --- Main entry point ---
+
+###############################################################
+# Main entry point
+###############################################################
 function Main {
     param()
+    # Check for required parameter
     if (-not $PSBoundParameters.ContainsKey('FilePath')) {
-        Write-Host "Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>"
+        Write-Information "Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>"
         return
     }
     $content = Get-Content $FilePath -Raw
     $backup = Backup-File $FilePath
     try {
-        $content = Repair-MD012 $content
+        # Apply and validate each rule in sequence, rolling back if any fail
+        $content = Set-MD012 $content
         if (-not (Test-MD012 $content)) { Restore-File $backup $FilePath; throw "MD012 validation failed" }
         $content = Set-MD022 $content
         if (-not (Test-MD022 $content)) { Restore-File $backup $FilePath; throw "MD022 validation failed" }
@@ -377,12 +425,12 @@ function Main {
         # Additional rules can be added here as needed, following the Set-*/Test-* pattern.
         Set-Content -Path $FilePath -Value $content -Encoding UTF8
         Remove-Backup $backup
-        Write-Host "Universal markdownlint fixes applied to $FilePath"
+        Write-Information "Universal markdownlint fixes applied to $FilePath"
     }
     catch {
         Write-Error $_
         Restore-File $backup $FilePath
-        Write-Host "Rolled back to original file due to error. Please review the script section for improvements."
+        Write-Information "Rolled back to original file due to error. Please review the script section for improvements."
     }
 }
 
