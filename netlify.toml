@@ -1,9 +1,6 @@
 [build]
-  # Skip root requirements.txt - only use function-specific requirements
-  command = "echo 'Skipping root dependencies - using function requirements only'"
+  # No build needed - functions only
   publish = "."
-  # Don't auto-install from root requirements.txt
-  ignore = "requirements.txt"
 
 [functions]
   # Python functions directory
