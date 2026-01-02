@@ -84,12 +84,7 @@ function Set-MD012 {
     while ($result.Count -gt 0 -and $result[$result.Count-1] -match '^\s*$') { $result.RemoveAt($result.Count-1) }
     $fixedContent = ($result.ToArray() -join "`n")
     if ($PSCmdlet.ShouldProcess("MD012", "Apply markdownlint fix for MD012")) {
-        # Log set in git
-        $tempFile = "$env:TEMP\md012set_$(Get-Date -Format 'yyyyMMddHHmmss').md"
-        $fixedContent | Set-Content $tempFile
-        git add $tempFile
-        git commit -m "Set-MD012 applied to content."
-        Remove-Item $tempFile -Force
+        Write-Information "Set-MD012 applied."
     }
     return $fixedContent
 }
@@ -109,14 +104,7 @@ function Test-MD012 {
             return $false
         }
     }
-    $isValid = $true
-    # Log test in git
-    $tempFile = "$env:TEMP\md012test_$(Get-Date -Format 'yyyyMMddHHmmss').md"
-    $content | Set-Content $tempFile
-    git add $tempFile
-    git commit -m "Test-MD012 run on content."
-    Remove-Item $tempFile -Force
-    return $isValid
+    return $true
 }
 
 function Test-MD022 {

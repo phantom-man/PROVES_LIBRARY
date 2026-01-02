@@ -3,3 +3,4 @@
 2026-01-02 05:30:36 - Rerunning revealed Main never accepts FilePath because it lacks parameters and the script never invokes Main; need to add a script-level param block and call Main with the provided FilePath.
 2026-01-02 05:31:01 - Added a script-level FilePath parameter, updated Main to accept it, and appended a Main invocation so the script now runs when executed with -FilePath.
 2026-01-02 05:32:19 - Updated Set-MD012 and Set-MD022 to use mutable string lists so their RemoveAt operations no longer throw when trimming blank lines; retrying the script next.
+2026-01-02 05:33:25 - Removed the temp-file git logging inside Set-MD012/Test-MD012 so the script no longer tries to git add files outside the repo during runs.
