@@ -4,3 +4,5 @@
 2026-01-02 05:31:01 - Added a script-level FilePath parameter, updated Main to accept it, and appended a Main invocation so the script now runs when executed with -FilePath.
 2026-01-02 05:32:19 - Updated Set-MD012 and Set-MD022 to use mutable string lists so their RemoveAt operations no longer throw when trimming blank lines; retrying the script next.
 2026-01-02 05:33:25 - Removed the temp-file git logging inside Set-MD012/Test-MD012 so the script no longer tries to git add files outside the repo during runs.
+2026-01-02 05:34:11 - Script run still fails because Backup-File/Restore-File emit git output, causing non-string values to propagate; need to silence their git add/commit output so backup paths stay as simple strings.
+2026-01-02 05:34:35 - Quieted git add/commit calls in Backup-File/Restore-File/Remove-Backup so the helper returns clean string paths.

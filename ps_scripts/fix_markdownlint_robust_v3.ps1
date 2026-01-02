@@ -26,8 +26,8 @@ function Backup-File {
     if ($PSCmdlet.ShouldProcess($file, "Backup file to $backupFile")) {
         Copy-Item $file $backupFile -Force
         # Log backup creation in git
-        git add $backupFile
-        git commit -m "Backup created for $file as $backupFile."
+        git add $backupFile | Out-Null
+        git commit -m "Backup created for $file as $backupFile." | Out-Null
     }
     return $backupFile
 }
@@ -38,8 +38,8 @@ function Restore-File {
     if ($PSCmdlet.ShouldProcess($target, "Restore file from $backup")) {
         Copy-Item $backup $target -Force
         # Log restore in git
-        git add $target
-        git commit -m "Restored $target from backup $backup."
+        git add $target | Out-Null
+        git commit -m "Restored $target from backup $backup." | Out-Null
     }
 }
 
@@ -50,8 +50,8 @@ function Remove-Backup {
         if (Test-Path $backup) {
             Remove-Item $backup -Force
             # Log backup removal in git
-            git add $backup
-            git commit -m "Removed backup $backup."
+            git add $backup | Out-Null
+            git commit -m "Removed backup $backup." | Out-Null
         }
     }
     else {
