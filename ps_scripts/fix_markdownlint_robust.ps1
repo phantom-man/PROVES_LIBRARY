@@ -188,7 +188,7 @@ function Validate-MD055MD056 {
 
 # --- MAIN UNIVERSAL FIXER ---
 if (!(Test-Path $FilePath)) { Write-Error "File not found: $FilePath"; exit 1 }
-$content = Get-Content $FilePath -Raw
+$content = Get-Content $FilePath -Raw -Encoding UTF8
 $backup = Backup-File $FilePath
 
 try {

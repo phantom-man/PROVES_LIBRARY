@@ -150,7 +150,7 @@ $updatedCount = 0
 foreach ($file in $diagramFiles) {
     Write-Host "Processing $($file.Name)..." -ForegroundColor Gray
     
-    $content = Get-Content $file.FullName -Raw
+    $content = Get-Content $file.FullName -Raw -Encoding UTF8
     
     # Build the theme configuration block
     $themeConfig = @"
@@ -201,7 +201,7 @@ config:
     $newContent = $content -replace $pattern, $replacement
     
     if ($content -ne $newContent) {
-        Set-Content -Path $file.FullName -Value $newContent -NoNewline
+        Set-Content -Path $file.FullName -Value $newContent -NoNewline -Encoding UTF8
         $updatedCount++
         Write-Host "  ✓ Updated" -ForegroundColor Green
     } else {

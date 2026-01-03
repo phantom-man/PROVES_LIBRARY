@@ -14,7 +14,7 @@ if (!(Test-Path $FilePath)) {
     exit 1
 }
 
-$content = Get-Content $FilePath -Raw
+$content = Get-Content $FilePath -Raw -Encoding UTF8
 
 # 1. Ensure headings start at the beginning of the line
 $content = $content -replace "(?m)^\s+(#+)", '$1'
