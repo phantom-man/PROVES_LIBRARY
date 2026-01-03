@@ -215,7 +215,7 @@ config:
     gridLineStartPadding: 40
     numberSectionStyles: 4
   flowchart:
-    curve: 'basis'
+    curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
     padding: 40
@@ -435,7 +435,7 @@ config:
     gridLineStartPadding: 40
     numberSectionStyles: 4
   flowchart:
-    curve: 'basis'
+    curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
     padding: 40
@@ -578,3 +578,4 @@ Every dependency tracked with precise source locations:
 **Analysis Method:** Manual annotation with line-by-line review
 **Confidence Level:** High (human-verified)
 **Date:** December 20, 2024
+
