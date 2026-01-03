@@ -9,7 +9,6 @@ Universal Markdownlint Rule Script (PowerShell)
 Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>
 #>
 
-[CmdletBinding()]
 param(
     [Parameter(Mandatory=$true)]
     [string]$FilePath
@@ -110,6 +109,23 @@ function Set-CorruptionFixes {
         # Log
     }
     return $fixedContent
+}
+
+# --- Remove Indent from Code Block Fences ---
+function Set-CodeBlockFencesLeftAligned {
+    [CmdletBinding(SupportsShouldProcess=$true)]
+    param([string]$content)
+    # Remove all leading whitespace before any code block fence (```)
+    $lines = $content -split "`n"
+    
+    if ($PSCmdlet.ShouldProcess("Content", "Left-align code block fences")) {
+        for ($i = 0; $i -lt $lines.Length; $i++) {
+            if ($lines[$i] -match '^\s*```') {
+                $lines[$i] = $lines[$i].TrimStart()
+            }
+        }
+    }
+    return ($lines -join "`n")
 }
 
 # --- MD012: No multiple consecutive blank lines ---
@@ -356,26 +372,49 @@ function Set-MD007 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Fix unordered list indentation (2 spaces per nesting level), outside code blocks
+    # Also normalizes root indentation (if a list block starts indented, it shifts it left)
     $lines = $content -split "`n"
     $inCode = $false
     $result = @()
-    foreach ($line in $lines) {
-        if ($line -match '^\s*```') { $inCode = -not $inCode }
-        if ($inCode) { $result += $line; continue }
+    $listBlockIndent = $null
+
+    for ($i = 0; $i -lt $lines.Length; $i++) {
+        $line = $lines[$i]
+        if ($line -match '^\s*```') { 
+            $inCode = -not $inCode
+            $result += $line
+            $listBlockIndent = $null
+            continue 
+        }
+        if ($inCode) { 
+            $result += $line
+            continue 
+        }
         
         # Match list items with leading whitespace
         if ($line -match '^(\s*)([-*+]) (.*)') {
-            $spaces = $matches[1].Length
+            $currentIndentLen = $matches[1].Length
             $marker = $matches[2]
             $text   = $matches[3]
 
-            # Calculate level assuming 2 spaces per level (0, 2, 4...)
-            # Round to nearest even number
-            $level = [Math]::Round($spaces / 2)
+            # If this is the start of a new list block (or we reset), establish the root indent
+            if ($null -eq $listBlockIndent) {
+                $listBlockIndent = $currentIndentLen
+            }
+
+            # Calculate relative indentation from the block's root
+            $relativeIndent = $currentIndentLen - $listBlockIndent
+            if ($relativeIndent -lt 0) { $relativeIndent = 0 }
+
+            # Normalize to 2-space steps based on relative indent
+            $level = [Math]::Round($relativeIndent / 2)
             $newIndent = ' ' * ($level * 2)
             
             $result += "$newIndent$marker $text"
         } else {
+            # Reset list block tracking on non-list lines (blank lines, text, etc.)
+            # This ensures we re-evaluate the root indent for the next list we encounter
+            $listBlockIndent = $null
             $result += $line
         }
     }
@@ -449,22 +488,29 @@ function Set-MD055MD056 {
                 $j++
             }
             
-            # Determine max columns from header or max row
-            $headerCols = ($table | ForEach-Object { ($_ -split '\|').Count }) | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
+            # Determine max columns from header or max row (based on content cells)
+            $maxCols = 0
+            $parsedRows = @()
+            
+            foreach ($row in $table) {
+                $rowCells = $row.Trim() -split '\|'
+                # Remove empty leading/trailing cells from split
+                if ($rowCells.Count -gt 0 -and $rowCells[0] -eq '') { $rowCells = $rowCells[1..($rowCells.Count-1)] }
+                if ($rowCells.Count -gt 0 -and $rowCells[-1] -eq '') { $rowCells = $rowCells[0..($rowCells.Count-2)] }
+                
+                if ($rowCells.Count -gt $maxCols) { $maxCols = $rowCells.Count }
+                $parsedRows += ,$rowCells
+            }
             
             # Fix each row
-            for ($k = 0; $k -lt $table.Count; $k++) {
-                $row = $table[$k].Trim()
-                $rowCells = $row -split '\|'
-                # Remove empty leading/trailing cells from split
-                if ($rowCells[0] -eq '') { $rowCells = $rowCells[1..($rowCells.Count-1)] }
-                if ($rowCells[-1] -eq '') { $rowCells = $rowCells[0..($rowCells.Count-2)] }
+            for ($k = 0; $k -lt $parsedRows.Count; $k++) {
+                $rowCells = $parsedRows[$k]
                 
-                # Pad or trim to headerCols
-                if ($rowCells.Count -lt $headerCols) {
-                    $rowCells += @(' ' * ($headerCols - $rowCells.Count))
-                } elseif ($rowCells.Count -gt $headerCols) {
-                    $rowCells = $rowCells[0..($headerCols-1)]
+                # Pad or trim to maxCols
+                if ($rowCells.Count -lt $maxCols) {
+                    $rowCells += @(' ' * ($maxCols - $rowCells.Count))
+                } elseif ($rowCells.Count -gt $maxCols) {
+                    $rowCells = $rowCells[0..($maxCols-1)]
                 }
                 
                 # Always add leading/trailing pipes
@@ -576,38 +622,43 @@ function Main {
         # 1. Apply Corruption Fixes First (Pipes, Indentation)
         $content = Set-CorruptionFixes $content
         Write-Information "Content length after CorruptionFixes: $($content.Length)"
-        
+
+        # 2. Left-align all code block fences (fix for MD046)
+        $content = Set-CodeBlockFencesLeftAligned $content
+        Write-Information "Content length after Set-CodeBlockFencesLeftAligned: $($content.Length)"
+
         $content = Set-MD022 $content
         Write-Information "Content length after MD022: $($content.Length)"
         if (-not (Test-MD022 $content)) { Write-Warning "MD022 validation failed after fix. Leaving file as-is for inspection." }
-        
-        $content = Set-MD012 $content
-        Write-Information "Content length after MD012: $($content.Length)"
-        if (-not (Test-MD012 $content)) { Write-Warning "MD012 validation failed after fix. Leaving file as-is for inspection." }
-        
+
         $content = Set-MD019 $content
         Write-Information "Content length after MD019: $($content.Length)"
-        
+
         $content = Set-MD023 $content
         Write-Information "Content length after MD023: $($content.Length)"
         if (-not (Test-MD023 $content)) { Write-Warning "MD023 validation failed after fix. Leaving file as-is for inspection." }
-        
+
         $content = Set-MD029 $content
         Write-Information "Content length after MD029: $($content.Length)"
         if (-not (Test-MD029 $content)) { Write-Warning "MD029 validation failed after fix. Leaving file as-is for inspection." }
-        
+
         $content = Set-MD038 $content
         Write-Information "Content length after MD038: $($content.Length)"
         if (-not (Test-MD038 $content)) { Write-Warning "MD038 validation failed after fix. Leaving file as-is for inspection." }
-        
+
         $content = Set-MD007 $content
         Write-Information "Content length after MD007: $($content.Length)"
         if (-not (Test-MD007 $content)) { Write-Warning "MD007 validation failed after fix. Leaving file as-is for inspection." }
-        
+
         $content = Set-MD055MD056 $content
         Write-Information "Content length after MD055MD056: $($content.Length)"
         if (-not (Test-MD055MD056 $content)) { Write-Warning "MD055/MD056 validation failed after fix. Leaving file as-is for inspection." }
-        
+
+        # 3. Aggressively remove all extra blank lines at the end (MD012)
+        $content = Set-MD012 $content
+        Write-Information "Content length after final Set-MD012: $($content.Length)"
+        if (-not (Test-MD012 $content)) { Write-Warning "MD012 validation failed after final fix. Leaving file as-is for inspection." }
+
         Set-Content -Path $FilePath -Value $content -Encoding UTF8
         Remove-Backup $backup
         Write-Information "Universal markdownlint fixes applied to $FilePath"

@@ -33,19 +33,17 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 
 ### By Category
 
-| Category | F-Prime Count | PROVES Kit Count | Total |  |
-|----------|----------|------------------|-------|  |
-| **Software Dependencies** | 9 | 6 | 15 |  |
-| **Hardware Dependencies** | 4 | 5 | 9 |  |
-| **Configuration Dependencies** | 5 | 3 | 8 |  |
-| **Build System Dependencies** | 3 | 0 | 3 |  |
-| **Data Type Dependencies** | 4 | 0 | 4 |  |
-| **State Management Dependencies** | 0 | 3 | 3 |  |
-| **TOTAL** | 25 | 17 | **42** |  |
+| Category | F-Prime Count | PROVES Kit Count | Total |
+|----------|----------|------------------|-------|
+| **Software Dependencies** | 9 | 6 | 15 |
+| **Hardware Dependencies** | 4 | 5 | 9 |
+| **Configuration Dependencies** | 5 | 3 | 8 |
+| **Build System Dependencies** | 3 | 0 | 3 |
+| **Data Type Dependencies** | 4 | 0 | 4 |
+| **State Management Dependencies** | 0 | 3 | 3 |
+| **TOTAL** | 25 | 17 | **42** |
 
 ### By Criticality
-
-
 
 ```mermaid
 pie title Dependency Criticality Distribution
@@ -97,8 +95,7 @@ classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 
 **What you're looking at:** How the PROVES Kit software controls power to different subsystems.
 
-
-  ```mermaid
+```mermaid
   flowchart TB
     LSM[LoadSwitchManager - Main power control class - Written in Python]
     subgraph TOOLS ["Software Tools It Uses"]
@@ -128,18 +125,6 @@ classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
     classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
-  ```
-LSM -->|Controls power to| MAG
-LSM -->|Controls power to| CAM
-
-    style LSM fill:#e1f5ff
-    style TOOLS fill:#fff9c4
-    style DEVICES fill:#ffebee
-    %% Font sizing classes for consistency
-    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
-    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
-    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
-```
 ```
 
 **Key insight:** The LoadSwitchManager is the single point of control for all subsystem power. If it fails, you can't turn anything on or off.
@@ -543,23 +528,22 @@ config:
     c4ShapeMargin: 50
     c4ShapePadding: 40
     width: 216
-
-  ```mermaid
+---
   pie title Dependency Criticality Distribution
     "HIGH criticality" : 28
     "MEDIUM criticality" : 11
     "LOW criticality" : 3
-  ```
+```
 
 ### By Relationship Type
 
-| Relationship Type | Count | Examples |  |
-|-------------------|-------|----------|  |
-| **requires** | 23 | Device Manager requires Bus Driver |  |
-| **enables** | 7 | Load Switch enables IMU power |  |
-| **depends_on** | 6 | Application depends_on Device Manager |  |
-| **controls** | 5 | LoadSwitchManager controls hardware pins |  |
-| **implements** | 1 | ZephyrI2cDriver implements Drv.I2c |  |
+| Relationship Type | Count | Examples |
+|-------------------|-------|----------|
+| **requires** | 23 | Device Manager requires Bus Driver |
+| **enables** | 7 | Load Switch enables IMU power |
+| **depends_on** | 6 | Application depends_on Device Manager |
+| **controls** | 5 | LoadSwitchManager controls hardware pins |
+| **implements** | 1 | ZephyrI2cDriver implements Drv.I2c |
 
 ---
 
