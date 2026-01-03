@@ -53,6 +53,7 @@ pie title Dependency Criticality Distribution
 ```
 
 ```mermaid
+flowchart TB
 %% System Build/Config/Device Flowchart
 subgraph BUILD ["Build System - Compiles the code"]
   spacer34[ ]:::spacer
