@@ -296,7 +296,7 @@ To prevent future violations, implement:
 
 # Check for HTML tags in flowcharts
 
-|grep -n "<br\|<span\|<div" docs/diagrams/*.md|
+grep -n "<br\|<span\|<div" docs/diagrams/*.md
    
 # Check for colons in common label patterns
 
@@ -311,7 +311,7 @@ To prevent future violations, implement:
 1. **GitHub Actions workflow**:
    ```yaml
    - name: Validate Mermaid Syntax
-|run: | |
+run: 
        npm install -g @mermaid-js/mermaid-cli
        mmdc --version
 # Extract and validate all diagrams

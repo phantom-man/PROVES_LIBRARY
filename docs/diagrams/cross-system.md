@@ -57,7 +57,7 @@ Neither F-Prime documentation nor PROVES Kit documentation mentions the other sy
 config:
   theme: base
   fontSize: 24
-|themeCSS: | |
+themeCSS: 
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -260,15 +260,15 @@ flowchart LR
         PWR[Power Supply 3.3V]
     end
 
-|IM -->|reads sensor via| I2C|
-|I2C -->|I2C protocol| IMU_HW|
-|IMU_HW -->|requires stable| PWR|
-|PWR -.->|controlled by| LSM|
-|LSM -->|enables via| IMU_PIN|
-|LSM -->|configured with| LOGIC|
+IM -->|reads sensor via| I2C
+I2C -->|I2C protocol| IMU_HW
+IMU_HW -->|requires stable| PWR
+PWR -.->|controlled by| LSM
+LSM -->|enables via| IMU_PIN
+LSM -->|configured with| LOGIC
 
-|IM -->|on error returns| STATUS|
-|STATUS -.->|should trigger?| LSM|
+IM -->|on error returns| STATUS
+STATUS -.->|should trigger?| LSM
 
     style IM fill:#e1f5ff
     style LSM fill:#fff4e1
@@ -335,7 +335,7 @@ Mission continues without IMU (silent failure)
 config:
   theme: base
   fontSize: 24
-|themeCSS: | |
+themeCSS: 
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -585,7 +585,7 @@ No alert that power sequencing is wrong
 config:
   theme: base
   fontSize: 24
-|themeCSS: | |
+themeCSS: 
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -788,14 +788,14 @@ flowchart TB
         IMU_HW[IMU MPU6050 I2C Address 0x68]
     end
 
-|IM_ADDR -.->|unknown if shared| BUS|
-|BUS -->|communicates with| IMU_HW|
-|BUS -.->|might communicate with| MAG_HW|
-|BUS -.->|might communicate with| CAM_HW|
+IM_ADDR -.->|unknown if shared| BUS
+BUS -->|communicates with| IMU_HW
+BUS -.->|might communicate with| MAG_HW
+BUS -.->|might communicate with| CAM_HW
 
-|IMU_SW -->|powers| IMU_HW|
-|MAG_SW -->|powers| MAG_HW|
-|CAM_SW -->|powers| CAM_HW|
+IMU_SW -->|powers| IMU_HW
+MAG_SW -->|powers| MAG_HW
+CAM_SW -->|powers| CAM_HW
 
     style BUS fill:#ffebee
     style IMU_HW fill:#e8f5e9
@@ -852,7 +852,7 @@ Attitude determination fails
 config:
   theme: base
   fontSize: 24
-|themeCSS: | |
+themeCSS: 
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1048,12 +1048,12 @@ flowchart TB
     RETRY[Retry I2C operation]
 
     START --> READ
-|READ -->|Error| ERROR|
-|READ -->|OK| CONTINUE|
+READ -->|Error| ERROR
+READ -->|OK| CONTINUE
     ERROR --> LOG
     LOG --> CONTINUE
 
-|ERROR -.->|should trigger| MISSING|
+ERROR -.->|should trigger| MISSING
     MISSING -.-> POWER_OFF
     POWER_OFF -.-> DELAY
     DELAY -.-> POWER_ON
@@ -1121,7 +1121,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 config:
   theme: base
   fontSize: 24
-|themeCSS: | |
+themeCSS: 
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1318,15 +1318,15 @@ flowchart LR
         UNI_B[University B 2022 Mission]
     end
 
-|F_TEAM -->|maintains| F_DOC|
-|F_TEAM -->|publishes| F_VER|
+F_TEAM -->|maintains| F_DOC
+F_TEAM -->|publishes| F_VER
 
-|PROVES_MAINT -->|develops| PROVES_KIT[PROVES Kit Docs]|
-|UNI_A -.->|contributed to| PROVES_KIT|
-|UNI_B -.->|contributed to| PROVES_KIT|
+PROVES_MAINT -->|develops| PROVES_KIT[PROVES Kit Docs]
+UNI_A -.->|contributed to| PROVES_KIT
+UNI_B -.->|contributed to| PROVES_KIT
 
-|F_TEAM -.->|WEAK interface| PROVES_MAINT|
-|UNI_A -.->|graduated/left| UNI_B|
+F_TEAM -.->|WEAK interface| PROVES_MAINT
+UNI_A -.->|graduated/left| UNI_B
 
     style F_TEAM fill:#e1f5ff
     style PROVES_MAINT fill:#fff4e1
@@ -1373,7 +1373,7 @@ flowchart LR
 config:
   theme: base
   fontSize: 24
-|themeCSS: | |
+themeCSS: 
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }

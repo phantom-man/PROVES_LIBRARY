@@ -253,19 +253,19 @@ flowchart TB
         LOGIC[enable_logic Active High/Low]
     end
 
-|APP -->|1. requests| DM|
-|DM -->|2. calls| PORT|
-|PORT -->|3. invokes| BD|
-|BD -->|4. opens| DEV|
-|DEV -->|5. uses| I2C|
-|I2C -->|6. requires| PULLUP|
-|I2C -->|7. communicates with| IMU|
-|IMU -->|8. reads from| REG|
-|IMU -->|9. REQUIRES| PWR|
-|PWR -->|10. controlled by| LSM|
-|LSM -->|11. enables via| PIN|
-|PIN -->|12. defined in| BOARD|
-|LSM -->|13. configured with| LOGIC|
+APP -->|1. requests| DM
+DM -->|2. calls| PORT
+PORT -->|3. invokes| BD
+BD -->|4. opens| DEV
+DEV -->|5. uses| I2C
+I2C -->|6. requires| PULLUP
+I2C -->|7. communicates with| IMU
+IMU -->|8. reads from| REG
+IMU -->|9. REQUIRES| PWR
+PWR -->|10. controlled by| LSM
+LSM -->|11. enables via| PIN
+PIN -->|12. defined in| BOARD
+LSM -->|13. configured with| LOGIC
 
     style APP fill:#e1f5ff
     style DM fill:#fff4e1
@@ -772,10 +772,10 @@ flowchart TB
     SUCCESS["✓ System initializes correctly"]
 
     START --> CASE1
-|CASE1 -->|No| FAIL1|
-|CASE1 -->|Yes| CASE2|
-|CASE2 -->|No| FAIL2|
-|CASE2 -->|Yes| SUCCESS|
+CASE1 -->|No| FAIL1
+CASE1 -->|Yes| CASE2
+CASE2 -->|No| FAIL2
+CASE2 -->|Yes| SUCCESS
 
     style FAIL1 fill:#ffcdd2
     style FAIL2 fill:#ffe0b2
@@ -1019,11 +1019,11 @@ flowchart TB
     SCHED --> RUN
     RUN --> READ
     READ --> STATUS
-|STATUS -->|I2C_OK| TLM|
-|STATUS -->|Error| ERR|
+STATUS -->|I2C_OK| TLM
+STATUS -->|Error| ERR
     ERR --> CONT
 
-|STATUS -.->|should trigger| DETECT|
+STATUS -.->|should trigger| DETECT
     DETECT -.-> POWER_OFF
     POWER_OFF -.-> DELAY1
     DELAY1 -.-> POWER_ON
@@ -1293,14 +1293,14 @@ flowchart LR
     USER --> FPP
     FPP --> FPP_SRC
     FPP --> TOPO
-|FPP_SRC -.->|imports| DRV_I2C|
-|FPP_SRC -.->|uses| SVC_SCHED|
+FPP_SRC -.->|imports| DRV_I2C
+FPP_SRC -.->|uses| SVC_SCHED
     FPP --> AC_HPP
     FPP --> AC_CPP
 
     CMAKE --> CPP_SRC
-|CPP_SRC -.->|includes| AC_HPP|
-|CPP_SRC -.->|uses| FW_BUF|
+CPP_SRC -.->|includes| AC_HPP
+CPP_SRC -.->|uses| FW_BUF
 
     CMAKE --> GCC
     GCC --> TOPO_CPP

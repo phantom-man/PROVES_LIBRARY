@@ -463,18 +463,18 @@ flowchart TB
     SUCCESS["✓ Always works"]
 
     START --> CASE1
-|CASE1 -->|Yes| CASE2|
-|CASE1 -->|No| NO_DELAY|
+CASE1 -->|Yes| CASE2
+CASE1 -->|No| NO_DELAY
 
-|CASE2 -->|Guesses 50ms| TOO_SHORT|
-|CASE2 -->|Finds spec: 200ms| CORRECT|
+CASE2 -->|Guesses 50ms| TOO_SHORT
+CASE2 -->|Finds spec: 200ms| CORRECT
 
     TOO_SHORT --> CASE3
-|CASE3 -->|Only bench test| WORKS_BENCH|
-|WORKS_BENCH -.->|Ships to orbit| FAILS_FLIGHT|
+CASE3 -->|Only bench test| WORKS_BENCH
+WORKS_BENCH -.->|Ships to orbit| FAILS_FLIGHT
 
     NO_DELAY --> WORKS_LINUX
-|WORKS_LINUX -.->|Ports to embedded| FAILS_RTOS|
+WORKS_LINUX -.->|Ports to embedded| FAILS_RTOS
 
     CORRECT --> SUCCESS
 
@@ -706,10 +706,10 @@ flowchart TB
         T_SWITCH[Switch time ??? μs]
     end
 
-|V_NOM -.->|minus dropout| V_DROPOUT|
-|V_DROPOUT -.->|must exceed| V_IH|
-|I_SPIKE -.->|causes drop: I × R_ON| R_ON|
-|V_RIPPLE -.->|must be less than| V_MARGIN|
+V_NOM -.->|minus dropout| V_DROPOUT
+V_DROPOUT -.->|must exceed| V_IH
+I_SPIKE -.->|causes drop: I × R_ON| R_ON
+V_RIPPLE -.->|must be less than| V_MARGIN
 
     style V_RIPPLE fill:#ffebee
     style V_DROPOUT fill:#ffebee
@@ -1257,10 +1257,10 @@ flowchart TB
         Q4[Bus arbitra-<br/>tion?]
     end
 
-|BUS -.->|unknown| DEV1|
-|BUS -.->|unknown| DEV2|
-|BUS -.->|unknown| DEV3|
-|BUS -.->|unknown| DEV4|
+BUS -.->|unknown| DEV1
+BUS -.->|unknown| DEV2
+BUS -.->|unknown| DEV3
+BUS -.->|unknown| DEV4
 
     LSM1 --> DEV1
     LSM2 --> DEV2
@@ -1743,9 +1743,9 @@ flowchart LR
         INT3[F-Prime Bare Metal +<br/>???]
     end
 
-|F_LINUX -.->|how to combine?| P_CIRCUITPY|
-|F_ZEPHYR -.->|how to combine?| P_C|
-|F_BAREMETAL -.->|how to combine?| P_C|
+F_LINUX -.->|how to combine?| P_CIRCUITPY
+F_ZEPHYR -.->|how to combine?| P_C
+F_BAREMETAL -.->|how to combine?| P_C
 
     F_LINUX -.-> INT1
     P_CIRCUITPY -.-> INT1

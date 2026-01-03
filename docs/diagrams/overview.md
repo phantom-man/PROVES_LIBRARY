@@ -227,10 +227,10 @@ flowchart TB
 
     HW[MPU6050 IMU Sensor - Hardware device at address 0x68 - Measures acceleration and rotation]
 
-|APP -->|"1. Requests sensor data"| DM|
-|DM -->|"2. Calls I2C operations"| BD|
-|BD -->|"3. Sends electrical signals"| I2C_BUS|
-|I2C_BUS -->|"4. Physical connection"| HW|
+APP -->|"1. Requests sensor data"| DM
+DM -->|"2. Calls I2C operations"| BD
+BD -->|"3. Sends electrical signals"| I2C_BUS
+I2C_BUS -->|"4. Physical connection"| HW
 
     style APP fill:#e1f5ff
     style DM fill:#fff4e1
@@ -449,12 +449,12 @@ flowchart TB
         VALS[Register Values - What to write to configure the sensor]
     end
 
-|FPUTIL -->|"Compiles"| TOPO_FILE|
-|FPP -->|"Generates code for"| TOPO_FILE|
-|TOPO_FILE -->|"Used by"| CONFIG|
-|CONFIG -->|"Must set correct"| ADDR|
-|ADDR -->|"Comes from sensor datasheet"| REGS|
-|REGS -->|"Require correct"| VALS|
+FPUTIL -->|"Compiles"| TOPO_FILE
+FPP -->|"Generates code for"| TOPO_FILE
+TOPO_FILE -->|"Used by"| CONFIG
+CONFIG -->|"Must set correct"| ADDR
+ADDR -->|"Comes from sensor datasheet"| REGS
+REGS -->|"Require correct"| VALS
 
     style BUILD fill:#e8f5e9
     style TOPO fill:#fff3e0
@@ -673,14 +673,14 @@ flowchart TB
         CAM[Camera - board.CAMERA_ENABLE]
     end
 
-|LSM -->|Uses| DIO|
-|LSM -->|Uses| LOGGER|
-|LSM -->|Uses| STATE|
+LSM -->|Uses| DIO
+LSM -->|Uses| LOGGER
+LSM -->|Uses| STATE
 
-|LSM -->|Controls power to| RADIO|
-|LSM -->|Controls power to| IMU|
-|LSM -->|Controls power to| MAG|
-|LSM -->|Controls power to| CAM|
+LSM -->|Controls power to| RADIO
+LSM -->|Controls power to| IMU
+LSM -->|Controls power to| MAG
+LSM -->|Controls power to| CAM
 
     style LSM fill:#e1f5ff
     style TOOLS fill:#fff9c4
