@@ -57,7 +57,7 @@ Neither F-Prime documentation nor PROVES Kit documentation mentions the other sy
 config:
   theme: base
   fontSize: 24
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -182,7 +182,7 @@ themeCSS:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagramPadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -234,7 +234,7 @@ themeCSS:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4ShapePadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -335,7 +335,7 @@ Mission continues without IMU (silent failure)
 config:
   theme: base
   fontSize: 24
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -460,7 +460,7 @@ themeCSS:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagramPadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -512,7 +512,7 @@ themeCSS:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4ShapePadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -585,7 +585,7 @@ No alert that power sequencing is wrong
 config:
   theme: base
   fontSize: 24
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -710,7 +710,7 @@ themeCSS:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagramPadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -762,7 +762,7 @@ themeCSS:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4ShapePadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -852,7 +852,7 @@ Attitude determination fails
 config:
   theme: base
   fontSize: 24
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -977,7 +977,7 @@ themeCSS:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagramPadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1029,7 +1029,7 @@ themeCSS:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4ShapePadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -1121,7 +1121,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 config:
   theme: base
   fontSize: 24
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1246,7 +1246,7 @@ themeCSS:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagramPadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1298,7 +1298,7 @@ themeCSS:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4ShapePadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -1373,7 +1373,7 @@ UNI_A -.->|graduated/left| UNI_B
 config:
   theme: base
   fontSize: 24
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1498,7 +1498,7 @@ themeCSS:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagramPadding: 25
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1550,7 +1550,7 @@ themeCSS:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4ShapePadding: 25
     width: 216
     height: 60
     boxMargin: 10
@@ -1630,3 +1630,9 @@ quadrantChart
 **Confidence Level:** High (human-verified, evidence-based)
 **Impact:** Demonstrates exact Team A/Team B failure mode
 **Date:** December 20, 2024
+
+
+
+
+
+

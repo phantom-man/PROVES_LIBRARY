@@ -1,4 +1,4 @@
-﻿# Mermaid Diagram Syntax Rules
+# Mermaid Diagram Syntax Rules
 
 Comprehensive rules compiled from official Mermaid documentation (v10+).
 
@@ -282,7 +282,7 @@ $replacement = @"
 config:
   theme: base
   fontSize: 18
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -596,7 +596,7 @@ A ---|Text| B
 
 #### Edge IDs (v11.3.0+)
 
-```mermaid
+```text
 flowchart LR
     A e1@--> B
     e1@{ animate: true }
@@ -1214,7 +1214,7 @@ These are complete, ready-to-use theme configurations. Copy the frontmatter for 
 config:
   theme: base
   fontSize: 16
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1412,7 +1412,7 @@ themeCSS:
 config:
   theme: base
   fontSize: 16
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1610,7 +1610,7 @@ themeCSS:
 config:
   theme: base
   fontSize: 16
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1808,7 +1808,7 @@ themeCSS:
 config:
   theme: base
   fontSize: 16
-themeCSS: 
+themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -2095,7 +2095,7 @@ flowchart LR
 
 ### Participants
 
-```mermaid
+```text
 sequenceDiagram
     participant A as Alice
     actor B as Bob
@@ -3060,3 +3060,9 @@ def validate_mermaid(diagram_code):
 
 **Version:** Based on Mermaid v10+ (GitHub rendering)
 **Last Updated:** December 28, 2024
+
+
+
+
+
+
