@@ -10,10 +10,11 @@
   _LEANCLOUD_APP_CLASS -%}
 
   <script>
+    // @ts-nocheck
     {%- include pageview-providers/leancloud/leancloud.js -%}
   </script>
   <script>
-    window.Lazyload.js(['{{ _sources.jquery }}', '{{ _sources.leancloud_js_sdk}}'], function() {
+    window.Lazyload.js(['{{ _sources.jquery }}', '{{ _sources.leancloud_js_sdk }}'], function() {
       var pageview = window.pageview(AV, {
         appId:    '{{ _LEANCLOUD_APP_ID }}',
         appKey:   '{{ _LEANCLOUD_APP_KEY }}',
