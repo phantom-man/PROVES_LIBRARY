@@ -132,29 +132,26 @@ function Set-CodeBlockFencesLeftAligned {
 function Set-MD012 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
-    # Replace 2+ consecutive blank lines (including whitespace-only lines) with a single blank line, including at file start/end
-    $lines = $content -split "`n"
-    $result = [System.Collections.Generic.List[string]]::new()
-    $blankCount = 0
-    foreach ($line in $lines) {
-        if ($line -match '^\s*$') {
-            $blankCount++
-        } else {
-            $blankCount = 0
-        }
-        if ($blankCount -le 1) {
-            $null = $result.Add($line)
-        }
+    
+    if ($PSCmdlet.ShouldProcess("MD012", "Apply regex-based fix for MD012")) {
+        # Normalize line endings to LF first
+        $text = $content -replace "`r`n", "`n" -replace "`r", "`n"
+        
+        # 1. Replace 3+ consecutive newlines (which create 2+ blank lines) with 2 newlines (1 blank line)
+        # Matches \n followed by optional whitespace followed by \n, repeated 3 or more times
+        # This effectively collapses multiple blank lines into a single blank line
+        $text = [regex]::Replace($text, "(\n\s*){3,}", "`n`n")
+        
+        # 2. Remove leading blank lines (start of file)
+        $text = $text -replace "^\s+", ""
+        
+        # 3. Remove trailing blank lines (end of file) and ensure single newline
+        $text = $text -replace "\s+$", "`n"
+        
+        Write-Information "Set-MD012 applied (regex)."
+        return $text
     }
-    # Remove leading blank lines at file start
-    while ($result.Count -gt 0 -and $result[0] -match '^\s*$') { $result.RemoveAt(0) }
-    # Remove trailing blank lines at file end
-    while ($result.Count -gt 0 -and $result[$result.Count-1] -match '^\s*$') { $result.RemoveAt($result.Count-1) }
-    $fixedContent = ($result.ToArray() -join "`n")
-    if ($PSCmdlet.ShouldProcess("MD012", "Apply markdownlint fix for MD012")) {
-        Write-Information "Set-MD012 applied."
-    }
-    return $fixedContent
+    return $content
 }
 
 function Test-MD012 {
