@@ -857,14 +857,13 @@ config:
     c4ShapeMargin: 50
     c4ShapePadding: 40
     width: 216
-    height: 60
-    boxMargin: 10
----
-pie title Dependency Criticality Distribution
+
+  ```mermaid
+  pie title Dependency Criticality Distribution
     "HIGH criticality" : 28
     "MEDIUM criticality" : 11
     "LOW criticality" : 3
-```
+  ```
 
 ### By Relationship Type
 
