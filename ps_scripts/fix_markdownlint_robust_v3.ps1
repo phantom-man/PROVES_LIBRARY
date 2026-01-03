@@ -490,22 +490,55 @@ function Set-MD055MD056 {
             $parsedRows = @()
             
             foreach ($row in $table) {
-                $rowCells = $row.Trim() -split '\|'
-                # Remove empty leading/trailing cells from split
-                if ($rowCells.Count -gt 0 -and $rowCells[0] -eq '') { $rowCells = $rowCells[1..($rowCells.Count-1)] }
-                if ($rowCells.Count -gt 0 -and $rowCells[-1] -eq '') { $rowCells = $rowCells[0..($rowCells.Count-2)] }
+                # Use regex split to handle escaped pipes correctly
+                $rowCells = $row.Trim() -split '(?<!\\)\|'
+                
+                # Remove empty leading/trailing cells from split (standard markdown table format)
+                if ($rowCells.Count -gt 0 -and [string]::IsNullOrWhiteSpace($rowCells[0])) { 
+                    $rowCells = $rowCells[1..($rowCells.Count-1)] 
+                }
+                if ($rowCells.Count -gt 0 -and [string]::IsNullOrWhiteSpace($rowCells[-1])) { 
+                    $rowCells = $rowCells[0..($rowCells.Count-2)] 
+                }
                 
                 if ($rowCells.Count -gt $maxCols) { $maxCols = $rowCells.Count }
                 $parsedRows += ,$rowCells
             }
             
+            # Prune empty last columns (if the last column is empty for ALL rows)
+            # This fixes artifacts where an extra pipe was added/detected incorrectly
+            while ($maxCols -gt 0) {
+                $lastColEmpty = $true
+                foreach ($r in $parsedRows) {
+                    # If row has this column and it's not whitespace, then column is not empty
+                    if ($r.Count -ge $maxCols -and -not [string]::IsNullOrWhiteSpace($r[$maxCols-1])) {
+                        $lastColEmpty = $false
+                        break
+                    }
+                }
+                
+                if ($lastColEmpty) {
+                    $maxCols--
+                    # Remove the column from parsed rows that have it
+                    for ($p = 0; $p -lt $parsedRows.Count; $p++) {
+                        if ($parsedRows[$p].Count -gt $maxCols) {
+                            $parsedRows[$p] = $parsedRows[$p][0..($maxCols-1)]
+                        }
+                    }
+                } else {
+                    break
+                }
+            }
+
             # Fix each row
             for ($k = 0; $k -lt $parsedRows.Count; $k++) {
                 $rowCells = $parsedRows[$k]
                 
                 # Pad or trim to maxCols
                 if ($rowCells.Count -lt $maxCols) {
-                    $rowCells += @(' ' * ($maxCols - $rowCells.Count))
+                    # Correctly add multiple empty cells
+                    $needed = $maxCols - $rowCells.Count
+                    for ($n = 0; $n -lt $needed; $n++) { $rowCells += " " }
                 } elseif ($rowCells.Count -gt $maxCols) {
                     $rowCells = $rowCells[0..($maxCols-1)]
                 }

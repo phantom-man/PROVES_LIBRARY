@@ -284,21 +284,21 @@ LSM -->|13. configured with| LOGIC
 
 ### Documented vs. Undocumented Links
 
-| Hop | From | To | Documented? | Source |  |
-|-----|------|----|-----------| -------|  |
-| 1 | Application | Device Manager | [YES] Yes | F-Prime docs line 30 |  |
-| 2 | Device Manager | busWriteRead port | [YES] Yes | F-Prime docs line 76 |  |
-| 3 | Port | Bus Driver | [YES] Yes | F-Prime docs line 236 |  |
-| 4 | Bus Driver | /dev/i2c-1 | [YES] Yes | F-Prime docs line 248 |  |
-| 5 | Device | I2C Bus | [YES] Yes | F-Prime docs line 41 |  |
-| 6 | I2C | Pull-up Resistors | [WARNING] Implicit | Not in docs (standard I2C) |  |
-| 7 | I2C | IMU Device | [YES] Yes | F-Prime docs line 28 |  |
-| 8 | IMU | Registers | [YES] Yes | F-Prime docs line 97 |  |
-| 9 | IMU | **Power Supply** | [NO] **NO** | **GAP: Not documented** |  |
-| 10 | Power | **LoadSwitchManager** | [NO] **NO** | **GAP: Not documented** |  |
-| 11 | LSM | GPIO Pin | [YES] Yes | PROVES docs line 28 |  |
-| 12 | Pin | Board Definition | [YES] Yes | PROVES docs line 27 |  |
-| 13 | LSM | enable_logic | [YES] Yes | PROVES docs line 34 |  |
+| Hop | From | To | Documented? | Source |
+|-----|------|----|-----------| -------|
+| 1 | Application | Device Manager | [YES] Yes | F-Prime docs line 30 |
+| 2 | Device Manager | busWriteRead port | [YES] Yes | F-Prime docs line 76 |
+| 3 | Port | Bus Driver | [YES] Yes | F-Prime docs line 236 |
+| 4 | Bus Driver | /dev/i2c-1 | [YES] Yes | F-Prime docs line 248 |
+| 5 | Device | I2C Bus | [YES] Yes | F-Prime docs line 41 |
+| 6 | I2C | Pull-up Resistors | [WARNING] Implicit | Not in docs (standard I2C) |
+| 7 | I2C | IMU Device | [YES] Yes | F-Prime docs line 28 |
+| 8 | IMU | Registers | [YES] Yes | F-Prime docs line 97 |
+| 9 | IMU | **Power Supply** | [NO] **NO** | **GAP: Not documented** |
+| 10 | Power | **LoadSwitchManager** | [NO] **NO** | **GAP: Not documented** |
+| 11 | LSM | GPIO Pin | [YES] Yes | PROVES docs line 28 |
+| 12 | Pin | Board Definition | [YES] Yes | PROVES docs line 27 |
+| 13 | LSM | enable_logic | [YES] Yes | PROVES docs line 34 |
 
 **Critical Gap:** Steps 9-10 create a hidden transitive dependency from Application Layer to Power Management Layer across two separate systems.
 
@@ -562,18 +562,18 @@ sequenceDiagram
 
 ### Documented vs. Undocumented Steps
 
-| Step | Action | Documented? | Risk if Missing |  |
-|------|--------|-------------|-----------------|  |
-| 1 | Call configureTopology() | [YES] F-Prime docs | Low |  |
-| 2 | Call LoadSwitchManager.turn_on("imu") | [NO] **NO** | **HIGH** - Skipped entirely |  |
-| 3 | Set GPIO pin HIGH | [YES] PROVES docs | Low |  |
-| 4 | Return success | [YES] PROVES docs | Low |  |
-| 5 | **Wait for power stabilization** | [NO] **NO** | **CRITICAL** - No delay spec |  |
-| 6 | Call busDriver.open() | [YES] F-Prime docs | Low |  |
-| 7 | Initialize /dev/i2c-1 | [YES] F-Prime docs | Low |  |
-| 8 | Call imuManager.configure() | [YES] F-Prime docs | Low |  |
-| 9 | Set I2C address 0x68 | [YES] F-Prime docs | Low |  |
-| 10-12 | Device initialization | [YES] F-Prime docs | Low |  |
+| Step | Action | Documented? | Risk if Missing |
+|------|--------|-------------|-----------------|
+| 1 | Call configureTopology() | [YES] F-Prime docs | Low |
+| 2 | Call LoadSwitchManager.turn_on("imu") | [NO] **NO** | **HIGH** - Skipped entirely |
+| 3 | Set GPIO pin HIGH | [YES] PROVES docs | Low |
+| 4 | Return success | [YES] PROVES docs | Low |
+| 5 | **Wait for power stabilization** | [NO] **NO** | **CRITICAL** - No delay spec |
+| 6 | Call busDriver.open() | [YES] F-Prime docs | Low |
+| 7 | Initialize /dev/i2c-1 | [YES] F-Prime docs | Low |
+| 8 | Call imuManager.configure() | [YES] F-Prime docs | Low |
+| 9 | Set I2C address 0x68 | [YES] F-Prime docs | Low |
+| 10-12 | Device initialization | [YES] F-Prime docs | Low |
 
 **Critical Gaps:**
 - **Step 2:** No documentation linking configureTopology() to LoadSwitchManager
@@ -1046,15 +1046,15 @@ STATUS -.->|should trigger| DETECT
 
 ### Transitive Error Impact
 
-| Layer | Component | Normal State | After I2C Failure | Impact |  |
-|-------|-----------|--------------|-------------------|--------|  |
-| 7 | Application | Receives IMU data | Receives stale/zero data | Navigation degraded |  |
-| 6 | Telemetry | ImuData channel active | Last good value held | Ground sees freeze |  |
-| 5 | Event Log | Normal ops | WARNING_HI event | Operator alerted |  |
-| 4 | Device Manager | read() succeeds | read() returns I2C_READ_ERR | Local error |  |
-| 3 | Bus Driver | writeRead() works | writeRead() fails | I2C timeout |  |
-| 2 | I2C Bus | Active communication | No response from device | Bus idle |  |
-| 1 | **Power** | **IMU powered** | **IMU unpowered** | **Root cause** |  |
+| Layer | Component | Normal State | After I2C Failure | Impact |
+|-------|-----------|--------------|-------------------|--------|
+| 7 | Application | Receives IMU data | Receives stale/zero data | Navigation degraded |
+| 6 | Telemetry | ImuData channel active | Last good value held | Ground sees freeze |
+| 5 | Event Log | Normal ops | WARNING_HI event | Operator alerted |
+| 4 | Device Manager | read() succeeds | read() returns I2C_READ_ERR | Local error |
+| 3 | Bus Driver | writeRead() works | writeRead() fails | I2C timeout |
+| 2 | I2C Bus | Active communication | No response from device | Bus idle |
+| 1 | **Power** | **IMU powered** | **IMU unpowered** | **Root cause** |
 
 **Problem:** Root cause (Layer 1 - Power) is 6 layers removed from symptom (Layer 7 - Application).
 
@@ -1528,12 +1528,12 @@ Maximum observed distance: **7 layers** (Power -> Application)
 
 ### 3. Documentation Coverage
 
-| Chain | Total Hops | Documented Hops | Coverage |  |
-|-------|------------|-----------------|----------|  |
-| Application -> Power | 13 | 9 | 69% |  |
-| Configuration -> Init | 12 | 8 | 67% |  |
-| Error Propagation | 8 | 3 | 38% |  |
-| Build System | 7 | 7 | 100% |  |
+| Chain | Total Hops | Documented Hops | Coverage |
+|-------|------------|-----------------|----------|
+| Application -> Power | 13 | 9 | 69% |
+| Configuration -> Init | 12 | 8 | 67% |
+| Error Propagation | 8 | 3 | 38% |
+| Build System | 7 | 7 | 100% |
 
 **Average Documentation Coverage:** 68% of transitive dependencies
 
@@ -1581,9 +1581,3 @@ Test suites should:
 **Longest Chain Found:** 13 hops (Application -> Board Configuration)
 **Documentation Gap:** 14 undocumented transitive links
 **Date:** December 20, 2024
-
-
-
-
-
-
