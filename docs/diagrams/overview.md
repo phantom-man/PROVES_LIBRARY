@@ -1,4 +1,3 @@
-
 # Dependency Overview
 
 Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVES Kit Power Management documentation.
@@ -34,15 +33,15 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 
 ### By Category
 
-| Category | F-Prime Count | PROVES Kit Count | Total |
-|----------|----------|------------------|-------|
-| **Software Dependencies** | 9 | 6 | 15 |
-| **Hardware Dependencies** | 4 | 5 | 9 |
-| **Configuration Dependencies** | 5 | 3 | 8 |
-| **Build System Dependencies** | 3 | 0 | 3 |
-| **Data Type Dependencies** | 4 | 0 | 4 |
-| **State Management Dependencies** | 0 | 3 | 3 |
-| **TOTAL** | 25 | 17 | **42** |
+| Category | F-Prime Count | PROVES Kit Count | Total |  |
+|----------|----------|------------------|-------|  |
+| **Software Dependencies** | 9 | 6 | 15 |  |
+| **Hardware Dependencies** | 4 | 5 | 9 |  |
+| **Configuration Dependencies** | 5 | 3 | 8 |  |
+| **Build System Dependencies** | 3 | 0 | 3 |  |
+| **Data Type Dependencies** | 4 | 0 | 4 |  |
+| **State Management Dependencies** | 0 | 3 | 3 |  |
+| **TOTAL** | 25 | 17 | **42** |  |
 
 ### By Criticality
 
@@ -68,12 +67,12 @@ pie title Dependency Criticality Distribution
         VALS[Register Values - What to write to configure the sensor]
     end
 
-FPUTIL -->|"Compiles"| TOPO_FILE
-FPP -->|"Generates code for"| TOPO_FILE
-TOPO_FILE -->|"Used by"| CONFIG
-CONFIG -->|"Must set correct"| ADDR
-ADDR -->|"Comes from sensor datasheet"| REGS
-REGS -->|"Require correct"| VALS
+|FPUTIL -->|"Compiles"| TOPO_FILE|
+|FPP -->|"Generates code for"| TOPO_FILE|
+|TOPO_FILE -->|"Used by"| CONFIG|
+|CONFIG -->|"Must set correct"| ADDR|
+|ADDR -->|"Comes from sensor datasheet"| REGS|
+|REGS -->|"Require correct"| VALS|
 
     style BUILD fill:#e8f5e9
     style TOPO fill:#fff3e0
@@ -546,13 +545,13 @@ config:
 
 ### By Relationship Type
 
-| Relationship Type | Count | Examples |
-|-------------------|-------|----------|
-| **requires** | 23 | Device Manager requires Bus Driver |
-| **enables** | 7 | Load Switch enables IMU power |
-| **depends_on** | 6 | Application depends_on Device Manager |
-| **controls** | 5 | LoadSwitchManager controls hardware pins |
-| **implements** | 1 | ZephyrI2cDriver implements Drv.I2c |
+| Relationship Type | Count | Examples |  |
+|-------------------|-------|----------|  |
+| **requires** | 23 | Device Manager requires Bus Driver |  |
+| **enables** | 7 | Load Switch enables IMU power |  |
+| **depends_on** | 6 | Application depends_on Device Manager |  |
+| **controls** | 5 | LoadSwitchManager controls hardware pins |  |
+| **implements** | 1 | ZephyrI2cDriver implements Drv.I2c |  |
 
 ---
 
@@ -586,9 +585,3 @@ Every dependency tracked with precise source locations:
 **Analysis Method:** Manual annotation with line-by-line review
 **Confidence Level:** High (human-verified)
 **Date:** December 20, 2024
-
-
-
-
-
-
