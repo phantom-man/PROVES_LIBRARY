@@ -1,4 +1,4 @@
-﻿
+
 <#
 .SYNOPSIS
     Validates and fixes Mermaid diagrams in Markdown files, then runs markdownlint fixes.

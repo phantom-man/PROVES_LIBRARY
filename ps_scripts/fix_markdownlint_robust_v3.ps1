@@ -9,6 +9,8 @@ Universal Markdownlint Rule Script (PowerShell)
 Usage: pwsh ./fix_markdownlint_robust_v3.ps1 -FilePath <file>
 #>
 
+[CmdletBinding()]
+[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
 param(
     [Parameter(Mandatory=$true)]
     [string]$FilePath
@@ -58,18 +60,18 @@ function Update-LineEndings {
 }
 
 # --- Corruption Fixes: Pipe Artifacts & Indentation ---
-function Set-CorruptionFixes {
+function Format-CorruptionFixes {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
-    
+
     $lines = $content -split "`n"
     $result = [System.Collections.Generic.List[string]]::new()
     $inCode = $false
     $blockIndent = ""
-    
+
     foreach ($line in $lines) {
         $newLine = $line
-        
+
         # 1. Fix Pipe Artifacts (lines wrapped in |...|)
         # Regex: Start with |, content, end with |, optional trailing pipes
         if ($newLine -match '^\|(.*)\|(\s*\|\s*)*$') {
@@ -79,7 +81,7 @@ function Set-CorruptionFixes {
                 $newLine = $inner
             }
         }
-        
+
         # 2. Fix Code Block Indentation
         if ($newLine -match '^(\s*)```') {
             if (-not $inCode) {
@@ -100,10 +102,10 @@ function Set-CorruptionFixes {
                 }
             }
         }
-        
+
         $null = $result.Add($newLine)
     }
-    
+
     $fixedContent = ($result.ToArray() -join "`n")
     if ($PSCmdlet.ShouldProcess("CorruptionFixes", "Apply corruption fixes (pipes, indentation)")) {
         # Log
@@ -117,7 +119,7 @@ function Set-CodeBlockFencesLeftAligned {
     param([string]$content)
     # Remove all leading whitespace before any code block fence (```)
     $lines = $content -split "`n"
-    
+
     if ($PSCmdlet.ShouldProcess("Content", "Left-align code block fences")) {
         for ($i = 0; $i -lt $lines.Length; $i++) {
             if ($lines[$i] -match '^\s*```') {
@@ -129,33 +131,32 @@ function Set-CodeBlockFencesLeftAligned {
 }
 
 # --- MD012: No multiple consecutive blank lines ---
-function Set-MD012 {
+function Format-MD012 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
-    
+
     if ($PSCmdlet.ShouldProcess("MD012", "Apply regex-based fix for MD012")) {
         # Normalize line endings to LF first
         $text = $content -replace "`r`n", "`n" -replace "`r", "`n"
-        
+
         # 1. Replace 3+ consecutive newlines (which create 2+ blank lines) with 2 newlines (1 blank line)
         # Matches \n followed by optional whitespace followed by \n, repeated 3 or more times
         # This effectively collapses multiple blank lines into a single blank line
         $text = [regex]::Replace($text, "(\n\s*){3,}", "`n`n")
-        
+
         # 2. Remove leading blank lines (start of file)
         $text = $text -replace "^\s+", ""
-        
+
         # 3. Remove trailing blank lines (end of file) and ensure single newline
         $text = $text -replace "\s+$", "`n"
-        
-        Write-Information "Set-MD012 applied (regex)."
+
+        Write-Information "Format-MD012 applied (regex)."
         return $text
     }
     return $content
 }
 
-function Test-MD012 {
-    param([string]$content)
+function Test-MD012 {    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]    param([string]$content)
     # Return $false if 2+ consecutive blank lines are found
     $lines = $content -split "`n"
     $blankCount = 0
@@ -200,7 +201,7 @@ function Test-MD022 {
 }
 
 # --- MD022: Headings must be surrounded by blank lines ---
-function Set-MD022 {
+function Format-MD022 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     $lines = $content -split "`n"
@@ -243,7 +244,7 @@ function Set-MD022 {
 }
 
 # --- MD023: Headings must start at beginning of line ---
-function Set-MD023 {
+function Format-MD023 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Remove leading whitespace (spaces/tabs only) before heading hashes
@@ -266,7 +267,7 @@ function Test-MD023 {
 }
 
 # --- MD029: Ordered list item prefix ---
-function Set-MD029 {
+function Format-MD029 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Normalize ordered list numbers so each list starts at 1 and increments
@@ -326,7 +327,7 @@ function Test-MD029 {
 }
 
 # --- MD038: No space in code span (robust) ---
-function Set-MD038 {
+function Format-MD038 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Remove spaces inside inline code spans (e.g., ` code ` -> `code`), outside code blocks
@@ -365,7 +366,7 @@ function Test-MD038 {
 }
 
 # --- MD007: Unordered list indentation (robust) ---
-function Set-MD007 {
+function Format-MD007 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Fix unordered list indentation (2 spaces per nesting level), outside code blocks
@@ -377,17 +378,17 @@ function Set-MD007 {
 
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = $lines[$i]
-        if ($line -match '^\s*```') { 
+        if ($line -match '^\s*```') {
             $inCode = -not $inCode
             $result += $line
             $listBlockIndent = $null
-            continue 
+            continue
         }
-        if ($inCode) { 
+        if ($inCode) {
             $result += $line
-            continue 
+            continue
         }
-        
+
         # Match list items with leading whitespace
         if ($line -match '^(\s*)([-*+]) (.*)') {
             $currentIndentLen = $matches[1].Length
@@ -406,7 +407,7 @@ function Set-MD007 {
             # Normalize to 2-space steps based on relative indent
             $level = [Math]::Round($relativeIndent / 2)
             $newIndent = ' ' * ($level * 2)
-            
+
             $result += "$newIndent$marker $text"
         } else {
             # Reset list block tracking on non-list lines (blank lines, text, etc.)
@@ -444,7 +445,7 @@ function Test-MD007 {
 }
 
 # --- MD055/MD056: Table pipe style and column count ---
-function Set-MD055MD056 {
+function Format-MD055MD056 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Normalize table rows to have consistent pipe style and column count
@@ -454,7 +455,7 @@ function Set-MD055MD056 {
     $inCode = $false
     while ($i -lt $lines.Length) {
         $line = $lines[$i]
-        
+
         # Track code blocks
         if ($line -match '^\s*```') {
             $inCode = -not $inCode
@@ -462,7 +463,7 @@ function Set-MD055MD056 {
             $i++
             continue
         }
-        
+
         if ($inCode) {
             $out.Add($line) | Out-Null
             $i++
@@ -473,7 +474,7 @@ function Set-MD055MD056 {
         if ($line -match '^\s*\S.*\|.*$') {
             # Skip lines that are headings, not table rows
             if ($line -match '^#+ ') { $out.Add($line) | Out-Null; $i++; continue }
-            
+
             # Table block: collect all contiguous lines with at least one pipe
             $table = @($line)
             $j = $i+1
@@ -484,27 +485,27 @@ function Set-MD055MD056 {
                 $table += $nextLine
                 $j++
             }
-            
+
             # Determine max columns from header or max row (based on content cells)
             $maxCols = 0
             $parsedRows = @()
-            
+
             foreach ($row in $table) {
                 # Use regex split to handle escaped pipes correctly
                 $rowCells = $row.Trim() -split '(?<!\\)\|'
-                
+
                 # Remove empty leading/trailing cells from split (standard markdown table format)
-                if ($rowCells.Count -gt 0 -and [string]::IsNullOrWhiteSpace($rowCells[0])) { 
-                    $rowCells = $rowCells[1..($rowCells.Count-1)] 
+                if ($rowCells.Count -gt 0 -and [string]::IsNullOrWhiteSpace($rowCells[0])) {
+                    $rowCells = $rowCells[1..($rowCells.Count-1)]
                 }
-                if ($rowCells.Count -gt 0 -and [string]::IsNullOrWhiteSpace($rowCells[-1])) { 
-                    $rowCells = $rowCells[0..($rowCells.Count-2)] 
+                if ($rowCells.Count -gt 0 -and [string]::IsNullOrWhiteSpace($rowCells[-1])) {
+                    $rowCells = $rowCells[0..($rowCells.Count-2)]
                 }
-                
+
                 if ($rowCells.Count -gt $maxCols) { $maxCols = $rowCells.Count }
                 $parsedRows += ,$rowCells
             }
-            
+
             # Prune empty last columns (if the last column is empty for ALL rows)
             # This fixes artifacts where an extra pipe was added/detected incorrectly
             while ($maxCols -gt 0) {
@@ -516,7 +517,7 @@ function Set-MD055MD056 {
                         break
                     }
                 }
-                
+
                 if ($lastColEmpty) {
                     $maxCols--
                     # Remove the column from parsed rows that have it
@@ -533,7 +534,7 @@ function Set-MD055MD056 {
             # Fix each row
             for ($k = 0; $k -lt $parsedRows.Count; $k++) {
                 $rowCells = $parsedRows[$k]
-                
+
                 # Pad or trim to maxCols
                 if ($rowCells.Count -lt $maxCols) {
                     # Correctly add multiple empty cells
@@ -542,7 +543,7 @@ function Set-MD055MD056 {
                 } elseif ($rowCells.Count -gt $maxCols) {
                     $rowCells = $rowCells[0..($maxCols-1)]
                 }
-                
+
                 # Always add leading/trailing pipes
                 $fixedRow = '|' + ($rowCells -join '|') + '|'
                 $out.Add($fixedRow) | Out-Null
@@ -612,7 +613,7 @@ function Test-MD055MD056 {
 }
 
 # --- MD019: No multiple spaces after hash in headings ---
-function Set-MD019 {
+function Format-MD019 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Remove multiple spaces after hash in headings
@@ -646,47 +647,47 @@ function Main {
         # Normalize line endings first
         $content = Update-LineEndings $content
         Write-Information "Content length after normalize: $($content.Length)"
-        
+
         # Apply and validate each rule in sequence
-        
+
         # 1. Apply Corruption Fixes First (Pipes, Indentation)
-        $content = Set-CorruptionFixes $content
+        $content = Format-CorruptionFixes $content
         Write-Information "Content length after CorruptionFixes: $($content.Length)"
 
         # 2. Left-align all code block fences (fix for MD046)
         $content = Set-CodeBlockFencesLeftAligned $content
         Write-Information "Content length after Set-CodeBlockFencesLeftAligned: $($content.Length)"
 
-        $content = Set-MD022 $content
+        $content = Format-MD022 $content
         Write-Information "Content length after MD022: $($content.Length)"
         if (-not (Test-MD022 $content)) { Write-Warning "MD022 validation failed after fix. Leaving file as-is for inspection." }
 
-        $content = Set-MD019 $content
+        $content = Format-MD019 $content
         Write-Information "Content length after MD019: $($content.Length)"
 
-        $content = Set-MD023 $content
+        $content = Format-MD023 $content
         Write-Information "Content length after MD023: $($content.Length)"
         if (-not (Test-MD023 $content)) { Write-Warning "MD023 validation failed after fix. Leaving file as-is for inspection." }
 
-        $content = Set-MD029 $content
+        $content = Format-MD029 $content
         Write-Information "Content length after MD029: $($content.Length)"
         if (-not (Test-MD029 $content)) { Write-Warning "MD029 validation failed after fix. Leaving file as-is for inspection." }
 
-        $content = Set-MD038 $content
+        $content = Format-MD038 $content
         Write-Information "Content length after MD038: $($content.Length)"
         if (-not (Test-MD038 $content)) { Write-Warning "MD038 validation failed after fix. Leaving file as-is for inspection." }
 
-        $content = Set-MD007 $content
+        $content = Format-MD007 $content
         Write-Information "Content length after MD007: $($content.Length)"
         if (-not (Test-MD007 $content)) { Write-Warning "MD007 validation failed after fix. Leaving file as-is for inspection." }
 
-        $content = Set-MD055MD056 $content
+        $content = Format-MD055MD056 $content
         Write-Information "Content length after MD055MD056: $($content.Length)"
         if (-not (Test-MD055MD056 $content)) { Write-Warning "MD055/MD056 validation failed after fix. Leaving file as-is for inspection." }
 
         # 3. Aggressively remove all extra blank lines at the end (MD012)
-        $content = Set-MD012 $content
-        Write-Information "Content length after final Set-MD012: $($content.Length)"
+        $content = Format-MD012 $content
+        Write-Information "Content length after final Format-MD012: $($content.Length)"
         if (-not (Test-MD012 $content)) { Write-Warning "MD012 validation failed after final fix. Leaving file as-is for inspection." }
 
         Set-Content -Path $FilePath -Value $content -Encoding UTF8
@@ -701,3 +702,4 @@ function Main {
 }
 
 Main -FilePath $FilePath
+
