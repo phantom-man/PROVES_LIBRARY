@@ -619,6 +619,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
+    id1(Start)
     style id1 fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
@@ -628,6 +629,7 @@ flowchart LR
 flowchart LR
     classDef className fill:#f9f
     class nodeId className
+    nodeId(Node)
     A:::className --> B
 ```
 
@@ -635,6 +637,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
+    A --> B
     linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
 
@@ -907,6 +910,8 @@ c4:
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff0000', 'lineColor':'#333'}}}%%
+flowchart TD
+    A[Start] --> B[End]
 ```
 
 ### Base Theme Variables
