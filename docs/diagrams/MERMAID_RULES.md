@@ -1781,7 +1781,7 @@ flowchart LR
     classDef className fill:#f9f
     class nodeId className
     nodeId(Node)
-    A :className --> B
+    A:::className --> B
 ```
 
 #### Link styling
@@ -2187,7 +2187,7 @@ config:
 ---
 flowchart TB
     subgraph "My Subgraph Title"
-    spacer1[ ] :spacer
+    spacer1[ ]:::spacer
     REAL_NODE[Actual Content]
     OTHER_NODE[More Content]
 
@@ -2316,7 +2316,7 @@ config:
 ---
 flowchart TB
     START[Start Process]
-    DECISION{Is this a long question?} :diamond
+    DECISION{Is this a long question?}:::diamond
     YES[Yes Path]
     NO[No Path]
 
