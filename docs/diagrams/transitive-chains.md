@@ -31,7 +31,7 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 ### Complete Dependency Path
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -133,8 +133,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "Layer 1 Application"
         spacer39[ ] :spacer
@@ -260,7 +260,7 @@ This sequence diagram shows what happens when your system boots up. The tricky p
 ### Initialization Dependency Chain
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -362,8 +362,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     autonumber
     participant Main as main startup
@@ -432,7 +432,7 @@ sequenceDiagram
 ### Failure Modes
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -534,8 +534,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     START[main calls configureTopology]
 
@@ -583,7 +583,7 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 ### When I2C Read Fails
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -685,8 +685,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     START[RateGroup.run every 100ms]
 
@@ -777,7 +777,7 @@ This diagram shows how F-Prime's build system creates your code. When you run `f
 ### Compilation Dependency Chain
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -879,8 +879,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph "User Commands"
         spacer49[ ] :spacer
@@ -958,7 +958,7 @@ CPP_SRC -.->|uses| FW_BUF
 ### 1. Hidden Coupling
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1060,8 +1060,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 pie title Dependency Visibility
     "Direct visible in code" : 15
     "Transitive hidden deps" : 27

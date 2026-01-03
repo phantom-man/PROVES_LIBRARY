@@ -18,7 +18,7 @@ Think of the truth graph as a molecular structure:
 ## Molecular View of the Graph
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -120,8 +120,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph Molecule ["Truth Graph as Molecular Structure"]
         spacer24[ ] :spacer

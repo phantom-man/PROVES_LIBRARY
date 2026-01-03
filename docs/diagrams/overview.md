@@ -46,7 +46,7 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 ### By Criticality
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -148,8 +148,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 pie title Dependency Criticality Distribution
   "HIGH criticality" : 28
   "MEDIUM criticality" : 11
@@ -157,7 +157,7 @@ pie title Dependency Criticality Distribution
 ```
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -259,8 +259,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
 %% System Build/Config/Device Flowchart
 subgraph BUILD ["Build System - Compiles the code"]
@@ -305,7 +305,7 @@ classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 **What you're looking at:** How the PROVES Kit software controls power to different subsystems.
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -407,8 +407,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     LSM[LoadSwitchManager - Main power control class - Written in Python]
     subgraph TOOLS ["Software Tools It Uses"]
@@ -445,7 +445,7 @@ flowchart TB
 ### Configuration Flow
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -547,8 +547,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     participant User
     participant LSM as LoadSwitchManager
@@ -590,7 +590,7 @@ sequenceDiagram
 ### By Criticality
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -692,8 +692,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 pie title Dependency Criticality Distribution
     "HIGH criticality" : 28
     "MEDIUM criticality" : 11

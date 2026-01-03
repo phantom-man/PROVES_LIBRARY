@@ -45,7 +45,7 @@ cross-team failures when critical knowledge disappears.
 ## dY?-‹,? Agentic AI Structure
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -147,8 +147,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
   subgraph Sources
     A1[F Prime docs]
@@ -205,7 +205,7 @@ flowchart TB
 ## dY` Lifecycle: Curation Run
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -307,8 +307,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
   participant Doc as Documentation
   participant Curator

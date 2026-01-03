@@ -37,7 +37,7 @@ The system is in **active extraction phase** with strong momentum (73 extraction
 ## 1. Extraction Pipeline Status
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -139,8 +139,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph Discovery
         A[URLs Discovered 92 total]
@@ -194,7 +194,7 @@ The pipeline is healthy but **verification is the limiting factor**. We're extra
 ## 2. Knowledge Graph Structure Emergence
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -296,8 +296,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 graph TB
     subgraph Nodes_Extracted
         C[Components 29 nodes]
@@ -351,7 +351,7 @@ If not, these are **incomplete extractions** and need re-processing.
 ## 3. Data Quality Heatmap
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -453,8 +453,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     subgraph Quality_Metrics
         V[Verified Lineage 15 records 20%]
@@ -502,7 +502,7 @@ flowchart TD
 ## 4. Extraction Type Distribution
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -604,8 +604,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 pie title Extraction Types (74 total)
     "Components" : 29
     "Dependencies" : 30
@@ -645,7 +645,7 @@ Current extraction shows:
 ## 5. Verification Progress Over Time
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -747,8 +747,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 gantt
     title Extraction and Verification Timeline
     dateFormat YYYY-MM-DD
@@ -784,7 +784,7 @@ We're in a **classic early-stage pattern**: autonomous extraction is fast, human
 ## 6. Improvement Suggestions Analysis
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -886,8 +886,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph Suggestions_Generated
         M[Method Improvements 8 suggestions]
@@ -942,7 +942,7 @@ The system is **self-aware** and generating improvement suggestions. This is the
 ## 7. Emerging Mission Failure Patterns
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1044,8 +1044,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     subgraph Knowledge_Gaps
         G1[Interface Flow Data CRITICAL GAP]
@@ -1113,7 +1113,7 @@ The extraction is **revealing the knowledge gap that causes failures**. This is 
 ## 8. System Evolution Trajectory
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1215,8 +1215,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph Current_State
         C1[Discovery Phase 92 URLs]

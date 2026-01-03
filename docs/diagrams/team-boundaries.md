@@ -32,7 +32,7 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ### Organizational Structure
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -134,8 +134,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "NASA/JPL"
         spacer1[ ] :spacer
@@ -213,7 +213,7 @@ PROVES_LEAD -.->|minimal support| USER_3
 ### F-Prime Team ↔ PROVES Kit Team
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -315,8 +315,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph "F-Prime Knowledge"
         spacer5[ ] :spacer
@@ -389,7 +389,7 @@ This flowchart shows the journey developers take when they need integration know
 ### Where Integration Knowledge Lives
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -491,8 +491,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     START[Integration Knowledge Needed]
 
@@ -559,7 +559,7 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 ### University Team Lifecycle
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -661,8 +661,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 gantt
     title University Team Knowledge Retention
     dateFormat YYYY-MM
@@ -699,7 +699,7 @@ gantt
 ### Knowledge Loss Calculation
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -801,8 +801,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 pie title Knowledge Retention After Team Graduation
     "Lost knowledge from graduated teams" : 70
     "Degraded or partially remembered" : 20
@@ -826,7 +826,7 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 ### Organizational Dynamics
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -928,8 +928,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     autonumber
     participant TeamA as Team A 2020
@@ -1033,7 +1033,7 @@ sequenceDiagram
 ### What Gets Captured vs. Lost
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1135,8 +1135,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph LIFECYCLE["Mission Lifecycle"]
         direction TB
@@ -1221,7 +1221,7 @@ flowchart LR
 ### Knowledge at Risk by Interface
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1323,8 +1323,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 quadrantChart
     title Knowledge Loss Risk by Interface Strength
     x-axis Low Team Turnover --> High Team Turnover
@@ -1396,7 +1396,7 @@ quadrantChart
 ### How This System Addresses Team Boundary Issues
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1498,8 +1498,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "Traditional Approach"
         direction TB

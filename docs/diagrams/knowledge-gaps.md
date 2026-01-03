@@ -34,7 +34,7 @@ This sequence diagram shows the power-on process for an I2C device, with all the
 ### The Missing Specification
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -136,8 +136,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     participant LSM as LoadSwitchManager
     participant Power as Power Supply
@@ -190,7 +190,7 @@ sequenceDiagram
 ### Real-World Impact
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -292,8 +292,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     START[New developer integrates IMU]
 
@@ -354,7 +354,7 @@ This diagram shows electrical characteristics that software developers never thi
 ### The Missing Specification
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -456,8 +456,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "Power Supply Characteristics"
         spacer25[ ] :spacer
@@ -555,7 +555,7 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ### The Missing Integration
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -657,8 +657,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     START(( )) -->|System boot| Normal
 
@@ -752,7 +752,7 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ### The Missing Architecture
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -854,8 +854,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         spacer28[ ] :spacer
@@ -920,7 +920,7 @@ BUS -.->|unknown| DEV4
 ### Conflict Scenarios
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1022,8 +1022,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     participant App as Application
     participant IMU as IMU Manager
@@ -1092,7 +1092,7 @@ This diagram shows how F-Prime supports multiple platforms (Linux, Zephyr, bare 
 ### The Missing Cross-Platform Guide
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1194,8 +1194,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph "F-Prime Framework"
         spacer31[ ] :spacer
@@ -1304,7 +1304,7 @@ F_BAREMETAL -.->|how to combine?| P_C
 ### Gap Distribution
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1406,8 +1406,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5
@@ -1429,7 +1429,7 @@ pie title Knowledge Gaps by Category
 ### Time to Discover
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1531,8 +1531,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 gantt
     title Typical Discovery Timeline for Knowledge Gaps
     dateFormat YYYY-MM-DD

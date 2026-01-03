@@ -503,7 +503,7 @@ echo "âœ“ Diagram validation passed"
 ### 3. Subgraph Syntax
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -605,8 +605,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     subgraph id [Label Text]
         nodes...
@@ -623,7 +623,7 @@ flowchart TD
 #### Simple text
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -725,8 +725,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     id[This is text]
     id(Round edges)
@@ -736,7 +736,7 @@ flowchart TD
 #### Unicode/Special characters
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -838,8 +838,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     id["Unicode: â¤ works"]
     id["Escaped: #9829;"]
@@ -854,7 +854,7 @@ config:
 ```
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -956,8 +956,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     id["`**Bold** and *italic*`"]
 ```
@@ -970,7 +970,7 @@ flowchart LR
 - âœ… Markdown formatting with newlines:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1072,8 +1072,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     id["`Line 1
     Line 2
@@ -1085,7 +1085,7 @@ flowchart TD
 - âœ… `<br/>` is allowed:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1187,8 +1187,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     Alice->John: Hello<br/>World
 ```
@@ -1196,7 +1196,7 @@ sequenceDiagram
 - âœ… In participant aliases:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1298,8 +1298,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     participant A as Alice<br/>Johnson
 ```
@@ -1323,7 +1323,7 @@ sequenceDiagram
 #### Link text
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1425,8 +1425,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
 A -->|Text on link| B
     A -- Text --- B
@@ -1444,7 +1444,7 @@ flowchart LR
 ### 7. Comments
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1546,8 +1546,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 %% This is a comment
 %% Must start line with %%
 flowchart LR
@@ -1561,7 +1561,7 @@ flowchart LR
 #### Node styling
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1663,8 +1663,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     id1(Start)
     style id1 fill:#f9f,stroke:#333,stroke-width:4px
@@ -1673,7 +1673,7 @@ flowchart LR
 #### Classes
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1775,8 +1775,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     classDef className fill:#f9f
     class nodeId className
@@ -1787,7 +1787,7 @@ flowchart LR
 #### Link styling
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1889,8 +1889,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     A --> B
     linkStyle 0 stroke:#ff3,stroke-width:4px
@@ -1965,7 +1965,7 @@ flowchart:
 **Note:** With `htmlLabels: false`, you CANNOT use HTML tags like `<br/>` for line breaks. Use markdown backtick syntax instead:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -2067,8 +2067,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     id["`Line 1
     Line 2`"]
@@ -2081,7 +2081,7 @@ flowchart TD
 **Solution:** Add invisible "spacer" nodes at the top of each subgraph to create vertical separation:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -2183,8 +2183,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "My Subgraph Title"
     spacer1[ ] :spacer
@@ -2210,7 +2210,7 @@ flowchart TB
 **Solution:** Apply a smaller font size class to diamond nodes:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -2312,8 +2312,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     START[Start Process]
     DECISION{Is this a long question?} :diamond
@@ -2337,7 +2337,7 @@ DECISION -->|No| NO
 **Every flowchart should include these classDef statements at the end:**
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -2439,8 +2439,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     %% Font sizing classes for consistency
     classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
@@ -2612,7 +2612,7 @@ c4:
 ### Usage Syntax
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -2714,8 +2714,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff0000', 'lineColor':'#333'}}}%%
 flowchart TD
     A[Start] --> B[End]
@@ -3807,7 +3807,7 @@ config:
 
 ```markdown
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -3909,8 +3909,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
      A --> B
 ```
@@ -3938,7 +3938,7 @@ GitHub.com renders Mermaid server-side without custom CSS. To add borders to arr
 ## Theme Variables Reference
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -4040,8 +4040,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 %%{init: {'theme':'base', 'themeVariables': {
   'primaryColor':'#BB2528',
   'primaryTextColor':'#fff',
@@ -4062,7 +4062,7 @@ flowchart TD
 ### Node Shapes
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -4164,8 +4164,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
     id[Rectangle]
     id(Round edges)
@@ -4196,7 +4196,7 @@ flowchart RL   %% Right to Left
 ### Subgraph Direction
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -4298,8 +4298,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
   subgraph id
     direction TB
@@ -4322,7 +4322,7 @@ sequenceDiagram
 ### Messages
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -4424,8 +4424,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     A->B: solid no arrow
     A-->B: dotted no arrow
@@ -4441,7 +4441,7 @@ sequenceDiagram
 ### Activations
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -4543,8 +4543,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     activate Alice
     deactivate Alice
@@ -4556,7 +4556,7 @@ sequenceDiagram
 ### Notes
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -4658,8 +4658,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     Note right of Alice: Text
     Note left of Alice: Text
@@ -4674,7 +4674,7 @@ sequenceDiagram
 ### Loops/Alt/Par
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -4776,8 +4776,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     loop Every minute
         A->>B: Check
@@ -4803,7 +4803,7 @@ sequenceDiagram
 ### Transitions
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -4905,8 +4905,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 stateDiagram-v2
     [*] --> State1
     State1 --> State2: Transition label
@@ -4921,7 +4921,7 @@ stateDiagram-v2
 ### Composite States
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -5023,8 +5023,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 stateDiagram-v2
     state "Complex State" as CS {
         [*] --> SubState1
@@ -5053,7 +5053,7 @@ flowchart LR
 ```
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -5155,8 +5155,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 %% GOOD
 flowchart LR
     A["`Line 1
@@ -5207,7 +5207,7 @@ flowchart LR
 ```
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -5309,8 +5309,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 %% GOOD
 flowchart LR
     DEV["/dev/i2c-1 device"]
@@ -5338,7 +5338,7 @@ flowchart TD
 ```
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -5440,8 +5440,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 %% GOOD
 flowchart TD
     A --> End
@@ -5453,7 +5453,7 @@ flowchart TD
 ### Frontmatter
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -5555,8 +5555,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     A --> B
 ```
@@ -5564,7 +5564,7 @@ flowchart LR
 ### Directives
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -5666,8 +5666,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 %%{init: {'theme':'forest', 'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
     A --> B
@@ -5680,7 +5680,7 @@ flowchart LR
 #### Method 1: Frontmatter (affects entire diagram)
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -5782,8 +5782,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     A --> B --> C
 ```
@@ -5791,7 +5791,7 @@ flowchart LR
 #### Method 2: Directive (inline)
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -5893,8 +5893,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 %%{init: {'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
     A --> B --> C
@@ -6149,7 +6149,7 @@ config:
 **Solution**: Add invisible spacer nodes after each subgraph declaration:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -6251,8 +6251,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph MySection["My Section Title"]
     spacer1[" "] :spacer
@@ -6280,7 +6280,7 @@ flowchart TB
 3. Move details to connected nodes or edge labels
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -6382,8 +6382,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
 D{"Yes/No?"} :diamond --> |"Yes: User confirmed"| A["Action"]
 D --> |"No: User declined"| B["Other"]
@@ -6419,7 +6419,7 @@ D --> |"No: User declined"| B["Other"]
 3. For longer explanations, add a note node instead
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -6521,8 +6521,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TD
 A --> |"short label"| B
     B --> C
@@ -6554,7 +6554,7 @@ config:
 4. **Number steps**: Use `autonumber` for complex sequences
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -6656,8 +6656,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     autonumber
     participant U as User
@@ -6696,7 +6696,7 @@ config:
 #### CRITICAL: Always Quote Labels
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -6798,8 +6798,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 pie title My Chart
     "Label One" : 45
     "Label Two" : 30
@@ -6834,7 +6834,7 @@ config:
 #### Task Definition Rules
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -6936,8 +6936,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 gantt
     dateFormat YYYY-MM-DD
     title Project Timeline
@@ -6981,7 +6981,7 @@ config:
 #### CRITICAL: Always Quote Data Point Labels
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -7083,8 +7083,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 quadrantChart
     title Risk Assessment
     x-axis Low Risk --> High Risk

@@ -172,7 +172,7 @@ System analyzes its own extraction quality:
 ## Architecture: Agents → Verification → Access
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -274,8 +274,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 graph LR
     A[Documentation Sources] --> B[Smart Crawler]
     B --> C[Extraction Agents]

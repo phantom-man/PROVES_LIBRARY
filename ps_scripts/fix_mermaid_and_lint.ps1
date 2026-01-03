@@ -177,7 +177,7 @@ function Repair-MermaidBlock {
     $blockContent = $blockContent.TrimStart().TrimStart('\').TrimStart()
     $blockContent = $blockContent.TrimStart().TrimStart('\').TrimStart()
     # 2. Prepend Fresh Frontmatter
-    $blockContent = "---\`n$FallThemeYaml\`n---\`n" + $blockContent
+    $blockContent = "---`n$FallThemeYaml`n---`n" + $blockContent
     # 3. Determine Diagram Type (for specific rules)
     $isSequence = $blockContent -match '(?m)^sequenceDiagram'
     # 3. Apply Syntax Fixes

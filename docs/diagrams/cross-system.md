@@ -53,7 +53,7 @@ Neither F-Prime documentation nor PROVES Kit documentation mentions the other sy
 ### The Hidden Dependency
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -155,8 +155,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph "F-Prime System (NASA/JPL)"
         spacer16[ ] :spacer
@@ -249,7 +249,7 @@ Mission continues without IMU (silent failure)
 ### Temporal Ordering Requirement
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -351,8 +351,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 sequenceDiagram
     autonumber
     participant Topology as Topology.cpp configureTopology
@@ -417,7 +417,7 @@ No alert that power sequencing is wrong
 ### Bus Sharing Conflicts
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -519,8 +519,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "F-Prime Configuration"
         spacer19[ ] :spacer
@@ -602,7 +602,7 @@ Attitude determination fails
 ### Missing Integration
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -704,8 +704,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     START[F-Prime I2C Read Operation]
     READ{I2C Status} :diamond
@@ -789,7 +789,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 ### Team Interface Strength
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -891,8 +891,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph "NASA/JPL Team"
         spacer22[ ] :spacer
@@ -959,7 +959,7 @@ UNI_A -.->|graduated/left| UNI_B
 ### Estimated Risk
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -1061,8 +1061,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 quadrantChart
     title Risk Matrix: Cross-System Dependencies
     x-axis Low Impact --> High Impact

@@ -30,7 +30,7 @@ Consider an [MPU6050 IMU sensor](https://cdn-learn.adafruit.com/downloads/pdf/mp
 - The application layer uses the device manager component to obtain sensor data when needed.
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -132,8 +132,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 graph LR
     subgraph SW["F´ Software"]
         A[Application Layer] -->|Read sensor data| B[ImuManager Device Manager]

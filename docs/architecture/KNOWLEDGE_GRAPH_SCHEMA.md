@@ -103,7 +103,7 @@ Edge:
 ## Identity / Equivalence Relations
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -205,8 +205,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     A[Component A v1.0] -->|IDENTICAL| B[Component A v1.0 different repo]
     C[old_name] -->|ALIAS_OF| D[new_name v2.0 rename]
@@ -252,7 +252,7 @@ flowchart LR
 ## Dependency / Influence Relations
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -354,8 +354,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     SW[Software Component] -->|REQUIRES| HW[Hardware Element]
     Config[Config File] -->|CONFIGURES| SW
@@ -432,7 +432,7 @@ The trick to "sideways cascades" is treating resources as nodes.
 ### Power Cascade Example
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -534,8 +534,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     Radio[RadioTX Component] -->|CONSUMES| P1[PowerRail_3V3]
     P1 -->|CONSTRAINS| MCU[MCU BrownoutMargin]

@@ -48,7 +48,7 @@ In a nearly decomposable architecture (NDA), different modules—human teams, AI
 In reality, **contact exists on a continuous scale** representing the degree of coupling between a phenomenon and an observing system.
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -150,8 +150,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph "Contact Continuum"
         direction LR
@@ -195,7 +195,7 @@ A knowledge item is capturable if and only if:
 1. **That domain admits recording** — even if lossy, uninterpreted, or non-symbolic
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -297,8 +297,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "Capturable Knowledge"
         P[Phenomenon] -->|Emits signal| S[Signal]
@@ -335,7 +335,7 @@ This corresponds to **indirect or effect-only contact**, which remains valid kno
 
 **Example:**
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -437,8 +437,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     subgraph "Effect-Based Knowledge (Valid)"
         B[Bearing Condition Not directly observed] -->|Causes| E[Unusual Sound Observed effect]
@@ -477,7 +477,7 @@ The underlying contact value remains continuous and should be preserved in the s
 Contact and Directionality together define a **shared epistemic space** that can be visualized geometrically:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -579,8 +579,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 quadrantChart
     title Epistemic Space (Contact × Directionality)
     x-axis "Contact (Low → High)"
@@ -623,7 +623,7 @@ Both human and AI systems occupy positions within the same contact continuum.
 **This difference is structural, not qualitative.**
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -725,8 +725,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "Human Epistemic Range"
         direction LR
@@ -821,7 +821,7 @@ Episodes need to be first-class entities with relationships to components, state
 These are orthogonal dimensions. Knowledge can have any combination:
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -923,8 +923,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph "Example Combinations"
         A["High Contact + Backward Inference  Technician hears bearing sound infers condition from effect"]
