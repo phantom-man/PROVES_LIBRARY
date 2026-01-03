@@ -415,21 +415,43 @@ function Set-MD055MD056 {
     $lines = $content -split "`n"
     $out = New-Object System.Collections.ArrayList
     $i = 0
+    $inCode = $false
     while ($i -lt $lines.Length) {
         $line = $lines[$i]
+        
+        # Track code blocks
+        if ($line -match '^\s*```') {
+            $inCode = -not $inCode
+            $out.Add($line) | Out-Null
+            $i++
+            continue
+        }
+        
+        if ($inCode) {
+            $out.Add($line) | Out-Null
+            $i++
+            continue
+        }
+
         # Detect table header (must have at least one pipe, not code block)
-        if ($line -match '^\s*\S.*\|.*$' -and $line -notmatch '^\s*```') {
+        if ($line -match '^\s*\S.*\|.*$') {
             # Skip lines that are headings, not table rows
             if ($line -match '^#+ ') { $out.Add($line) | Out-Null; $i++; continue }
+            
             # Table block: collect all contiguous lines with at least one pipe
             $table = @($line)
             $j = $i+1
-            while ($j -lt $lines.Length -and $lines[$j] -match '^\s*\S.*\|.*$' -and $lines[$j] -notmatch '^\s*```') {
-                $table += $lines[$j]
+            while ($j -lt $lines.Length) {
+                $nextLine = $lines[$j]
+                if ($nextLine -match '^\s*```') { break } # Stop at code fence
+                if ($nextLine -notmatch '^\s*\S.*\|.*$') { break } # Stop at non-table line
+                $table += $nextLine
                 $j++
             }
+            
             # Determine max columns from header or max row
             $headerCols = ($table | ForEach-Object { ($_ -split '\|').Count }) | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
+            
             # Fix each row
             for ($k = 0; $k -lt $table.Count; $k++) {
                 $row = $table[$k].Trim()
@@ -437,12 +459,14 @@ function Set-MD055MD056 {
                 # Remove empty leading/trailing cells from split
                 if ($rowCells[0] -eq '') { $rowCells = $rowCells[1..($rowCells.Count-1)] }
                 if ($rowCells[-1] -eq '') { $rowCells = $rowCells[0..($rowCells.Count-2)] }
+                
                 # Pad or trim to headerCols
                 if ($rowCells.Count -lt $headerCols) {
                     $rowCells += @(' ' * ($headerCols - $rowCells.Count))
                 } elseif ($rowCells.Count -gt $headerCols) {
                     $rowCells = $rowCells[0..($headerCols-1)]
                 }
+                
                 # Always add leading/trailing pipes
                 $fixedRow = '|' + ($rowCells -join '|') + '|'
                 $out.Add($fixedRow) | Out-Null

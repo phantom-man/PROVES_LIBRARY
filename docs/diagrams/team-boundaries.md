@@ -239,21 +239,21 @@ flowchart TB
         USER_3[New Universities]
     end
 
-|JPL_CORE -->|maintains| JPL_DOC|  |  |  |  |  |  |  |  |  |
-|JPL_CORE -->|publishes| JPL_REL|  |  |  |  |  |  |  |  |  |
-|JPL_DOC -.->|weak link| PROVES_LEAD|  |  |  |  |  |  |  |  |  |
+JPL_CORE -->|maintains| JPL_DOC
+JPL_CORE -->|publishes| JPL_REL
+JPL_DOC -.->|weak link| PROVES_LEAD
 
-|PROVES_LEAD -->|coordinates| PROVES_DEV|  |  |  |  |  |  |  |  |  |
-|PROVES_DEV -.->|weak link| UNI_A_2020|  |  |  |  |  |  |  |  |  |
-|PROVES_DEV -.->|weak link| UNI_B_2022|  |  |  |  |  |  |  |  |  |
-|PROVES_DEV -.->|weak link| UNI_C_2024|  |  |  |  |  |  |  |  |  |
+PROVES_LEAD -->|coordinates| PROVES_DEV
+PROVES_DEV -.->|weak link| UNI_A_2020
+PROVES_DEV -.->|weak link| UNI_B_2022
+PROVES_DEV -.->|weak link| UNI_C_2024
 
-|UNI_A_2020 -.->|graduated| UNI_B_2022|  |  |  |  |  |  |  |  |  |
-|UNI_B_2022 -.->|graduated| UNI_C_2024|  |  |  |  |  |  |  |  |  |
+UNI_A_2020 -.->|graduated| UNI_B_2022
+UNI_B_2022 -.->|graduated| UNI_C_2024
 
-|PROVES_LEAD -.->|minimal support| USER_1|  |  |  |  |  |  |  |  |  |
-|PROVES_LEAD -.->|minimal support| USER_2|  |  |  |  |  |  |  |  |  |
-|PROVES_LEAD -.->|minimal support| USER_3|  |  |  |  |  |  |  |  |  |
+PROVES_LEAD -.->|minimal support| USER_1
+PROVES_LEAD -.->|minimal support| USER_2
+PROVES_LEAD -.->|minimal support| USER_3
 
     style JPL_CORE fill:#e1f5ff
     style PROVES_LEAD fill:#fff4e1
@@ -487,13 +487,13 @@ flowchart LR
         P_COM["Community [WARNING] Mostly university teams"]
     end
 
-|F_PUB -.->|weak| INT|  |  |  |  |  |  |  |  |  |
-|F_CODE -.->|weak| INT|  |  |  |  |  |  |  |  |  |
-|F_COM -.->|weak| INT|  |  |  |  |  |  |  |  |  |
+F_PUB -.->|weak| INT
+F_CODE -.->|weak| INT
+F_COM -.->|weak| INT
 
-|INT -.->|weak| P_PUB|  |  |  |  |  |  |  |  |  |
-|INT -.->|weak| P_CODE|  |  |  |  |  |  |  |  |  |
-|INT -.->|weak| P_COM|  |  |  |  |  |  |  |  |  |
+INT -.->|weak| P_PUB
+INT -.->|weak| P_CODE
+INT -.->|weak| P_COM
 
     style F_PUB fill:#c8e6c9
     style F_CODE fill:#c8e6c9
@@ -736,19 +736,19 @@ flowchart TB
     LOST[Knowledge Lost at Graduation]
 
     START --> DOC_F
-|DOC_F -->|Not found| DOC_P|  |  |  |  |  |  |  |  |  |
-|DOC_P -->|Not found| TRIBAL|  |  |  |  |  |  |  |  |  |
+DOC_F -->|Not found| DOC_P
+DOC_P -->|Not found| TRIBAL
 
     TRIBAL --> WHO
 
-|WHO -->|Contact JPL| JPL_ENG|  |  |  |  |  |  |  |  |  |
-|WHO -->|Contact PROVES| PROVES_ENG|  |  |  |  |  |  |  |  |  |
-|WHO -->|Contact University| UNI_ENG|  |  |  |  |  |  |  |  |  |
+WHO -->|Contact JPL| JPL_ENG
+WHO -->|Contact PROVES| PROVES_ENG
+WHO -->|Contact University| UNI_ENG
 
-|JPL_ENG -.->|Doesn't know| DISCOVER|  |  |  |  |  |  |  |  |  |
+JPL_ENG -.->|Doesn't know| DISCOVER
     UNI_ENG --> DISCOVER
 
-|PROVES_ENG -->|Has knowledge| CAPTURE|  |  |  |  |  |  |  |  |  |
+PROVES_ENG -->|Has knowledge| CAPTURE
     DISCOVER --> CAPTURE
     CAPTURE --> LOST
 
