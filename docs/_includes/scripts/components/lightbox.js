@@ -1,4 +1,4 @@
-{%- include scripts/utils/imagesLoad.js -%}
+// {%- include scripts/utils/imagesLoad.js -%}
 (function () {
   var SOURCES = window.TEXT_VARIABLES.sources;
   window.Lazyload.js(SOURCES.jquery, function() {
