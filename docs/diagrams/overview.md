@@ -45,42 +45,46 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 
 ### By Criticality
 
+
+
 ```mermaid
 pie title Dependency Criticality Distribution
   "HIGH criticality" : 28
   "MEDIUM criticality" : 11
   "LOW criticality" : 3
 ```
-        FPP[FPP files Component definitions]
-    end
 
-    subgraph TOPO ["System Configuration - How components connect"]
-        spacer35[ ]:::spacer
-        TOPO_FILE[topology.fpp - Defines which components exist]
-        CONFIG[configureTopology function - Sets up connections at startup]
-    end
-
-    subgraph DEVICE ["Hardware Configuration - Device settings"]
-        spacer36[ ]:::spacer
-        ADDR[I2C Address 0x68 - How to find the IMU on the bus]
-        REGS[IMU Register Addresses - RESET 0x00, CONFIG 0x01, DATA 0x10]
-        VALS[Register Values - What to write to configure the sensor]
-    end
-
-|FPUTIL -->|"Compiles"| TOPO_FILE|
-|FPP -->|"Generates code for"| TOPO_FILE|
-|TOPO_FILE -->|"Used by"| CONFIG|
-|CONFIG -->|"Must set correct"| ADDR|
-|ADDR -->|"Comes from sensor datasheet"| REGS|
-|REGS -->|"Require correct"| VALS|
-
-    style BUILD fill:#e8f5e9
-    style TOPO fill:#fff3e0
-    style DEVICE fill:#fce4ec
-    %% Font sizing classes for consistency
-    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
-    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
-    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
+```mermaid
+%% System Build/Config/Device Flowchart
+subgraph BUILD ["Build System - Compiles the code"]
+  spacer34[ ]:::spacer
+  FPUTIL[fprime-util Build command]
+  FPP[FPP files Component definitions]
+end
+subgraph TOPO ["System Configuration - How components connect"]
+  spacer35[ ]:::spacer
+  TOPO_FILE[topology.fpp - Defines which components exist]
+  CONFIG[configureTopology function - Sets up connections at startup]
+end
+subgraph DEVICE ["Hardware Configuration - Device settings"]
+  spacer36[ ]:::spacer
+  ADDR[I2C Address 0x68 - How to find the IMU on the bus]
+  REGS[IMU Register Addresses - RESET 0x00, CONFIG 0x01, DATA 0x10]
+  VALS[Register Values - What to write to configure the sensor]
+end
+FPUTIL -->|"Compiles"| TOPO_FILE
+FPP -->|"Generates code for"| TOPO_FILE
+TOPO_FILE -->|"Used by"| CONFIG
+CONFIG -->|"Must set correct"| ADDR
+ADDR -->|"Comes from sensor datasheet"| REGS
+REGS -->|"Require correct"| VALS
+style BUILD fill:#e8f5e9
+style TOPO fill:#fff3e0
+style DEVICE fill:#fce4ec
+%% Font sizing classes for consistency
+classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Why this matters:** If the I2C address in code (0x68) doesn't match the hardware's actual address, communication fails silently.
@@ -93,34 +97,38 @@ pie title Dependency Criticality Distribution
 
 **What you're looking at:** How the PROVES Kit software controls power to different subsystems.
 
-```mermaid
----
 
-```mermaid
-flowchart TB
+  ```mermaid
+  flowchart TB
     LSM[LoadSwitchManager - Main power control class - Written in Python]
-
     subgraph TOOLS ["Software Tools It Uses"]
-        spacer37[ ]:::spacer
-        DIO[digitalio.DigitalInOut - Controls GPIO pins]
-        LOGGER[Logger - Records events]
-        STATE[switch_states dict - Tracks on/off status]
+      spacer37[ ]:::spacer
+      DIO[digitalio.DigitalInOut - Controls GPIO pins]
+      LOGGER[Logger - Records events]
+      STATE[switch_states dict - Tracks on/off status]
     end
-
     subgraph DEVICES ["Hardware It Powers"]
-        spacer38[ ]:::spacer
-        RADIO[Radio - board.RADIO_ENABLE]
-        IMU[IMU Sensor - board.IMU_ENABLE]
-        MAG[Magnetometer - board.MAG_ENABLE]
-        CAM[Camera - board.CAMERA_ENABLE]
+      spacer38[ ]:::spacer
+      RADIO[Radio - board.RADIO_ENABLE]
+      IMU[IMU Sensor - board.IMU_ENABLE]
+      MAG[Magnetometer - board.MAG_ENABLE]
+      CAM[Camera - board.CAMERA_ENABLE]
     end
-
-LSM -->|Uses| DIO
-LSM -->|Uses| LOGGER
-LSM -->|Uses| STATE
-
-LSM -->|Controls power to| RADIO
-LSM -->|Controls power to| IMU
+    LSM -->|Uses| DIO
+    LSM -->|Uses| LOGGER
+    LSM -->|Uses| STATE
+    LSM -->|Controls power to| RADIO
+    LSM -->|Controls power to| IMU
+    LSM -->|Controls power to| MAG
+    LSM -->|Controls power to| CAM
+    style LSM fill:#e1f5ff
+    style TOOLS fill:#fff9c4
+    style DEVICES fill:#ffebee
+    %% Font sizing classes for consistency
+    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
+  ```
 LSM -->|Controls power to| MAG
 LSM -->|Controls power to| CAM
 
