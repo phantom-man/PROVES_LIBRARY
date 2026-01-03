@@ -2073,7 +2073,7 @@ flowchart TD
 
 ### Direction
 
-```mermaid
+```text
 flowchart TB   %% Top to Bottom
 flowchart TD   %% Top-Down (same as TB)
 flowchart BT   %% Bottom to Top
