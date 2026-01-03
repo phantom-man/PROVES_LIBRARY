@@ -49,44 +49,44 @@ Now, let's set up a basic FastAPI project structure:
 
 1. Create a new directory for your project and navigate to it:
 
-```bash
-mkdir webhook-receiver
-cd webhook-receiver
-```
+   ```bash
+   mkdir webhook-receiver
+   cd webhook-receiver
+   ```
 
 2. Create a virtual environment and activate it:
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows, use: venv\Scripts\activate
-```
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+   ```
 
 3. Install the required packages:
 
-```bash
-pip install fastapi uvicorn sqlalchemy asyncpg python-dotenv pydantic pydantic-settings httpx psycopg2-binary greenlet
-```
+   ```bash
+   pip install fastapi uvicorn sqlalchemy asyncpg python-dotenv pydantic pydantic-settings httpx psycopg2-binary greenlet
+   ```
 
 4. Create a basic directory structure:
 
-```bash
-mkdir app
-touch app/__init__.py
-touch app/main.py
-touch app/config.py
-touch app/models.py
-touch app/database.py
-touch .env
-```
+   ```bash
+   mkdir app
+   touch app/__init__.py
+   touch app/main.py
+   touch app/config.py
+   touch app/models.py
+   touch app/database.py
+   touch .env
+   ```
 
 5. Set up the environment variables by adding the following to the `.env` file:
 
-```
-DATABASE_URL=postgres://[user]:[password]@[hostname]/[database]?sslmode=require&channel_binding=require
-WEBHOOK_SECRET=your_webhook_secret  # We'll use this later for verification
-```
+   ```
+   DATABASE_URL=postgres://[user]:[password]@[hostname]/[database]?sslmode=require&channel_binding=require
+   WEBHOOK_SECRET=your_webhook_secret  # We'll use this later for verification
+   ```
 
-Replace the placeholders in the `DATABASE_URL` with your Neon connection details.
+   Replace the placeholders in the `DATABASE_URL` with your Neon connection details.
 
 ## Design the Database Schema
 
@@ -416,17 +416,17 @@ Once you have an account and ngrok installed, follow these steps to test your we
 
 1. Start your FastAPI application:
 
-```bash
-uvicorn app.main:app --reload
-```
+   ```bash
+   uvicorn app.main:app --reload
+   ```
 
 2. Use ngrok to expose your local server to the internet:
 
-```bash
-ngrok http 8000
-```
+   ```bash
+   ngrok http 8000
+   ```
 
-ngrok will provide you with a public URL (e.g., `https://abc123.ngrok.io`) that forwards to your local server. For testing, you can use this URL as the webhook endpoint. For production, you would want to deploy your FastAPI application to a server with a public IP address and domain along with an SSL certificate.
+   ngrok will provide you with a public URL (e.g., `https://abc123.ngrok.io`) that forwards to your local server. For testing, you can use this URL as the webhook endpoint. For production, you would want to deploy your FastAPI application to a server with a public IP address and domain along with an SSL certificate.
 
 3. If you don't have a GitHub repository to test with, create a new repository or use an existing one, and set up a webhook:
    - Go to your GitHub repository
