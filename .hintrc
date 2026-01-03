@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "apple-touch-icons": "off",
+    "compat-api/html": "off",
+    "app-manifest/file-extension": "off",
+    "app-manifest/is-valid": "off"
+  }
+}
