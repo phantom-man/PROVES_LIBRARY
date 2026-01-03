@@ -19,14 +19,15 @@ import uuid
 from datetime import datetime
 from typing import Literal
 
-# Add neon-database to path for database utilities
-neon_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../neon-database/scripts'))
-sys.path.insert(0, neon_db_path)
+# Add production/core to path for database utilities
+core_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../core'))
+sys.path.insert(0, core_path)
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
+
 from graph_manager import GraphManager
 
 
@@ -450,9 +451,23 @@ def store_extraction(
             extraction_id = cur.fetchone()[0]
 
             # Insert into knowledge_epistemics sidecar (epistemic metadata)
-            # Prepare representation_media as array
+            # Derive representation_media deterministically from signal_type if not provided
             if representation_media is None:
-                representation_media = ['text']
+                # DETERMINISTIC MAPPING: signal_type → representation_media
+                signal_to_media = {
+                    'text': ['text'],
+                    'code': ['code', 'text'],
+                    'spec': ['spec', 'text'],
+                    'comment': ['comment', 'text'],
+                    'diagram': ['diagram', 'image'],
+                    'log': ['log', 'text'],
+                    'telemetry': ['telemetry', 'data'],
+                    'binary': ['binary'],
+                    'audio': ['audio'],
+                    'video': ['video'],
+                    'image': ['image'],
+                }
+                representation_media = signal_to_media.get(signal_type, ['text'])  # Fallback to text
 
             # Convert timestamps to proper format if provided as strings
             observed_at_ts = observed_at if observed_at else None

@@ -1,25 +1,43 @@
 """
-Curator Orchestration (v2) - Using Deep Agents SubAgentMiddleware
+Curator Orchestration (v3) - Testing Refactors
+
+This is version 3 of the curator agent that uses refactored agent files:
+- validator_v3.py (lineage verification + epistemic validation)
+- storage_v3.py (receives verification results + epistemic defaults/overrides)
+- subagent_specs_v3.py
 
 This module orchestrates the extraction pipeline using explicit control flow:
-1. Extractor: Fetch page, extract architecture, verify lineage
-2. Validator: Check duplicates, verify quality
-3. Storage: Save to staging_extractions
+1. Extractor: Fetch page, extract architecture
+2. Validator: Verify lineage + epistemic structure, check duplicates
+3. Storage: Save to staging_extractions with verification results
 
 No curator agent - just Python orchestration of subagents.
 """
 import os
 import re
+from pathlib import Path
 from psycopg_pool import ConnectionPool
 from langgraph.checkpoint.postgres import PostgresSaver
 from langchain.agents import create_agent
 from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
 
-# Load environment
-load_dotenv(os.path.join(os.path.dirname(__file__), '../../..', '.env'))
+# Setup paths
+# Now in production/Version 3/, so go up 2 levels to reach project root
+version3_folder = Path(__file__).parent
+project_root = version3_folder.parent.parent
+production_root = project_root / 'production'
 
-from .subagent_specs import (
+# Add paths
+import sys
+sys.path.insert(0, str(production_root))
+sys.path.insert(0, str(version3_folder))
+
+# Load environment
+load_dotenv(project_root / '.env')
+
+# Import from v3 subagent specs
+from subagent_specs_v3 import (
     get_extractor_spec,
     get_validator_spec,
     get_storage_spec,
@@ -28,19 +46,30 @@ from .subagent_specs import (
 
 def create_curator():
     """
-    Create the extraction orchestration system.
+    Create the extraction orchestration system using BACKUP specs.
 
     Returns:
         dict with three subagent runnables and checkpointer
     """
 
-    # Initialize PostgreSQL checkpointer (Neon)
+    # Initialize PostgreSQL checkpointer (Neon) with SSL config
     db_url = os.getenv('NEON_DATABASE_URL')
-    pool = ConnectionPool(conninfo=db_url, min_size=1, max_size=5)
+    pool = ConnectionPool(
+        conninfo=db_url,
+        min_size=1,
+        max_size=5,
+        timeout=30,  # Connection timeout in seconds
+        kwargs={
+            "keepalives": 1,
+            "keepalives_idle": 30,
+            "keepalives_interval": 10,
+            "keepalives_count": 5,
+        }
+    )
     checkpointer = PostgresSaver(pool)
     checkpointer.setup()
 
-    # Get subagent specifications
+    # Get subagent specifications (from BACKUP files)
     extractor_spec = get_extractor_spec()
     validator_spec = get_validator_spec()
     storage_spec = get_storage_spec()
@@ -89,7 +118,7 @@ def orchestrate_extraction(url: str, agents: dict, config: dict) -> dict:
     """
 
     # STEP 1: EXTRACT (with lineage verification)
-    print(f"\n[STEP 1/3] Extracting from: {url}")
+    print(f"\n[TEST STEP 1/3] Extracting from: {url}")
     extractor_task = f"""Extract architecture from this URL: {url}
 
 Your task:
@@ -125,21 +154,26 @@ Return format:
 
     print(f"[OK] Extraction completed")
 
-    # STEP 2: VALIDATE
-    print(f"\n[STEP 2/3] Validating extractions...")
+    # STEP 2: VALIDATE (using BACKUP validator with new tools)
+    print(f"\n[TEST STEP 2/3] Validating extractions with BACKUP validator...")
     validator_task = f"""Validate the following extraction results:
 
 {final_message}
 
-Your task:
-1. Check for duplicates in core_entities and staging_extractions
-2. Verify lineage integrity (checksums, byte offsets)
-3. Check quality and completeness
+Your task (USING NEW REFACTOR TOOLS):
+1. Use validate_epistemic_structure() to check epistemic defaults + overrides
+2. Use verify_evidence_lineage() to check lineage for each extraction
+3. Check for duplicates in core_entities and staging_extractions
 4. Return APPROVED or REJECTED with reasoning
 
+CRITICAL - NEW TOOLS:
+- validate_epistemic_structure(epistemic_defaults, epistemic_overrides)
+- verify_evidence_lineage(snapshot_id, evidence_text)
+
 If ANY duplicates found, REJECT immediately.
+If epistemic structure invalid, REJECT.
 If lineage_confidence < 0.5, REJECT.
-Otherwise, APPROVE.
+Otherwise, APPROVE and include verification results.
 """
 
     validator_result = agents["validator"].invoke(
@@ -149,7 +183,7 @@ Otherwise, APPROVE.
 
     validator_message = validator_result["messages"][-1].content
 
-    # Check if validation approved
+    # Check if validation rejected
     if "REJECTED" in validator_message.upper():
         return {
             "status": "rejected",
@@ -158,27 +192,26 @@ Otherwise, APPROVE.
             "extractor_output": final_message
         }
 
-    if "APPROVED" not in validator_message.upper():
-        return {
-            "status": "failed",
-            "stage": "validation",
-            "error": "Validator did not return clear decision",
-            "validator_output": validator_message
-        }
+    # If not explicitly rejected, proceed to storage
+    print(f"[OK] Validation completed with BACKUP validator")
 
-    print(f"[OK] Validation approved")
-
-    # STEP 3: STORE
-    print(f"\n[STEP 3/3] Storing validated extractions...")
+    # STEP 3: STORE (using BACKUP storage with new parameters)
+    print(f"\n[TEST STEP 3/3] Storing validated extractions with BACKUP storage...")
     storage_task = f"""Store the following VALIDATED extraction results:
 
 {final_message}
 
-Your task:
+VALIDATOR RESULTS:
+{validator_message}
+
+Your task (USING NEW REFACTOR PARAMETERS):
 1. Parse the extraction data
-2. Store each coupling in staging_extractions
-3. Include snapshot_id, lineage data, and all evidence
-4. Return confirmation with extraction_ids
+2. Extract lineage verification results from validator output
+3. Extract epistemic defaults + overrides from validator output
+4. Store each coupling in staging_extractions with:
+   - lineage_verified, lineage_confidence (from validator)
+   - epistemic_defaults, epistemic_overrides (will be merged deterministically)
+5. Return confirmation with extraction_ids
 
 Use the store_extraction() tool for each coupling.
 """
@@ -192,7 +225,7 @@ Use the store_extraction() tool for each coupling.
     last_message = storage_result["messages"][-1]
     storage_message = last_message.content if hasattr(last_message, 'content') else last_message.get('content', str(last_message))
 
-    print(f"[OK] Storage completed")
+    print(f"[OK] Storage completed with BACKUP storage")
 
     return {
         "status": "success",
@@ -205,7 +238,7 @@ Use the store_extraction() tool for each coupling.
 # For backward compatibility with process_extractions.py
 # Create a graph-like interface that uses orchestration under the hood
 class OrchestrationGraph:
-    """Wrapper to make orchestration look like a LangGraph graph"""
+    """Wrapper to make orchestration look like a LangGraph graph (BACKUP VERSION)"""
 
     def __init__(self):
         self.agents = create_curator()
@@ -241,16 +274,16 @@ class OrchestrationGraph:
 
         # Format response
         if result["status"] == "success":
-            response = f"""[SUCCESS] Extraction pipeline completed
+            response = f"""[TEST SUCCESS] Extraction pipeline completed with BACKUP refactors
 
 Extractor: {result['extractor_output'][:200]}...
 
-Validator: {result['validator_output'][:200]}...
+Validator (BACKUP with verify_evidence_lineage): {result['validator_output'][:200]}...
 
-Storage: {result['storage_output']}
+Storage (BACKUP with lineage fields): {result['storage_output']}
 """
         else:
-            response = f"""[{result['status'].upper()}] Pipeline stopped at {result['stage']}
+            response = f"""[TEST {result['status'].upper()}] Pipeline stopped at {result['stage']}
 
 {result.get('error', result.get('reason', 'Unknown error'))}
 """
@@ -263,5 +296,5 @@ Storage: {result['storage_output']}
         }
 
 
-# Export the graph for process_extractions.py
+# Export the graph for process_extractions_BACKUP.py
 graph = OrchestrationGraph()

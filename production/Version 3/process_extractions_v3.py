@@ -1,12 +1,16 @@
 """
-Process Extraction Queue - Curator Agent
+Process Extraction Queue - Curator Agent v3
+
+This is version 3 of process_extractions that uses refactored agent files:
+- agent_v3.py (orchestration with refactored tools)
+- validator_v3.py (lineage verification + epistemic validation)
+- storage_v3.py (receives verification results + epistemic defaults/overrides)
 
 Reads URLs from urls_to_process table and processes them with the curator agent.
 Uses context hints from WebFetch to focus extraction.
 
 Usage:
-    python process_extractions.py --limit 10
-    python process_extractions.py --continuous  # Keep processing until queue empty
+    python testing/scripts/refactor_pre_lineage_folder/process_extractions_v3.py --limit 1
 """
 
 import os
@@ -17,10 +21,93 @@ from dotenv import load_dotenv
 import psycopg
 
 # Setup paths
-sys.path.insert(0, str(Path(__file__).parent.parent))
-load_dotenv(os.path.join(Path(__file__).parent.parent, '.env'))
+# Now in production/Version 3/, so go up 2 levels to reach project root
+version3_folder = Path(__file__).parent
+project_root = version3_folder.parent.parent
+production_root = project_root / 'production'
 
-from src.curator.agent_v2 import graph
+# Add paths
+sys.path.insert(0, str(production_root))
+sys.path.insert(0, str(version3_folder))
+
+# Load environment
+load_dotenv(project_root / '.env')
+
+# Import from v3 agent
+from agent_v3 import graph
+
+
+def ensure_webhook_server_running():
+    """
+    Ensure the Notion webhook server is running.
+    If not, start it as a background process.
+    """
+    import subprocess
+    import requests
+    import time
+
+    # Check if webhook server is already running by trying to connect
+    try:
+        response = requests.get('http://localhost:8000/health', timeout=2)
+        if response.status_code == 200:
+            print("[OK] Notion webhook server is already running")
+            return True
+    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+        pass
+
+    # Server not running, start it
+    print("Starting Notion webhook server...")
+    webhook_script = project_root / 'notion' / 'scripts' / 'notion_webhook_server.py'
+
+    if not webhook_script.exists():
+        print(f"Warning: Webhook server script not found at {webhook_script}")
+        return False
+
+    # Start webhook server as background process
+    try:
+        # Create log file for webhook server output
+        webhook_log = project_root / 'webhook_server.log'
+        log_file = open(webhook_log, 'w')
+
+        if sys.platform == 'win32':
+            # Windows: use CREATE_NEW_PROCESS_GROUP to detach
+            subprocess.Popen(
+                [sys.executable, str(webhook_script)],
+                creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
+                cwd=str(webhook_script.parent)
+            )
+        else:
+            # Unix: use start_new_session to detach
+            subprocess.Popen(
+                [sys.executable, str(webhook_script)],
+                start_new_session=True,
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
+                cwd=str(webhook_script.parent)
+            )
+
+        print(f"Webhook server output: {webhook_log}")
+
+        # Wait a moment for server to start
+        print("Waiting for webhook server to start...")
+        for _ in range(10):
+            time.sleep(1)
+            try:
+                response = requests.get('http://localhost:8000/health', timeout=2)
+                if response.status_code == 200:
+                    print("[OK] Notion webhook server started successfully")
+                    return True
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                continue
+
+        print("Warning: Webhook server may not have started properly")
+        return False
+
+    except Exception as e:
+        print(f"Error starting webhook server: {e}")
+        return False
 
 
 def safe_print(text):
@@ -98,7 +185,7 @@ def update_url_status(url: str, status: str, error_msg: str = None):
 
 def process_url(url_info: dict, index: int, total: int):
     """
-    Process a single URL with the curator agent.
+    Process a single URL with the curator agent (BACKUP VERSION).
 
     Uses context hints from WebFetch to focus extraction.
     """
@@ -109,7 +196,7 @@ def process_url(url_info: dict, index: int, total: int):
     summary = url_info['summary']
 
     print(f"\n{'='*80}")
-    print(f"Processing [{index}/{total}]: {url}")
+    print(f"[TEST] Processing [{index}/{total}]: {url}")
     print(f"{'='*80}")
     print(f"Quality Score: {url_info['quality_score']:.2f}")
 
@@ -142,7 +229,7 @@ def process_url(url_info: dict, index: int, total: int):
     context_section = "\n".join(context_hints) if context_hints else "- Scan entire page for architecture elements"
 
     task = f"""
-You are the curator agent for the PROVES Library.
+You are the curator agent for the PROVES Library (TESTING WITH BACKUP REFACTORS).
 
 YOUR MISSION: Extract architecture from this documentation page.
 
@@ -166,16 +253,24 @@ For EACH extraction:
 - Identify relationships to other components
 - CITE THE SOURCE URL
 
+CRITICAL - NEW EPISTEMIC PATTERN:
+1. Output ONE epistemic_defaults object at the start (for the entire page)
+2. For each candidate, output epistemic_overrides (empty {{}} if all defaults apply)
+
 Then store ALL extractions in staging_extractions. Work autonomously - no approval needed.
 """
 
-    # Run curator agent
+    # Run curator agent (BACKUP VERSION)
     try:
-        thread_id = f"batch-{uuid.uuid4().hex[:8]}"
+        thread_id = f"test-backup-{uuid.uuid4().hex[:8]}"
         config = {
             "configurable": {"thread_id": thread_id},
-            "recursion_limit": 20  # Extractor(5) + Validator(5) + Storage(5) + overhead(5)
+            "recursion_limit": 20  # Limit API calls to prevent expensive loops
         }
+
+        print("[TEST] Invoking BACKUP orchestration pipeline...")
+        print("[TEST] This will call: extractor -> validator (BACKUP) -> storage (BACKUP)")
+        print()
 
         result = graph.invoke(
             {"messages": [{"role": "user", "content": task}]},
@@ -189,7 +284,7 @@ Then store ALL extractions in staging_extractions. Work autonomously - no approv
         # Update status to completed
         update_url_status(url, 'completed')
 
-        print(f"\nCurator Result:")
+        print(f"\n[TEST] Curator Result:")
         print(f"{'-'*80}")
         safe_message = safe_print(final_message[:500] + "..." if len(final_message) > 500 else final_message)
         print(safe_message)
@@ -201,7 +296,9 @@ Then store ALL extractions in staging_extractions. Work autonomously - no approv
         # Update status to failed with error
         update_url_status(url, 'failed', str(e))
 
-        print(f"\nError processing {url}: {e}\n")
+        print(f"\n[TEST ERROR] Error processing {url}: {e}\n")
+        import traceback
+        traceback.print_exc()
         return {'url': url, 'status': 'error', 'message': str(e)}
 
 
@@ -209,13 +306,13 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Process extraction queue with curator agent"
+        description="TEST process extraction queue with BACKUP refactors"
     )
     parser.add_argument(
         "-l", "--limit",
         type=int,
-        default=30,
-        help="Number of URLs to process (default: 30)"
+        default=1,
+        help="Number of URLs to process (default: 1 for testing)"
     )
     parser.add_argument(
         "-c", "--continuous",
@@ -226,8 +323,25 @@ def main():
     args = parser.parse_args()
 
     print(f"\n{'='*80}")
-    print("CURATOR AGENT - BATCH PROCESSING FROM QUEUE")
+    print("TEST CURATOR AGENT - BACKUP REFACTORS")
     print(f"{'='*80}")
+    print()
+    print("Using backup agent files:")
+    print("  - agent_v2_BACKUP.py")
+    print("  - validator_BACKUP_pre_lineage_split.py")
+    print("  - storage_BACKUP_pre_lineage_split.py")
+    print("  - subagent_specs_BACKUP_pre_lineage_split.py")
+    print()
+    print("Refactors being tested:")
+    print("  1. Lineage refactor (validator verifies, storage computes)")
+    print("  2. Epistemic defaults + overrides pattern")
+    print()
+    print(f"Testing with {args.limit} URL(s)")
+    print(f"\n{'='*80}")
+
+    # Ensure Notion webhook server is running for automatic sync
+    ensure_webhook_server_running()
+    print()
 
     if args.continuous:
         print("\nMode: Continuous (process until queue empty)")
@@ -256,10 +370,10 @@ def main():
         if not urls:
             print("\nNo pending URLs in queue.")
             print("\nRun find_good_urls.py first:")
-            print("  python find_good_urls.py --fprime --proveskit --max-pages 50")
+            print("  python production/scripts/find_good_urls.py --fprime --max-pages 10")
             return
 
-        print(f"\nProcessing {len(urls)} URLs from queue")
+        print(f"\nProcessing {len(urls)} URL(s) from queue")
         print(f"\n{'='*80}\n")
 
         results = []
@@ -269,13 +383,13 @@ def main():
 
         # Summary
         print(f"\n{'='*80}")
-        print("BATCH PROCESSING COMPLETE")
+        print("TEST BATCH PROCESSING COMPLETE")
         print(f"{'='*80}\n")
 
         successful = [r for r in results if r['status'] == 'success']
         failed = [r for r in results if r['status'] == 'error']
 
-        print(f"Processed: {len(urls)} URLs")
+        print(f"Processed: {len(urls)} URL(s)")
         print(f"  Success: {len(successful)}")
         print(f"  Failed: {len(failed)}")
         print()
@@ -288,8 +402,8 @@ def main():
 
     print("Check database:")
     print("  - staging_extractions table for new extractions")
-    print("  - raw_snapshots table for source snapshots")
-    print("  - urls_to_process table for queue status")
+    print("  - Look for lineage_verified, lineage_confidence from validator")
+    print("  - Look for epistemic metadata merged from defaults+overrides")
     print()
     print("LangSmith traces: https://smith.langchain.com/")
     print()
@@ -301,6 +415,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\n\nInterrupted by user. Exiting...")
     except Exception as e:
-        print(f"\n\nFatal error: {e}")
+        print(f"\n\n[TEST ERROR] Fatal error: {e}")
         import traceback
         traceback.print_exc()
