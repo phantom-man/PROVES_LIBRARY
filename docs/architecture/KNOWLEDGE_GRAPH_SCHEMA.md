@@ -1,4 +1,5 @@
 # Knowledge Graph Schema
+
 ## Engineering Relationship Vocabulary for F´ + PROVES + PySquared
 
 This schema enables granular failure analysis by capturing both **technical causality** (ERV) and **organizational behavior** (FRAMES ontology).
@@ -66,7 +67,7 @@ Edge:
   target: node_id
   relation_type: (see below)
 
-  # The 5 Critical Attributes
+# The 5 Critical Attributes
   directionality:
     forward: boolean  # source affects target
     reverse: boolean  # target affects source
@@ -102,11 +103,115 @@ Edge:
 ## Identity / Equivalence Relations
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
-    A[Component A v1.0] -->|IDENTICAL| B[Component A v1.0<br/>different repo]
-    C[old_name] -->|ALIAS_OF| D[new_name<br/>v2.0 rename]
-    E[Driver X] -->|EQUIVALENT_TO| F[Driver Y<br/>same contract]
-    G[Forked Component] -->|DERIVED_FROM| H[Upstream Component<br/>drift score: 0.42]
+    A[Component A v1.0] -->|IDENTICAL| B[Component A v1.0 different repo]
+    C[old_name] -->|ALIAS_OF| D[new_name v2.0 rename]
+    E[Driver X] -->|EQUIVALENT_TO| F[Driver Y same contract]
+    G[Forked Component] -->|DERIVED_FROM| H[Upstream Component drift score: 0.42]
 
     style A fill:#90EE90
     style C fill:#FFE4B5
@@ -115,24 +220,28 @@ flowchart LR
 ```
 
 ### IDENTICAL
+
 - **Meaning**: Same object across representations
 - **Strength**: Always
 - **Example**: Port type definition in code and its doc page
 - **Sweep check**: Canonical ID must match exactly
 
 ### ALIAS_OF
+
 - **Meaning**: Different name, same thing (rename)
 - **Strength**: Sometimes (version-scoped)
-- **Example**: `I2CManager` -> `I2cManager` in v2.0
+- **Example**: `I2CManager`->`I2cManager` in v2.0
 - **Sweep check**: Must have version tuple in scope
 
 ### EQUIVALENT_TO
+
 - **Meaning**: Same behavior/contract, different implementation
 - **Strength**: Always (if contract stable)
 - **Example**: Two INA219 drivers with identical interface
 - **Sweep check**: Interface signature must match
 
 ### DERIVED_FROM
+
 - **Meaning**: Forked from upstream (may drift)
 - **Strength**: Sometimes (drift-scored)
 - **Example**: University modified PROVES Radio component
@@ -143,6 +252,110 @@ flowchart LR
 ## Dependency / Influence Relations
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     SW[Software Component] -->|REQUIRES| HW[Hardware Element]
     Config[Config File] -->|CONFIGURES| SW
@@ -157,6 +370,7 @@ flowchart TB
 ```
 
 ### REQUIRES (Hard Dependency)
+
 - **Meaning**: If A missing, B cannot function
 - **Directionality**: Unidirectional (A->B, not B->A usually)
 - **Strength**: Always
@@ -165,6 +379,7 @@ flowchart TB
 - **Asymmetry check**: Does B also REQUIRE A? (Usually no)
 
 ### CONFIGURES (Parameter/Mode Control)
+
 - **Meaning**: A changes B's operating regime
 - **Directionality**: Usually unidirectional
 - **Strength**: Sometimes (depends on which parameter)
@@ -173,6 +388,7 @@ flowchart TB
 - **Sweep**: Check param actually exists in B's definition
 
 ### CONTROLS (Active Command)
+
 - **Meaning**: A actively commands B
 - **Directionality**: Can be bidirectional (command/response)
 - **Strength**: Always
@@ -181,6 +397,7 @@ flowchart TB
 - **Sweep**: Verify command dictionary matches code
 
 ### CONSTRAINS (Limits/Budgets)
+
 - **Meaning**: A limits B's operation
 - **Directionality**: Unidirectional usually
 - **Strength**: Always (physics) or Sometimes (policy)
@@ -189,6 +406,7 @@ flowchart TB
 - **Sweep**: Check if constraint is enforced in code/test
 
 ### COUPLES_TO (Indirect Cascade)
+
 - **Meaning**: A influences B via shared resource or environment
 - **Directionality**: Often bidirectional (mutual coupling)
 - **Strength**: Sometimes (mode-dependent)
@@ -197,6 +415,7 @@ flowchart TB
 - **Sweep**: This is your "unknown cascade" detector
 
 ### VERIFIED_BY
+
 - **Meaning**: A is checked by B
 - **Directionality**: Unidirectional
 - **Strength**: Always (if test exists)
@@ -213,16 +432,120 @@ The trick to "sideways cascades" is treating resources as nodes.
 ### Power Cascade Example
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     Radio[RadioTX Component] -->|CONSUMES| P1[PowerRail_3V3]
     P1 -->|CONSTRAINS| MCU[MCU BrownoutMargin]
     MCU -->|COUPLES_TO| FP[FPrime ResetBehavior]
     FP -->|CONSTRAINS| DL[Downlink Reliability]
 
-    Radio -->|strength: sometimes<br/>mechanism: electrical<br/>knownness: known| P1
-    P1 -->|strength: always<br/>mechanism: electrical<br/>knownness: known| MCU
-    MCU -->|strength: sometimes<br/>mechanism: software_state<br/>knownness: assumed| FP
-    FP -->|strength: always<br/>mechanism: timing<br/>knownness: known| DL
+    Radio -->|strength: sometimes mechanism: electrical knownness: known| P1
+    P1 -->|strength: always mechanism: electrical knownness: known| MCU
+    MCU -->|strength: sometimes mechanism: software_state knownness: assumed| FP
+    FP -->|strength: always mechanism: timing knownness: known| DL
 
     style P1 fill:#FFD93D
     style MCU fill:#FF6B6B
@@ -318,7 +641,7 @@ edge:
 **Queries**:
 1. Find all edges with `relation IN [IDENTICAL, ALIAS_OF, EQUIVALENT_TO]`
 2. Check each has `knownness: known` with evidence
-3. Flag any with `knownness: assumed` or `unknown`
+3. Flag any with `knownness: assumed`or`unknown`
 4. Check scope: does version tuple match current context?
 
 **Output**: `identity_violations.csv`
@@ -335,12 +658,12 @@ PortTypeA,PortTypeB,EQUIVALENT_TO,knownness_assumed_no_evidence,high
 
 **Queries**:
 1. For each edge A->B with `forward: true`:
-   - Is there a reverse edge B->A?
-   - If yes, check if `bidirectional` flag is correct
-   - If no, verify this is correct (e.g., REQUIRES is usually one-way)
-2. Flag suspicious patterns:
-   - REQUIRES with reverse:true (rarely correct)
-   - CONTROLS without any response mechanism
+- Is there a reverse edge B->A?
+- If yes, check if `bidirectional` flag is correct
+- If no, verify this is correct (e.g., REQUIRES is usually one-way)
+1. Flag suspicious patterns:
+- REQUIRES with reverse:true (rarely correct)
+- CONTROLS without any response mechanism
 
 **Output**: `asymmetry_warnings.csv`
 
@@ -367,15 +690,15 @@ def find_cascade_paths(starting_node, resource_type, max_depth=5):
         if depth > max_depth:
             return
 
-        # Find all outgoing edges
+# Find all outgoing edges
         edges = get_outgoing_edges(current)
 
         for edge in edges:
-            # Follow CONSUMES/CONSTRAINS/COUPLES_TO edges
+# Follow CONSUMES/CONSTRAINS/COUPLES_TO edges
             if edge.relation in [CONSUMES, CONSTRAINS, COUPLES_TO]:
                 new_path = path + [(current, edge.relation, edge.target)]
 
-                # If target is a component, record this cascade path
+# If target is a component, record this cascade path
                 if is_component(edge.target):
                     paths.append({
                         'path': new_path,
@@ -384,7 +707,7 @@ def find_cascade_paths(starting_node, resource_type, max_depth=5):
                         'unknowns': [e for e in new_path if e.knownness == 'unknown']
                     })
 
-                # Continue traversing
+# Continue traversing
                 traverse(edge.target, new_path, depth + 1)
 
     traverse(starting_node, [], 0)
@@ -403,17 +726,17 @@ def find_cascade_paths(starting_node, resource_type, max_depth=5):
    - Mechanism: electrical
    - Knownness: known
 
-2. PowerRail_3V3 **CONSTRAINS** MCU_BrownoutMargin
+1. PowerRail_3V3 **CONSTRAINS** MCU_BrownoutMargin
    - Strength: always
    - Mechanism: electrical
    - Knownness: known
 
-3. MCU_BrownoutMargin **COUPLES_TO** FPrime_ResetBehavior
+1. MCU_BrownoutMargin **COUPLES_TO** FPrime_ResetBehavior
    - Strength: sometimes (if margin < threshold)
    - Mechanism: software_state
    - Knownness: **ASSUMED** ← NEEDS VERIFICATION
 
-4. FPrime_ResetBehavior **CONSTRAINS** DownlinkReliability
+1. FPrime_ResetBehavior **CONSTRAINS** DownlinkReliability
    - Strength: always
    - Mechanism: timing
    - Knownness: known
@@ -427,12 +750,12 @@ def find_cascade_paths(starting_node, resource_type, max_depth=5):
 **Goal**: Auto-generate test/procedure queue for unknown relationships
 
 **Queries**:
-1. Find all edges with `knownness: unknown` or `knownness: assumed`
+1. Find all edges with `knownness: unknown`or`knownness: assumed`
 2. Rank by:
-   - Severity of target node (is it mission-critical?)
-   - Strength (always > sometimes > never)
-   - Cascade depth (is it in a long cascade chain?)
-3. Generate test recommendations
+- Severity of target node (is it mission-critical?)
+- Strength (always > sometimes > never)
+- Cascade depth (is it in a long cascade chain?)
+1. Generate test recommendations
 
 **Output**: `unknown_edges_backlog.csv`
 
@@ -468,7 +791,7 @@ rank,source,target,relation,knownness,recommended_test,priority
 
 ### Warnings
 
-2. **Config CONFIGURES PowerMonitor.old_param**
+1. **Config CONFIGURES PowerMonitor.old_param**
    - Edge scope: proves@v2.0.0
    - Current version: proves@v2.2.0
    - Issue: Parameter renamed to `new_param` in v2.1.0
@@ -518,7 +841,7 @@ def calculate_drift_score(implementation, contract):
         'doc_match': compare_documentation(implementation, contract)
     }
 
-    # Weighted average
+# Weighted average
     weights = {'signature': 0.4, 'behavior': 0.3, 'parameter': 0.2, 'doc': 0.1}
     score = sum(weights[k] * (1 - checks[f'{k}_match']) for k in weights)
 
@@ -541,10 +864,10 @@ def frames_interface_strength(component_a, component_b, erg_edges):
     Use ERV graph edges to compute FRAMES interface strength
     """
 
-    # Get all edges between A and B
+# Get all edges between A and B
     edges = get_edges_between(component_a, component_b)
 
-    # FRAMES dimensions
+# FRAMES dimensions
     frequency = compute_call_frequency(edges)  # from CONTROLS edges
     reciprocity = check_bidirectional(edges)   # from directionality attribute
     bandwidth = compute_data_flow(edges)       # from CONFIGURES/message size
@@ -592,6 +915,7 @@ def check_near_decomposability(subsystem):
 Start simple:
 
 ### nodes.csv
+
 ```csv
 id,type,name,namespace,version,repo,commit,category,knownness
 comp_001,SoftwareComponent,RadioDriver,fprime.PROVES.Radio,v2.1.0,proveskit/fprime-proves,abc123,software,known
@@ -600,6 +924,7 @@ res_001,Resource,PowerRail_3V3,Power,,,,,known
 ```
 
 ### edges.csv
+
 ```csv
 source,target,relation,forward,reverse,strength,mechanism,knownness,scope,evidence,confidence
 comp_001,hw_001,REQUIRES,true,false,always,protocol,known,fprime@v3.4.3,datasheet_pg12,high
@@ -607,6 +932,7 @@ comp_001,res_001,CONSUMES,true,false,sometimes,electrical,assumed,board_rev_c,sc
 ```
 
 ### evidence.csv (optional, for traceability)
+
 ```csv
 edge_id,repo,commit,file_path,line_start,line_end,text_excerpt
 edge_001,fprime-proves,abc123,RadioDriver.cpp,45,67,"// Requires SX1262 via SPI..."

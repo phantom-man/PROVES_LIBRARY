@@ -201,7 +201,7 @@ All diagrams conform to Mermaid v10+ syntax rules compiled from official documen
 - Status: ✅ No voltage/address colons in labels
 
 **Diagram 4: Error Recovery**
-- Type: stateDiagram-v2
+- Type: flowchart TB
 - Status: ✅ Valid state diagram syntax
 - State definitions correct
 
@@ -354,6 +354,7 @@ Recommended workflow:
 **Validator:** AI Assistant (Claude Sonnet 4.5)  
 **Method:** Comprehensive file review + rule-based scanning  
 **Standard:** Mermaid v10+ (GitHub rendering)
+
 
 
 

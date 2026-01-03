@@ -1,4 +1,5 @@
 # Progress Report
+
 **Generated:** 2025-12-30 13:30:21
 **Agent:** Meta-Analysis Progress Reporter
 
@@ -36,27 +37,131 @@ The system is in **active extraction phase** with strong momentum (73 extraction
 ## 1. Extraction Pipeline Status
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph Discovery
-        A[URLs Discovered<br/>92 total]
-        B[Pending Queue<br/>68 URLs]
-        C[Processed<br/>24 URLs]
+        A[URLs Discovered 92 total]
+        B[Pending Queue 68 URLs]
+        C[Processed 24 URLs]
     end
-    
+
     subgraph Extraction
-        D[Extractions<br/>74 total]
-        E[Components<br/>29]
-        F[Dependencies<br/>30]
-        G[Connections<br/>4]
-        H[Other Types<br/>11]
+        D[Extractions 74 total]
+        E[Components 29]
+        F[Dependencies 30]
+        G[Connections 4]
+        H[Other Types 11]
     end
-    
+
     subgraph Verification
-        I[Verified<br/>15 records]
-        J[Unverified<br/>59 records]
-        K[Avg Confidence<br/>0.42]
+        I[Verified 15 records]
+        J[Unverified 59 records]
+        K[Avg Confidence 0.42]
     end
-    
+
     A --> B
     A --> C
     C --> D
@@ -68,7 +173,7 @@ flowchart LR
     D --> J
     I --> K
     J --> K
-    
+
     style B fill:#FFD93D
     style C fill:#6BCF7F
     style J fill:#FF6B6B
@@ -89,29 +194,133 @@ The pipeline is healthy but **verification is the limiting factor**. We're extra
 ## 2. Knowledge Graph Structure Emergence
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 graph TB
     subgraph Nodes_Extracted
-        C[Components<br/>29 nodes]
-        P[Ports<br/>5 nodes]
-        DT[Data Types<br/>1 node]
-        T[Telemetry<br/>1 node]
-        PM[Parameters<br/>1 node]
-        CMD[Commands<br/>1 node]
+        C[Components 29 nodes]
+        P[Ports 5 nodes]
+        DT[Data Types 1 node]
+        T[Telemetry 1 node]
+        PM[Parameters 1 node]
+        CMD[Commands 1 node]
     end
-    
+
     subgraph Edges_Extracted
-        DEP[Dependencies<br/>30 edges]
-        CONN[Connections<br/>4 edges]
-        EV[Events<br/>2 edges]
+        DEP[Dependencies 30 edges]
+        CONN[Connections 4 edges]
+        EV[Events 2 edges]
     end
-    
+
     C --> DEP
     C --> CONN
     P --> CONN
     C --> EV
     T --> DEP
     CMD --> DEP
-    
+
     style C fill:#4D96FF
     style DEP fill:#FF6B6B
     style CONN fill:#6BCF7F
@@ -142,26 +351,130 @@ If not, these are **incomplete extractions** and need re-processing.
 ## 3. Data Quality Heatmap
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
     subgraph Quality_Metrics
-        V[Verified Lineage<br/>15 records<br/>20%]
-        U[Unverified<br/>59 records<br/>80%]
-        C[Avg Confidence<br/>0.42<br/>MODERATE]
-        E[Errors<br/>1 total<br/>LOW]
+        V[Verified Lineage 15 records 20%]
+        U[Unverified 59 records 80%]
+        C[Avg Confidence 0.42 MODERATE]
+        E[Errors 1 total LOW]
     end
-    
+
     subgraph Risk_Assessment
-        R1[Verification Lag<br/>HIGH RISK]
-        R2[Confidence Gap<br/>MEDIUM RISK]
-        R3[Error Rate<br/>LOW RISK]
+        R1[Verification Lag HIGH RISK]
+        R2[Confidence Gap MEDIUM RISK]
+        R3[Error Rate LOW RISK]
     end
-    
+
     U --> R1
     C --> R2
     E --> R3
-    
+
     V --> R1
-    
+
     style U fill:#FF6B6B
     style C fill:#FFA500
     style E fill:#6BCF7F
@@ -189,6 +502,110 @@ flowchart TD
 ## 4. Extraction Type Distribution
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 pie title Extraction Types (74 total)
     "Components" : 29
     "Dependencies" : 30
@@ -228,6 +645,110 @@ Current extraction shows:
 ## 5. Verification Progress Over Time
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 gantt
     title Extraction and Verification Timeline
     dateFormat YYYY-MM-DD
@@ -263,34 +784,138 @@ We're in a **classic early-stage pattern**: autonomous extraction is fast, human
 ## 6. Improvement Suggestions Analysis
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph Suggestions_Generated
-        M[Method Improvements<br/>8 suggestions]
+        M[Method Improvements 8 suggestions]
     end
-    
+
     subgraph Categories
         M1[Extraction Prompt Refinement]
         M2[Confidence Calibration]
         M3[Source Quality Filtering]
         M4[FRAMES Compliance Checks]
     end
-    
+
     M --> M1
     M --> M2
     M --> M3
     M --> M4
-    
+
     subgraph Implementation_Status
         I1[Pending Review]
         I2[In Progress]
         I3[Completed]
     end
-    
+
     M1 --> I1
     M2 --> I2
     M3 --> I1
     M4 --> I1
-    
+
     style M fill:#4D96FF
     style I1 fill:#FFD93D
     style I2 fill:#FFA500
@@ -317,32 +942,136 @@ The system is **self-aware** and generating improvement suggestions. This is the
 ## 7. Emerging Mission Failure Patterns
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
     subgraph Knowledge_Gaps
-        G1[Interface Flow Data<br/>CRITICAL GAP]
-        G2[Mechanism Documentation<br/>MODERATE GAP]
-        G3[Coupling Strength<br/>MODERATE GAP]
+        G1[Interface Flow Data CRITICAL GAP]
+        G2[Mechanism Documentation MODERATE GAP]
+        G3[Coupling Strength MODERATE GAP]
     end
-    
+
     subgraph Failure_Risk_Indicators
-        F1[Weak Interface Coverage<br/>HIGH RISK]
-        F2[Missing Flow Data<br/>HIGH RISK]
-        F3[Unverified Dependencies<br/>MEDIUM RISK]
+        F1[Weak Interface Coverage HIGH RISK]
+        F2[Missing Flow Data HIGH RISK]
+        F3[Unverified Dependencies MEDIUM RISK]
     end
-    
+
     G1 --> F1
     G1 --> F2
     G2 --> F1
     G3 --> F3
-    
+
     subgraph FRAMES_Violation
-        V1[Components Without Interfaces<br/>29 components, 4 connections]
-        V2[Dependencies Without Flows<br/>30 dependencies, 1 telemetry]
+        V1[Components Without Interfaces 29 components, 4 connections]
+        V2[Dependencies Without Flows 30 dependencies, 1 telemetry]
     end
-    
+
     F1 --> V1
     F2 --> V2
-    
+
     style G1 fill:#FF6B6B
     style F1 fill:#FF6B6B
     style F2 fill:#FF6B6B
@@ -384,25 +1113,129 @@ The extraction is **revealing the knowledge gap that causes failures**. This is 
 ## 8. System Evolution Trajectory
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph Current_State
-        C1[Discovery Phase<br/>92 URLs]
-        C2[Extraction Phase<br/>74 records]
-        C3[Verification Lag<br/>80% unverified]
+        C1[Discovery Phase 92 URLs]
+        C2[Extraction Phase 74 records]
+        C3[Verification Lag 80% unverified]
     end
-    
+
     subgraph Next_Phase_Needed
-        N1[Verification Sprint<br/>Clear backlog]
-        N2[Interface Extraction<br/>Target ICDs]
-        N3[FRAMES Compliance<br/>Audit dependencies]
+        N1[Verification Sprint Clear backlog]
+        N2[Interface Extraction Target ICDs]
+        N3[FRAMES Compliance Audit dependencies]
     end
-    
+
     subgraph Future_State
-        F1[Rich Knowledge Graph<br/>Components + Interfaces + Flows]
-        F2[High Confidence<br/>0.7+ average]
-        F3[GraphSAGE Training<br/>Pattern detection]
+        F1[Rich Knowledge Graph Components + Interfaces + Flows]
+        F2[High Confidence 0.7+ average]
+        F3[GraphSAGE Training Pattern detection]
     end
-    
+
     C1 --> C2
     C2 --> C3
     C3 --> N1
@@ -413,7 +1246,7 @@ flowchart LR
     N3 --> F2
     F1 --> F3
     F2 --> F3
-    
+
     style C3 fill:#FF6B6B
     style N1 fill:#FFD93D
     style N2 fill:#FFD93D
@@ -444,6 +1277,7 @@ The system is **on track** but at a critical decision point:
 ## Key Takeaways
 
 ### What's Working
+
 ✅ **Discovery pipeline:** 92 URLs identified, strong source quality  
 ✅ **Extraction velocity:** 10 extractions/day, sustainable pace  
 ✅ **Error rate:** 99% success (1 error in 74 extractions)  
@@ -451,6 +1285,7 @@ The system is **on track** but at a critical decision point:
 ✅ **Meta-learning:** System generating improvement suggestions  
 
 ### What Needs Attention
+
 ⚠️ **Verification backlog:** 80% unverified (59 records)  
 ⚠️ **Confidence scores:** 0.42 average (should be 0.7+)  
 ⚠️ **Interface extraction:** Only 4 connections for 29 components  
@@ -458,11 +1293,13 @@ The system is **on track** but at a critical decision point:
 ⚠️ **FRAMES compliance:** Dependencies may lack flows + mechanisms  
 
 ### Critical Risks
+
 🔴 **Knowledge gap pattern:** Extraction reveals the exact failure mode FRAMES predicts (strong components, weak interfaces)  
 🔴 **Verification bottleneck:** Human review is limiting factor  
 🔴 **Technical debt:** Unverified data accumulating  
 
 ### Immediate Actions Required
+
 1. **Verification sprint:** Clear 50% of backlog (prioritize high-confidence)
 2. **FRAMES audit:** Validate 30 dependency extractions for flows + mechanisms
 3. **Interface extraction:** Target ICDs, protocol specs, timing diagrams

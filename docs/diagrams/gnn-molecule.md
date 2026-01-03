@@ -18,10 +18,17 @@ Think of the truth graph as a molecular structure:
 ## Molecular View of the Graph
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -36,7 +43,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -92,20 +99,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -113,93 +120,11 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph Molecule ["Truth Graph as Molecular Structure"]
-        spacer24[ ]:::spacer
+        spacer24[ ] :spacer
         A[Power Manager]
         B[I2C Bus]
         C[IMU Sensor]
@@ -260,9 +185,3 @@ A GNN learns which bonds carry the strongest influence. With verified edges and 
 ---
 
 [Back to Home](../index.html)
-
-
-
-
-
-

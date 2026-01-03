@@ -1,5 +1,7 @@
 # (In Progress) Knowledge Canonicalization Theory
+
 ## A Practical Framework for Preserving Knowledge in Technical Systems
+
 ---
 
 ## Dimensional Metadata
@@ -46,19 +48,117 @@ In a nearly decomposable architecture (NDA), different modules—human teams, AI
 In reality, **contact exists on a continuous scale** representing the degree of coupling between a phenomenon and an observing system.
 
 ```mermaid
----
+---\
 config:
   theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
-    fontSize: 14px
----
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph "Contact Continuum"
         direction LR
-        A["High Contact<br/>Direct interaction"]
-        B["Moderate Contact<br/>Mediated observation"]
-        C["Low Contact<br/>Effect-only inference"]
-        D["Minimal Contact<br/>Model-derived"]
+        A["High Contact Direct interaction"]
+        B["Moderate Contact Mediated observation"]
+        C["Low Contact Effect-only inference"]
+        D["Minimal Contact Model-derived"]
         A ---|Continuous Scale| B
         B ---|"No sharp boundaries"| C
         C ---|Decreasing signal strength| D
@@ -88,13 +188,117 @@ A knowledge item is capturable if and only if:
 
 1. **A signal exists** — either direct observation or observable effect
 2. **The signal crosses into an observable domain**:
-   - Human sensory experience
-   - Instrumentation or telemetry
-   - System behavior or state change
-   - Recorded judgment, comparison, or decision
-3. **That domain admits recording** — even if lossy, uninterpreted, or non-symbolic
+- Human sensory experience
+- Instrumentation or telemetry
+- System behavior or state change
+- Recorded judgment, comparison, or decision
+1. **That domain admits recording** — even if lossy, uninterpreted, or non-symbolic
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph "Capturable Knowledge"
         P[Phenomenon] -->|Emits signal| S[Signal]
@@ -131,14 +335,118 @@ This corresponds to **indirect or effect-only contact**, which remains valid kno
 
 **Example:**
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph "Effect-Based Knowledge (Valid)"
-        B[Bearing Condition<br/>Not directly observed] -->|Causes| E[Unusual Sound<br/>Observed effect]
-        E -->|Signal strength| K[Knowledge<br/>Contact: Moderate]
+        B[Bearing Condition Not directly observed] -->|Causes| E[Unusual Sound Observed effect]
+        E -->|Signal strength| K[Knowledge Contact: Moderate]
     end
 
     subgraph "Hypothetical (Not Valid)"
-        H[Hypothetical Entity<br/>No observable effect] -.->|No signal| N[Not capturable]
+        H[Hypothetical Entity No observable effect] -.->|No signal| N[Not capturable]
     end
 
     style K fill:#4D96FF
@@ -169,14 +477,118 @@ The underlying contact value remains continuous and should be preserved in the s
 Contact and Directionality together define a **shared epistemic space** that can be visualized geometrically:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 quadrantChart
     title Epistemic Space (Contact × Directionality)
     x-axis "Contact (Low → High)"
     y-axis "Directionality (Backward ← → Forward)"
-    quadrant-1 "High Contact<br/>Forward Prediction"
-    quadrant-2 "High Contact<br/>Backward Assessment"
-    quadrant-3 "Low Contact<br/>Backward Inference"
-    quadrant-4 "Low Contact<br/>Forward Simulation"
+    quadrant-1 "High Contact Forward Prediction"
+    quadrant-2 "High Contact Backward Assessment"
+    quadrant-3 "Low Contact Backward Inference"
+    quadrant-4 "Low Contact Forward Simulation"
 
     "Technician hears bearing sound": [0.85, 0.25]
     "Telemetry shows torque spike": [0.55, 0.30]
@@ -211,20 +623,124 @@ Both human and AI systems occupy positions within the same contact continuum.
 **This difference is structural, not qualitative.**
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph "Human Epistemic Range"
         direction LR
-        H1["High Contact<br/>Embodied<br/>(hands-on testing)"]
-        H2["Moderate Contact<br/>Mediated<br/>(reading telemetry)"]
-        H3["Low Contact<br/>Inferred<br/>(mathematics)"]
+        H1["High Contact Embodied (hands-on testing)"]
+        H2["Moderate Contact Mediated (reading telemetry)"]
+        H3["Low Contact Inferred (mathematics)"]
         H1 ---|Human can operate across| H2
         H2 ---|full contact spectrum| H3
     end
 
     subgraph "AI Epistemic Range"
         direction LR
-        A1["Low Contact<br/>Derived<br/>(model predictions)"]
-        A2["Moderate Contact<br/>Mediated<br/>(telemetry analysis)"]
+        A1["Low Contact Derived (model predictions)"]
+        A2["Moderate Contact Mediated (telemetry analysis)"]
         A1 ---|AI limited to| A2
         A2 ---|inferred regimes| A1
     end
@@ -298,7 +814,6 @@ Bearing degradation isn't caused by "time in orbit." It's caused by specific the
 
 Episodes need to be first-class entities with relationships to components, states, and other episodes. Otherwise temporal causality collapses into timelines and history-dependent knowledge becomes snapshot reasoning.
 
-
 ---
 
 ## Contact and Directionality Are Independent
@@ -306,15 +821,119 @@ Episodes need to be first-class entities with relationships to components, state
 These are orthogonal dimensions. Knowledge can have any combination:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph "Example Combinations"
-        A["High Contact +<br/>Backward Inference<br/><br/>Technician hears bearing sound<br/>infers condition from effect"]
-        B["Low Contact +<br/>Forward Inference<br/><br/>Thermal model predicts temp<br/>no physical interaction"]
-        C["Moderate Contact +<br/>Bidirectional Inference<br/><br/>Telemetry shows spike<br/>engineer tests hypotheses"]
+        A["High Contact + Backward Inference  Technician hears bearing sound infers condition from effect"]
+        B["Low Contact + Forward Inference  Thermal model predicts temp no physical interaction"]
+        C["Moderate Contact + Bidirectional Inference  Telemetry shows spike engineer tests hypotheses"]
     end
 
     subgraph "Flattened (Loses Information)"
-        D["RW-3 bearing degradation<br/>(suspected)<br/><br/>All dimensional context lost"]
+        D["RW-3 bearing degradation (suspected)  All dimensional context lost"]
     end
 
     A -.->|Documentation| D

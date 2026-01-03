@@ -2,7 +2,7 @@
 
 Comprehensive rules compiled from official Mermaid documentation (v10+).
 
-## 🎨 ACTIVE THEME CONFIGURATION
+## ðŸŽ¨ ACTIVE THEME CONFIGURATION
 
 **Current Active Theme: FALL** (default)
 
@@ -22,7 +22,7 @@ To change the active theme, update the "Current Active Theme" line above to one 
 
 See "Seasonal Theme Presets" section below for complete copy-paste configurations.
 
-## ⚠️ VALIDATION REQUIREMENTS
+## âš ï¸ VALIDATION REQUIREMENTS
 
 **MANDATORY: Run validation before committing any diagram changes or updates to this file.**
 
@@ -78,20 +78,27 @@ When adding examples to this documentation file:
   - GitHub treats ALL `mermaid` blocks as renderable diagrams
   - Incomplete examples will show "Unable to render" errors
 
-### Common Validation Errors Found
+state Diagrams vs Flowcharts
+
+**AVOID stateDiagram-v2 if straight lines are required.**
+
+- stateDiagram-v2 uses the dagre renderer which defaults to curved splines and **ignores** curve: 'linear' configuration.
+- If you need straight lines (orthogonal or linear), use lowchart instead.
+- **Rule:** Convert existing stateDiagram-v2 to lowchart if curved lines are undesirable.
+- **Data Processing:** When processing data for use in mermaid diagrams, process it in a way that produces lowchart syntax instead of stateDiagram-v2 to ensure control over line curvature.
 
 Based on production issues discovered:
 
-- **HTML tags** → Remove or replace with markdown
-- **Double colons** → Remove or replace with single space
-- **Colons in subgraph labels** → Remove from label text
-- **Colons in sequence note text** → Keep only first colon (label separator)
-- **Forward slashes unquoted** → Wrap in double quotes
-- **Square brackets inside node labels** → Wrap entire label in quotes
-- **Parentheses in pie/gantt labels** → Wrap entire label in quotes
-- **State transition colons** → Keep only label separator colon
-- **Incomplete `mermaid` examples** → Convert to plain blocks
-- **YAML indentation errors** → Config sections must be at 2-space indent (flowchart:, sequence:, state:, etc.)
+- **HTML tags** â†’ Remove or replace with markdown
+- **Double colons** â†’ Remove or replace with single space
+- **Colons in subgraph labels** â†’ Remove from label text
+- **Colons in sequence note text** â†’ Keep only first colon (label separator)
+- **Forward slashes unquoted** â†’ Wrap in double quotes
+- **Square brackets inside node labels** â†’ Wrap entire label in quotes
+- **Parentheses in pie/gantt labels** â†’ Wrap entire label in quotes
+- **State transition colons** â†’ Keep only label separator colon
+- **Incomplete `mermaid` examples** â†’ Convert to plain blocks
+- **YAML indentation errors** â†’ Config sections must be at 2-space indent (flowchart:, sequence:, state:, etc.)
 
 ### MANDATORY PRE-COMMIT TESTING
 
@@ -100,34 +107,34 @@ Based on production issues discovered:
 #### Testing Workflow
 
 1. **After ANY file modification:**
-   ```powershell
-   # Test single diagram in Mermaid Live Editor
-   # Copy first diagram from modified file to https://mermaid.live/
-   # Verify it renders without errors
-   ```
+```powershell
+# Test single diagram in Mermaid Live Editor
+# Copy first diagram from modified file to https://mermaid.live/
+# Verify it renders without errors
+```
 
 1. **After script execution:**
-   ```powershell
-   # Run ALL validation commands from checklist above
-   # Fix any errors found
-   # Re-test until all validations pass
-   ```
+```powershell
+# Run ALL validation commands from checklist above
+# Fix any errors found
+# Re-test until all validations pass
+```
 
 1. **Before git commit:**
-   ```powershell
-   # Final validation - must pass ALL checks
+```powershell
+# Final validation - must pass ALL checks
    cd docs/diagrams
-   # Quick validation script
+# Quick validation script
    Write-Host "Running validation..."
    $errors = 0
-   # Check YAML indentation
+# Check YAML indentation
    $yamlErrors = Select-String -Path *.md -Pattern '      sequence:|      state:|      journey:' -Exclude MERMAID_RULES.md
    if ($yamlErrors) {
        Write-Host "ERROR: YAML indentation issues found"
        $yamlErrors
        $errors++
    }
-   # Check HTML tags
+# Check HTML tags
    $htmlErrors = Select-String -Path *.md -Pattern '<br/>|<span>|<div>' -Exclude MERMAID_RULES.md
    if ($htmlErrors) {
        Write-Host "ERROR: HTML tags found"
@@ -136,26 +143,26 @@ Based on production issues discovered:
    }
 
    if ($errors -eq 0) {
-       Write-Host "✓ Validation passed"
+       Write-Host "âœ“ Validation passed"
    } else {
-       Write-Host "✗ Validation FAILED - fix errors before committing"
+       Write-Host "âœ— Validation FAILED - fix errors before committing"
        exit 1
    }
-   ```
+```
 
 1. **AFTER PUSHING - Verify rendered output:**
-   ```powershell
-   # MANDATORY: View the actual rendered page on GitHub Pages
-   # Wait 2-3 minutes for GitHub Pages to rebuild
-   # Then open and verify EVERY diagram renders correctly
-   # Example for team-boundaries:
+```powershell
+# MANDATORY: View the actual rendered page on GitHub Pages
+# Wait 2-3 minutes for GitHub Pages to rebuild
+# Then open and verify EVERY diagram renders correctly
+# Example for team-boundaries:
    Start-Process "https://phantom-man.github.io/PROVES_LIBRARY/diagrams/team-boundaries.html"
-   # Check for error messages like:
-   # - "Unable to render rich display"
-   # - "bad indentation of a mapping entry"
-   # - "Parse error" or "Syntax error"
-   # - Diagrams not appearing at all
-   ```
+# Check for error messages like:
+# - "Unable to render rich display"
+# - "bad indentation of a mapping entry"
+# - "Parse error" or "Syntax error"
+# - Diagrams not appearing at all
+```
 
 1. **Never assume changes work:**
 - Scripts can have bugs
@@ -165,7 +172,7 @@ Based on production issues discovered:
 - **YOU MUST SEE THE SAME ERRORS USERS SEE** - check the live site after every push
 - If you can't see rendering errors, you can't fix them proactively
 
-## 🔧 RULES FOR BATCH EDITING SCRIPTS
+## ðŸ”§ RULES FOR BATCH EDITING SCRIPTS
 
 **CRITICAL: Follow these rules when writing PowerShell/Bash scripts to modify mermaid diagram files.**
 
@@ -173,67 +180,67 @@ Based on production issues discovered:
 
 **NEVER break the YAML frontmatter structure when batch editing diagrams.**
 
-#### ✅ SAFE Replacement Patterns
+#### âœ… SAFE Replacement Patterns
 
 1. **Match Complete Sections with Boundaries**
-   ```powershell
-   # CORRECT: Match config block with proper boundaries
+```powershell
+# CORRECT: Match config block with proper boundaries
    $content -replace '(?ms)^config:.*?^---\s*\n', $replacement
-   # CORRECT: Preserve closing --- with explicit newline
+# CORRECT: Preserve closing --- with explicit newline
    $replacement = @"
    config:
      theme: base
      ...
    ---
    "@
-   ```
+```
 
 1. **Preserve Structural Separators**
-   ```powershell
-   # CORRECT: Include separators in replacement string
+```powershell
+# CORRECT: Include separators in replacement string
    $replacement = "  c4:`n    boxMargin: 10`n---`n"
-   # CORRECT: Use backtick-n for newlines in PowerShell
+# CORRECT: Use backtick-n for newlines in PowerShell
    "line1`nline2`nline3"
-   ```
+```
 
 1. **Test Replacement on Single File First**
-   ```powershell
-   # CORRECT: Test before batch processing
+```powershell
+# CORRECT: Test before batch processing
    $testFile = 'team-boundaries.md'
    $content = Get-Content $testFile -Raw
    $newContent = $content -replace $pattern, $replacement
-   # Manually verify $newContent before proceeding
+# Manually verify $newContent before proceeding
    Write-Host $newContent | Select-String -Pattern '---' -Context 2
-   # Only then apply to all files
-   ```
+# Only then apply to all files
+```
 
-#### ❌ DANGEROUS Patterns - NEVER USE
+#### âŒ DANGEROUS Patterns - NEVER USE
 
 1. **Greedy Matches Without Boundaries**
-   ```powershell
-   # WRONG: Will match too much or break structure
+```powershell
+# WRONG: Will match too much or break structure
    $content -replace 'config:.*---', $replacement
-   # WRONG: Missing newline before closing ---
+# WRONG: Missing newline before closing ---
    $replacement = "config:`n  theme: base---"  # Creates: base---
-   # WRONG: No newline after closing ---
+# WRONG: No newline after closing ---
    $replacement = "config:`n---flowchart"  # Creates: ---flowchart
-   ```
+```
 
 1. **Single-Line Mode Without Anchors**
-   ```powershell
-   # WRONG: Can match across diagrams
+```powershell
+# WRONG: Can match across diagrams
    $content -replace 'config:.*', $replacement
-   # CORRECT: Use multiline mode with anchors
+# CORRECT: Use multiline mode with anchors
    $content -replace '(?ms)^config:.*?^---', $replacement
-   ```
+```
 
 1. **Replacing Separators Alone**
-   ```powershell
-   # WRONG: Can break other markdown elements
+```powershell
+# WRONG: Can break other markdown elements
    $content -replace '---', '___'
-   # CORRECT: Match separator in context
+# CORRECT: Match separator in context
    $content -replace '^---\s*$', '___'
-   ```
+```
 
 ### Batch Edit Validation Checklist
 
@@ -306,10 +313,10 @@ $testContent = Get-Content $testFile -Raw
 $testResult = $testContent -replace $pattern, $replacement
 # 4. VERIFY test result
 if ($testResult -match '(?ms)---\s*\n---\s*\nflowchart|gantt|sequenceDiagram') {
-  Write-Host "✓ Replacement looks correct"
+  Write-Host "âœ“ Replacement looks correct"
 Write-Host ($testResult -split "`n" | Select-Object -First 10)
 } else {
-  Write-Host "✗ Replacement broken - check pattern"
+  Write-Host "âœ— Replacement broken - check pattern"
   exit 1
 }
 # 5. APPLY to all files only if test passed
@@ -326,65 +333,65 @@ Write-Host "Running post-edit validation..."
 & grep -n "10---" docs/diagrams/*.md
 & grep -n "---flowchart" docs/diagrams/*.md
 if ($LASTEXITCODE -eq 0) {
-  Write-Host "✗ Found concatenation errors!"
+  Write-Host "âœ— Found concatenation errors!"
   exit 1
 } else {
-  Write-Host "✓ No concatenation errors found"
+  Write-Host "âœ“ No concatenation errors found"
 }
 ```
 
 ### Common Script Pitfalls
 
 1. **PowerShell String Escaping**
-   ```powershell
-   # WRONG: Double quotes inside double quotes
+```powershell
+# WRONG: Double quotes inside double quotes
    $str = "fontFamily: "Segoe UI""  # Breaks
-   # CORRECT: Escape inner quotes or use single quotes
+# CORRECT: Escape inner quotes or use single quotes
    $str = "fontFamily: ""Segoe UI"""  # Escaped
    $str = "fontFamily: 'Segoe UI'"     # Single quotes inside
-   ```
+```
 
 1. **Newline Handling Across Platforms**
-   ```powershell
-   # WRONG: Using \n (Bash style) in PowerShell
+```powershell
+# WRONG: Using \n (Bash style) in PowerShell
    $str = "line1\nline2"  # Literal \n characters
-   # CORRECT: Use backtick-n in PowerShell
+# CORRECT: Use backtick-n in PowerShell
    $str = "line1`nline2"  # Actual newline
-   # CORRECT: Use here-strings for multi-line
+# CORRECT: Use here-strings for multi-line
    $str = @"
    line1
    line2
    "@
-   ```
+```
 
 1. **Regex Greediness**
-   ```powershell
-   # WRONG: Greedy .* matches too much
+```powershell
+# WRONG: Greedy .* matches too much
    $content -replace 'config:.*---', $replacement  # Matches multiple blocks
-   # CORRECT: Non-greedy .*? with boundaries
+# CORRECT: Non-greedy .*? with boundaries
    $content -replace '(?ms)^config:.*?^---', $replacement
-   ```
+```
 
 1. **File Encoding Issues**
-   ```powershell
-   # WRONG: Default encoding may corrupt UTF-8 files
+```powershell
+# WRONG: Default encoding may corrupt UTF-8 files
    Set-Content $file $content
-   # CORRECT: Specify UTF-8 encoding explicitly
+# CORRECT: Specify UTF-8 encoding explicitly
    Set-Content $file $content -Encoding UTF8
-   # BETTER: Use -NoNewline if controlling newlines
+# BETTER: Use -NoNewline if controlling newlines
    Set-Content $file $content -Encoding UTF8 -NoNewline
-   ```
+```
 
 1. **Missing Backup Before Modification**
-   ```powershell
-   # CORRECT: Always backup before batch edits
+```powershell
+# CORRECT: Always backup before batch edits
    foreach ($file in $files) {
        Copy-Item "docs/diagrams/$file" "docs/diagrams/$file.backup"
-   # ... perform modifications ...
+# ... perform modifications ...
    }
-   # After validation passes, remove backups:
+# After validation passes, remove backups:
    Remove-Item docs/diagrams/*.backup
-   ```
+```
 
 ### Emergency Rollback Procedure
 
@@ -413,7 +420,7 @@ Add this to `.git/hooks/pre-commit` to catch YAML errors:
 #!/bin/bash
 # Check for broken YAML frontmatter
 if grep -n "10---\|---flowchart\|---gantt" docs/diagrams/*.md; then
-  echo "❌ ERROR: YAML frontmatter concatenation detected!"
+  echo "âŒ ERROR: YAML frontmatter concatenation detected!"
   echo "   Run validation and fix before committing."
   exit 1
 fi
@@ -422,12 +429,12 @@ for file in docs/diagrams/*.md; do
   opens=$(grep -c "^\`\`\`mermaid" "$file")
   closes=$(grep -c "^\`\`\`$" "$file")
   if [ "$opens" -ne "$closes" ]; then
-      echo "❌ ERROR: $file has mismatched mermaid blocks ($opens opens, $closes closes)"
+      echo "âŒ ERROR: $file has mismatched mermaid blocks ($opens opens, $closes closes)"
       exit 1
   fi
 done
 
-echo "✓ Diagram validation passed"
+echo "âœ“ Diagram validation passed"
 ```
 
 ### Key Takeaways
@@ -445,73 +452,281 @@ echo "✓ Diagram validation passed"
 
 ### 1. NO HTML Tags
 
-- ❌**NEVER use `<br/>`, `<span>`, `<div>`, or any HTML tags**in flowchart nodes
-- ✅ Use simple text or markdown formatting with backticks
+- âŒ**NEVER use `<br/>`, `<span>`, `<div>`, or any HTML tags**in flowchart nodes
+- âœ… Use simple text or markdown formatting with backticks
 - Exception: `<br/>` is ONLY allowed in sequence diagrams for line breaks
 
 ### 2. Special Characters - CRITICAL
 
 #### Colons (`:`) - Multiple Breaking Contexts
 
-- ❌**Colons in subgraph labels break parsing**: `subgraph "Layer 1: App"` → FAILS
-- ✅**Remove colons from subgraph labels**: `subgraph "Layer 1 App"` → WORKS
-- ❌**Double colons in text ALWAYS break**: `Status::OK` → FAILS
-- ✅**Remove double colons**: `Status OK`or`Status_OK` → WORKS
-- ❌**Colons in sequence note text after first colon**: `Note over A: Step 1: Details` → FAILS
-- ✅**Remove colons from note content**: `Note over A: Step 1 Details` → WORKS
-- ✅**Single colon separating label from text is OK**: `Note over A: Some text` → WORKS
-- ✅**Colons OK in link text**: `A -->|Status: OK| B` → WORKS
+- âŒ**Colons in subgraph labels break parsing**: `subgraph "Layer 1: App"` â†’ FAILS
+- âœ…**Remove colons from subgraph labels**: `subgraph "Layer 1 App"` â†’ WORKS
+- âŒ**Double colons in text ALWAYS break**: `Status::OK` â†’ FAILS
+- âœ…**Remove double colons**: `Status OK`or`Status_OK` â†’ WORKS
+- âŒ**Colons in sequence note text after first colon**: `Note over A: Step 1: Details` â†’ FAILS
+- âœ…**Remove colons from note content**: `Note over A: Step 1 Details` â†’ WORKS
+- âœ…**Single colon separating label from text is OK**: `Note over A: Some text` â†’ WORKS
+|- âœ…**Colons OK in link text**: `A -->|Status: OK| B` â†’ WORKS|
 
 #### Square Brackets (`[]`) - Breaking in Node Labels
 
-- ❌**Brackets inside node text break parsing**: `NODE[Status [YES] OK]` → FAILS
-- ✅**Quote labels with nested brackets**: `NODE["Status [YES] OK"]` → WORKS
-- ❌**Multiple bracket markers unquoted**: `NODE[Doc [WARNING] Incomplete]` → FAILS
-- ✅**Quote all bracket-containing text**: `NODE["Doc [WARNING] Incomplete"]` → WORKS
-- ✅**Outer brackets define node - inner brackets need quotes**
+- âŒ**Brackets inside node text break parsing**: `NODE[Status [YES] OK]` â†’ FAILS
+- âœ…**Quote labels with nested brackets**: `NODE["Status [YES] OK"]` â†’ WORKS
+- âŒ**Multiple bracket markers unquoted**: `NODE[Doc [WARNING] Incomplete]` â†’ FAILS
+- âœ…**Quote all bracket-containing text**: `NODE["Doc [WARNING] Incomplete"]` â†’ WORKS
+- âœ…**Outer brackets define node - inner brackets need quotes**
 
 #### Forward Slashes (`/`) - Breaking in Node Labels
 
-- ❌ **File paths without quotes break parsing**: `DEV[/dev/i2c-1]` → FAILS
-- ✅ **Quote all paths with slashes**: `DEV["/dev/i2c-1"]` → WORKS
-- ❌ **URLs without quotes can break**: `NODE[http://example.com]` → FAILS
-- ✅ **Quote URLs in node labels**: `NODE["http://example.com"]` → WORKS
-- ✅ **Slashes in shape syntax are OK**: `A[/Parallelogram/]` → WORKS (defined shape)
-- ⚠️ **Slashes in plain text or tables are OK** (not in diagram code)
+- âŒ **File paths without quotes break parsing**: `DEV[/dev/i2c-1]` â†’ FAILS
+- âœ… **Quote all paths with slashes**: `DEV["/dev/i2c-1"]` â†’ WORKS
+- âŒ **URLs without quotes can break**: `NODE[http://example.com]` â†’ FAILS
+- âœ… **Quote URLs in node labels**: `NODE["http://example.com"]` â†’ WORKS
+- âœ… **Slashes in shape syntax are OK**: `A[/Parallelogram/]` â†’ WORKS (defined shape)
+- âš ï¸ **Slashes in plain text or tables are OK** (not in diagram code)
 
 #### Quotes - When Required
 
-- ✅ **Quote text with forward slashes**: `id["/path/to/file"]`
-- ✅ **Quote text with parentheses**: `id["Text with (parens)"]`
-- ✅ **Quote text with square brackets**: `id["Status [YES] Complete"]`
-- ✅ **Quote text with special symbols**: `id["Price: $50"]`
-- ✅ Use entity codes: `#`(e.g.,`#9829;` for ♥)
-- ✅ For markdown: Use backticks: `id["`**Bold** text`"]`
+- âœ… **Quote text with forward slashes**: `id["/path/to/file"]`
+- âœ… **Quote text with parentheses**: `id["Text with (parens)"]`
+- âœ… **Quote text with square brackets**: `id["Status [YES] Complete"]`
+- âœ… **Quote text with special symbols**: `id["Price: $50"]`
+- âœ… Use entity codes: `#`(e.g.,`#9829;` for â™¥)
+- âœ… For markdown: Use backticks: `id["`**Bold** text`"]`
 
 #### Reserved Words
 
-- ❌ Word "end" must be capitalized or quoted: `End`, `[end]`, `{end}`
-- ❌ Starting with "o" or "x" creates special edges: `A---oB` = circle edge
+- âŒ Word "end" must be capitalized or quoted: `End`, `[end]`, `{end}`
+- âŒ Starting with "o" or "x" creates special edges: `A---oB` = circle edge
 
 ### 3. Subgraph Syntax
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
     subgraph id [Label Text]
         nodes...
     end
 ```
 
-- ✅ Must have space between id and bracket
-- ❌ **NO colons in labels**: `subgraph "Layer 1: App"`→ BREAKS - use`subgraph "Layer 1 App"`
-- ✅ Labels can be quoted for special chars: `subgraph "System/Network"`
-- ✅ Plain text labels work: `subgraph id`or`subgraph "Text Label"`
+- âœ… Must have space between id and bracket
+- âŒ **NO colons in labels**: `subgraph "Layer 1: App"`â†’ BREAKS - use`subgraph "Layer 1 App"`
+- âœ… Labels can be quoted for special chars: `subgraph "System/Network"`
+- âœ… Plain text labels work: `subgraph id`or`subgraph "Text Label"`
 
 ### 4. Node Labels
 
 #### Simple text
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
     id[This is text]
     id(Round edges)
@@ -521,8 +736,112 @@ flowchart TD
 #### Unicode/Special characters
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
-    id["Unicode: ❤ works"]
+    id["Unicode: â¤ works"]
     id["Escaped: #9829;"]
 ```
 
@@ -535,6 +854,110 @@ config:
 ```
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     id["`**Bold** and *italic*`"]
 ```
@@ -543,10 +966,114 @@ flowchart LR
 
 #### Flowcharts
 
-- ❌ NO `<br/>` tags
-- ✅ Markdown formatting with newlines:
+- âŒ NO `<br/>` tags
+- âœ… Markdown formatting with newlines:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
     id["`Line 1
     Line 2
@@ -555,16 +1082,224 @@ flowchart TD
 
 #### Sequence Diagrams
 
-- ✅ `<br/>` is allowed:
+- âœ… `<br/>` is allowed:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 sequenceDiagram
     Alice->John: Hello<br/>World
 ```
 
-- ✅ In participant aliases:
+- âœ… In participant aliases:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 sequenceDiagram
     participant A as Alice<br/>Johnson
 ```
@@ -588,6 +1323,110 @@ sequenceDiagram
 #### Link text
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
 A -->|Text on link| B
     A -- Text --- B
@@ -605,6 +1444,110 @@ flowchart LR
 ### 7. Comments
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 %% This is a comment
 %% Must start line with %%
 flowchart LR
@@ -618,6 +1561,110 @@ flowchart LR
 #### Node styling
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     id1(Start)
     style id1 fill:#f9f,stroke:#333,stroke-width:4px
@@ -626,16 +1673,224 @@ flowchart LR
 #### Classes
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     classDef className fill:#f9f
     class nodeId className
     nodeId(Node)
-    A:::className --> B
+    A :className --> B
 ```
 
 #### Link styling
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     A --> B
     linkStyle 0 stroke:#ff3,stroke-width:4px
@@ -645,12 +1900,12 @@ flowchart LR
 
 **Current Mermaid Version:** 10.9.5 (GitHub Pages default)
 
-**❌ DO NOT USE v11+ Features:**
-- Edge IDs: `A e1@--> B` (Use standard `A --> B`)
+**âŒ DO NOT USE v11+ Features:**
+- Edge IDs: `A e1@--> B`(Use standard`A --> B`)
 - Metadata blocks: `@{ "type": "boundary" }`
-- Bidirectional arrows: `<<-->>` (Use `A <--> B` or `A --- B`)
+- Bidirectional arrows: `<<-->>`(Use`A <--> B`or`A --- B`)
 
-**✅ Safe Syntax (v10.9.5 Compatible):**
+**âœ… Safe Syntax (v10.9.5 Compatible):**
 - Standard arrows: `-->`, `---`, `-.->`
 - Standard participants: `participant A`, `actor B`
 - Standard subgraphs: `subgraph Title`
@@ -660,7 +1915,7 @@ flowchart LR
 **CRITICAL: Frontmatter must be valid YAML**
 
 **1. Block Scalars for CSS:**
-Always use the pipe `|` for multi-line CSS strings:
+|Always use the pipe `|` for multi-line CSS strings:|
 ```yaml
   themeCSS: |
     .node rect { fill: red; }
@@ -669,9 +1924,9 @@ Always use the pipe `|` for multi-line CSS strings:
 
 **2. Case Sensitivity:**
 Configuration keys are case-sensitive. Use exact casing:
-- ✅ `gridLineStartPadding` (NOT `gridLineStartpadding`)
-- ✅ `diagramPadding` (NOT `diagrampadding`)
-- ✅ `c4ShapePadding` (NOT `c4Shapepadding`)
+- âœ… `gridLineStartPadding`(NOT`gridLineStartpadding`)
+- âœ… `diagramPadding`(NOT`diagrampadding`)
+- âœ… `c4ShapePadding`(NOT`c4Shapepadding`)
 
 ## Theme Variables Reference
 
@@ -690,7 +1945,7 @@ Each diagram type supports its own configuration options for spacing, sizing, an
 ```yaml
 flowchart:
   curve: 'linear'            # Connection style: 'linear', 'basis', 'cardinal', 'catmullRom' (MUST be quoted)
-  htmlLabels: false          # ⚠️ CRITICAL: Set to FALSE for proper text handling
+  htmlLabels: false          # âš ï¸ CRITICAL: Set to FALSE for proper text handling
   padding: 25                # Padding around subgraph content (increased from 15)
   nodeSpacing: 60            # Horizontal space between nodes
   rankSpacing: 80            # Vertical space between ranks/levels (increased from 50)
@@ -710,6 +1965,110 @@ flowchart:
 **Note:** With `htmlLabels: false`, you CANNOT use HTML tags like `<br/>` for line breaks. Use markdown backtick syntax instead:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
     id["`Line 1
     Line 2`"]
@@ -722,9 +2081,113 @@ flowchart TD
 **Solution:** Add invisible "spacer" nodes at the top of each subgraph to create vertical separation:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph "My Subgraph Title"
-    spacer1[ ]:::spacer
+    spacer1[ ] :spacer
     REAL_NODE[Actual Content]
     OTHER_NODE[More Content]
 
@@ -747,9 +2210,113 @@ flowchart TB
 **Solution:** Apply a smaller font size class to diamond nodes:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     START[Start Process]
-    DECISION{Is this a long question?}:::diamond
+    DECISION{Is this a long question?} :diamond
     YES[Yes Path]
     NO[No Path]
 
@@ -770,6 +2337,110 @@ DECISION -->|No| NO
 **Every flowchart should include these classDef statements at the end:**
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
     %% Font sizing classes for consistency
     classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
@@ -941,6 +2612,110 @@ c4:
 ### Usage Syntax
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff0000', 'lineColor':'#333'}}}%%
 flowchart TD
     A[Start] --> B[End]
@@ -1225,7 +3000,7 @@ Without explicit colors, sections and tasks may render with white/default backgr
 
 - `darkMode`(boolean) - Affects color calculations (default:`false`)
 
-## 🎨 Seasonal Theme Presets
+## ðŸŽ¨ Seasonal Theme Presets
 
 **ACTIVE THEME: FALL** (default)
 
@@ -2030,19 +3805,116 @@ config:
 3. **Open your diagram file** (e.g., `docs/diagrams/overview.md`)
 4. **Paste at the top of each mermaid block:**
 
-   ```markdown
-   ```mermaid
-   ---
-   config:
-     theme: base
-     themeVariables:
-       primaryColor: '#E8F5E9'
-       ... (all theme variables)
-   ---
-   flowchart LR
+```markdown
+```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+|themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
+flowchart LR
      A --> B
-   ```
-   ```
+```
+```
 
 - **Replace any existing frontmatter** - only one frontmatter block per diagram
 - **Test in Mermaid Live Editor** before committing
@@ -2066,6 +3938,110 @@ GitHub.com renders Mermaid server-side without custom CSS. To add borders to arr
 ## Theme Variables Reference
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 %%{init: {'theme':'base', 'themeVariables': {
   'primaryColor':'#BB2528',
   'primaryTextColor':'#fff',
@@ -2086,6 +4062,110 @@ flowchart TD
 ### Node Shapes
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
     id[Rectangle]
     id(Round edges)
@@ -2096,9 +4176,9 @@ flowchart TD
     id>Asymmetric]
     id{Diamond}
     id{{Hexagon}}
-    id[/Parallelogram/]
+    id["/Parallelogram/"]
     id[\Parallelogram alt\]
-    id[/Trapezoid\]
+    id["/Trapezoid\"]
     id[\Trapezoid alt/]
     id(((Double circle)))
 ```
@@ -2116,6 +4196,110 @@ flowchart RL   %% Right to Left
 ### Subgraph Direction
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
   subgraph id
     direction TB
@@ -2138,6 +4322,110 @@ sequenceDiagram
 ### Messages
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 sequenceDiagram
     A->B: solid no arrow
     A-->B: dotted no arrow
@@ -2153,6 +4441,110 @@ sequenceDiagram
 ### Activations
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 sequenceDiagram
     activate Alice
     deactivate Alice
@@ -2164,20 +4556,228 @@ sequenceDiagram
 ### Notes
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 sequenceDiagram
     Note right of Alice: Text
     Note left of Alice: Text
     Note over Alice,Bob: Text
 ```
 
-- ⚠️ **CRITICAL**: Text after first colon cannot contain more colons
-- ❌ **BREAKS**: `Note over A: Step 1: Initialize device`
-- ✅ **WORKS**: `Note over A: Step 1 Initialize device`
-- ✅ **Single colon separating label is OK**: `Note over A: Any text here`
+- âš ï¸ **CRITICAL**: Text after first colon cannot contain more colons
+- âŒ **BREAKS**: `Note over A: Step 1: Initialize device`
+- âœ… **WORKS**: `Note over A: Step 1 Initialize device`
+- âœ… **Single colon separating label is OK**: `Note over A: Any text here`
 
 ### Loops/Alt/Par
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 sequenceDiagram
     loop Every minute
         A->>B: Check
@@ -2198,23 +4798,233 @@ sequenceDiagram
 
 ## State Diagram-Specific Rules
 
+> **⚠️ WARNING:** `stateDiagram-v2` does NOT support straight lines (`curve: 'linear'`). If straight lines are required, convert the diagram to a `flowchart`.
+
 ### Transitions
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 stateDiagram-v2
     [*] --> State1
     State1 --> State2: Transition label
     State2 --> [*]
 ```
 
-- ⚠️ **CRITICAL**: Transition labels after colon cannot contain more colons
-- ❌ **BREAKS**: `State1 --> State2: Currently: No recovery`
-- ✅ **WORKS**: `State1 --> State2: Currently No recovery`
-- ✅ **Single colon for label is OK**: `State1 --> State2: Any text`
+- âš ï¸ **CRITICAL**: Transition labels after colon cannot contain more colons
+- âŒ **BREAKS**: `State1 --> State2: Currently: No recovery`
+- âœ… **WORKS**: `State1 --> State2: Currently No recovery`
+- âœ… **Single colon for label is OK**: `State1 --> State2: Any text`
 
 ### Composite States
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 stateDiagram-v2
     state "Complex State" as CS {
         [*] --> SubState1
@@ -2243,6 +5053,110 @@ flowchart LR
 ```
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 %% GOOD
 flowchart LR
     A["`Line 1
@@ -2293,6 +5207,110 @@ flowchart LR
 ```
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 %% GOOD
 flowchart LR
     DEV["/dev/i2c-1 device"]
@@ -2320,6 +5338,110 @@ flowchart TD
 ```
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 %% GOOD
 flowchart TD
     A --> End
@@ -2331,16 +5453,110 @@ flowchart TD
 ### Frontmatter
 
 ```mermaid
----
-title: My Diagram
+---\
 config:
-  theme: forest
-  look: handDrawn
-  layout: elk
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
-    htmlLabels: false
     curve: 'linear'
----
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     A --> B
 ```
@@ -2348,6 +5564,110 @@ flowchart LR
 ### Directives
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 %%{init: {'theme':'forest', 'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
     A --> B
@@ -2360,11 +5680,110 @@ flowchart LR
 #### Method 1: Frontmatter (affects entire diagram)
 
 ```mermaid
----
+---\
 config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: 'linear'
----
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     A --> B --> C
 ```
@@ -2372,6 +5791,110 @@ flowchart LR
 #### Method 2: Directive (inline)
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 %%{init: {'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
     A --> B --> C
@@ -2410,15 +5933,15 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **No HTML tags**: Search for `<br/>`, `<span>`, `<div>` in flowchart nodes
 - [ ] **No unquoted paths**: Search for `/dev/`, `/sys/`, file paths without quotes
 - [ ] **No unquoted brackets**: Search for `[YES]`, `[NO]`, `[WARNING]` inside node labels
-- [ ] **No colons in subgraph labels**: `subgraph "Layer 1: App"` → FAILS
+- [ ] **No colons in subgraph labels**: `subgraph "Layer 1: App"` â†’ FAILS
 - [ ] **No colons in node labels**: Except in link text
-- [ ] **No double colons**: `Status::OK` → FAILS
+- [ ] **No double colons**: `Status::OK` â†’ FAILS
 - [ ] **Quote special characters**: Parentheses, slashes, brackets, special symbols need quotes
 - [ ] **Word "end" capitalized or quoted**
 
 #### 2. Sequence Diagram Validation
 
-- [ ] **No colons in note text**: `Note over A: Step 1: Details`→ FAILS (use`Step 1 Details`)
+- [ ] **No colons in note text**: `Note over A: Step 1: Details`â†’ FAILS (use`Step 1 Details`)
 - [ ] **`<br/>` allowed**: Line breaks are OK in sequence diagrams
 - [ ] **No double colons in messages**
 
@@ -2426,19 +5949,19 @@ Run these checks BEFORE committing any Mermaid diagrams:
 
 - [ ] **ALWAYS quote all labels**: Even simple labels like `HIGH` need quotes
 - [ ] **Proper syntax**: `"Label text" : value` (always with quotes)
-- [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS without quotes
+- [ ] **Quote labels with parentheses**: `Direct (visible) : 15` â†’ FAILS without quotes
 - [ ] **Quote labels with special chars**: Spaces, colons, symbols all need quotes
 - [ ] **Use descriptive labels**: Avoid short labels starting with quotes that may be hidden by legend box
 
 #### 4. State Diagram Validation
 
-- [ ] **No colons in transition labels**: `State1 --> State2: Text: More` → FAILS
-- [ ] **Single colon for label OK**: `State1 --> State2: Text` → WORKS
+- [ ] **No colons in transition labels**: `State1 --> State2: Text: More` â†’ FAILS
+- [ ] **Single colon for label OK**: `State1 --> State2: Text` â†’ WORKS
 - [ ] **Same rule as sequence notes**: Text after colon cannot have more colons
 
 #### 5. Gantt Chart Validation
 
-- [ ] **No colons in task descriptions**: `Gap: Team leaves`→ FAILS (use`Gap Team leaves`)
+- [ ] **No colons in task descriptions**: `Gap: Team leaves`â†’ FAILS (use`Gap Team leaves`)
 - [ ] **Colon delimiter required**: `Task name :milestone, crit, 2024-01, 0d` (colon after name is syntax)
 - [ ] **Avoid colons before delimiter colon**: Having `Task: Name :milestone` confuses parser
 - [ ] **Check dateFormat**: Must be valid format
@@ -2448,7 +5971,7 @@ Run these checks BEFORE committing any Mermaid diagrams:
 
 - [ ] **Quote all data point labels**: Especially those with colons or special characters
 - [ ] **Syntax**: `"Label text": [x, y]` with quotes
-- [ ] **Special characters**: Unicode like `FÂ´` needs quotes if label has colons
+- [ ] **Special characters**: Unicode like `FÃ‚Â´` needs quotes if label has colons
 
 #### 6. Universal Checks (All Diagram Types)
 
@@ -2494,8 +6017,8 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 ### Common Issues Found During Validation
 
 - **Flowchart curve parameter must be quoted string**
-  - ❌ `curve: linear`
-  - ✅ `curve: 'linear'`
+  - âŒ `curve: linear`
+  - âœ… `curve: 'linear'`
   - **Why**: Mermaid expects curve value as string literal, not bareword
   - **Impact**: Without quotes, Mermaid ignores the setting and uses default curved lines
   - **Required additions**: Also add `htmlLabels: true`and`useMaxWidth: true` for proper rendering
@@ -2503,57 +6026,57 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 - **Subgraph labels too close to content boxes**
   - **Problem**: Subgraph titles appear directly on top of the subgraph border, overlapping with content
   - **Solution**: Add vertical offset to themeCSS:
-     ```yaml
+```yaml
      themeCSS: 
        .cluster-label { font-weight: 600 !important; }
-     ```
-  - **Why**: Mermaid renders cluster labels at the exact border position with no spacing
-  - **How it works**: `translateY(-15px)` moves the label 15 pixels upward, away from the box
-  - **Impact**: Critical for diagrams with subgraphs (team boundaries, system architecture)
-  - **Note**: Negative value moves up, positive moves down. Adjust -15px as needed.
+```
+- **Why**: Mermaid renders cluster labels at the exact border position with no spacing
+- **How it works**: `translateY(-15px)` moves the label 15 pixels upward, away from the box
+- **Impact**: Critical for diagrams with subgraphs (team boundaries, system architecture)
+- **Note**: Negative value moves up, positive moves down. Adjust -15px as needed.
 
 - **Parentheses without quotes** (pie charts, node labels)
-  - ❌ `Direct (visible) : 15`
-  - ✅ `"Direct (visible)" : 15`
+  - âŒ `Direct (visible) : 15`
+  - âœ… `"Direct (visible)" : 15`
 
 - **Square brackets without quotes** (node labels)
-  - ❌ `NODE[Status [YES] Complete]`
-  - ✅ `NODE["Status [YES] Complete"]`
+  - âŒ `NODE[Status [YES] Complete]`
+  - âœ… `NODE["Status [YES] Complete"]`
 
 - **Forward slashes without quotes**
-  - ❌ `DEV[/dev/i2c-1]`
-  - ✅ `DEV["/dev/i2c-1"]`
+  - âŒ `DEV[/dev/i2c-1]`
+  - âœ… `DEV["/dev/i2c-1"]`
 
 - **Colons in subgraph labels**
-  - ❌ `subgraph "Layer 1: Application"`
-  - ✅ `subgraph "Layer 1 Application"`
+  - âŒ `subgraph "Layer 1: Application"`
+  - âœ… `subgraph "Layer 1 Application"`
 
 - **Colons in sequence notes**
-  - ❌ `Note over A: Step 1: Initialize`
-  - ✅ `Note over A: Step 1 Initialize`
+  - âŒ `Note over A: Step 1: Initialize`
+  - âœ… `Note over A: Step 1 Initialize`
 
 - **Colons in state transition labels**
-  - ❌ `State1 --> State2: Currently: No recovery`
-  - ✅ `State1 --> State2: Currently No recovery`
-  - ⚠️ Same rule as sequence notes
+  - âŒ `State1 --> State2: Currently: No recovery`
+  - âœ… `State1 --> State2: Currently No recovery`
+  - âš ï¸ Same rule as sequence notes
 
 - **Double colons**
-  - ❌ `I2cStatus::OK`
-  - ✅ `I2C_OK`
+  - âŒ `I2cStatus::OK`
+  - âœ… `I2C_OK`
 
 - **Gantt task names with colons**
-  - ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
-  - ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
-  - ⚠️ Colon in task description before delimiter confuses parser
+  - âŒ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
+  - âœ… `Gap Team leaves :milestone, crit, 2021-05, 0d`
+  - âš ï¸ Colon in task description before delimiter confuses parser
 
 - **Quadrant chart labels without quotes**
-  - ❌ `FÂ´ Core Docs: [0.1, 0.9]`
-  - ✅ `"FÂ´ Core Docs": [0.1, 0.9]`
-  - ⚠️ Always quote data point labels, especially with colons or special chars
+  - âŒ `FÃ‚Â´ Core Docs: [0.1, 0.9]`
+  - âœ… `"FÃ‚Â´ Core Docs": [0.1, 0.9]`
+  - âš ï¸ Always quote data point labels, especially with colons or special chars
 
 ---
 
-## ðŸ“ Rules for Diagram Creation
+## Ã°Å¸â€œÂ Rules for Diagram Creation
 
 **MANDATORY: Follow these rules when creating any Mermaid diagram to ensure consistent, readable, and properly rendered output.**
 
@@ -2586,14 +6109,14 @@ classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 
 #### DISALLOWED Practices
 
-❌ NEVER DO THIS | ✅ DO THIS INSTEAD | WHY 
-------------------|--------------------|-----
-Use `fontSize: 20`or smaller | Use`fontSize: 24` minimum | Smaller fonts are unreadable 
-Use HTML tags (`<br/>`, `<span>`) in flowcharts | Use newlines in markdown strings | HTML breaks rendering 
-Use `::`in text | Use`_` or space | Double colons break parser 
-Use unquoted special characters | Quote all labels with special chars | Parser failures 
-Use `themeCSS` in individual diagrams | Use classDef or global CSS | themeCSS overrides global settings unpredictably 
-Skip spacer nodes in subgraphs | Always add spacer nodes | Prevents heading overlap 
+|âŒ NEVER DO THIS | âœ… DO THIS INSTEAD | WHY|
+|------------------|--------------------|-----|
+|Use `fontSize: 20`or smaller | Use`fontSize: 24` minimum | Smaller fonts are unreadable|
+|Use HTML tags (`<br/>`, `<span>`) in flowcharts | Use newlines in markdown strings | HTML breaks rendering|
+|Use `::`in text | Use`_` or space | Double colons break parser|
+|Use unquoted special characters | Quote all labels with special chars | Parser failures|
+|Use `themeCSS` in individual diagrams | Use classDef or global CSS | themeCSS overrides global settings unpredictably|
+|Skip spacer nodes in subgraphs | Always add spacer nodes | Prevents heading overlap|
 
 ---
 
@@ -2626,9 +6149,113 @@ config:
 **Solution**: Add invisible spacer nodes after each subgraph declaration:
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph MySection["My Section Title"]
-    spacer1[" "]:::spacer
+    spacer1[" "] :spacer
     ActualNode1["First real node"]
     ActualNode2["Second node"]
     end
@@ -2653,8 +6280,112 @@ flowchart TB
 3. Move details to connected nodes or edge labels
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
-D{"Yes/No?"}:::diamond --> |"Yes: User confirmed"| A["Action"]
+D{"Yes/No?"} :diamond --> |"Yes: User confirmed"| A["Action"]
 D --> |"No: User declined"| B["Other"]
 
     classDef diamond font-size:22px;
@@ -2662,24 +6393,24 @@ D --> |"No: User declined"| B["Other"]
 
 #### Direction Guidelines
 
-Direction | Best For | Avoid For 
------------|----------|-----------
-`TB`or`TD` | Hierarchies, process flows | Wide diagrams 
-`LR` | Timelines, sequences | Deep hierarchies 
-`BT` | Bottom-up architectures | General use 
-`RL` | Right-to-left flows | General use 
+|Direction | Best For | Avoid For|
+|-----------|----------|-----------|
+|`TB`or`TD` | Hierarchies, process flows | Wide diagrams|
+|`LR` | Timelines, sequences | Deep hierarchies|
+|`BT` | Bottom-up architectures | General use|
+|`RL` | Right-to-left flows | General use|
 
 #### Node Shape Best Practices
 
-Shape | Syntax | Use For | Label Length 
--------|--------|---------|--------------
-Rectangle | `["text"]` | Processes, actions | Medium 
-Rounded | `("text")` | Start/end points | Short 
-Diamond | `{"text"}` | Decisions | Very short (3-4 words) 
-Stadium | `(["text"])` | Terminal points | Short 
-Hexagon | `{{"text"}}` | Preparation steps | Medium 
-Database | `[("text")]` | Data storage | Short 
-Subroutine | `[["text"]]` | Subprocess calls | Medium 
+|Shape | Syntax | Use For | Label Length|
+|-------|--------|---------|--------------|
+|Rectangle | `["text"]` | Processes, actions | Medium|
+|Rounded | `("text")` | Start/end points | Short|
+|Diamond | `{"text"}` | Decisions | Very short (3-4 words)|
+|Stadium | `(["text"])` | Terminal points | Short|
+|Hexagon | `{{"text"}}` | Preparation steps | Medium|
+|Database | `[("text")]` | Data storage | Short|
+|Subroutine | `[["text"]]` | Subprocess calls | Medium|
 
 #### Edge Label Rules
 
@@ -2688,6 +6419,110 @@ Subroutine | `[["text"]]` | Subprocess calls | Medium
 3. For longer explanations, add a note node instead
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TD
 A --> |"short label"| B
     B --> C
@@ -2719,6 +6554,110 @@ config:
 4. **Number steps**: Use `autonumber` for complex sequences
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 sequenceDiagram
     autonumber
     participant U as User
@@ -2735,11 +6674,11 @@ sequenceDiagram
 
 #### DISALLOWED in Sequence Diagrams
 
-❌ NEVER | ✅ INSTEAD 
-----------|------------
-`Note over A: Step 1: Details`|`Note over A: Step 1 Details` 
-More than 10 actors | Split into multiple diagrams 
-Deeply nested loops | Flatten or split 
+|âŒ NEVER | âœ… INSTEAD|
+|----------|------------|
+|`Note over A: Step 1: Details`|`Note over A: Step 1 Details`|
+|More than 10 actors | Split into multiple diagrams|
+|Deeply nested loops | Flatten or split|
 
 ---
 
@@ -2757,6 +6696,110 @@ config:
 #### CRITICAL: Always Quote Labels
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 pie title My Chart
     "Label One" : 45
     "Label Two" : 30
@@ -2791,6 +6834,110 @@ config:
 #### Task Definition Rules
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 gantt
     dateFormat YYYY-MM-DD
     title Project Timeline
@@ -2802,10 +6949,10 @@ gantt
 
 **CRITICAL: No colons in task names before the delimiter colon!**
 
-❌ WRONG | ✅ CORRECT 
-----------|------------
-`Phase 1: Setup :done, t1, 2024-01-01, 5d`|`Phase 1 Setup :done, t1, 2024-01-01, 5d` 
-`Gap: Team leaves :milestone`|`Gap Team leaves :milestone` 
+|âŒ WRONG | âœ… CORRECT|
+|----------|------------|
+|`Phase 1: Setup :done, t1, 2024-01-01, 5d`|`Phase 1 Setup :done, t1, 2024-01-01, 5d`|
+|`Gap: Team leaves :milestone`|`Gap Team leaves :milestone`|
 
 #### Best Practices
 
@@ -2834,6 +6981,110 @@ config:
 #### CRITICAL: Always Quote Data Point Labels
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 quadrantChart
     title Risk Assessment
     x-axis Low Risk --> High Risk
@@ -2865,14 +7116,14 @@ config:
 
 **No colons in transition labels after the separator colon!**
 
-❌ WRONG | ✅ CORRECT 
-----------|------------
-`State1 --> State2: Status: Active`|`State1 --> State2: Status Active` 
-`A --> B: Error: Connection failed`|`A --> B: Error Connection failed` 
+|âŒ WRONG | âœ… CORRECT|
+|----------|------------|
+|`State1 --> State2: Status: Active`|`State1 --> State2: Status Active`|
+|`A --> B: Error: Connection failed`|`A --> B: Error Connection failed`|
 
 ---
 
-## ðŸ“Š Rules for Data Conversion for Mermaid Consumption
+## Ã°Å¸â€œÅ  Rules for Data Conversion for Mermaid Consumption
 
 **When converting data from external sources (databases, APIs, spreadsheets) into Mermaid diagrams, follow these preprocessing rules.**
 
@@ -2880,29 +7131,29 @@ config:
 
 #### Step 1: Remove/Replace Problematic Characters
 
-Character | Problem | Replacement 
------------|---------|-------------
-`::`| Breaks parser |` `(space) or`_` 
-`:`in labels | Breaks parser |`-` or remove 
-`<`and`>`| HTML interpretation |`lt`and`gt` or remove 
-`&`| Entity interpretation |`and` 
-`"`inside quoted text | Breaks quotes |`'` or remove 
-`\n`newlines | Breaks labels |` ` (space) 
-`\t`tabs | Inconsistent spacing |` ` (space) 
-`()` unquoted | Breaks parser | Quote entire label 
-`[]` inside labels | Breaks parser | Quote entire label 
-`/` in paths | Breaks parser | Quote entire label 
+|Character | Problem | Replacement|
+|-----------|---------|-------------|
+|`::`| Breaks parser |` `(space) or`_`|
+|`:`in labels | Breaks parser |`-` or remove|
+|`<`and`>`| HTML interpretation |`lt`and`gt` or remove|
+|`&`| Entity interpretation |`and`|
+|`"`inside quoted text | Breaks quotes |`'` or remove|
+|`\n`newlines | Breaks labels |` ` (space)|
+|`\t`tabs | Inconsistent spacing |` ` (space)|
+|`()` unquoted | Breaks parser | Quote entire label|
+|`[]` inside labels | Breaks parser | Quote entire label|
+|`/` in paths | Breaks parser | Quote entire label|
 
 #### Step 2: Truncate Long Text
 
-Element | Maximum Length | Truncation Strategy 
----------|----------------|---------------------
-Node labels | 50 characters | Truncate with `...` 
-Edge labels | 30 characters | Use abbreviations 
-Diamond labels | 20 characters | Extreme brevity 
-Subgraph titles | 40 characters | Shorten descriptively 
-Pie chart labels | 25 characters | Abbreviate 
-Gantt task names | 40 characters | Truncate 
+|Element | Maximum Length | Truncation Strategy|
+|---------|----------------|---------------------|
+|Node labels | 50 characters | Truncate with `...`|
+|Edge labels | 30 characters | Use abbreviations|
+|Diamond labels | 20 characters | Extreme brevity|
+|Subgraph titles | 40 characters | Shorten descriptively|
+|Pie chart labels | 25 characters | Abbreviate|
+|Gantt task names | 40 characters | Truncate|
 
 #### Step 3: Quote All Labels
 
@@ -2930,7 +7181,7 @@ def sanitize_for_mermaid(text):
 
 ### Data Structure Conversion
 
-#### Hierarchical Data → Flowchart
+#### Hierarchical Data â†’ Flowchart
 
 ```python
 # Input: Tree structure
@@ -2968,7 +7219,7 @@ def tree_to_flowchart(data, parent=None):
     return '\n'.join(lines)
 ```
 
-#### Tabular Data → Gantt Chart
+#### Tabular Data â†’ Gantt Chart
 
 ```python
 # Input: List of tasks
@@ -3001,7 +7252,7 @@ def tasks_to_gantt(tasks):
     return '\n'.join(lines)
 ```
 
-#### Percentage Data → Pie Chart
+#### Percentage Data â†’ Pie Chart
 
 ```python
 # Input: Category percentages
@@ -3019,7 +7270,7 @@ def dict_to_pie(data, title="Distribution"):
     return '\n'.join(lines)
 ```
 
-#### Coordinate Data → Quadrant Chart
+#### Coordinate Data â†’ Quadrant Chart
 
 ```python
 # Input: Items with x,y scores
@@ -3092,10 +7343,3 @@ def validate_mermaid(diagram_code):
 
 **Version:** Based on Mermaid v10+ (GitHub rendering)
 **Last Updated:** December 28, 2024
-
-
-
-
-
-
-

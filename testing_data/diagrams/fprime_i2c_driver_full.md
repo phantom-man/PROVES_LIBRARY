@@ -30,13 +30,117 @@ Consider an [MPU6050 IMU sensor](https://cdn-learn.adafruit.com/downloads/pdf/mp
 - The application layer uses the device manager component to obtain sensor data when needed.
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 graph LR
     subgraph SW["F´ Software"]
-        A[Application Layer] -->|Read sensor data| B[ImuManager<br/>Device Manager]
-        B -->|I2C read/write commands| C[LinuxI2cDriver<br/>Bus Driver]
+        A[Application Layer] -->|Read sensor data| B[ImuManager Device Manager]
+        B -->|I2C read/write commands| C[LinuxI2cDriver Bus Driver]
     end
     subgraph HW["Hardware"]
-        D[MPU6050 IMU Sensor<br/>I2C Device]
+        D[MPU6050 IMU Sensor I2C Device]
     end
     C -->|Hardware I/O| D
     style A fill:#e1f5ff
@@ -53,7 +157,7 @@ graph LR
 
 ## How-To Develop a Device Manager
 
-This section focuses on the device manager component. The bus driver component is assumed to already exist, and its implementation is covered in a [separate section](#how-to-develop-a-bus-driver) of this guide. Linux implementations are available in core F´ with for example `Drv.LinuxUartDriver`, `Drv.LinuxI2cDriver` and `LinuxSpiDriver`.
+This section focuses on the device manager component. The bus driver component is assumed to already exist, and its implementation is covered in a [separate section](#how-to-develop-a-bus-driver) of this guide. Linux implementations are available in core F´ with for example `Drv.LinuxUartDriver`, `Drv.LinuxI2cDriver`and`LinuxSpiDriver`.
 
 ### Step 1 - Understand the Hardware
 
@@ -61,12 +165,12 @@ Before starting development, obtain the datasheet and any relevant documentation
 
 ### Step 2 - Define the Device Manager Component
 
-Use `fprime-util new --component` to create a new component for your device manager. It is often useful (although not required) to use Events and Telemetry. It is often sufficient to start with a `passive` component, and upgrade to `active` or `queued` later if needed.
+Use `fprime-util new --component`to create a new component for your device manager. It is often useful (although not required) to use Events and Telemetry. It is often sufficient to start with a`passive`component, and upgrade to`active`or`queued` later if needed.
 
 This component will translate device-specific operations into bus transactions. Identify the bus type (I2C, SPI, UART, etc.) and the operations needed (read, write, configure, etc.). These should be reflected in the component's ports by mirroring the bus driver's interface.
 
-For our `ImuManager` component, we are using an I2C bus, therefore we need to define ports that mirror the `Drv.I2c` interface (see [Drv/Interfaces/I2c.fpp](../../Drv/Interfaces/I2c.fpp)).  
-For example, a `Drv.I2c` component provides an ***input*** port of type `Drv.I2cWriteRead`, so we need to define an ***output*** port of that type in our component in order to connect to a bus driver component. We mirror each Bus Driver port that we need to use in our Device Manager.
+For our `ImuManager`component, we are using an I2C bus, therefore we need to define ports that mirror the`Drv.I2c` interface (see [Drv/Interfaces/I2c.fpp](../../Drv/Interfaces/I2c.fpp)).  
+For example, a `Drv.I2c`component provides an ***input*** port of type`Drv.I2cWriteRead`, so we need to define an ***output*** port of that type in our component in order to connect to a bus driver component. We mirror each Bus Driver port that we need to use in our Device Manager.
 
 ```python
 # In: ImuManager.fpp
@@ -78,8 +182,8 @@ passive component ImuManager {
     @ Output port allowing to connect to an I2c bus driver for write operations
     output port busWrite: Drv.I2c
 
-    # We could also mirror the Drv.I2c 'read' port if needed
-    # but we do not need them for this example
+# We could also mirror the Drv.I2c 'read' port if needed
+# but we do not need them for this example
 }
 ```
 
@@ -273,32 +377,31 @@ In our case, we need to understand how to perform I2C read and write operations 
 
 We learn the following:
 * Zephyr uses the [`device`](https://docs.zephyrproject.org/latest/doxygen/html/structdevice.html) struct to identify an I2C device. These can be retrieved from the Device Tree through macros (see [Zephyr Device Tree How-To](https://docs.zephyrproject.org/latest/build/dts/howtos.html)).
-* With a `device` instance, we can use the `i2c_write`, `i2c_read` and `i2c_write_read` functions to perform I2C write and read operations (see [API](https://docs.zephyrproject.org/latest/doxygen/html/group__i2c__interface.html#ga2cc5f49493dce89e128ccbfa9d6149a0)).
-
+* With a `device`instance, we can use the`i2c_write`, `i2c_read`and`i2c_write_read` functions to perform I2C write and read operations (see [API](https://docs.zephyrproject.org/latest/doxygen/html/group__i2c__interface.html#ga2cc5f49493dce89e128ccbfa9d6149a0)).
 
 ### Step 2 - Define the Bus Driver Component
 
-Use `fprime-util new --component` to create a new component for your bus driver. The set of ports that a bus driver needs to expose depends on the bus communication protocol (I2C, SPI, UART, etc.). F Prime provides standard interfaces for common bus types in the `Drv/Interfaces/` directory. For I2C, we can use the existing `Drv.I2c` interface (see [Drv/Interfaces/I2c.fpp](../../Drv/Interfaces/I2c.fpp)).
+Use `fprime-util new --component`to create a new component for your bus driver. The set of ports that a bus driver needs to expose depends on the bus communication protocol (I2C, SPI, UART, etc.). F Prime provides standard interfaces for common bus types in the`Drv/Interfaces/`directory. For I2C, we can use the existing`Drv.I2c` interface (see [Drv/Interfaces/I2c.fpp](../../Drv/Interfaces/I2c.fpp)).
 
 ```python
 # In: ZephyrI2cDriver.fpp
 @ I2C bus driver interface
 passive component ZephyrI2cDriver {
-    # This imports the Drv.I2c interface, adding the required ports to this component
+# This imports the Drv.I2c interface, adding the required ports to this component
     import Drv.I2c
 }
 ```
 
 > [!TIP]
-> Our I2C bus driver will only be responding to read/write requests from a device manager, therefore we define it as a `passive component` and the `Drv.I2c` ports are sufficient. If your bus driver needs to perform scheduled tasks (e.g., polling, timeouts, etc.), you may consider adding a scheduling port (`Svc.Sched`) to hook to a [Svc.RateGroup](../../Svc/ActiveRateGroup/docs/sdd.md), and potentially switching to an `active` component. `queued` components can also be used but need careful design to ensure messages are dispatched.
+> Our I2C bus driver will only be responding to read/write requests from a device manager, therefore we define it as a `passive component`and the`Drv.I2c` ports are sufficient. If your bus driver needs to perform scheduled tasks (e.g., polling, timeouts, etc.), you may consider adding a scheduling port (`Svc.Sched`) to hook to a [Svc.RateGroup](../../Svc/ActiveRateGroup/docs/sdd.md), and potentially switching to an `active`component.`queued` components can also be used but need careful design to ensure messages are dispatched.
 
-Run `fprime-util impl` to generate the component C++, including the port handler to fill out. In our case, we will need to implement the `write`, `read`, and `writeRead` port handlers.
+Run `fprime-util impl`to generate the component C++, including the port handler to fill out. In our case, we will need to implement the`write`, `read`, and `writeRead` port handlers.
 
 ### Step 3 - Allow for bus configuration on startup
 
 Bus drivers will most likely require configuration on startup, usually done by the project inside `configureTopology()`. This can include opening the bus device, selecting pin numbers, setting baud rates, or other parameters. For example, during the LedBlinker tutorial, we had to configure the GPIO driver with the correct pin number and other parameters (see [LedBlinkerTopology.cpp](https://github.com/fprime-community/fprime-workshop-led-blinker/blob/9147623edd1cb7df0786a60b549a12599f6f59eb/LedBlinker/LedBlinkerDeployment/Top/LedBlinkerDeploymentTopology.cpp#L57)). This allows the same component implementation to be reused for multiple devices: you don't want to hardcode device paths or pin numbers in the bus driver itself. Instead, each instance of the component is configured at runtime to open the user-specified device.
 
-For our ZephyrI2cDriver, we will implement a public `open()` method that takes an `device` structure to identify the I2C device. This method will store the `device` as a member variable for later use in read/write operations.
+For our ZephyrI2cDriver, we will implement a public `open()`method that takes an`device`structure to identify the I2C device. This method will store the`device` as a member variable for later use in read/write operations.
 
 ```cpp
 // In: ZephyrI2cDriver.cpp
@@ -331,7 +434,7 @@ void configureTopology() {
 
 ### Step 4 - Implement Bus Operations
 
-Implement the port calls that are part of the bus driver interface. In our case, `Drv.I2c` contains `write`, `read`, and `writeRead` port handlers, for which the function signatures are autocoded by `fprime-util impl`. With the Zephyr I2C API, this may look like the following:
+Implement the port calls that are part of the bus driver interface. In our case, `Drv.I2c`contains`write`, `read`, and `writeRead`port handlers, for which the function signatures are autocoded by`fprime-util impl`. With the Zephyr I2C API, this may look like the following:
 
 ```cpp
 // In: ZephyrI2cDriver.cpp
@@ -408,4 +511,3 @@ void configureTopology() {
 - [fprime-sensors-reference Repository](https://github.com/fprime-community/fprime-sensors-reference) - Reference project that uses sensors defined in fprime-sensors
 - [F´ core Linux Bus Drivers](../../Drv/)
 - [fprime-zephyr package](https://github.com/fprime-community/fprime-zephyr) - F Prime support for Zephyr RTOS, including common bus drivers for Zephyr
-

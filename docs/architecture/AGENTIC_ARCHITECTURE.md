@@ -3,6 +3,110 @@
 ## System Overview
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph Query[User Query Layer]
         User[University Team Query]
@@ -10,23 +114,23 @@ flowchart TB
     end
 
     subgraph Orchestration[LangGraph Orchestration Layer]
-        Router[Router Agent<br/>Query classification]
-        Planner[Planning Agent<br/>Sweep strategy]
-        Executor[Execution Agent<br/>Graph queries]
+        Router[Router Agent Query classification]
+        Planner[Planning Agent Sweep strategy]
+        Executor[Execution Agent Graph queries]
     end
 
     subgraph DeepAgents[Deep Agents - LangChain]
-        Curator[Curator Agent<br/>Entry normalization]
-        Scanner[Scanner Agent<br/>Risk detection]
-        Builder[Builder Agent<br/>Code generation]
-        Analyzer[Cascade Analyzer<br/>Path traversal]
+        Curator[Curator Agent Entry normalization]
+        Scanner[Scanner Agent Risk detection]
+        Builder[Builder Agent Code generation]
+        Analyzer[Cascade Analyzer Path traversal]
     end
 
     subgraph KnowledgeLayer[Knowledge Layer]
-        MCP[MCP Server<br/>Query interface]
-        GraphDB[(Knowledge Graph<br/>ERV + FRAMES)]
-        RAG[RAG System<br/>Documentation retrieval]
-        VectorDB[(Vector Store<br/>Embeddings)]
+        MCP[MCP Server Query interface]
+        GraphDB[(Knowledge Graph ERV + FRAMES)]
+        RAG[RAG System Documentation retrieval]
+        VectorDB[(Vector Store Embeddings)]
     end
 
     subgraph Evidence[Evidence Sources]
@@ -144,6 +248,110 @@ POST /graph/cascade
 ### Hybrid RAG: Graph + Vector
 
 ```mermaid
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
 flowchart LR
     Query[User Query] --> Router[Query Router]
     Router -->|Structural query| Graph[Graph Query Engine]
@@ -155,7 +363,7 @@ flowchart LR
     Both --> GraphDB
     Both --> VectorDB
 
-    GraphDB --> Rerank[Re-ranker<br/>LLM-based]
+    GraphDB --> Rerank[Re-ranker LLM-based]
     VectorDB --> Rerank
 
     Rerank --> Context[Context Window]
@@ -175,15 +383,15 @@ class QueryRouter:
     """
 
     def route(self, query: str) -> QueryStrategy:
-        # Structural queries -> Graph
+# Structural queries -> Graph
         if self.is_structural(query):
             return GraphQuery()
 
-        # Semantic/document queries -> Vector
+# Semantic/document queries -> Vector
         if self.is_semantic(query):
             return VectorQuery()
 
-        # Complex queries -> Hybrid
+# Complex queries -> Hybrid
         return HybridQuery()
 
     def is_structural(self, query: str) -> bool:
@@ -282,20 +490,20 @@ class AgentState(TypedDict):
     """
     Shared state across all agents in the graph
     """
-    # Input
+# Input
     user_query: str
     query_type: str  # "graph" | "vector" | "cascade"
 
-    # Intermediate results
+# Intermediate results
     graph_results: Optional[List[dict]]
     vector_results: Optional[List[dict]]
     cascade_paths: Optional[List[dict]]
     evidence_chain: Optional[List[dict]]
 
-    # Context for LLM
+# Context for LLM
     context_window: List[str]
 
-    # Output
+# Output
     answer: str
     confidence: float
     sources: List[str]
@@ -305,34 +513,131 @@ class AgentState(TypedDict):
 ### Example: Cascade Analysis Workflow
 
 ```mermaid
-stateDiagram-v2
-    [*] --> Router
+---\
+config:
+  theme: base
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
+    sectionBkgColor: '#FFF8E1'
+    altSectionBkgColor: '#FFF3E0'
+    sectionBkgColor2: '#F3E5F5'
+    taskBkgColor: '#FFB74D'
+    taskBorderColor: '#FF6F00'
+    activeTaskBkgColor: '#FF9800'
+    activeTaskBorderColor: '#E65100'
+    doneTaskBkgColor: '#FFCC80'
+    doneTaskBorderColor: '#FF6F00'
+    critBkgColor: '#CE93D8'
+    critBorderColor: '#7B1FA2'
+    taskTextColor: '#5D4037'
+    taskTextOutsideColor: '#5D4037'
+    taskTextLightColor: '#5D4037'
+    taskTextDarkColor: '#FFFFFF'
+    gridColor: '#FFCC80'
+    todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
+  gantt:
+    fontSize: 16
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
+  flowchart:
+    curve: 'linear'
+    htmlLabels: false
+    useMaxWidth: true
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
+    diagramPadding: 8
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10\
+---\
+flowchart TB
+    START(( )) --> Router
 
-    Router --> CascadeAnalyzer: "Why brownouts?"
-    CascadeAnalyzer --> GraphQuery: Find power paths
-    GraphQuery --> EvidenceTracer: Extract evidence
-    EvidenceTracer --> VectorSearch: Get mitigation docs
-    VectorSearch --> Synthesizer: Combine results
-    Synthesizer --> [*]: Return answer
+    Router -->|"Why brownouts?"| CascadeAnalyzer
+    CascadeAnalyzer -->|Find power paths| GraphQuery
+    GraphQuery -->|Extract evidence| EvidenceTracer
+    EvidenceTracer -->|Get mitigation docs| VectorSearch
+    VectorSearch -->|Combine results| Synthesizer
+    Synthesizer -->|Return answer| END(( ))
 
-    note right of CascadeAnalyzer
-        Query graph for:
-        RadioTX -> Power cascade paths
-    end note
+    NOTE_CA[/"Query graph for: RadioTX -> Power cascade paths"\]
+    CascadeAnalyzer -.- NOTE_CA
+    style NOTE_CA fill:#fff9c4,stroke:#fbc02d
 
-    note right of EvidenceTracer
-        Trace evidence for:
-        - Unknown edges
-        - Assumed relationships
-    end note
+    NOTE_ET[/"Trace evidence for: - Unknown edges - Assumed relationships"\]
+    EvidenceTracer -.- NOTE_ET
+    style NOTE_ET fill:#fff9c4,stroke:#fbc02d
 
-    note right of Synthesizer
-        Generate answer with:
-        - Cascade diagram
-        - Root cause analysis
-        - Recommended fixes
-        - Confidence score
-    end note
+    NOTE_SYN[/"Generate answer with: - Cascade diagram - Root cause analysis - Recommended fixes - Confidence score"\]
+    Synthesizer -.- NOTE_SYN
+    style NOTE_SYN fill:#fff9c4,stroke:#fbc02d
 ```
 
 ---
@@ -396,12 +701,12 @@ For each path:
    - Knownness (known, assumed, unknown, disproved?)
    - Scope (version tuple, hardware revision, mission profile)
 
-3. Flag risks:
+1. Flag risks:
    - Any edge with knownness: assumed or unknown
    - Any path containing "sometimes" edges (mode-dependent)
    - Long cascades (> 4 hops)
 
-4. Generate evidence backlog:
+1. Generate evidence backlog:
    - For assumed/unknown edges, recommend tests
    - For version mismatches, recommend updates
 
@@ -432,17 +737,17 @@ class EnhancedScannerAgent:
         """
         risks = []
 
-        # Traditional pattern matching
+# Traditional pattern matching
         pattern_risks = self.pattern_matcher.scan(repo_path)
         risks.extend(pattern_risks)
 
-        # NEW: Graph-based reasoning
-        # 1. Extract component topology from code
+# NEW: Graph-based reasoning
+# 1. Extract component topology from code
         topology = self.extract_topology(repo_path)
 
-        # 2. Query knowledge graph for known risks in this topology
+# 2. Query knowledge graph for known risks in this topology
         for component in topology.components:
-            # Check if this component has REQUIRES edges we're missing
+# Check if this component has REQUIRES edges we're missing
             required = self.mcp_client.query(f"""
                 MATCH (c:Component {{name: '{component.name}'}})-[r:REQUIRES]->(dep)
                 WHERE r.knownness = 'known'
@@ -457,12 +762,12 @@ class EnhancedScannerAgent:
                         evidence=f"Graph shows {component} REQUIRES {dep}"
                     ))
 
-        # 3. Check for cascade risks
-        # Find components connected to shared resources (power, thermal)
+# 3. Check for cascade risks
+# Find components connected to shared resources (power, thermal)
         cascade_risks = self.check_cascade_conflicts(topology)
         risks.extend(cascade_risks)
 
-        # 4. Check for version tuple conflicts
+# 4. Check for version tuple conflicts
         version_risks = self.check_version_compatibility(repo_path)
         risks.extend(version_risks)
 
@@ -474,17 +779,17 @@ class EnhancedScannerAgent:
         """
         risks = []
 
-        # Find all power consumers
+# Find all power consumers
         power_consumers = self.mcp_client.query("""
             MATCH (c:Component)-[r:CONSUMES]->(p:Resource)
             WHERE p.type = 'power'
             RETURN c, r, p
         """)
 
-        # Check for high-power components coupled to sensitive components
+# Check for high-power components coupled to sensitive components
         for c1, c2 in combinations(power_consumers, 2):
             if c1.power_draw > THRESHOLD and c2.is_noise_sensitive:
-                # Query for coupling path
+# Query for coupling path
                 coupling = self.mcp_client.cascade_query(
                     start=c1,
                     end=c2,
@@ -502,6 +807,7 @@ class EnhancedScannerAgent:
         return risks
 ```
 {% endraw %}
+
 ### Builder Agent (FRAMES-Aware)
 
 {% raw %}
@@ -516,15 +822,15 @@ class FramesAwareBuilderAgent:
         Generate component matched to team's satisficing constraints
         """
 
-        # 1. Query graph for similar components
+# 1. Query graph for similar components
         similar = self.mcp_client.search_similar_components(
             requirements.functionality
         )
 
-        # 2. Check team constraints (FRAMES: bounded rationality)
+# 2. Check team constraints (FRAMES: bounded rationality)
         constraints = self.assess_constraints(team_context)
 
-        # 3. Select template based on constraints
+# 3. Select template based on constraints
         if constraints.experience_level == "beginner":
             template = "simple_component_with_comments.jinja"
         elif constraints.time_pressure == "high":
@@ -532,8 +838,8 @@ class FramesAwareBuilderAgent:
         else:
             template = "flexible_component.jinja"
 
-        # 4. Query graph for interface requirements
-        # Ensure generated component respects near-decomposability
+# 4. Query graph for interface requirements
+# Ensure generated component respects near-decomposability
         interfaces = self.mcp_client.query(f"""
             MATCH (subsystem:Subsystem {{name: '{requirements.subsystem}'}})-[:CONTAINS]->(c:Component)
             MATCH (c)-[r:REQUIRES|CONFIGURES|CONTROLS]->(external)
@@ -542,11 +848,11 @@ class FramesAwareBuilderAgent:
             ORDER BY r.strength DESC
         """)
 
-        # Minimize external coupling (FRAMES principle)
+# Minimize external coupling (FRAMES principle)
         if len(interfaces) > 3:
             self.warn_high_external_coupling(requirements.subsystem)
 
-        # 5. Generate with FRAMES metadata
+# 5. Generate with FRAMES metadata
         code = self.render_template(template, {
             **requirements,
             "similar_components": similar,
@@ -604,19 +910,19 @@ class SweepOrchestrator:
         """
         sweep = self.sweeps[sweep_name]
 
-        # Get current graph state
+# Get current graph state
         snapshot = await self.db.snapshot()
 
-        # Run sweep logic
+# Run sweep logic
         results = await sweep.execute(snapshot, config)
 
-        # Generate report
+# Generate report
         report = sweep.format_report(results)
 
-        # Store results
+# Store results
         await self.db.store_sweep_results(sweep_name, results)
 
-        # Generate action items
+# Generate action items
         actions = sweep.generate_action_items(results)
 
         return {
@@ -638,7 +944,7 @@ class SweepOrchestrator:
             results = await self.run_sweep(sweep_name, {})
             all_results[sweep_name] = results
 
-        # Generate master report
+# Generate master report
         return self.generate_master_report(all_results)
 ```
 
@@ -679,7 +985,7 @@ for edge in cascade_paths[0]:
     evidence.append(ev)
 
 # 6. Finds gap: MCU_BrownoutDetect -> FPrime_WatchdogReset
-#    has knownness: "assumed", no test evidence
+# has knownness: "assumed", no test evidence
 
 # 7. Vector Search retrieves relevant docs
 docs = rag_system.search([
@@ -732,44 +1038,44 @@ Similar issues resolved:
 ### Phase 1: Graph + MCP Foundation (4-6 weeks)
 
 1. **Week 1-2**: Implement knowledge graph schema
-   - Set up Neo4j or similar graph DB
-   - Define node/edge types
-   - Implement ERV relationship types with 5 attributes
-   - Create first 100 nodes (F´ + PROVES core components)
+- Set up Neo4j or similar graph DB
+- Define node/edge types
+- Implement ERV relationship types with 5 attributes
+- Create first 100 nodes (F´ + PROVES core components)
 
-2. **Week 3-4**: Enhance MCP server
-   - Add graph query endpoints
-   - Implement cascade path algorithm
-   - Add sweep execution endpoints
+1. **Week 3-4**: Enhance MCP server
+- Add graph query endpoints
+- Implement cascade path algorithm
+- Add sweep execution endpoints
 
-3. **Week 5-6**: Integrate RAG
-   - Set up vector store (Pinecone, Weaviate, or Chroma)
-   - Index F´, PROVES, PySquared documentation
-   - Implement hybrid query routing
+1. **Week 5-6**: Integrate RAG
+- Set up vector store (Pinecone, Weaviate, or Chroma)
+- Index F´, PROVES, PySquared documentation
+- Implement hybrid query routing
 
 ### Phase 2: LangGraph Orchestration (3-4 weeks)
 
 1. **Week 7-8**: Build LangGraph workflow
-   - Implement router agent
-   - Create basic cascade analyzer
-   - Add evidence tracer
+- Implement router agent
+- Create basic cascade analyzer
+- Add evidence tracer
 
-2. **Week 9-10**: Deep agent integration
-   - Enhanced scanner with graph reasoning
-   - FRAMES-aware builder
-   - Curator with drift detection
+1. **Week 9-10**: Deep agent integration
+- Enhanced scanner with graph reasoning
+- FRAMES-aware builder
+- Curator with drift detection
 
 ### Phase 3: Sweeps + Production (2-3 weeks)
 
 1. **Week 11-12**: Implement core sweeps
-   - Identity integrity sweep
-   - Cascade path sweep
-   - Unknowns backlog generation
+- Identity integrity sweep
+- Cascade path sweep
+- Unknowns backlog generation
 
-2. **Week 13**: Production hardening
-   - Add caching layers
-   - Performance optimization
-   - Monitoring and logging
+1. **Week 13**: Production hardening
+- Add caching layers
+- Performance optimization
+- Monitoring and logging
 
 ---
 

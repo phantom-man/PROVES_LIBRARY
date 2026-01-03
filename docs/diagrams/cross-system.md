@@ -53,10 +53,10 @@ Neither F-Prime documentation nor PROVES Kit documentation mentions the other sy
 ### The Hidden Dependency
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -78,7 +78,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -134,7 +134,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -155,107 +155,25 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 25
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 25
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph "F-Prime System (NASA/JPL)"
-        spacer16[ ]:::spacer
+        spacer16[ ] :spacer
         IM[ImuManager I2C Device Manager]
         I2C[I2C Bus Driver LinuxI2cDriver]
         STATUS[I2cStatus Error Codes]
     end
 
     subgraph "PROVES Kit (University Teams)"
-        spacer17[ ]:::spacer
+        spacer17[ ] :spacer
         LSM[LoadSwitchManager Power Control]
         IMU_PIN[board.IMU_ENABLE GPIO Pin]
         LOGIC[enable_logic Active High/Low]
     end
 
     subgraph "Hardware"
-        spacer18[ ]:::spacer
+        spacer18[ ] :spacer
         IMU_HW[MPU6050 IMU I2C Address 0x68]
         PWR[Power Supply 3.3V]
     end
@@ -298,6 +216,7 @@ STATUS -.->|should trigger?| LSM
 | PROVES | 28 | `"imu": DigitalInOut(board.IMU_ENABLE)` - IMU powered by load switch |
 | PROVES | 34 | LoadSwitchManager initialization |
 | PROVES | 108 | Enable logic configuration (active high/low) |
+
 ### The Gap
 
 **What's NOT Documented:**
@@ -330,10 +249,10 @@ Mission continues without IMU (silent failure)
 ### Temporal Ordering Requirement
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -355,7 +274,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -411,7 +330,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -432,90 +351,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 25
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 25
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 sequenceDiagram
     autonumber
     participant Topology as Topology.cpp configureTopology
@@ -550,6 +387,7 @@ sequenceDiagram
 | PROVES | 34 | `load_switch_manager = LoadSwitchManager(...)` - initialization required |
 | F-Prime | 248 | `busDriver.open("/dev/i2c-1")` - happens in configureTopology() |
 | F-Prime | 245-254 | configureTopology() example shown |
+
 ### The Gap
 
 **What's NOT Documented:**
@@ -579,10 +417,10 @@ No alert that power sequencing is wrong
 ### Bus Sharing Conflicts
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -604,7 +442,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -660,7 +498,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -681,106 +519,24 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 25
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 25
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph "F-Prime Configuration"
-        spacer19[ ]:::spacer
+        spacer19[ ] :spacer
         IM_ADDR[ImuManager Address 0x68]
         BUS["I2C Bus /dev/i2c-1 Shared Resource"]
     end
 
     subgraph "PROVES Kit Power"
-        spacer20[ ]:::spacer
+        spacer20[ ] :spacer
         IMU_SW[IMU Switch board.IMU_ENABLE]
         MAG_SW[Magnetometer Switch board.MAG_ENABLE]
         CAM_SW[Camera Switch board.CAMERA_ENABLE]
     end
 
     subgraph "Potential Conflicts"
-        spacer21[ ]:::spacer
+        spacer21[ ] :spacer
         MAG_HW[Magnetometer I2C Address ???]
         CAM_HW[Camera I2C Address ???]
         IMU_HW[IMU MPU6050 I2C Address 0x68]
@@ -815,6 +571,7 @@ CAM_SW -->|powers| CAM_HW
 |--------|------|----------|
 | F-Prime | 253 | `imuManager.configure(0x68)` - Fixed I2C address |
 | PROVES | 27-30 | Multiple devices: radio, imu, magnetometer, camera |
+
 ### The Gap
 
 **What's NOT Documented:**
@@ -845,10 +602,10 @@ Attitude determination fails
 ### Missing Integration
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -870,7 +627,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -926,7 +683,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -947,93 +704,11 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 25
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 25
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart TB
     START[F-Prime I2C Read Operation]
-    READ{I2C Status}:::diamond
+    READ{I2C Status} :diamond
     ERROR[I2cStatus I2C_READ_ERR]
     LOG[log_WARNING_HI_ImuReadError]
     CONTINUE[Continue without IMU data]
@@ -1075,6 +750,7 @@ ERROR -.->|should trigger| MISSING
 | F-Prime | No line | NO recovery strategy implemented |
 | PROVES | 119-125 | Load switch operations return boolean success |
 | PROVES | 131-142 | Methods: turn_on(), turn_off(), get_switch_state() |
+
 ### The Gap
 
 **What's NOT Documented:**
@@ -1113,10 +789,10 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 ### Team Interface Strength
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1138,7 +814,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1194,7 +870,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1215,100 +891,18 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 25
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 25
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph "NASA/JPL Team"
-        spacer22[ ]:::spacer
+        spacer22[ ] :spacer
         F_TEAM[F-Prime Core Team]
         F_DOC[Official Docs]
         F_VER[Versioned Releases]
     end
 
     subgraph "University Teams"
-        spacer23[ ]:::spacer
+        spacer23[ ] :spacer
         PROVES_MAINT[PROVES Kit Maintainers]
         UNI_A[University A 2020 Mission]
         UNI_B[University B 2022 Mission]
@@ -1361,13 +955,14 @@ UNI_A -.->|graduated/left| UNI_B
 | Power Sequence | Bus opens before power | I2C init fails | Boot time |
 | Bus Sharing | Multiple devices conflict | Corrupted data | Mission +days |
 | Error Recovery | No power cycle on error | Permanent sensor loss | First error |
+
 ### Estimated Risk
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1389,7 +984,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1445,7 +1040,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1466,90 +1061,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 25
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 25
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 quadrantChart
     title Risk Matrix: Cross-System Dependencies
     x-axis Low Impact --> High Impact
@@ -1577,39 +1090,39 @@ quadrantChart
 ### Immediate Actions
 
 1. **Document the Integration**
-    - Create "F-Prime + PROVES Kit Integration Guide"
-    - Specify power-on timing requirements
-    - Define configureTopology() ordering
+- Create "F-Prime + PROVES Kit Integration Guide"
+- Specify power-on timing requirements
+- Define configureTopology() ordering
 
 1. **Add Cross-References**
-    - F-Prime docs should mention PROVES Kit power requirements
-    - PROVES docs should mention F-Prime I2C dependencies
+- F-Prime docs should mention PROVES Kit power requirements
+- PROVES docs should mention F-Prime I2C dependencies
 
 1. **Implement Health Checks**
-    - Verify power state before I2C operations
-    - Add power cycle recovery on persistent errors
+- Verify power state before I2C operations
+- Add power cycle recovery on persistent errors
 
 1. **Create Test Suite**
-    - Test power sequencing variations
-    - Verify enable logic configurations
-    - Validate error recovery mechanisms
+- Test power sequencing variations
+- Verify enable logic configurations
+- Validate error recovery mechanisms
 
 ### Long-Term Solutions
 
 1. **Automated Dependency Tracking**
-    - This PROVES Library system!
-    - Continuous scanning for cross-system dependencies
-    - Alerting on team boundary crossings
+- This PROVES Library system!
+- Continuous scanning for cross-system dependencies
+- Alerting on team boundary crossings
 
 1. **Knowledge Capture Process**
-    - Empirical captures from university teams
-    - Post-mission reports
-    - Failure analysis documentation
+- Empirical captures from university teams
+- Post-mission reports
+- Failure analysis documentation
 
 1. **Interface Strengthening**
-    - Regular F-Prime + PROVES Kit integration meetings
-    - Shared documentation repository
-    - Cross-team code reviews
+- Regular F-Prime + PROVES Kit integration meetings
+- Shared documentation repository
+- Cross-team code reviews
 
 ---
 
@@ -1625,11 +1138,3 @@ quadrantChart
 **Confidence Level:** High (human-verified, evidence-based)
 **Impact:** Demonstrates exact Team A/Team B failure mode
 **Date:** December 20, 2024
-
-
-
-
-
-
-
-

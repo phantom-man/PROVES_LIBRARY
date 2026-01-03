@@ -32,10 +32,17 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ### Organizational Structure
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -50,7 +57,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -106,20 +113,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -127,113 +134,31 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph "NASA/JPL"
-        spacer1[ ]:::spacer
+        spacer1[ ] :spacer
         JPL_CORE[F-Prime Core Team ⭐ Permanent Staff]
         JPL_DOC[Documentation Team]
         JPL_REL[Release Engineering]
     end
 
     subgraph "PROVES Maintainers"
-        spacer2[ ]:::spacer
+        spacer2[ ] :spacer
         PROVES_LEAD[PROVES Kit Lead 👤 Faculty/Staff]
         PROVES_DEV[Core Developers 👥 3-5 people]
     end
 
     subgraph "University Teams"
-        spacer3[ ]:::spacer
+        spacer3[ ] :spacer
         UNI_A_2020[University A 2020 Mission 👥 8 students]
         UNI_B_2022[University B 2022 Mission 👥 6 students]
         UNI_C_2024[University C 2024 Mission 👥 10 students]
     end
 
     subgraph "External Users"
-        spacer4[ ]:::spacer
+        spacer4[ ] :spacer
         USER_1[Commercial User 1]
         USER_2[Hobbyist Users]
         USER_3[New Universities]
@@ -288,10 +213,17 @@ PROVES_LEAD -.->|minimal support| USER_3
 ### F-Prime Team ↔ PROVES Kit Team
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -306,7 +238,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -362,20 +294,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -383,105 +315,23 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph "F-Prime Knowledge"
-        spacer5[ ]:::spacer
+        spacer5[ ] :spacer
         F_PUB["Public Documentation [YES] Versioned [YES] Comprehensive"]
         F_CODE["GitHub Repository [YES] nasa/fprime [YES] Well-maintained"]
         F_COM["Community Forums [YES] Active support"]
     end
 
     subgraph "Interface"
-        spacer6[ ]:::spacer
+        spacer6[ ] :spacer
         INT["✗ No Integration Docs ✗ No Cross-References ✗ No Joint Testing ✗ No Shared Examples"]
     end
 
     subgraph "PROVES Knowledge"
-        spacer7[ ]:::spacer
+        spacer7[ ] :spacer
         P_PUB["Public Documentation [WARNING] Growing [WARNING] Gaps exist"]
         P_CODE["GitHub Repository [YES] proveskit/pysquared [WARNING] Active but small team"]
         P_COM["Community [WARNING] Mostly university teams"]
@@ -539,10 +389,17 @@ This flowchart shows the journey developers take when they need integration know
 ### Where Integration Knowledge Lives
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -557,7 +414,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -613,20 +470,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -634,98 +491,16 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart TB
     START[Integration Knowledge Needed]
 
-    DOC_F{Check F-Prime Docs}:::diamond
-    DOC_P{Check PROVES Docs}:::diamond
+    DOC_F{Check F-Prime Docs} :diamond
+    DOC_P{Check PROVES Docs} :diamond
 
     TRIBAL[Ask Experienced Engineer]
-    WHO{Who to Ask?}:::diamond
+    WHO{Who to Ask?} :diamond
 
     JPL_ENG["JPL Engineer [NO] Doesn't know PROVES"]
     PROVES_ENG["PROVES Maintainer [WARNING] Knows integration"]
@@ -784,10 +559,17 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 ### University Team Lifecycle
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -802,7 +584,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -858,20 +640,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -879,90 +661,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 gantt
     title University Team Knowledge Retention
     dateFormat YYYY-MM
@@ -999,10 +699,17 @@ gantt
 ### Knowledge Loss Calculation
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1017,7 +724,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1073,20 +780,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1094,90 +801,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 pie title Knowledge Retention After Team Graduation
     "Lost knowledge from graduated teams" : 70
     "Degraded or partially remembered" : 20
@@ -1201,10 +826,17 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 ### Organizational Dynamics
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1219,7 +851,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1275,20 +907,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1296,90 +928,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 sequenceDiagram
     autonumber
     participant TeamA as Team A 2020
@@ -1483,10 +1033,17 @@ sequenceDiagram
 ### What Gets Captured vs. Lost
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1501,7 +1058,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1557,20 +1114,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1578,100 +1135,18 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart LR
     subgraph LIFECYCLE["Mission Lifecycle"]
         direction TB
-        spacer8[ ]:::spacer
+        spacer8[ ] :spacer
         DESIGN[Design Decisions]
         IMPL[Implementation]
         TEST[Testing & Debugging]
         OPS[Operations]
         RETRO[Retrospective]
-        
+
         DESIGN --> IMPL
         IMPL --> TEST
         TEST --> OPS
@@ -1680,7 +1155,7 @@ flowchart LR
 
     subgraph CAPTURED["Captured 30%"]
         direction TB
-        spacer9[ ]:::spacer
+        spacer9[ ] :spacer
         CODE["Code Repository ✓"]
         SCHEMA["Schematics ✓"]
         FORMAL_DOC["Formal Docs ⚠"]
@@ -1688,7 +1163,7 @@ flowchart LR
 
     subgraph PARTIAL["Partial 20%"]
         direction TB
-        spacer10[ ]:::spacer
+        spacer10[ ] :spacer
         ISSUES["GitHub Issues ⚠"]
         CHAT["Chat Logs ⚠"]
         EMAIL["Email Threads ⚠"]
@@ -1696,7 +1171,7 @@ flowchart LR
 
     subgraph LOST["Lost 50%"]
         direction TB
-        spacer11[ ]:::spacer
+        spacer11[ ] :spacer
         TRIBAL["Tribal Knowledge ✗"]
         WORKAROUND["Workarounds ✗"]
         FAILURES["Failure Lessons ✗"]
@@ -1746,10 +1221,17 @@ flowchart LR
 ### Knowledge at Risk by Interface
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1764,7 +1246,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1820,20 +1302,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1841,90 +1323,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 quadrantChart
     title Knowledge Loss Risk by Interface Strength
     x-axis Low Team Turnover --> High Team Turnover
@@ -1952,42 +1352,42 @@ quadrantChart
 ### Immediate Actions
 
 1. **Strengthen F-Prime ↔ PROVES Interface**
-    - Create joint integration guide
-    - Cross-reference documentation
-    - Establish regular sync meetings
-    - Share GitHub issues/discussions
+- Create joint integration guide
+- Cross-reference documentation
+- Establish regular sync meetings
+- Share GitHub issues/discussions
 
 1. **Capture Tribal Knowledge**
-    - Interview university teams BEFORE graduation
-    - Document all workarounds and failures
-    - Extract design rationale from code
-    - Create searchable knowledge base
+- Interview university teams BEFORE graduation
+- Document all workarounds and failures
+- Extract design rationale from code
+- Create searchable knowledge base
 
 1. **Improve Team Handoff**
-    - Mandatory knowledge transfer before graduation
-    - Overlap period with new team
-    - Documented procedures and lessons learned
-    - Video recordings of key procedures
+- Mandatory knowledge transfer before graduation
+- Overlap period with new team
+- Documented procedures and lessons learned
+- Video recordings of key procedures
 
 ### Long-Term Solutions
 
 1. **Automated Knowledge Capture**
-    - **This PROVES Library system!**
-    - Capture knowledge from GitHub issues, PRs, chat
-    - Extract from code comments and commit messages
-    - Index and make searchable
+- **This PROVES Library system!**
+- Capture knowledge from GitHub issues, PRs, chat
+- Extract from code comments and commit messages
+- Index and make searchable
 
 1. **Interface Strength Monitoring**
-    - Track documentation coverage
-    - Measure communication frequency
-    - Monitor team turnover impact
-    - Alert on weak interfaces
+- Track documentation coverage
+- Measure communication frequency
+- Monitor team turnover impact
+- Alert on weak interfaces
 
 1. **Community Building**
-    - Cross-university collaboration
-    - Shared mission reviews
-    - F-Prime + PROVES user group
-    - Annual knowledge sharing conference
+- Cross-university collaboration
+- Shared mission reviews
+- F-Prime + PROVES user group
+- Annual knowledge sharing conference
 
 ---
 
@@ -1996,10 +1396,17 @@ quadrantChart
 ### How This System Addresses Team Boundary Issues
 
 ```mermaid
----
+---\
 config:
   theme: base
-  fontSize: 24
+  fontSize: 16
+  themeCSS: |
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -2014,7 +1421,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -2070,20 +1477,20 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 24
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 40
+    gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
+    padding: 25
+    nodeSpacing: 60
+    rankSpacing: 80
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -2091,106 +1498,24 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
+    noteMargin: 10\
+---\
 flowchart TB
     subgraph "Traditional Approach"
         direction TB
-        spacer12[" "]:::spacer
+        spacer12[" "] :spacer
         TRAD_TEAM[Team Knowledge]
         TRAD_GRAD[Graduation]
         TRAD_LOSS[Knowledge Lost]
-        TRAD_SPACER2[" "]:::spacer
-        
+        TRAD_SPACER2[" "] :spacer
+
         TRAD_TEAM --> TRAD_GRAD
         TRAD_GRAD --> TRAD_LOSS
     end
 
     subgraph "Knowledge Sources"
         direction TB
-        spacer13[" "]:::spacer
+        spacer13[" "] :spacer
         SRC_CODE[Code + Comments]
         SRC_ISSUES[GitHub Issues]
         SRC_CHAT[Chat/Email]
@@ -2199,14 +1524,14 @@ flowchart TB
 
     subgraph "PROVES Processing"
         direction TB
-        spacer14[" "]:::spacer
+        spacer14[" "] :spacer
         LIB_CAPTURE[Continuous Capture]
         LIB_AGENTS[Curator Agents]
         LIB_GRAPH[Knowledge Graph]
         LIB_FRAMES[Team Tracking]
         LIB_QUERY[Query System]
         LIB_ALERT[Risk Alerts]
-        
+
         LIB_CAPTURE --> LIB_AGENTS
         LIB_AGENTS --> LIB_GRAPH
         LIB_GRAPH --> LIB_FRAMES
@@ -2216,7 +1541,7 @@ flowchart TB
 
     subgraph "Preserved Knowledge"
         direction TB
-        spacer15[" "]:::spacer
+        spacer15[" "] :spacer
         PRES_TECH[Technical Dependencies]
         PRES_ORG[Organizational Context]
         PRES_WHY[Design Rationale]
@@ -2283,9 +1608,3 @@ flowchart TB
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024
-
-
-
-
-
-
