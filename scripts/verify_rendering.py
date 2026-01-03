@@ -103,8 +103,8 @@ def verify_files(files, repo_owner, repo_name, branch, fix=False):
             print(f"Checking {file_path} at {url}...")
             
             try:
-                page.goto(url)
-                page.wait_for_load_state("networkidle")
+                page.goto(url, timeout=90000)
+                page.wait_for_load_state("networkidle", timeout=90000)
                 # Wait a bit for mermaid to render
                 time.sleep(2)
                 

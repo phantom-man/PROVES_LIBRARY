@@ -1,0 +1,10 @@
+2026-01-03 09:00:00 - Started session to address Mermaid diagram rendering issues on GitHub.
+2026-01-03 09:15:00 - Created `scripts/verify_rendering.py` using Playwright to automate verification of Mermaid rendering by checking for "Unable to render rich display" errors on GitHub pages.
+2026-01-03 09:30:00 - Created `ps_scripts/check_and_fix_rendering.ps1` to orchestrate the workflow: local linting, pushing to a temporary verification branch, and running the Python verification script.
+2026-01-03 09:45:00 - Enhanced `ps_scripts/check_and_fix_rendering.ps1` with a `-ScanOnly` switch to allow reporting errors without attempting fixes.
+2026-01-03 10:00:00 - Performed a full repository scan (`-ScanOnly -FilePath .`), identifying 7 files with rendering errors and 2 timeouts.
+2026-01-03 10:15:00 - Updated `scripts/verify_rendering.py` to include an auto-fixer for the deprecated Mermaid class syntax (`:class` -> `:::class`).
+2026-01-03 10:30:00 - Ran the fix mode on `docs/diagrams`, successfully correcting syntax in 6 files: `cross-system.md`, `gnn-molecule.md`, `knowledge-gaps.md`, `overview.md`, `team-boundaries.md`, `transitive-chains.md`.
+2026-01-03 10:45:00 - Staged and committed the fixes with message "Fix: Auto-correct Mermaid class syntax (:::class) in diagrams".
+2026-01-03 10:46:00 - Pushed the fixes to `origin main`.
+2026-01-03 10:50:00 - Increased timeout in `scripts/verify_rendering.py` to 90 seconds to accommodate scanning of large or complex files.
