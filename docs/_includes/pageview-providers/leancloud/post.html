@@ -13,18 +13,23 @@
   <script>
     // {%- include pageview-providers/leancloud/leancloud.js -%}
   </script>
-  <script>
+  <script id="leancloud-script-post" data-app-id="{{ _LEANCLOUD_APP_ID }}" data-app-key="{{ _LEANCLOUD_APP_KEY }}" data-app-class="{{ _LEANCLOUD_APP_CLASS }}" data-title="{{ page.title | escape }}" data-key="{{ page.key | escape }}">
     // @ts-nocheck
     window.Lazyload.js(['{{ _sources.jquery }}', '{{ _sources.leancloud_js_sdk }}'], function() {
+      var script = document.getElementById('leancloud-script-post');
+      var appId = script.getAttribute('data-app-id');
+      var appKey = script.getAttribute('data-app-key');
+      var appClass = script.getAttribute('data-app-class');
+      var title = script.getAttribute('data-title');
+      var key = script.getAttribute('data-key');
+
       var pageview = window.pageview(AV, {
-        appId:    '{{ _LEANCLOUD_APP_ID }}',
-        appKey:   '{{ _LEANCLOUD_APP_KEY }}',
-        appClass: '{{ _LEANCLOUD_APP_CLASS }}'
+        appId:    appId,
+        appKey:   appKey,
+        appClass: appClass
       });
-      var key =   '{{ page.key }}';
-      var title = {{ page.title | jsonify }};
       pageview.increase(key, title, function(view) {
-        $("[data-page-key='{{ page.key }}']").text(view);
+        $("[data-page-key='" + key + "']").text(view);
       });
     });
   </script>
