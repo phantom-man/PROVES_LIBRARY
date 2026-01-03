@@ -3,7 +3,6 @@ layout: article
 title: Dependency Overview
 ---
 
-
 # Dependency Overview
 
 Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVES Kit Power Management documentation.
@@ -228,10 +227,10 @@ flowchart TB
 
     HW[MPU6050 IMU Sensor - Hardware device at address 0x68 - Measures acceleration and rotation]
 
-    APP -->|"1. Requests sensor data"| DM
-    DM -->|"2. Calls I2C operations"| BD
-    BD -->|"3. Sends electrical signals"| I2C_BUS
-    I2C_BUS -->|"4. Physical connection"| HW
+|APP -->|"1. Requests sensor data"| DM|
+|DM -->|"2. Calls I2C operations"| BD|
+|BD -->|"3. Sends electrical signals"| I2C_BUS|
+|I2C_BUS -->|"4. Physical connection"| HW|
 
     style APP fill:#e1f5ff
     style DM fill:#fff4e1
@@ -450,12 +449,12 @@ flowchart TB
         VALS[Register Values - What to write to configure the sensor]
     end
 
-    FPUTIL -->|"Compiles"| TOPO_FILE
-    FPP -->|"Generates code for"| TOPO_FILE
-    TOPO_FILE -->|"Used by"| CONFIG
-    CONFIG -->|"Must set correct"| ADDR
-    ADDR -->|"Comes from sensor datasheet"| REGS
-    REGS -->|"Require correct"| VALS
+|FPUTIL -->|"Compiles"| TOPO_FILE|
+|FPP -->|"Generates code for"| TOPO_FILE|
+|TOPO_FILE -->|"Used by"| CONFIG|
+|CONFIG -->|"Must set correct"| ADDR|
+|ADDR -->|"Comes from sensor datasheet"| REGS|
+|REGS -->|"Require correct"| VALS|
 
     style BUILD fill:#e8f5e9
     style TOPO fill:#fff3e0
@@ -674,14 +673,14 @@ flowchart TB
         CAM[Camera - board.CAMERA_ENABLE]
     end
 
-    LSM -->|Uses| DIO
-    LSM -->|Uses| LOGGER
-    LSM -->|Uses| STATE
+|LSM -->|Uses| DIO|
+|LSM -->|Uses| LOGGER|
+|LSM -->|Uses| STATE|
 
-    LSM -->|Controls power to| RADIO
-    LSM -->|Controls power to| IMU
-    LSM -->|Controls power to| MAG
-    LSM -->|Controls power to| CAM
+|LSM -->|Controls power to| RADIO|
+|LSM -->|Controls power to| IMU|
+|LSM -->|Controls power to| MAG|
+|LSM -->|Controls power to| CAM|
 
     style LSM fill:#e1f5ff
     style TOOLS fill:#fff9c4
@@ -904,15 +903,15 @@ sequenceDiagram
 
 ### By Category
 
-| Category | F-Prime Count | PROVES Kit Count | Total |
-|----------|----------|------------------|-------|
-| **Software Dependencies** | 9 | 6 | 15 |
-| **Hardware Dependencies** | 4 | 5 | 9 |
-| **Configuration Dependencies** | 5 | 3 | 8 |
-| **Build System Dependencies** | 3 | 0 | 3 |
-| **Data Type Dependencies** | 4 | 0 | 4 |
-| **State Management Dependencies** | 0 | 3 | 3 |
-| **TOTAL** | 25 | 17 | **42** |
+| Category | F-Prime Count | PROVES Kit Count | Total |  |
+|----------|----------|------------------|-------|  |
+| **Software Dependencies** | 9 | 6 | 15 |  |
+| **Hardware Dependencies** | 4 | 5 | 9 |  |
+| **Configuration Dependencies** | 5 | 3 | 8 |  |
+| **Build System Dependencies** | 3 | 0 | 3 |  |
+| **Data Type Dependencies** | 4 | 0 | 4 |  |
+| **State Management Dependencies** | 0 | 3 | 3 |  |
+| **TOTAL** | 25 | 17 | **42** |  |
 
 ### By Criticality
 
@@ -1104,13 +1103,13 @@ pie title Dependency Criticality Distribution
 
 ### By Relationship Type
 
-| Relationship Type | Count | Examples |
-|-------------------|-------|----------|
-| **requires** | 23 | Device Manager requires Bus Driver |
-| **enables** | 7 | Load Switch enables IMU power |
-| **depends_on** | 6 | Application depends_on Device Manager |
-| **controls** | 5 | LoadSwitchManager controls hardware pins |
-| **implements** | 1 | ZephyrI2cDriver implements Drv.I2c |
+| Relationship Type | Count | Examples |  |
+|-------------------|-------|----------|  |
+| **requires** | 23 | Device Manager requires Bus Driver |  |
+| **enables** | 7 | Load Switch enables IMU power |  |
+| **depends_on** | 6 | Application depends_on Device Manager |  |
+| **controls** | 5 | LoadSwitchManager controls hardware pins |  |
+| **implements** | 1 | ZephyrI2cDriver implements Drv.I2c |  |
 
 ---
 
@@ -1119,12 +1118,14 @@ pie title Dependency Criticality Distribution
 Every dependency tracked with precise source locations:
 
 ### F-Prime Documentation Coverage
+
 - **File:** `nasa/fprime/docs/how-to/develop-device-driver.md`
 - **Lines Analyzed:** 411
 - **Dependencies Found:** 25
 - **Average Density:** 1 dependency per 16.4 lines
 
 ### PROVES Kit Documentation Coverage
+
 - **File:** `proveskit/pysquared/docs/load_switch.md`
 - **Lines Analyzed:** 154
 - **Dependencies Found:** 17
@@ -1142,14 +1143,3 @@ Every dependency tracked with precise source locations:
 **Analysis Method:** Manual annotation with line-by-line review
 **Confidence Level:** High (human-verified)
 **Date:** December 20, 2024
-
-
-
-
-
-
-
-
-
-
-

@@ -36,7 +36,6 @@ Whenever these instructions reference [Targeted File], it refers to the specific
 
 This file is to be referenced before any operation on docs/diagrams/[Targeted File], any PowerShell script in the main ps_scripts directory, or any log file. Update this list if the user provides new instructions or clarifications.
 
-
 ## New Directives (2026-01-01)
 
 *Note: The date 2026-01-01 is intentional and marks the activation of these directives. If this is not correct, update as needed.*

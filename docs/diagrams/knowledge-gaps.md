@@ -3,8 +3,6 @@ layout: article
 title: Knowledge Gaps
 ---
 
-
-
 # Knowledge Gaps
 
 What's NOT documented: power-on timing, voltage stability, error recovery, bus sharing conflicts, and platform integration.
@@ -24,8 +22,6 @@ What's NOT documented: power-on timing, voltage stability, error recovery, bus s
 This analysis found **5 major knowledge gaps** in the F-Prime + PROVES Kit integration.
 
 ---
-
-
 
 ## Gap 1: Power-On Timing Requirements
 
@@ -249,12 +245,12 @@ sequenceDiagram
 
 ### What's NOT Documented
 
-| Parameter | F-Prime Docs | PROVES Docs | Typical Value | Impact if Unknown |
-|-----------|---------|-------------|---------------|-------------------|
-| **t_rise** - Voltage rise time | [NO] | [NO] | 1-10ms | Race condition |
-| **t_por** - Power-on reset duration | [NO] | [NO] | 10-100ms | Device not initialized |
-| **t_ready** - Ready after POR | [NO] | [NO] | 1-50ms | I2C communication fails |
-| **t_total** - Safe delay before I2C | [NO] | [NO] | 50-200ms | **Intermittent failures** |
+| Parameter | F-Prime Docs | PROVES Docs | Typical Value | Impact if Unknown |  |
+|-----------|---------|-------------|---------------|-------------------|  |
+| **t_rise** - Voltage rise time | [NO] | [NO] | 1-10ms | Race condition |  |
+| **t_por** - Power-on reset duration | [NO] | [NO] | 10-100ms | Device not initialized |  |
+| **t_ready** - Ready after POR | [NO] | [NO] | 1-50ms | I2C communication fails |  |
+| **t_total** - Safe delay before I2C | [NO] | [NO] | 50-200ms | **Intermittent failures** |  |
 
 ### Where This Knowledge Lives
 
@@ -467,18 +463,18 @@ flowchart TB
     SUCCESS["✓ Always works"]
 
     START --> CASE1
-    CASE1 -->|Yes| CASE2
-    CASE1 -->|No| NO_DELAY
+|CASE1 -->|Yes| CASE2|
+|CASE1 -->|No| NO_DELAY|
 
-    CASE2 -->|Guesses 50ms| TOO_SHORT
-    CASE2 -->|Finds spec: 200ms| CORRECT
+|CASE2 -->|Guesses 50ms| TOO_SHORT|
+|CASE2 -->|Finds spec: 200ms| CORRECT|
 
     TOO_SHORT --> CASE3
-    CASE3 -->|Only bench test| WORKS_BENCH
-    WORKS_BENCH -.->|Ships to orbit| FAILS_FLIGHT
+|CASE3 -->|Only bench test| WORKS_BENCH|
+|WORKS_BENCH -.->|Ships to orbit| FAILS_FLIGHT|
 
     NO_DELAY --> WORKS_LINUX
-    WORKS_LINUX -.->|Ports to embedded| FAILS_RTOS
+|WORKS_LINUX -.->|Ports to embedded| FAILS_RTOS|
 
     CORRECT --> SUCCESS
 
@@ -496,8 +492,6 @@ flowchart TB
 > **Why This Matters:** This is the EXACT failure mode from the Team A/Team B scenario. Team A knew the 200ms delay was needed (through trial and error). Team B saw it, thought "that's too slow," changed it to 10ms, tested on a warm system (worked), then failed in orbit on a cold boot. All because the timing requirement wasn't documented.
 
 ---
-
-
 
 ## Gap 2: Voltage Stability Requirements
 
@@ -712,10 +706,10 @@ flowchart TB
         T_SWITCH[Switch time ??? μs]
     end
 
-    V_NOM -.->|minus dropout| V_DROPOUT
-    V_DROPOUT -.->|must exceed| V_IH
-    I_SPIKE -.->|causes drop: I × R_ON| R_ON
-    V_RIPPLE -.->|must be less than| V_MARGIN
+|V_NOM -.->|minus dropout| V_DROPOUT|
+|V_DROPOUT -.->|must exceed| V_IH|
+|I_SPIKE -.->|causes drop: I × R_ON| R_ON|
+|V_RIPPLE -.->|must be less than| V_MARGIN|
 
     style V_RIPPLE fill:#ffebee
     style V_DROPOUT fill:#ffebee
@@ -731,13 +725,13 @@ flowchart TB
 
 ### What's NOT Documented
 
-| Parameter | Required For | F-Prime Docs | PROVES Docs | Impact |
-|-----------|--------------|---------|-------------|--------|
-| **V_ripple** | Clean I2C signals | [NO] | [NO] | Bit errors |
-| **V_dropout** | Load regulation | [NO] | [NO] | Brownout |
-| **I_spike** | Inrush current | [NO] | [NO] | Voltage sag |
-| **R_ON** | Switch resistance | [NO] | [NO] | Power loss |
-| **V_IH, V_IL** | I2C thresholds | [NO] | [NO] | Communication errors |
+| Parameter | Required For | F-Prime Docs | PROVES Docs | Impact |  |
+|-----------|--------------|---------|-------------|--------|  |
+| **V_ripple** | Clean I2C signals | [NO] | [NO] | Bit errors |  |
+| **V_dropout** | Load regulation | [NO] | [NO] | Brownout |  |
+| **I_spike** | Inrush current | [NO] | [NO] | Voltage sag |  |
+| **R_ON** | Switch resistance | [NO] | [NO] | Power loss |  |
+| **V_IH, V_IL** | I2C thresholds | [NO] | [NO] | Communication errors |  |
 
 ### Where This Knowledge Lives
 
@@ -774,8 +768,6 @@ Mission loss
 > **Key Insight:** This gap exists because hardware knowledge and software knowledge live in different teams and different documents. The hardware team knows the voltage requirements (they designed the circuit), but the software team doesn't have access to that information. This is an organizational problem, not a technical one.
 
 ---
-
-
 
 ## Gap 3: Error Recovery Strategies
 
@@ -1001,13 +993,13 @@ stateDiagram-v2
 
 ### What's NOT Documented
 
-| Decision Point | Question | F-Prime Docs | PROVES Docs | Current Reality |
-|----------------|----------|---------|-------------|-----------------|
-| **Error Detection** | Which errors are recoverable? | Logs error | N/A | Unknown |
-| **Recovery Strategy** | Should power cycle on I2C error? | [NO] | [NO] | No recovery |
-| **Retry Count** | How many retries before giving up? | [NO] | [NO] | Give up immediately |
-| **Timing** | How long to wait after power cycle? | [NO] | [NO] | N/A |
-| **Escalation** | When to alert operator? | Logs event | N/A | Every error (noisy) |
+| Decision Point | Question | F-Prime Docs | PROVES Docs | Current Reality |  |
+|----------------|----------|---------|-------------|-----------------|  |
+| **Error Detection** | Which errors are recoverable? | Logs error | N/A | Unknown |  |
+| **Recovery Strategy** | Should power cycle on I2C error? | [NO] | [NO] | No recovery |  |
+| **Retry Count** | How many retries before giving up? | [NO] | [NO] | Give up immediately |  |
+| **Timing** | How long to wait after power cycle? | [NO] | [NO] | N/A |  |
+| **Escalation** | When to alert operator? | Logs event | N/A | Every error (noisy) |  |
 
 ### Missing Decision Tree
 
@@ -1016,18 +1008,18 @@ stateDiagram-v2
 ```
 IF I2cStatus == I2C_READ_ERR:
     IF consecutive_errors < 3:
-        # Try simple retry
+# Try simple retry
         WAIT 10ms
         RETRY read()
     ELSE IF consecutive_errors < 10:
-        # Power cycle recovery
+# Power cycle recovery
         LoadSwitchManager.turn_off("imu")
         WAIT 500ms  # Capacitor discharge
         LoadSwitchManager.turn_on("imu")
         WAIT 200ms  # Power stabilization
         RETRY read()
     ELSE:
-        # Permanent failure
+# Permanent failure
         LOG CRITICAL "IMU unrecoverable"
         ENTER degraded_mode
         ALERT operator
@@ -1048,8 +1040,6 @@ IF I2cStatus == I2C_READ_ERR:
 > **Why This Matters:** Without documented recovery strategies, every team invents their own (or doesn't bother). This means inconsistent behavior across missions and lost opportunities for automatic recovery. One team might have a sensor permanently fail while another team's system auto-recovers—just because of undocumented tribal knowledge.
 
 ---
-
-
 
 ## Gap 4: Bus Sharing and Conflicts
 
@@ -1267,10 +1257,10 @@ flowchart TB
         Q4[Bus arbitra-<br/>tion?]
     end
 
-    BUS -.->|unknown| DEV1
-    BUS -.->|unknown| DEV2
-    BUS -.->|unknown| DEV3
-    BUS -.->|unknown| DEV4
+|BUS -.->|unknown| DEV1|
+|BUS -.->|unknown| DEV2|
+|BUS -.->|unknown| DEV3|
+|BUS -.->|unknown| DEV4|
 
     LSM1 --> DEV1
     LSM2 --> DEV2
@@ -1294,13 +1284,13 @@ flowchart TB
 
 ### What's NOT Documented
 
-| Aspect | Information Needed | F-Prime Docs | PROVES Docs | Impact if Unknown |
-|--------|-------------------|---------|-------------|-------------------|
-| **Bus Topology** | Which devices on which bus? | [NO] | [NO] | Wrong bus configured |
-| **Address Map** | All I2C addresses | Partial (0x68) | [NO] | Address conflicts |
-| **Power Sequence** | Order to enable devices | [NO] | [NO] | Bus contention |
-| **Simultaneity** | Can devices operate together? | [NO] | [NO] | Data corruption |
-| **Priority** | Which device has priority? | [NO] | [NO] | Starvation |
+| Aspect | Information Needed | F-Prime Docs | PROVES Docs | Impact if Unknown |  |
+|--------|-------------------|---------|-------------|-------------------|  |
+| **Bus Topology** | Which devices on which bus? | [NO] | [NO] | Wrong bus configured |  |
+| **Address Map** | All I2C addresses | Partial (0x68) | [NO] | Address conflicts |  |
+| **Power Sequence** | Order to enable devices | [NO] | [NO] | Bus contention |  |
+| **Simultaneity** | Can devices operate together? | [NO] | [NO] | Data corruption |  |
+| **Priority** | Which device has priority? | [NO] | [NO] | Starvation |  |
 
 ### Conflict Scenarios
 
@@ -1541,8 +1531,6 @@ sequenceDiagram
 
 ---
 
-
-
 ## Gap 5: Platform-Specific Integration
 
 ### What You're Looking At
@@ -1755,9 +1743,9 @@ flowchart LR
         INT3[F-Prime Bare Metal +<br/>???]
     end
 
-    F_LINUX -.->|how to combine?| P_CIRCUITPY
-    F_ZEPHYR -.->|how to combine?| P_C
-    F_BAREMETAL -.->|how to combine?| P_C
+|F_LINUX -.->|how to combine?| P_CIRCUITPY|
+|F_ZEPHYR -.->|how to combine?| P_C|
+|F_BAREMETAL -.->|how to combine?| P_C|
 
     F_LINUX -.-> INT1
     P_CIRCUITPY -.-> INT1
@@ -1776,11 +1764,11 @@ flowchart LR
 
 ### What's NOT Documented
 
-| Integration | F-Prime Platform | PROVES Platform | Documented? | Challenge |
-|-------------|-------------|-----------------|-------------|-----------|
-| **Desktop Sim** | Linux + Python | CircuitPython sim | [NO] | How to mock hardware? |
-| **Flight Target** | Zephyr RTOS + C++ | C + registers | [NO] | How to share GPIO? |
-| **Lab Test** | Linux + Python | Hardware board | [NO] | How to communicate? |
+| Integration | F-Prime Platform | PROVES Platform | Documented? | Challenge |  |
+|-------------|-------------|-----------------|-------------|-----------|  |
+| **Desktop Sim** | Linux + Python | CircuitPython sim | [NO] | How to mock hardware? |  |
+| **Flight Target** | Zephyr RTOS + C++ | C + registers | [NO] | How to share GPIO? |  |
+| **Lab Test** | Linux + Python | Hardware board | [NO] | How to communicate? |  |
 
 ### Missing Integration Examples
 
@@ -1799,7 +1787,7 @@ flowchart LR
    }
    ```
 
-2. **How to share GPIO control:**
+1. **How to share GPIO control:**
    ```
    [NO] NOT DOCUMENTED
    - Does F-Prime control GPIO directly?
@@ -1808,13 +1796,19 @@ flowchart LR
    - Who owns the GPIO driver?
    ```
 
-3. **Build system integration:**
+1. **Build system integration:**
    ```cmake
-   # [NO] NOT DOCUMENTED
-   # How to build F-Prime + PROVES together?
-   # - Separate processes?
-   # - Linked libraries?
-   # - Microservice architecture?
+
+# [NO] NOT DOCUMENTED
+
+# How to build F-Prime + PROVES together?
+
+# - Separate processes?
+
+# - Linked libraries?
+
+# - Microservice architecture?
+
    ```
 
 ### Where This Knowledge Lives
@@ -1830,8 +1824,6 @@ flowchart LR
 > **Why This Matters:** Every mission team is reinventing the wheel. One team builds F-Prime+PROVES as separate processes communicating over sockets. Another compiles PROVES to C and links it with F-Prime. A third uses Python embedding. Without a documented pattern, teams waste months on integration instead of working on their actual mission.
 
 ---
-
-
 
 ## Summary: Knowledge Gap Impact
 
@@ -2025,15 +2017,15 @@ pie title Knowledge Gaps by Category
     "Platform Specifics" : 3
 ```
 
-### Risk Matrix
+## Risk Matrix
 
-| Gap | Probability of Occurrence | Severity if Unknown | Overall Risk |
-|-----|--------------------------|---------------------|--------------|
-| **Power-On Timing** | 70% | Critical | 🔴 **EXTREME** |
-| **Voltage Stability** | 40% | Critical | 🔴 **HIGH** |
-| **Error Recovery** | 90% | Medium | 🟡 **HIGH** |
-| **Bus Conflicts** | 30% | High | 🟡 **MEDIUM** |
-| **Platform Integration** | 60% | Medium | 🟡 **MEDIUM** |
+| Gap | Probability of Occurrence | Severity if Unknown | Overall Risk |  |
+|-----|--------------------------|---------------------|--------------|  |
+| **Power-On Timing** | 70% | Critical | 🔴 **EXTREME** |  |
+| **Voltage Stability** | 40% | Critical | 🔴 **HIGH** |  |
+| **Error Recovery** | 90% | Medium | 🟡 **HIGH** |  |
+| **Bus Conflicts** | 30% | High | 🟡 **MEDIUM** |  |
+| **Platform Integration** | 60% | Medium | 🟡 **MEDIUM** |  |
 
 ### Time to Discover
 
@@ -2248,49 +2240,47 @@ gantt
 
 ---
 
-
-
 ## Recommendations
 
 ### Immediate Actions
 
 1. **Create Integration Guide**
-   - Document all 5 knowledge gaps
-   - Provide specifications for timing, voltage, errors
-   - Include decision trees for error recovery
-   - Specify platform integration patterns
+    - Document all 5 knowledge gaps
+    - Provide specifications for timing, voltage, errors
+    - Include decision trees for error recovery
+    - Specify platform integration patterns
 
-2. **Extract from Tribal Knowledge**
-   - Interview experienced engineers
-   - Document undocumented procedures
-   - Capture failure lessons learned
-   - Create searchable knowledge base
+1. **Extract from Tribal Knowledge**
+    - Interview experienced engineers
+    - Document undocumented procedures
+    - Capture failure lessons learned
+    - Create searchable knowledge base
 
-3. **Link Hardware to Software Docs**
-   - Cross-reference schematics
-   - Include component datasheets
-   - Document pin mappings
-   - Specify electrical characteristics
+1. **Link Hardware to Software Docs**
+    - Cross-reference schematics
+    - Include component datasheets
+    - Document pin mappings
+    - Specify electrical characteristics
 
 ### Long-Term Solutions
 
 1. **Automated Gap Detection**
-   - Scan documentation for missing specifications
-   - Flag undefined timing requirements
-   - Detect undocumented integrations
-   - Alert on platform-specific gaps
+    - Scan documentation for missing specifications
+    - Flag undefined timing requirements
+    - Detect undocumented integrations
+    - Alert on platform-specific gaps
 
-2. **Empirical Capture System**
-   - Log all mission failures
-   - Extract knowledge from debugging sessions
-   - Capture workarounds and fixes
-   - Build searchable failure database
+1. **Empirical Capture System**
+    - Log all mission failures
+    - Extract knowledge from debugging sessions
+    - Capture workarounds and fixes
+    - Build searchable failure database
 
-3. **Continuous Knowledge Review**
-   - Regular documentation audits
-   - Cross-team knowledge sharing sessions
-   - Mandatory post-mission reports
-   - Knowledge preservation before team turnover
+1. **Continuous Knowledge Review**
+    - Regular documentation audits
+    - Cross-team knowledge sharing sessions
+    - Mandatory post-mission reports
+    - Knowledge preservation before team turnover
 
 ---
 
@@ -2302,20 +2292,7 @@ gantt
 
 ---
 
-
-
 **Analysis Method:** Negative space analysis, gap identification
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
-
-
-
-
-
-
-
-
-
-
-

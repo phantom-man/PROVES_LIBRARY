@@ -3043,5 +3043,3 @@ def validate_mermaid(diagram_code):
 
 **Version:** Based on Mermaid v10+ (GitHub rendering)
 **Last Updated:** December 28, 2024
-
-

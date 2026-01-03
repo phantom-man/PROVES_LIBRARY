@@ -3,8 +3,6 @@ layout: article
 title: Cross-System Dependencies
 ---
 
-
-
 # Cross-System Dependencies
 
 The 4 critical dependencies between F-Prime and PROVES Kit that are **NOT documented** in either system.
@@ -30,8 +28,6 @@ This is the exact failure mode from the Team A/Team B scenario.
 **Why This Is Dangerous:** If Team B changes power settings without telling Team A, the sensors fail. Neither team knows to coordinate because the dependency isn't documented anywhere.
 
 ---
-
-
 
 ## Critical Finding: Hidden Dependencies
 
@@ -61,7 +57,7 @@ Neither F-Prime documentation nor PROVES Kit documentation mentions the other sy
 config:
   theme: base
   fontSize: 24
-  themeCSS: |
+|themeCSS: | |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -264,15 +260,15 @@ flowchart LR
         PWR[Power Supply 3.3V]
     end
 
-    IM -->|reads sensor via| I2C
-    I2C -->|I2C protocol| IMU_HW
-    IMU_HW -->|requires stable| PWR
-    PWR -.->|controlled by| LSM
-    LSM -->|enables via| IMU_PIN
-    LSM -->|configured with| LOGIC
+|IM -->|reads sensor via| I2C|
+|I2C -->|I2C protocol| IMU_HW|
+|IMU_HW -->|requires stable| PWR|
+|PWR -.->|controlled by| LSM|
+|LSM -->|enables via| IMU_PIN|
+|LSM -->|configured with| LOGIC|
 
-    IM -->|on error returns| STATUS
-    STATUS -.->|should trigger?| LSM
+|IM -->|on error returns| STATUS|
+|STATUS -.->|should trigger?| LSM|
 
     style IM fill:#e1f5ff
     style LSM fill:#fff4e1
@@ -294,14 +290,14 @@ flowchart LR
 
 ### Evidence Chain
 
-| System | Line | Evidence |
-|--------|------|----------|
-| F-Prime | 28 | "ImuManager uses the bus driver layer to implement data read/writes for MPU6050 sensor" |
-| F-Prime | 126 | `Drv::I2cStatus status = this->busWriteRead_out(...)` - I2C operations can fail |
-| F-Prime | 188-194 | Errors logged but NOT automatically recovered |
-| PROVES | 28 | `"imu": DigitalInOut(board.IMU_ENABLE)` - IMU powered by load switch |
-| PROVES | 34 | LoadSwitchManager initialization |
-| PROVES | 108 | Enable logic configuration (active high/low) |
+| System | Line | Evidence |  |
+|--------|------|----------|  |
+| F-Prime | 28 | "ImuManager uses the bus driver layer to implement data read/writes for MPU6050 sensor" |  |
+| F-Prime | 126 | `Drv::I2cStatus status = this->busWriteRead_out(...)` - I2C operations can fail |  |
+| F-Prime | 188-194 | Errors logged but NOT automatically recovered |  |
+| PROVES | 28 | `"imu": DigitalInOut(board.IMU_ENABLE)` - IMU powered by load switch |  |
+| PROVES | 34 | LoadSwitchManager initialization |  |
+| PROVES | 108 | Enable logic configuration (active high/low) |  |
 
 ### The Gap
 
@@ -330,8 +326,6 @@ Mission continues without IMU (silent failure)
 
 ---
 
-
-
 ## Dependency 2: Bus Operations -> Power Control Sequence
 
 ### Temporal Ordering Requirement
@@ -341,7 +335,7 @@ Mission continues without IMU (silent failure)
 config:
   theme: base
   fontSize: 24
-  themeCSS: |
+|themeCSS: | |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -552,11 +546,11 @@ sequenceDiagram
 
 ### Evidence Chain
 
-| System | Line | Evidence |
-|--------|------|----------|
-| PROVES | 34 | `load_switch_manager = LoadSwitchManager(...)` - initialization required |
-| F-Prime | 248 | `busDriver.open("/dev/i2c-1")` - happens in configureTopology() |
-| F-Prime | 245-254 | configureTopology() example shown |
+| System | Line | Evidence |  |
+|--------|------|----------|  |
+| PROVES | 34 | `load_switch_manager = LoadSwitchManager(...)` - initialization required |  |
+| F-Prime | 248 | `busDriver.open("/dev/i2c-1")` - happens in configureTopology() |  |
+| F-Prime | 245-254 | configureTopology() example shown |  |
 
 ### The Gap
 
@@ -582,8 +576,6 @@ No alert that power sequencing is wrong
 
 ---
 
-
-
 ## Dependency 3: I2C Address Configuration -> Pin Enable Logic
 
 ### Bus Sharing Conflicts
@@ -593,7 +585,7 @@ No alert that power sequencing is wrong
 config:
   theme: base
   fontSize: 24
-  themeCSS: |
+|themeCSS: | |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -796,14 +788,14 @@ flowchart TB
         IMU_HW[IMU MPU6050 I2C Address 0x68]
     end
 
-    IM_ADDR -.->|unknown if shared| BUS
-    BUS -->|communicates with| IMU_HW
-    BUS -.->|might communicate with| MAG_HW
-    BUS -.->|might communicate with| CAM_HW
+|IM_ADDR -.->|unknown if shared| BUS|
+|BUS -->|communicates with| IMU_HW|
+|BUS -.->|might communicate with| MAG_HW|
+|BUS -.->|might communicate with| CAM_HW|
 
-    IMU_SW -->|powers| IMU_HW
-    MAG_SW -->|powers| MAG_HW
-    CAM_SW -->|powers| CAM_HW
+|IMU_SW -->|powers| IMU_HW|
+|MAG_SW -->|powers| MAG_HW|
+|CAM_SW -->|powers| CAM_HW|
 
     style BUS fill:#ffebee
     style IMU_HW fill:#e8f5e9
@@ -821,10 +813,10 @@ flowchart TB
 
 ### Evidence Chain
 
-| System | Line | Evidence |
-|--------|------|----------|
-| F-Prime | 253 | `imuManager.configure(0x68)` - Fixed I2C address |
-| PROVES | 27-30 | Multiple devices: radio, imu, magnetometer, camera |
+| System | Line | Evidence |  |
+|--------|------|----------|  |
+| F-Prime | 253 | `imuManager.configure(0x68)` - Fixed I2C address |  |
+| PROVES | 27-30 | Multiple devices: radio, imu, magnetometer, camera |  |
 
 ### The Gap
 
@@ -851,8 +843,6 @@ Attitude determination fails
 
 ---
 
-
-
 ## Dependency 4: Error Handling -> Power State Recovery
 
 ### Missing Integration
@@ -862,7 +852,7 @@ Attitude determination fails
 config:
   theme: base
   fontSize: 24
-  themeCSS: |
+|themeCSS: | |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1058,12 +1048,12 @@ flowchart TB
     RETRY[Retry I2C operation]
 
     START --> READ
-    READ -->|Error| ERROR
-    READ -->|OK| CONTINUE
+|READ -->|Error| ERROR|
+|READ -->|OK| CONTINUE|
     ERROR --> LOG
     LOG --> CONTINUE
 
-    ERROR -.->|should trigger| MISSING
+|ERROR -.->|should trigger| MISSING|
     MISSING -.-> POWER_OFF
     POWER_OFF -.-> DELAY
     DELAY -.-> POWER_ON
@@ -1082,12 +1072,12 @@ flowchart TB
 
 ### Evidence Chain
 
-| System | Line | Evidence |
-|--------|------|----------|
-| F-Prime | 188-194 | `if (status == Drv::I2cStatus::I2C_OK) { ... } else { log_WARNING_HI_ImuReadError(status); }` |
-| F-Prime | No line | NO recovery strategy implemented |
-| PROVES | 119-125 | Load switch operations return boolean success |
-| PROVES | 131-142 | Methods: turn_on(), turn_off(), get_switch_state() |
+| System | Line | Evidence |  |
+|--------|------|----------|  |
+| F-Prime | 188-194 | `if (status == Drv::I2cStatus::I2C_OK) { ... } else { log_WARNING_HI_ImuReadError(status); }` |  |
+| F-Prime | No line | NO recovery strategy implemented |  |
+| PROVES | 119-125 | Load switch operations return boolean success |  |
+| PROVES | 131-142 | Methods: turn_on(), turn_off(), get_switch_state() |  |
 
 ### The Gap
 
@@ -1109,7 +1099,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
         if status == I2cStatus.I2C_OK:
             return data
 
-        # Power cycle recovery (MISSING)
+# Power cycle recovery (MISSING)
         load_switch_manager.turn_off("imu")
         time.sleep(0.5)  # Power drain delay
         load_switch_manager.turn_on("imu")
@@ -1122,8 +1112,6 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 
 ---
 
-
-
 ## Organizational Analysis
 
 ### Team Interface Strength
@@ -1133,7 +1121,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 config:
   theme: base
   fontSize: 24
-  themeCSS: |
+|themeCSS: | |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1330,15 +1318,15 @@ flowchart LR
         UNI_B[University B 2022 Mission]
     end
 
-    F_TEAM -->|maintains| F_DOC
-    F_TEAM -->|publishes| F_VER
+|F_TEAM -->|maintains| F_DOC|
+|F_TEAM -->|publishes| F_VER|
 
-    PROVES_MAINT -->|develops| PROVES_KIT[PROVES Kit Docs]
-    UNI_A -.->|contributed to| PROVES_KIT
-    UNI_B -.->|contributed to| PROVES_KIT
+|PROVES_MAINT -->|develops| PROVES_KIT[PROVES Kit Docs]|
+|UNI_A -.->|contributed to| PROVES_KIT|
+|UNI_B -.->|contributed to| PROVES_KIT|
 
-    F_TEAM -.->|WEAK interface| PROVES_MAINT
-    UNI_A -.->|graduated/left| UNI_B
+|F_TEAM -.->|WEAK interface| PROVES_MAINT|
+|UNI_A -.->|graduated/left| UNI_B|
 
     style F_TEAM fill:#e1f5ff
     style PROVES_MAINT fill:#fff4e1
@@ -1371,12 +1359,12 @@ flowchart LR
 
 ### What Happens When These Dependencies Break?
 
-| Dependency | Misconfiguration | Result | Detection Time |
-|------------|------------------|--------|----------------|
-| Power Stability | Enable logic inverted | Silent IMU failure | Launch +hours |
-| Power Sequence | Bus opens before power | I2C init fails | Boot time |
-| Bus Sharing | Multiple devices conflict | Corrupted data | Mission +days |
-| Error Recovery | No power cycle on error | Permanent sensor loss | First error |
+| Dependency | Misconfiguration | Result | Detection Time |  |
+|------------|------------------|--------|----------------|  |
+| Power Stability | Enable logic inverted | Silent IMU failure | Launch +hours |  |
+| Power Sequence | Bus opens before power | I2C init fails | Boot time |  |
+| Bus Sharing | Multiple devices conflict | Corrupted data | Mission +days |  |
+| Error Recovery | No power cycle on error | Permanent sensor loss | First error |  |
 
 ### Estimated Risk
 
@@ -1385,7 +1373,7 @@ flowchart LR
 config:
   theme: base
   fontSize: 24
-  themeCSS: |
+|themeCSS: | |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1589,46 +1577,44 @@ quadrantChart
 
 ---
 
-
-
 ## Recommendations
 
 ### Immediate Actions
 
 1. **Document the Integration**
-   - Create "F-Prime + PROVES Kit Integration Guide"
-   - Specify power-on timing requirements
-   - Define configureTopology() ordering
+    - Create "F-Prime + PROVES Kit Integration Guide"
+    - Specify power-on timing requirements
+    - Define configureTopology() ordering
 
-2. **Add Cross-References**
-   - F-Prime docs should mention PROVES Kit power requirements
-   - PROVES docs should mention F-Prime I2C dependencies
+1. **Add Cross-References**
+    - F-Prime docs should mention PROVES Kit power requirements
+    - PROVES docs should mention F-Prime I2C dependencies
 
-3. **Implement Health Checks**
-   - Verify power state before I2C operations
-   - Add power cycle recovery on persistent errors
+1. **Implement Health Checks**
+    - Verify power state before I2C operations
+    - Add power cycle recovery on persistent errors
 
-4. **Create Test Suite**
-   - Test power sequencing variations
-   - Verify enable logic configurations
-   - Validate error recovery mechanisms
+1. **Create Test Suite**
+    - Test power sequencing variations
+    - Verify enable logic configurations
+    - Validate error recovery mechanisms
 
 ### Long-Term Solutions
 
 1. **Automated Dependency Tracking**
-   - This PROVES Library system!
-   - Continuous scanning for cross-system dependencies
-   - Alerting on team boundary crossings
+    - This PROVES Library system!
+    - Continuous scanning for cross-system dependencies
+    - Alerting on team boundary crossings
 
-2. **Knowledge Capture Process**
-   - Empirical captures from university teams
-   - Post-mission reports
-   - Failure analysis documentation
+1. **Knowledge Capture Process**
+    - Empirical captures from university teams
+    - Post-mission reports
+    - Failure analysis documentation
 
-3. **Interface Strengthening**
-   - Regular F-Prime + PROVES Kit integration meetings
-   - Shared documentation repository
-   - Cross-team code reviews
+1. **Interface Strengthening**
+    - Regular F-Prime + PROVES Kit integration meetings
+    - Shared documentation repository
+    - Cross-team code reviews
 
 ---
 
@@ -1640,20 +1626,7 @@ quadrantChart
 
 ---
 
-
-
 **Analysis Method:** Cross-document analysis, manual annotation
 **Confidence Level:** High (human-verified, evidence-based)
 **Impact:** Demonstrates exact Team A/Team B failure mode
 **Date:** December 20, 2024
-
-
-
-
-
-
-
-
-
-
-

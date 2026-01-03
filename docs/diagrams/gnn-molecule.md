@@ -3,8 +3,6 @@ layout: article
 title: GNN Molecular Model
 ---
 
-
-
 # GNN Molecular Model
 
 Think of the truth graph as a molecular structure:
@@ -255,8 +253,6 @@ flowchart TB
 
 ---
 
-
-
 ## Why this helps
 
 A GNN learns which bonds carry the strongest influence. With verified edges and consistent labels, the model learns real system behavior instead of noise.
@@ -264,14 +260,3 @@ A GNN learns which bonds carry the strongest influence. With verified edges and 
 ---
 
 [Back to Home](../index.html)
-
-
-
-
-
-
-
-
-
-
-

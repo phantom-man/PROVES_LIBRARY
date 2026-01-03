@@ -3,8 +3,6 @@ layout: article
 title: Transitive Dependency Chains
 ---
 
-
-
 # Transitive Dependency Chains
 
 Multi-hop dependency paths showing how high-level application requests cascade through multiple layers to hardware and power systems.
@@ -21,8 +19,6 @@ Multi-hop dependency paths showing how high-level application requests cascade t
 **Why This Matters:** Changing C can break A, even though A doesn't directly reference C. Without transitive dependency tracking, these failures are invisible until runtime.
 
 ---
-
-
 
 ## Chain 1: Application -> I2C Communication -> Power
 
@@ -257,19 +253,19 @@ flowchart TB
         LOGIC[enable_logic Active High/Low]
     end
 
-    APP -->|1. requests| DM
-    DM -->|2. calls| PORT
-    PORT -->|3. invokes| BD
-    BD -->|4. opens| DEV
-    DEV -->|5. uses| I2C
-    I2C -->|6. requires| PULLUP
-    I2C -->|7. communicates with| IMU
-    IMU -->|8. reads from| REG
-    IMU -->|9. REQUIRES| PWR
-    PWR -->|10. controlled by| LSM
-    LSM -->|11. enables via| PIN
-    PIN -->|12. defined in| BOARD
-    LSM -->|13. configured with| LOGIC
+|APP -->|1. requests| DM|
+|DM -->|2. calls| PORT|
+|PORT -->|3. invokes| BD|
+|BD -->|4. opens| DEV|
+|DEV -->|5. uses| I2C|
+|I2C -->|6. requires| PULLUP|
+|I2C -->|7. communicates with| IMU|
+|IMU -->|8. reads from| REG|
+|IMU -->|9. REQUIRES| PWR|
+|PWR -->|10. controlled by| LSM|
+|LSM -->|11. enables via| PIN|
+|PIN -->|12. defined in| BOARD|
+|LSM -->|13. configured with| LOGIC|
 
     style APP fill:#e1f5ff
     style DM fill:#fff4e1
@@ -288,21 +284,21 @@ flowchart TB
 
 ### Documented vs. Undocumented Links
 
-| Hop | From | To | Documented? | Source |
-|-----|------|----|-----------| -------|
-| 1 | Application | Device Manager | [YES] Yes | F-Prime docs line 30 |
-| 2 | Device Manager | busWriteRead port | [YES] Yes | F-Prime docs line 76 |
-| 3 | Port | Bus Driver | [YES] Yes | F-Prime docs line 236 |
-| 4 | Bus Driver | /dev/i2c-1 | [YES] Yes | F-Prime docs line 248 |
-| 5 | Device | I2C Bus | [YES] Yes | F-Prime docs line 41 |
-| 6 | I2C | Pull-up Resistors | [WARNING] Implicit | Not in docs (standard I2C) |
-| 7 | I2C | IMU Device | [YES] Yes | F-Prime docs line 28 |
-| 8 | IMU | Registers | [YES] Yes | F-Prime docs line 97 |
-| 9 | IMU | **Power Supply** | [NO] **NO** | **GAP: Not documented** |
-| 10 | Power | **LoadSwitchManager** | [NO] **NO** | **GAP: Not documented** |
-| 11 | LSM | GPIO Pin | [YES] Yes | PROVES docs line 28 |
-| 12 | Pin | Board Definition | [YES] Yes | PROVES docs line 27 |
-| 13 | LSM | enable_logic | [YES] Yes | PROVES docs line 34 |
+| Hop | From | To | Documented? | Source |  |
+|-----|------|----|-----------| -------|  |
+| 1 | Application | Device Manager | [YES] Yes | F-Prime docs line 30 |  |
+| 2 | Device Manager | busWriteRead port | [YES] Yes | F-Prime docs line 76 |  |
+| 3 | Port | Bus Driver | [YES] Yes | F-Prime docs line 236 |  |
+| 4 | Bus Driver | /dev/i2c-1 | [YES] Yes | F-Prime docs line 248 |  |
+| 5 | Device | I2C Bus | [YES] Yes | F-Prime docs line 41 |  |
+| 6 | I2C | Pull-up Resistors | [WARNING] Implicit | Not in docs (standard I2C) |  |
+| 7 | I2C | IMU Device | [YES] Yes | F-Prime docs line 28 |  |
+| 8 | IMU | Registers | [YES] Yes | F-Prime docs line 97 |  |
+| 9 | IMU | **Power Supply** | [NO] **NO** | **GAP: Not documented** |  |
+| 10 | Power | **LoadSwitchManager** | [NO] **NO** | **GAP: Not documented** |  |
+| 11 | LSM | GPIO Pin | [YES] Yes | PROVES docs line 28 |  |
+| 12 | Pin | Board Definition | [YES] Yes | PROVES docs line 27 |  |
+| 13 | LSM | enable_logic | [YES] Yes | PROVES docs line 34 |  |
 
 **Critical Gap:** Steps 9-10 create a hidden transitive dependency from Application Layer to Power Management Layer across two separate systems.
 
@@ -327,7 +323,6 @@ flowchart TB
 > **Why This Matters:** Without understanding transitive dependencies, you might spend hours debugging "I2C communication failure" when the real problem is a power configuration 6 layers away. This is why the Team A/Team B failure happened—Team B optimized what looked like an arbitrary delay without understanding the full dependency chain.
 
 ---
-
 
 ## Chain 2: Configuration -> Topology -> Bus -> Power
 
@@ -567,18 +562,18 @@ sequenceDiagram
 
 ### Documented vs. Undocumented Steps
 
-| Step | Action | Documented? | Risk if Missing |
-|------|--------|-------------|-----------------|
-| 1 | Call configureTopology() | [YES] F-Prime docs | Low |
-| 2 | Call LoadSwitchManager.turn_on("imu") | [NO] **NO** | **HIGH** - Skipped entirely |
-| 3 | Set GPIO pin HIGH | [YES] PROVES docs | Low |
-| 4 | Return success | [YES] PROVES docs | Low |
-| 5 | **Wait for power stabilization** | [NO] **NO** | **CRITICAL** - No delay spec |
-| 6 | Call busDriver.open() | [YES] F-Prime docs | Low |
-| 7 | Initialize /dev/i2c-1 | [YES] F-Prime docs | Low |
-| 8 | Call imuManager.configure() | [YES] F-Prime docs | Low |
-| 9 | Set I2C address 0x68 | [YES] F-Prime docs | Low |
-| 10-12 | Device initialization | [YES] F-Prime docs | Low |
+| Step | Action | Documented? | Risk if Missing |  |
+|------|--------|-------------|-----------------|  |
+| 1 | Call configureTopology() | [YES] F-Prime docs | Low |  |
+| 2 | Call LoadSwitchManager.turn_on("imu") | [NO] **NO** | **HIGH** - Skipped entirely |  |
+| 3 | Set GPIO pin HIGH | [YES] PROVES docs | Low |  |
+| 4 | Return success | [YES] PROVES docs | Low |  |
+| 5 | **Wait for power stabilization** | [NO] **NO** | **CRITICAL** - No delay spec |  |
+| 6 | Call busDriver.open() | [YES] F-Prime docs | Low |  |
+| 7 | Initialize /dev/i2c-1 | [YES] F-Prime docs | Low |  |
+| 8 | Call imuManager.configure() | [YES] F-Prime docs | Low |  |
+| 9 | Set I2C address 0x68 | [YES] F-Prime docs | Low |  |
+| 10-12 | Device initialization | [YES] F-Prime docs | Low |  |
 
 **Critical Gaps:**
 - **Step 2:** No documentation linking configureTopology() to LoadSwitchManager
@@ -777,10 +772,10 @@ flowchart TB
     SUCCESS["✓ System initializes correctly"]
 
     START --> CASE1
-    CASE1 -->|No| FAIL1
-    CASE1 -->|Yes| CASE2
-    CASE2 -->|No| FAIL2
-    CASE2 -->|Yes| SUCCESS
+|CASE1 -->|No| FAIL1|
+|CASE1 -->|Yes| CASE2|
+|CASE2 -->|No| FAIL2|
+|CASE2 -->|Yes| SUCCESS|
 
     style FAIL1 fill:#ffcdd2
     style FAIL2 fill:#ffe0b2
@@ -801,7 +796,6 @@ flowchart TB
 > **Key Insight:** Notice how the "success" path is only 10%? That's not because developers are bad—it's because the documentation doesn't tell them what to do. The 90% failure rate is a documentation problem, not a developer problem.
 
 ---
-
 
 ## Chain 3: Error Propagation Path
 
@@ -1025,11 +1019,11 @@ flowchart TB
     SCHED --> RUN
     RUN --> READ
     READ --> STATUS
-    STATUS -->|I2C_OK| TLM
-    STATUS -->|Error| ERR
+|STATUS -->|I2C_OK| TLM|
+|STATUS -->|Error| ERR|
     ERR --> CONT
 
-    STATUS -.->|should trigger| DETECT
+|STATUS -.->|should trigger| DETECT|
     DETECT -.-> POWER_OFF
     POWER_OFF -.-> DELAY1
     DELAY1 -.-> POWER_ON
@@ -1052,15 +1046,15 @@ flowchart TB
 
 ### Transitive Error Impact
 
-| Layer | Component | Normal State | After I2C Failure | Impact |
-|-------|-----------|--------------|-------------------|--------|
-| 7 | Application | Receives IMU data | Receives stale/zero data | Navigation degraded |
-| 6 | Telemetry | ImuData channel active | Last good value held | Ground sees freeze |
-| 5 | Event Log | Normal ops | WARNING_HI event | Operator alerted |
-| 4 | Device Manager | read() succeeds | read() returns I2C_READ_ERR | Local error |
-| 3 | Bus Driver | writeRead() works | writeRead() fails | I2C timeout |
-| 2 | I2C Bus | Active communication | No response from device | Bus idle |
-| 1 | **Power** | **IMU powered** | **IMU unpowered** | **Root cause** |
+| Layer | Component | Normal State | After I2C Failure | Impact |  |
+|-------|-----------|--------------|-------------------|--------|  |
+| 7 | Application | Receives IMU data | Receives stale/zero data | Navigation degraded |  |
+| 6 | Telemetry | ImuData channel active | Last good value held | Ground sees freeze |  |
+| 5 | Event Log | Normal ops | WARNING_HI event | Operator alerted |  |
+| 4 | Device Manager | read() succeeds | read() returns I2C_READ_ERR | Local error |  |
+| 3 | Bus Driver | writeRead() works | writeRead() fails | I2C timeout |  |
+| 2 | I2C Bus | Active communication | No response from device | Bus idle |  |
+| 1 | **Power** | **IMU powered** | **IMU unpowered** | **Root cause** |  |
 
 **Problem:** Root cause (Layer 1 - Power) is 6 layers removed from symptom (Layer 7 - Application).
 
@@ -1071,7 +1065,6 @@ flowchart TB
 > **Why This Matters:** When errors propagate through 7 layers, the symptom you see (Application layer) is completely disconnected from the root cause (Power layer). Without understanding the full chain, you waste time debugging the wrong layer.
 
 ---
-
 
 ## Chain 4: Build System Dependencies
 
@@ -1300,14 +1293,14 @@ flowchart LR
     USER --> FPP
     FPP --> FPP_SRC
     FPP --> TOPO
-    FPP_SRC -.->|imports| DRV_I2C
-    FPP_SRC -.->|uses| SVC_SCHED
+|FPP_SRC -.->|imports| DRV_I2C|
+|FPP_SRC -.->|uses| SVC_SCHED|
     FPP --> AC_HPP
     FPP --> AC_CPP
 
     CMAKE --> CPP_SRC
-    CPP_SRC -.->|includes| AC_HPP
-    CPP_SRC -.->|uses| FW_BUF
+|CPP_SRC -.->|includes| AC_HPP|
+|CPP_SRC -.->|uses| FW_BUF|
 
     CMAKE --> GCC
     GCC --> TOPO_CPP
@@ -1535,19 +1528,18 @@ Maximum observed distance: **7 layers** (Power -> Application)
 
 ### 3. Documentation Coverage
 
-| Chain | Total Hops | Documented Hops | Coverage |
-|-------|------------|-----------------|----------|
-| Application -> Power | 13 | 9 | 69% |
-| Configuration -> Init | 12 | 8 | 67% |
-| Error Propagation | 8 | 3 | 38% |
-| Build System | 7 | 7 | 100% |
+| Chain | Total Hops | Documented Hops | Coverage |  |
+|-------|------------|-----------------|----------|  |
+| Application -> Power | 13 | 9 | 69% |  |
+| Configuration -> Init | 12 | 8 | 67% |  |
+| Error Propagation | 8 | 3 | 38% |  |
+| Build System | 7 | 7 | 100% |  |
 
 **Average Documentation Coverage:** 68% of transitive dependencies
 
 **Critical Gap:** Error propagation chain is only 38% documented
 
 ---
-
 
 ## Recommendations
 
@@ -1585,19 +1577,7 @@ Test suites should:
 
 ---
 
-
 **Analysis Method:** Manual chain tracing, layer-by-layer analysis
 **Longest Chain Found:** 13 hops (Application -> Board Configuration)
 **Documentation Gap:** 14 undocumented transitive links
 **Date:** December 20, 2024
-
-
-
-
-
-
-
-
-
-
-
