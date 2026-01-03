@@ -2201,14 +2201,16 @@ stateDiagram-v2
 
 **Fix:**
 
-```mermaid
+```text
 %% BAD
 flowchart LR
     A[Line 1<br/>Line 2]
     B["Layer 1: Application"]
     C[Status::OK]
     D[/dev/i2c-1]
+```
 
+```mermaid
 %% GOOD
 flowchart LR
     A["`Line 1
@@ -2227,13 +2229,15 @@ flowchart LR
 
 **Fix:**
 
-```mermaid
+```text
 %% BAD
 subgraph "API: v2"
     node[Address: 0x68]
 end
 Note over A: Step 1: Initialize
+```
 
+```text
 %% GOOD
 subgraph "API v2"
     node[Address 0x68]
@@ -2249,17 +2253,21 @@ Note over A: Step 1 Initialize
 
 **Fix:**
 
-```mermaid
+```text
 %% BAD
 flowchart LR
     DEV[/dev/i2c-1 device]
     URL[http://example.com]
+```
 
+```mermaid
 %% GOOD
 flowchart LR
     DEV["/dev/i2c-1 device"]
     URL["http://example.com"]
+```
 
+```text
 %% GOOD
 subgraph "API v2"
     node[Address 0x68]
@@ -2272,12 +2280,14 @@ end
 
 **Fix:**
 
-```mermaid
+```text
 %% BAD
 flowchart TD
     A --> end
     dev --> ops
+```
 
+```mermaid
 %% GOOD
 flowchart TD
     A --> End
