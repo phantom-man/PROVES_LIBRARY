@@ -25,9 +25,6 @@ function Backup-File {
     $backupFile = Join-Path $backupDir ("$(Split-Path $file -Leaf).$timestamp.bak")
     if ($PSCmdlet.ShouldProcess($file, "Backup file to $backupFile")) {
         Copy-Item $file $backupFile -Force
-        # Log backup creation in git
-        git add $backupFile | Out-Null
-        git commit -m "Backup created for $file as $backupFile." | Out-Null
     }
     return $backupFile
 }
@@ -37,9 +34,6 @@ function Restore-File {
     param([string]$backup, [string]$target)
     if ($PSCmdlet.ShouldProcess($target, "Restore file from $backup")) {
         Copy-Item $backup $target -Force
-        # Log restore in git
-        git add $target | Out-Null
-        git commit -m "Restored $target from backup $backup." | Out-Null
     }
 }
 
@@ -49,9 +43,6 @@ function Remove-Backup {
     if ($PSCmdlet.ShouldProcess($backup, "Remove backup file")) {
         if (Test-Path $backup) {
             Remove-Item $backup -Force
-            # Log backup removal in git
-            git add $backup | Out-Null
-            git commit -m "Removed backup $backup." | Out-Null
         }
     }
     else {
@@ -60,12 +51,73 @@ function Remove-Backup {
     }
 }
 
+# --- Helper: Update Line Endings ---
+function Update-LineEndings {
+    param([string]$content)
+    # Replace CRLF with LF, then CR with LF (just in case)
+    return $content -replace "`r`n", "`n" -replace "`r", "`n"
+}
+
+# --- Corruption Fixes: Pipe Artifacts & Indentation ---
+function Set-CorruptionFixes {
+    [CmdletBinding(SupportsShouldProcess=$true)]
+    param([string]$content)
+    
+    $lines = $content -split "`n"
+    $result = [System.Collections.Generic.List[string]]::new()
+    $inCode = $false
+    $blockIndent = ""
+    
+    foreach ($line in $lines) {
+        $newLine = $line
+        
+        # 1. Fix Pipe Artifacts (lines wrapped in |...|)
+        # Regex: Start with |, content, end with |, optional trailing pipes
+        if ($newLine -match '^\|(.*)\|(\s*\|\s*)*$') {
+            $inner = $matches[1]
+            if ($inner -notmatch '\|') {
+                # Likely an artifact (single column)
+                $newLine = $inner
+            }
+        }
+        
+        # 2. Fix Code Block Indentation
+        if ($newLine -match '^(\s*)```') {
+            if (-not $inCode) {
+                $inCode = $true
+                $blockIndent = $matches[1]
+            } else {
+                $inCode = $false
+                $blockIndent = ""
+            }
+        } elseif ($inCode) {
+            # Ensure content is indented at least as much as the fence
+            if ($newLine.Trim().Length -gt 0) {
+                $currentIndentMatch = [regex]::Match($newLine, '^(\s*)')
+                $currentIndent = $currentIndentMatch.Groups[1].Value
+                if ($currentIndent.Length -lt $blockIndent.Length) {
+                    $needed = $blockIndent.Substring($currentIndent.Length)
+                    $newLine = $needed + $newLine
+                }
+            }
+        }
+        
+        $null = $result.Add($newLine)
+    }
+    
+    $fixedContent = ($result.ToArray() -join "`n")
+    if ($PSCmdlet.ShouldProcess("CorruptionFixes", "Apply corruption fixes (pipes, indentation)")) {
+        # Log
+    }
+    return $fixedContent
+}
+
 # --- MD012: No multiple consecutive blank lines ---
 function Set-MD012 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Replace 2+ consecutive blank lines (including whitespace-only lines) with a single blank line, including at file start/end
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $result = [System.Collections.Generic.List[string]]::new()
     $blankCount = 0
     foreach ($line in $lines) {
@@ -92,7 +144,7 @@ function Set-MD012 {
 function Test-MD012 {
     param([string]$content)
     # Return $false if 2+ consecutive blank lines are found
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $blankCount = 0
     foreach ($line in $lines) {
         if ($line -match '^\s*$') {
@@ -109,7 +161,7 @@ function Test-MD012 {
 
 function Test-MD022 {
     param([string]$content)
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $inCode = $false
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = $lines[$i]
@@ -138,7 +190,7 @@ function Test-MD022 {
 function Set-MD022 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $result = [System.Collections.Generic.List[string]]::new()
     $inCode = $false
     $headingPattern = '^\s{0,3}#+(?:\s+.+|$)'
@@ -150,11 +202,16 @@ function Set-MD022 {
             continue
         }
         if ($line -match $headingPattern) {
+            Write-Information "MD022: Found heading '$line'"
+            # Ensure blank line before
             if ($result.Count -gt 0 -and $result[$result.Count-1].Trim() -ne '') {
+                Write-Information "MD022: Adding blank line before '$line'"
                 $null = $result.Add('')
             }
             $null = $result.Add($line)
+            # Ensure blank line after
             if ($i+1 -lt $lines.Length -and $lines[$i+1].Trim() -ne '') {
+                Write-Information "MD022: Adding blank line after '$line'"
                 $null = $result.Add('')
             }
             continue
@@ -173,15 +230,12 @@ function Set-MD022 {
 }
 
 # --- MD023: Headings must start at beginning of line ---
-
-###############################################################
-# MD023: Headings must start at beginning of line
-###############################################################
 function Set-MD023 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
-    # Remove leading whitespace before heading hashes
-    $fixedContent = ($content -replace "(?m)^\s+(#+)", '$1')
+    # Remove leading whitespace (spaces/tabs only) before heading hashes
+    # Using [ \t] instead of \s to avoid matching newlines
+    $fixedContent = ($content -replace "(?m)^[ \t]+(#+)", '$1')
     if ($PSCmdlet.ShouldProcess("MD023", "Apply markdownlint fix for MD023")) {
         # Could add logging here if desired
     }
@@ -191,7 +245,7 @@ function Set-MD023 {
 function Test-MD023 {
     param([string]$content)
     # Return $false if any heading does not start at the beginning of the line
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     foreach ($line in $lines) {
         if ($line -match "^\s+#+") { return $false }
     }
@@ -199,25 +253,27 @@ function Test-MD023 {
 }
 
 # --- MD029: Ordered list item prefix ---
-
-###############################################################
-# MD029: Ordered list item prefix
-###############################################################
 function Set-MD029 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Normalize ordered list numbers so each list starts at 1 and increments
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $i = 0
     while ($i -lt $lines.Length) {
-        if ($lines[$i] -match "^\d+\. ") {
+        # Match ordered list item with optional indentation
+        if ($lines[$i] -match "^(\s*)(\d+)\. ") {
+            $indent = $matches[1]
             $num = 1
             $j = $i
-            # For each contiguous block of ordered list items
-            while ($j -lt $lines.Length -and $lines[$j] -match "^\d+\. ") {
-                $lines[$j] = $lines[$j] -replace "^\d+\. ", "$num. "
-                $num++
-                $j++
+            # For each contiguous block of ordered list items with SAME indentation
+            while ($j -lt $lines.Length) {
+                if ($lines[$j] -match "^$indent\d+\. ") {
+                    $lines[$j] = $lines[$j] -replace "^$indent\d+\. ", "$indent$num. "
+                    $num++
+                    $j++
+                } else {
+                    break
+                }
             }
             $i = $j - 1
         }
@@ -233,16 +289,21 @@ function Set-MD029 {
 function Test-MD029 {
     param([string]$content)
     # Return $false if any ordered list does not increment properly
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $i = 0
     while ($i -lt $lines.Length) {
-        if ($lines[$i] -match "^\d+\. ") {
+        if ($lines[$i] -match "^(\s*)(\d+)\. ") {
+            $indent = $matches[1]
             $num = 1
             $j = $i
-            while ($j -lt $lines.Length -and $lines[$j] -match "^\d+\. ") {
-                if ($lines[$j] -notmatch "^$num\. ") { return $false }
-                $num++
-                $j++
+            while ($j -lt $lines.Length) {
+                if ($lines[$j] -match "^$indent\d+\. ") {
+                    if ($lines[$j] -notmatch "^$indent$num\. ") { return $false }
+                    $num++
+                    $j++
+                } else {
+                    break
+                }
             }
             $i = $j - 1
         }
@@ -252,15 +313,11 @@ function Test-MD029 {
 }
 
 # --- MD038: No space in code span (robust) ---
-
-###############################################################
-# MD038: No space in code span (robust)
-###############################################################
 function Set-MD038 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Remove spaces inside inline code spans (e.g., ` code ` -> `code`), outside code blocks
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $inCode = $false
     $result = @()
     foreach ($line in $lines) {
@@ -283,45 +340,41 @@ function Set-MD038 {
 function Test-MD038 {
     param([string]$content)
     # Only check outside code blocks for code spans with spaces
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $inCode = $false
     foreach ($line in $lines) {
         if ($line -match '^\s*```') { $inCode = -not $inCode }
         if ($inCode) { continue }
+        # Only check outside code blocks
         if ($line -match '` [^`]+ `') { return $false }
     }
     return $true
 }
 
 # --- MD007: Unordered list indentation (robust) ---
-
-###############################################################
-# MD007: Unordered list indentation (robust)
-###############################################################
 function Set-MD007 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Fix unordered list indentation (2 spaces per nesting level), outside code blocks
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $inCode = $false
     $result = @()
     foreach ($line in $lines) {
         if ($line -match '^\s*```') { $inCode = -not $inCode }
         if ($inCode) { $result += $line; continue }
-        # Only fix unordered lists outside code blocks
-        if ($line -match '^(\s*)[-*+] ') {
-            $currentIndent = ($line -replace '^([-*+]) ', '').Length - $line.TrimStart().Length
-            if ($currentIndent -lt 0) { $currentIndent = 0 }
-            # For nested lists, indent by multiples of 2 spaces per nesting level
-            $nestLevel = 0
-            $tmp = $line
-            while ($tmp -match '^(\s*)[-*+] ') {
-                $nestLevel++
-                $tmp = $tmp -replace '^(\s*)[-*+] ', ''
-            }
-            $fixedIndent = ' ' * (($nestLevel - 1) * 2)
-            $fixed = $fixedIndent + $line.TrimStart()
-            $result += $fixed
+        
+        # Match list items with leading whitespace
+        if ($line -match '^(\s*)([-*+]) (.*)') {
+            $spaces = $matches[1].Length
+            $marker = $matches[2]
+            $text   = $matches[3]
+
+            # Calculate level assuming 2 spaces per level (0, 2, 4...)
+            # Round to nearest even number
+            $level = [Math]::Round($spaces / 2)
+            $newIndent = ' ' * ($level * 2)
+            
+            $result += "$newIndent$marker $text"
         } else {
             $result += $line
         }
@@ -336,27 +389,30 @@ function Set-MD007 {
 function Test-MD007 {
     param([string]$content)
     # Only check outside code blocks for unordered list indentation
-    $lines = $content -split "\n"
+    # Fail if indentation is not a multiple of 2
+    $lines = $content -split "`n"
     $inCode = $false
     foreach ($line in $lines) {
         if ($line -match '^\s*```') { $inCode = -not $inCode }
         if ($inCode) { continue }
         # Only check outside code blocks
-        if ($line -match '^(\s{3,})[-*+] ') { return $false }
+        if ($line -match '^(\s*)([-*+]) ') {
+            $spaces = $matches[1].Length
+            if ($spaces % 2 -ne 0) {
+                Write-Information "Test-MD007: Failed on line '$line' (Indent: $spaces)"
+                return $false
+            }
+        }
     }
     return $true
 }
 
 # --- MD055/MD056: Table pipe style and column count ---
-
-###############################################################
-# MD055/MD056: Table pipe style and column count
-###############################################################
 function Set-MD055MD056 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Normalize table rows to have consistent pipe style and column count
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $out = New-Object System.Collections.ArrayList
     $i = 0
     while ($i -lt $lines.Length) {
@@ -406,7 +462,7 @@ function Set-MD055MD056 {
 
 function Test-MD055MD056 {
     param([string]$content)
-    $lines = $content -split "\n"
+    $lines = $content -split "`n"
     $i = 0
     $inCode = $false
     while ($i -lt $lines.Length) {
@@ -455,16 +511,13 @@ function Test-MD055MD056 {
     return $true
 }
 
-
-###############################################################
-# MD019: No multiple spaces after hash in headings
-###############################################################
+# --- MD019: No multiple spaces after hash in headings ---
 function Set-MD019 {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$content)
     # Remove multiple spaces after hash in headings
     if ($PSCmdlet.ShouldProcess("Content", "Apply markdownlint fix for MD019")) {
-        $lines = $content -split "\n"
+        $lines = $content -split "`n"
         $result = @()
         foreach ($line in $lines) {
             if ($line -match '^(#+)\s{2,}') {
@@ -482,35 +535,55 @@ function Set-MD019 {
 }
 
 # --- Main entry point ---
-
-###############################################################
-# Main entry point
-###############################################################
 function Main {
     param(
         [Parameter(Mandatory=$true)]
         [string]$FilePath
     )
-    $content = Get-Content $FilePath -Raw
+    $content = Get-Content $FilePath -Raw -Encoding UTF8
     $backup = Backup-File $FilePath
     try {
-        # Apply and validate each rule in sequence, but only restore backup if an actual error/exception is thrown
+        # Normalize line endings first
+        $content = Update-LineEndings $content
+        Write-Information "Content length after normalize: $($content.Length)"
+        
+        # Apply and validate each rule in sequence
+        
+        # 1. Apply Corruption Fixes First (Pipes, Indentation)
+        $content = Set-CorruptionFixes $content
+        Write-Information "Content length after CorruptionFixes: $($content.Length)"
+        
         $content = Set-MD022 $content
+        Write-Information "Content length after MD022: $($content.Length)"
         if (-not (Test-MD022 $content)) { Write-Warning "MD022 validation failed after fix. Leaving file as-is for inspection." }
+        
         $content = Set-MD012 $content
+        Write-Information "Content length after MD012: $($content.Length)"
         if (-not (Test-MD012 $content)) { Write-Warning "MD012 validation failed after fix. Leaving file as-is for inspection." }
+        
         $content = Set-MD019 $content
+        Write-Information "Content length after MD019: $($content.Length)"
+        
         $content = Set-MD023 $content
+        Write-Information "Content length after MD023: $($content.Length)"
         if (-not (Test-MD023 $content)) { Write-Warning "MD023 validation failed after fix. Leaving file as-is for inspection." }
+        
         $content = Set-MD029 $content
+        Write-Information "Content length after MD029: $($content.Length)"
         if (-not (Test-MD029 $content)) { Write-Warning "MD029 validation failed after fix. Leaving file as-is for inspection." }
+        
         $content = Set-MD038 $content
+        Write-Information "Content length after MD038: $($content.Length)"
         if (-not (Test-MD038 $content)) { Write-Warning "MD038 validation failed after fix. Leaving file as-is for inspection." }
+        
         $content = Set-MD007 $content
+        Write-Information "Content length after MD007: $($content.Length)"
         if (-not (Test-MD007 $content)) { Write-Warning "MD007 validation failed after fix. Leaving file as-is for inspection." }
+        
         $content = Set-MD055MD056 $content
+        Write-Information "Content length after MD055MD056: $($content.Length)"
         if (-not (Test-MD055MD056 $content)) { Write-Warning "MD055/MD056 validation failed after fix. Leaving file as-is for inspection." }
-        # Additional rules can be added here as needed, following the Set-*/Test-* pattern.
+        
         Set-Content -Path $FilePath -Value $content -Encoding UTF8
         Remove-Backup $backup
         Write-Information "Universal markdownlint fixes applied to $FilePath"
@@ -522,13 +595,4 @@ function Main {
     }
 }
 
-
-
-
-
-
 Main -FilePath $FilePath
-
-
-
-

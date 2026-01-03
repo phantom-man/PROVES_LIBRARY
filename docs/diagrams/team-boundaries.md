@@ -3,8 +3,6 @@ layout: article
 title: Team Boundaries
 ---
 
-
-
 # Team Boundaries
 
 Organizational analysis showing WEAK interface between NASA/JPL F-Prime team and university PROVES Kit teams - where knowledge gets lost.
@@ -22,8 +20,6 @@ Organizational analysis showing WEAK interface between NASA/JPL F-Prime team and
 - **WHY** failures cross team boundaries
 
 ---
-
-
 
 ## Team Boundary Map
 
@@ -243,21 +239,21 @@ flowchart TB
         USER_3[New Universities]
     end
 
-    JPL_CORE -->|maintains| JPL_DOC
-    JPL_CORE -->|publishes| JPL_REL
-    JPL_DOC -.->|weak link| PROVES_LEAD
+|JPL_CORE -->|maintains| JPL_DOC|  |  |  |  |  |  |  |  |  |
+|JPL_CORE -->|publishes| JPL_REL|  |  |  |  |  |  |  |  |  |
+|JPL_DOC -.->|weak link| PROVES_LEAD|  |  |  |  |  |  |  |  |  |
 
-    PROVES_LEAD -->|coordinates| PROVES_DEV
-    PROVES_DEV -.->|weak link| UNI_A_2020
-    PROVES_DEV -.->|weak link| UNI_B_2022
-    PROVES_DEV -.->|weak link| UNI_C_2024
+|PROVES_LEAD -->|coordinates| PROVES_DEV|  |  |  |  |  |  |  |  |  |
+|PROVES_DEV -.->|weak link| UNI_A_2020|  |  |  |  |  |  |  |  |  |
+|PROVES_DEV -.->|weak link| UNI_B_2022|  |  |  |  |  |  |  |  |  |
+|PROVES_DEV -.->|weak link| UNI_C_2024|  |  |  |  |  |  |  |  |  |
 
-    UNI_A_2020 -.->|graduated| UNI_B_2022
-    UNI_B_2022 -.->|graduated| UNI_C_2024
+|UNI_A_2020 -.->|graduated| UNI_B_2022|  |  |  |  |  |  |  |  |  |
+|UNI_B_2022 -.->|graduated| UNI_C_2024|  |  |  |  |  |  |  |  |  |
 
-    PROVES_LEAD -.->|minimal support| USER_1
-    PROVES_LEAD -.->|minimal support| USER_2
-    PROVES_LEAD -.->|minimal support| USER_3
+|PROVES_LEAD -.->|minimal support| USER_1|  |  |  |  |  |  |  |  |  |
+|PROVES_LEAD -.->|minimal support| USER_2|  |  |  |  |  |  |  |  |  |
+|PROVES_LEAD -.->|minimal support| USER_3|  |  |  |  |  |  |  |  |  |
 
     style JPL_CORE fill:#e1f5ff
     style PROVES_LEAD fill:#fff4e1
@@ -491,13 +487,13 @@ flowchart LR
         P_COM["Community [WARNING] Mostly university teams"]
     end
 
-    F_PUB -.->|weak| INT
-    F_CODE -.->|weak| INT
-    F_COM -.->|weak| INT
+|F_PUB -.->|weak| INT|  |  |  |  |  |  |  |  |  |
+|F_CODE -.->|weak| INT|  |  |  |  |  |  |  |  |  |
+|F_COM -.->|weak| INT|  |  |  |  |  |  |  |  |  |
 
-    INT -.->|weak| P_PUB
-    INT -.->|weak| P_CODE
-    INT -.->|weak| P_COM
+|INT -.->|weak| P_PUB|  |  |  |  |  |  |  |  |  |
+|INT -.->|weak| P_CODE|  |  |  |  |  |  |  |  |  |
+|INT -.->|weak| P_COM|  |  |  |  |  |  |  |  |  |
 
     style F_PUB fill:#c8e6c9
     style F_CODE fill:#c8e6c9
@@ -531,7 +527,6 @@ flowchart LR
 > **Key Insight:** F-Prime and PROVES Kit are both well-documented systems individually, but the interface between them has a strength score of 2/10. This is like having two excellent textbooks but no syllabus telling you how to use them together.
 
 ---
-
 
 ## Knowledge Flow Analysis
 
@@ -741,19 +736,19 @@ flowchart TB
     LOST[Knowledge Lost at Graduation]
 
     START --> DOC_F
-    DOC_F -->|Not found| DOC_P
-    DOC_P -->|Not found| TRIBAL
+|DOC_F -->|Not found| DOC_P|  |  |  |  |  |  |  |  |  |
+|DOC_P -->|Not found| TRIBAL|  |  |  |  |  |  |  |  |  |
 
     TRIBAL --> WHO
 
-    WHO -->|Contact JPL| JPL_ENG
-    WHO -->|Contact PROVES| PROVES_ENG
-    WHO -->|Contact University| UNI_ENG
+|WHO -->|Contact JPL| JPL_ENG|  |  |  |  |  |  |  |  |  |
+|WHO -->|Contact PROVES| PROVES_ENG|  |  |  |  |  |  |  |  |  |
+|WHO -->|Contact University| UNI_ENG|  |  |  |  |  |  |  |  |  |
 
-    JPL_ENG -.->|Doesn't know| DISCOVER
+|JPL_ENG -.->|Doesn't know| DISCOVER|  |  |  |  |  |  |  |  |  |
     UNI_ENG --> DISCOVER
 
-    PROVES_ENG -->|Has knowledge| CAPTURE
+|PROVES_ENG -->|Has knowledge| CAPTURE|  |  |  |  |  |  |  |  |  |
     DISCOVER --> CAPTURE
     CAPTURE --> LOST
 
@@ -1195,7 +1190,6 @@ pie title Knowledge Retention After Team Graduation
 
 ---
 
-
 ## The Team A / Team B Failure Scenario
 
 ### What You're Looking At
@@ -1449,15 +1443,15 @@ sequenceDiagram
 
 ### FRAMES Interface Strength Model
 
-| Interface | Strength | Evidence | Knowledge Flow | Risk |
-| --------- | -------- | -------- | -------------- | ---- |
-| **F-Prime Core ↔ F-Prime Docs** | 🟢 STRONG | Versioned, maintained, comprehensive | High | Low |
-| **F-Prime Docs ↔ F-Prime Users** | 🟢 STRONG | Public, searchable, with examples | High | Low |
-| **F-Prime ↔ PROVES** | 🔴 **WEAK** | No cross-references, no integration guide | **Very Low** | **EXTREME** |
-| **PROVES Lead ↔ PROVES Docs** | 🟡 MEDIUM | Active but growing, some gaps | Medium | Medium |
-| **PROVES ↔ University Teams** | 🔴 **WEAK** | Ad-hoc, tribal knowledge | **Low** | **HIGH** |
-| **Uni Team A ↔ Uni Team B** | 🔴 **WEAK** | Student turnover, minimal handoff | **Very Low** | **EXTREME** |
-| **PROVES ↔ External Users** | 🔴 **WEAK** | Minimal support, self-service | **Very Low** | **HIGH** |
+| Interface | Strength | Evidence | Knowledge Flow | Risk |  |  |  |  |  |  |  |  |  |  |
+| --------- | -------- | -------- | -------------- | ---- |  |  |  |  |  |  |  |  |  |  |
+| **F-Prime Core ↔ F-Prime Docs** | 🟢 STRONG | Versioned, maintained, comprehensive | High | Low |  |  |  |  |  |  |  |  |  |  |
+| **F-Prime Docs ↔ F-Prime Users** | 🟢 STRONG | Public, searchable, with examples | High | Low |  |  |  |  |  |  |  |  |  |  |
+| **F-Prime ↔ PROVES** | 🔴 **WEAK** | No cross-references, no integration guide | **Very Low** | **EXTREME** |  |  |  |  |  |  |  |  |  |  |
+| **PROVES Lead ↔ PROVES Docs** | 🟡 MEDIUM | Active but growing, some gaps | Medium | Medium |  |  |  |  |  |  |  |  |  |  |
+| **PROVES ↔ University Teams** | 🔴 **WEAK** | Ad-hoc, tribal knowledge | **Low** | **HIGH** |  |  |  |  |  |  |  |  |  |  |
+| **Uni Team A ↔ Uni Team B** | 🔴 **WEAK** | Student turnover, minimal handoff | **Very Low** | **EXTREME** |  |  |  |  |  |  |  |  |  |  |
+| **PROVES ↔ External Users** | 🔴 **WEAK** | Minimal support, self-service | **Very Low** | **HIGH** |  |  |  |  |  |  |  |  |  |  |
 
 ### Scoring Criteria
 
@@ -1483,7 +1477,6 @@ sequenceDiagram
 - [NO] High risk of knowledge loss
 
 ---
-
 
 ## Knowledge Capture Analysis
 
@@ -1954,48 +1947,47 @@ quadrantChart
 
 ---
 
-
 ## Recommendations
 
 ### Immediate Actions
 
 1. **Strengthen F-Prime ↔ PROVES Interface**
-   - Create joint integration guide
-   - Cross-reference documentation
-   - Establish regular sync meetings
-   - Share GitHub issues/discussions
+    - Create joint integration guide
+    - Cross-reference documentation
+    - Establish regular sync meetings
+    - Share GitHub issues/discussions
 
-2. **Capture Tribal Knowledge**
-   - Interview university teams BEFORE graduation
-   - Document all workarounds and failures
-   - Extract design rationale from code
-   - Create searchable knowledge base
+1. **Capture Tribal Knowledge**
+    - Interview university teams BEFORE graduation
+    - Document all workarounds and failures
+    - Extract design rationale from code
+    - Create searchable knowledge base
 
-3. **Improve Team Handoff**
-   - Mandatory knowledge transfer before graduation
-   - Overlap period with new team
-   - Documented procedures and lessons learned
-   - Video recordings of key procedures
+1. **Improve Team Handoff**
+    - Mandatory knowledge transfer before graduation
+    - Overlap period with new team
+    - Documented procedures and lessons learned
+    - Video recordings of key procedures
 
 ### Long-Term Solutions
 
 1. **Automated Knowledge Capture**
-   - **This PROVES Library system!**
-   - Capture knowledge from GitHub issues, PRs, chat
-   - Extract from code comments and commit messages
-   - Index and make searchable
+    - **This PROVES Library system!**
+    - Capture knowledge from GitHub issues, PRs, chat
+    - Extract from code comments and commit messages
+    - Index and make searchable
 
-2. **Interface Strength Monitoring**
-   - Track documentation coverage
-   - Measure communication frequency
-   - Monitor team turnover impact
-   - Alert on weak interfaces
+1. **Interface Strength Monitoring**
+    - Track documentation coverage
+    - Measure communication frequency
+    - Monitor team turnover impact
+    - Alert on weak interfaces
 
-3. **Community Building**
-   - Cross-university collaboration
-   - Shared mission reviews
-   - F-Prime + PROVES user group
-   - Annual knowledge sharing conference
+1. **Community Building**
+    - Cross-university collaboration
+    - Shared mission reviews
+    - F-Prime + PROVES user group
+    - Annual knowledge sharing conference
 
 ---
 
@@ -2264,22 +2256,20 @@ flowchart TB
 
 ---
 
-
 ## Success Metrics
 
 ### How to Measure Interface Strength Improvement
 
-| Metric | Current | Target | Method |
-| ------ | ------- | ------ | ------ |
-| **Documentation Coverage** | 68% | 95% | % dependencies documented |
-| **Cross-Team References** | 0 | 50+ | # doc links between F-Prime ↔ PROVES |
-| **Knowledge Retention** | 10% | 80% | % knowledge captured before graduation |
-| **Integration Failures** | 70% | <10% | % new teams that encounter power issue |
-| **Time to Answer** | Days | Minutes | Time to find integration knowledge |
-| **Interface Strength** | 2/10 | 8/10 | FRAMES scoring system |
+| Metric | Current | Target | Method |  |  |  |  |  |  |  |  |  |  |
+| ------ | ------- | ------ | ------ |  |  |  |  |  |  |  |  |  |  |
+| **Documentation Coverage** | 68% | 95% | % dependencies documented |  |  |  |  |  |  |  |  |  |  |
+| **Cross-Team References** | 0 | 50+ | # doc links between F-Prime ↔ PROVES |  |  |  |  |  |  |  |  |  |  |
+| **Knowledge Retention** | 10% | 80% | % knowledge captured before graduation |  |  |  |  |  |  |  |  |  |  |
+| **Integration Failures** | 70% | <10% | % new teams that encounter power issue |  |  |  |  |  |  |  |  |  |  |
+| **Time to Answer** | Days | Minutes | Time to find integration knowledge |  |  |  |  |  |  |  |  |  |  |
+| **Interface Strength** | 2/10 | 8/10 | FRAMES scoring system |  |  |  |  |  |  |  |  |  |  |
 
 ---
-
 
 ## Navigation
 
@@ -2293,24 +2283,3 @@ flowchart TB
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

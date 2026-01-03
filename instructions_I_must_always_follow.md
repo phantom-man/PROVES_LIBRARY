@@ -21,12 +21,12 @@
 - Never wait for or require a user response before proceeding to the next step.
 - Perform iterative improvements, script runs, and file edits as needed to resolve markdownlint and related issues.
 - Rely on robust rollback and backup logic to prevent corruption; always restore from backup if a script fails or errors out.
-- Log all actions, script runs, and results in this file with timestamps for traceability, but do not interrupt the workflow for user input.
+- Log all actions, script runs, and results in the log file with timestamps for traceability, but do not interrupt the workflow for user input.
 - Only involve the user if a decision or clarification is absolutely required and cannot be resolved programmatically.
   - If an unrecoverable error or ambiguous situation arises that cannot be resolved automatically, immediately escalate to the user for guidance, logging the issue and pausing further automated actions until resolved.
 - Continue improving until all issues are resolved or the user explicitly stops the process.
 - Strictly follow the user’s explicit instructions and do not deviate from the requested workflow.
-- Acknowledge and correct any deviation from these instructions immediately, logging the deviation and corrective action in this file with a timestamp.
+- Acknowledge and correct any deviation from these instructions immediately, logging the deviation and corrective action in the log file with a timestamp.
 
 ---
 
@@ -42,10 +42,9 @@ This file is to be referenced before any operation on docs/diagrams/[Targeted Fi
 *Note: The date 2026-01-01 is intentional and marks the activation of these directives. If this is not correct, update as needed.*
 
 - All PowerShell scripts must reside in the main ps_scripts directory at the workspace root. No scripts should remain in diagrams/ps_scripts.
-- After every edit to any PowerShell script, [Targeted File], or log file, the change must be staged and committed in git with a descriptive message.
-- When restoring an earlier version of fix_markdownlint_robust_v3.ps1 or [Targeted File], use git to checkout or revert to the desired commit. Only restore [Targeted File] if it is a clean version and no destructive script has altered it.
-- All log file changes must also be committed to git after every edit.
-- All backup/restore logic for scripts and [Targeted File] should use git for version control and recovery.
+- After Finishing a plan that makes edits to any PowerShell script, [Targeted File], or log file, the change must be staged and committed in git with a descriptive message at the end of the plan.
+- Only restore [Targeted File] if it is a clean version and no merge conflicts or duplicate code exists.
+- All log file changes must also be committed to git after every the plan is completed.
 
 ## INSTRUCTIONS FOR ITERATIVE ACTION LOGGING
 
@@ -64,5 +63,7 @@ This file is to be referenced before any operation on docs/diagrams/[Targeted Fi
 3. You may make adjustments to these instructions as needed to improve the workflow, but always keep the latest version in your context.
 
 4. All log entries must be timestamped with date and time (YYYY-MM-DD HH:MM:SS) and describe the action taken, the reason, and the next planned step if relevant.
+
+5. Log files may never be deleted and all entries must be preserved.
 
 --- END OF INSTRUCTIONS ---
