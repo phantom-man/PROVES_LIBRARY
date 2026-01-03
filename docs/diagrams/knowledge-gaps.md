@@ -137,6 +137,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -367,6 +368,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -606,6 +608,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -881,6 +884,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -1152,6 +1156,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -1394,6 +1399,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -1641,6 +1647,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -1792,7 +1799,7 @@ F_BAREMETAL -.->|how to combine?| P_C
    ```
 
 1. **Build system integration:**
-   ```cmake
+```cmake
 
 # [NO] NOT DOCUMENTED
 
@@ -1803,7 +1810,7 @@ F_BAREMETAL -.->|how to combine?| P_C
 # - Linked libraries?
 
 # - Microservice architecture?
-   ```
+```
 
 ### Where This Knowledge Lives
 
@@ -1927,6 +1934,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -2126,6 +2134,7 @@ config:
     rightAngles: false
     showSequenceNumbers: false
   state:
+    curve: 'linear'
     dividerMargin: 10
     sizeUnit: 5
     padding: 8
@@ -2289,6 +2298,8 @@ gantt
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
+
+
 
 
 
