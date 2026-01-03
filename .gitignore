@@ -81,3 +81,4 @@ nul
 # External reference repos and archives
 .deepagents-repo/
 .archive/
+deepagents/
