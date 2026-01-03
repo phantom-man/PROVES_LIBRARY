@@ -141,7 +141,7 @@ config:
     leftPadding: 75
     gridLineStartPadding: 35
     numberSectionStyles: 4
-  ---\nflowchart:
+  flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
@@ -239,6 +239,7 @@ config:
     height: 60
     boxMargin: 10
 
+---
 flowchart TB
 %% System Build/Config/Device Flowchart
 subgraph BUILD ["Build System - Compiles the code"]
@@ -371,7 +372,7 @@ config:
     leftPadding: 75
     gridLineStartPadding: 35
     numberSectionStyles: 4
-  ---\nflowchart:
+  flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
@@ -469,6 +470,7 @@ config:
     height: 60
     boxMargin: 10
 
+---
   flowchart TB
     LSM[LoadSwitchManager - Main power control class - Written in Python]
     subgraph TOOLS ["Software Tools It Uses"]
@@ -586,7 +588,7 @@ config:
     leftPadding: 75
     gridLineStartPadding: 40
     numberSectionStyles: 4
-  ---\nflowchart:
+  flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
@@ -806,7 +808,7 @@ config:
     leftPadding: 75
     gridLineStartPadding: 40
     numberSectionStyles: 4
-  ---\nflowchart:
+  flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
