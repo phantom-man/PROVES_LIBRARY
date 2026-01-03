@@ -22,6 +22,7 @@
     .\check_and_fix_rendering.ps1 -CheckOnly
     Only verifies rendering on GitHub (requires existing 'verification-auto' branch or pushes current state).
 #>
+#>
 
 param(
     [switch]$CheckOnly,
