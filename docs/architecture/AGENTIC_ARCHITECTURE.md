@@ -806,7 +806,8 @@ class EnhancedScannerAgent:
 
         return risks
 ```
-{% endraw %}
+
+### endraw
 
 ### Builder Agent (FRAMES-Aware)
 
@@ -876,7 +877,9 @@ class FramesAwareBuilderAgent:
             }
         return targets
 ```
-{% endraw %}
+
+## endraw
+
 ---
 
 ## Layer 5: Sweep Execution Engine
