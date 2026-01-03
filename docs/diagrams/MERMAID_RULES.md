@@ -641,6 +641,38 @@ flowchart LR
     linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
 
+### 9. Version Compatibility (CRITICAL)
+
+**Current Mermaid Version:** 10.9.5 (GitHub Pages default)
+
+**❌ DO NOT USE v11+ Features:**
+- Edge IDs: `A e1@--> B` (Use standard `A --> B`)
+- Metadata blocks: `@{ "type": "boundary" }`
+- Bidirectional arrows: `<<-->>` (Use `A <--> B` or `A --- B`)
+
+**✅ Safe Syntax (v10.9.5 Compatible):**
+- Standard arrows: `-->`, `---`, `-.->`
+- Standard participants: `participant A`, `actor B`
+- Standard subgraphs: `subgraph Title`
+
+### 10. YAML Configuration Rules
+
+**CRITICAL: Frontmatter must be valid YAML**
+
+**1. Block Scalars for CSS:**
+Always use the pipe `|` for multi-line CSS strings:
+```yaml
+themeCSS: |
+    .node rect { fill: red; }
+    .edgePath path { stroke: blue; }
+```
+
+**2. Case Sensitivity:**
+Configuration keys are case-sensitive. Use exact casing:
+- ✅ `gridLineStartPadding` (NOT `gridLineStartpadding`)
+- ✅ `diagramPadding` (NOT `diagrampadding`)
+- ✅ `c4ShapePadding` (NOT `c4Shapepadding`)
+
 ## Theme Variables Reference
 
 Complete reference of all available Mermaid theme variables. Use these to create custom themes or modify the seasonal presets above.
