@@ -290,15 +290,14 @@ STATUS -.->|should trigger?| LSM
 
 ### Evidence Chain
 
-| System | Line | Evidence |  |
-|--------|------|----------|  |
-| F-Prime | 28 | "ImuManager uses the bus driver layer to implement data read/writes for MPU6050 sensor" |  |
-| F-Prime | 126 | `Drv::I2cStatus status = this->busWriteRead_out(...)` - I2C operations can fail |  |
-| F-Prime | 188-194 | Errors logged but NOT automatically recovered |  |
-| PROVES | 28 | `"imu": DigitalInOut(board.IMU_ENABLE)` - IMU powered by load switch |  |
-| PROVES | 34 | LoadSwitchManager initialization |  |
-| PROVES | 108 | Enable logic configuration (active high/low) |  |
-
+| System | Line | Evidence |
+|--------|------|----------|
+| F-Prime | 28 | "ImuManager uses the bus driver layer to implement data read/writes for MPU6050 sensor" |
+| F-Prime | 126 | `Drv::I2cStatus status = this->busWriteRead_out(...)` - I2C operations can fail |
+| F-Prime | 188-194 | Errors logged but NOT automatically recovered |
+| PROVES | 28 | `"imu": DigitalInOut(board.IMU_ENABLE)` - IMU powered by load switch |
+| PROVES | 34 | LoadSwitchManager initialization |
+| PROVES | 108 | Enable logic configuration (active high/low) |
 ### The Gap
 
 **What's NOT Documented:**
@@ -546,12 +545,11 @@ sequenceDiagram
 
 ### Evidence Chain
 
-| System | Line | Evidence |  |
-|--------|------|----------|  |
-| PROVES | 34 | `load_switch_manager = LoadSwitchManager(...)` - initialization required |  |
-| F-Prime | 248 | `busDriver.open("/dev/i2c-1")` - happens in configureTopology() |  |
-| F-Prime | 245-254 | configureTopology() example shown |  |
-
+| System | Line | Evidence |
+|--------|------|----------|
+| PROVES | 34 | `load_switch_manager = LoadSwitchManager(...)` - initialization required |
+| F-Prime | 248 | `busDriver.open("/dev/i2c-1")` - happens in configureTopology() |
+| F-Prime | 245-254 | configureTopology() example shown |
 ### The Gap
 
 **What's NOT Documented:**
@@ -813,11 +811,10 @@ CAM_SW -->|powers| CAM_HW
 
 ### Evidence Chain
 
-| System | Line | Evidence |  |
-|--------|------|----------|  |
-| F-Prime | 253 | `imuManager.configure(0x68)` - Fixed I2C address |  |
-| PROVES | 27-30 | Multiple devices: radio, imu, magnetometer, camera |  |
-
+| System | Line | Evidence |
+|--------|------|----------|
+| F-Prime | 253 | `imuManager.configure(0x68)` - Fixed I2C address |
+| PROVES | 27-30 | Multiple devices: radio, imu, magnetometer, camera |
 ### The Gap
 
 **What's NOT Documented:**
@@ -1072,13 +1069,12 @@ ERROR -.->|should trigger| MISSING
 
 ### Evidence Chain
 
-| System | Line | Evidence |  |
-|--------|------|----------|  |
-| F-Prime | 188-194 | `if (status == Drv::I2cStatus::I2C_OK) { ... } else { log_WARNING_HI_ImuReadError(status); }` |  |
-| F-Prime | No line | NO recovery strategy implemented |  |
-| PROVES | 119-125 | Load switch operations return boolean success |  |
-| PROVES | 131-142 | Methods: turn_on(), turn_off(), get_switch_state() |  |
-
+| System | Line | Evidence |
+|--------|------|----------|
+| F-Prime | 188-194 | `if (status == Drv::I2cStatus::I2C_OK) { ... } else { log_WARNING_HI_ImuReadError(status); }` |
+| F-Prime | No line | NO recovery strategy implemented |
+| PROVES | 119-125 | Load switch operations return boolean success |
+| PROVES | 131-142 | Methods: turn_on(), turn_off(), get_switch_state() |
 ### The Gap
 
 **What's NOT Documented:**
@@ -1359,13 +1355,12 @@ UNI_A -.->|graduated/left| UNI_B
 
 ### What Happens When These Dependencies Break?
 
-| Dependency | Misconfiguration | Result | Detection Time |  |
-|------------|------------------|--------|----------------|  |
-| Power Stability | Enable logic inverted | Silent IMU failure | Launch +hours |  |
-| Power Sequence | Bus opens before power | I2C init fails | Boot time |  |
-| Bus Sharing | Multiple devices conflict | Corrupted data | Mission +days |  |
-| Error Recovery | No power cycle on error | Permanent sensor loss | First error |  |
-
+| Dependency | Misconfiguration | Result | Detection Time |
+|------------|------------------|--------|----------------|
+| Power Stability | Enable logic inverted | Silent IMU failure | Launch +hours |
+| Power Sequence | Bus opens before power | I2C init fails | Boot time |
+| Bus Sharing | Multiple devices conflict | Corrupted data | Mission +days |
+| Error Recovery | No power cycle on error | Permanent sensor loss | First error |
 ### Estimated Risk
 
 ```mermaid
@@ -1630,6 +1625,7 @@ quadrantChart
 **Confidence Level:** High (human-verified, evidence-based)
 **Impact:** Demonstrates exact Team A/Team B failure mode
 **Date:** December 20, 2024
+
 
 
 
