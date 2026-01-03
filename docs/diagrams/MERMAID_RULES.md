@@ -608,8 +608,10 @@ flowchart LR
 %% This is a comment
 %% Must start line with %%
 flowchart LR
-    A --> B %% inline comments NOT supported
+    A --> B
 ```
+
+> **Note:** Inline comments (e.g., `A --> B %% comment`) are **NOT** supported.
 
 ### 8. Styling
 
