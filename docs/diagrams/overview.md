@@ -90,11 +90,13 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 
 ### By Criticality
 
+
 ```mermaid
 pie title Dependency Criticality Distribution
   "HIGH criticality" : 28
   "MEDIUM criticality" : 11
   "LOW criticality" : 3
+```
 ```
     gridColor: '#FFCC80'
     todayLineColor: '#7B1FA2'
