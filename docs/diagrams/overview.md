@@ -38,56 +38,44 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 
 ```mermaid
 ---
-config:
-  theme: base
-  fontSize: 24
-  themeVariables:
-    primaryColor: '#FFF3E0'
-    secondaryColor: '#F3E5F5'
-    tertiaryColor: '#FFF8E1'
-    primaryTextColor: '#5D4037'
-    secondaryTextColor: '#4A148C'
-    tertiaryTextColor: '#F57F17'
-    primaryBorderColor: '#FF6F00'
-    secondaryBorderColor: '#9C27B0'
-    tertiaryBorderColor: '#FBC02D'
-    background: '#FFF8E1'
-    textColor: '#5D4037'
-    lineColor: '#FF9800'
-    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
-    nodeBorder: '#FF6F00'
-    mainBkg: '#FFF3E0'
-    clusterBkg: '#F3E5F5'
-    clusterBorder: '#9C27B0'
-    edgeLabelBackground: '#FFF8E1'
-    actorBkg: '#FFF3E0'
-    actorBorder: '#FF6F00'
-    actorTextColor: '#5D4037'
-    signalColor: '#FF9800'
-    signalTextColor: '#5D4037'
-    labelBoxBkgColor: '#F3E5F5'
-    noteBkgColor: '#FFF8E1'
-    noteTextColor: '#F57F17'
-    noteBorderColor: '#FBC02D'
-    pie1: '#FF6F00'
-    pie2: '#9C27B0'
-    pie3: '#FBC02D'
-    pie4: '#FF9800'
-    pie5: '#BA68C8'
-    pie6: '#FFD54F'
-    pie7: '#FFB74D'
-    pie8: '#CE93D8'
-    pie9: '#FFF176'
-    pie10: '#FF8A65'
-    pie11: '#F3E5F5'
+layout: article
+title: Dependency Overview
+---
 
-    ## Dependency Statistics
+# Dependency Overview
 
-    ### By Category
+Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVES Kit Power Management documentation.
 
-    | Category | F-Prime Count | PROVES Kit Count | Total |
-    |----------|----------|------------------|-------|
+[← Back to Home](../index.html)
+
+---
+
+## Quick Terminology Guide
+
+**Dependency** - When one component needs another component to work
+- Example: "The IMU sensor depends on power" means if power fails, IMU fails too
+
+**F-Prime (F Prime)** - NASA's flight software framework used on many spacecraft
+
+**I2C** - Communication protocol that lets microcontrollers talk to sensors (like USB but for embedded systems)
+
+**PROVES Kit** - University CubeSat platform with standardized hardware modules
+
+**Load Switch** - Electronic switch that turns power on/off to different components
+
+**Device Manager** - Software layer that handles talking to hardware sensors
+
+**Bus Driver** - Low-level software that manages the I2C communication protocol
+
+---
+
+## F-Prime I2C Driver Dependencies
+
+### Software Architecture
+
+**What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
+
+```mermaid
     | **Software Dependencies** | 9 | 6 | 15 |
     | **Hardware Dependencies** | 4 | 5 | 9 |
     | **Configuration Dependencies** | 5 | 3 | 8 |
@@ -923,13 +911,13 @@ pie title Dependency Criticality Distribution
 
 ### By Relationship Type
 
-| Relationship Type | Count | Examples |  |
-|-------------------|-------|----------|  |
-| **requires** | 23 | Device Manager requires Bus Driver |  |
-| **enables** | 7 | Load Switch enables IMU power |  |
-| **depends_on** | 6 | Application depends_on Device Manager |  |
-| **controls** | 5 | LoadSwitchManager controls hardware pins |  |
-| **implements** | 1 | ZephyrI2cDriver implements Drv.I2c |  |
+| Relationship Type | Count | Examples |
+|-------------------|-------|----------|
+| **requires** | 23 | Device Manager requires Bus Driver |
+| **enables** | 7 | Load Switch enables IMU power |
+| **depends_on** | 6 | Application depends_on Device Manager |
+| **controls** | 5 | LoadSwitchManager controls hardware pins |
+| **implements** | 1 | ZephyrI2cDriver implements Drv.I2c |
 
 ---
 
