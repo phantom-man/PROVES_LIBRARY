@@ -282,7 +282,7 @@ $replacement = @"
 config:
   theme: base
   fontSize: 18
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -662,7 +662,7 @@ flowchart LR
 **1. Block Scalars for CSS:**
 Always use the pipe `|` for multi-line CSS strings:
 ```yaml
-themeCSS: |
+  themeCSS: |
     .node rect { fill: red; }
     .edgePath path { stroke: blue; }
 ```
@@ -1246,7 +1246,7 @@ These are complete, ready-to-use theme configurations. Copy the frontmatter for 
 config:
   theme: base
   fontSize: 16
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1444,7 +1444,7 @@ themeCSS: |
 config:
   theme: base
   fontSize: 16
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1642,7 +1642,7 @@ themeCSS: |
 config:
   theme: base
   fontSize: 16
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1840,7 +1840,7 @@ themeCSS: |
 config:
   theme: base
   fontSize: 16
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -3092,6 +3092,7 @@ def validate_mermaid(diagram_code):
 
 **Version:** Based on Mermaid v10+ (GitHub rendering)
 **Last Updated:** December 28, 2024
+
 
 
 

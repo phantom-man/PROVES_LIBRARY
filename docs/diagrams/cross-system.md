@@ -57,7 +57,7 @@ Neither F-Prime documentation nor PROVES Kit documentation mentions the other sy
 config:
   theme: base
   fontSize: 24
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -335,7 +335,7 @@ Mission continues without IMU (silent failure)
 config:
   theme: base
   fontSize: 24
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -585,7 +585,7 @@ No alert that power sequencing is wrong
 config:
   theme: base
   fontSize: 24
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -852,7 +852,7 @@ Attitude determination fails
 config:
   theme: base
   fontSize: 24
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1121,7 +1121,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 config:
   theme: base
   fontSize: 24
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1373,7 +1373,7 @@ UNI_A -.->|graduated/left| UNI_B
 config:
   theme: base
   fontSize: 24
-themeCSS: |
+  themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
@@ -1630,6 +1630,7 @@ quadrantChart
 **Confidence Level:** High (human-verified, evidence-based)
 **Impact:** Demonstrates exact Team A/Team B failure mode
 **Date:** December 20, 2024
+
 
 
 
