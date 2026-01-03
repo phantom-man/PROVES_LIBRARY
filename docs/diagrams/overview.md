@@ -75,49 +75,27 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 
 **What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
 
+
+### By Category
+
+| Category | F-Prime Count | PROVES Kit Count | Total |
+|----------|----------|------------------|-------|
+| **Software Dependencies** | 9 | 6 | 15 |
+| **Hardware Dependencies** | 4 | 5 | 9 |
+| **Configuration Dependencies** | 5 | 3 | 8 |
+| **Build System Dependencies** | 3 | 0 | 3 |
+| **Data Type Dependencies** | 4 | 0 | 4 |
+| **State Management Dependencies** | 0 | 3 | 3 |
+| **TOTAL** | 25 | 17 | **42** |
+
+### By Criticality
+
 ```mermaid
-    | **Software Dependencies** | 9 | 6 | 15 |
-    | **Hardware Dependencies** | 4 | 5 | 9 |
-    | **Configuration Dependencies** | 5 | 3 | 8 |
-    | **Build System Dependencies** | 3 | 0 | 3 |
-    | **Data Type Dependencies** | 4 | 0 | 4 |
-    | **State Management Dependencies** | 0 | 3 | 3 |
-    | **TOTAL** | 25 | 17 | **42** |
-
-    ### By Criticality
-
-    ```mermaid
-    pie title Dependency Criticality Distribution
-        "HIGH criticality" : 28
-        "MEDIUM criticality" : 11
-        "LOW criticality" : 3
-    ```
-    pie2: '#9C27B0'
-    pie3: '#FBC02D'
-    pie4: '#FF9800'
-    pie5: '#BA68C8'
-    pie6: '#FFD54F'
-    pie7: '#FFB74D'
-    pie8: '#CE93D8'
-    pie9: '#FFF176'
-    pie10: '#FF8A65'
-    pie11: '#F3E5F5'
-    pie12: '#FFF8E1'
-    sectionBkgColor: '#FFF8E1'
-    altSectionBkgColor: '#FFF3E0'
-    sectionBkgColor2: '#F3E5F5'
-    taskBkgColor: '#FFB74D'
-    taskBorderColor: '#FF6F00'
-    activeTaskBkgColor: '#FF9800'
-    activeTaskBorderColor: '#E65100'
-    doneTaskBkgColor: '#FFCC80'
-    doneTaskBorderColor: '#FF6F00'
-    critBkgColor: '#CE93D8'
-    critBorderColor: '#7B1FA2'
-    taskTextColor: '#5D4037'
-    taskTextOutsideColor: '#5D4037'
-    taskTextLightColor: '#5D4037'
-    taskTextDarkColor: '#FFFFFF'
+pie title Dependency Criticality Distribution
+  "HIGH criticality" : 28
+  "MEDIUM criticality" : 11
+  "LOW criticality" : 3
+```
     gridColor: '#FFCC80'
     todayLineColor: '#7B1FA2'
     classText: '#5D4037'
