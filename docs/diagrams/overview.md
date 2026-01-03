@@ -1,7 +1,3 @@
----
-layout: article
-title: Dependency Overview
----
 
 # Dependency Overview
 
@@ -35,45 +31,6 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 ### Software Architecture
 
 **What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
-
-
-layout: article
-title: Dependency Overview
----
-
-# Dependency Overview
-
-Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVES Kit Power Management documentation.
-
-[← Back to Home](../index.html)
-
----
-
-## Quick Terminology Guide
-
-**Dependency** - When one component needs another component to work
-- Example: "The IMU sensor depends on power" means if power fails, IMU fails too
-
-**F-Prime (F Prime)** - NASA's flight software framework used on many spacecraft
-
-**I2C** - Communication protocol that lets microcontrollers talk to sensors (like USB but for embedded systems)
-
-**PROVES Kit** - University CubeSat platform with standardized hardware modules
-
-**Load Switch** - Electronic switch that turns power on/off to different components
-
-**Device Manager** - Software layer that handles talking to hardware sensors
-
-**Bus Driver** - Low-level software that manages the I2C communication protocol
-
----
-
-## F-Prime I2C Driver Dependencies
-
-### Software Architecture
-
-**What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
-
 
 ### By Category
 
@@ -89,115 +46,12 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 
 ### By Criticality
 
-
 ```mermaid
 pie title Dependency Criticality Distribution
   "HIGH criticality" : 28
   "MEDIUM criticality" : 11
   "LOW criticality" : 3
 ```
-  flowchart:
-    curve: 'linear'
-    htmlLabels: false
-    useMaxWidth: true
-    padding: 40
-    nodeSpacing: 100
-    rankSpacing: 150
-    diagramPadding: 8
-  sequence:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-    noteMargin: 10
-    messageMargin: 35
-    mirrorActors: false
-    bottomMarginAdj: 1
-    useMaxWidth: true
-    rightAngles: false
-    showSequenceNumbers: false
-  state:
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
-  class:
-    arrowMarkerAbsolute: false
-    hideEmptyMembersBox: false
-  er:
-    diagramPadding: 40
-    layoutDirection: 'TB'
-    minEntityWidth: 100
-    minEntityHeight: 75
-    entityPadding: 15
-    stroke: 'gray'
-    fill: 'honeydew'
-    fontSize: 12
-  journey:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    actorMargin: 50
-    boxMargin: 10
-    boxTextMargin: 5
-  pie:
-    textPosition: 0.75
-  quadrant:
-    chartWidth: 500
-    chartHeight: 500
-    titlePadding: 10
-    titlefontSize: 24
-    quadrantPadding: 5
-    quadrantTextTopPadding: 5
-    quadrantLabelFontSize: 16
-    quadrantInternalBorderStrokeWidth: 1
-    quadrantExternalBorderStrokeWidth: 2
-    pointTextPadding: 5
-    pointLabelFontSize: 12
-    pointRadius: 6
-    xAxisLabelPadding: 5
-    xAxisLabelFontSize: 16
-    yAxisLabelPadding: 5
-    yAxisLabelFontSize: 16
-  requirement:
-    rect_fill: '#FFF3E0'
-    text_color: '#5D4037'
-    rect_border_size: 2
-    rect_border_color: '#FF6F00'
-    rect_min_width: 200
-    rect_min_height: 200
-    fontSize: 14
-    rect_padding: 10
-    line_height: 20
-  gitGraph:
-    showBranches: true
-    showCommitLabel: true
-    mainBranchName: 'main'
-    rotateCommitLabel: true
-  c4:
-    diagramMarginX: 50
-    diagramMarginY: 10
-    c4ShapeMargin: 50
-    c4ShapePadding: 40
-    width: 216
-    height: 60
-    boxMargin: 10
----
-flowchart TB
-    subgraph BUILD ["Build System - Compiles the code"]
-        spacer34[ ]:::spacer
-        FPUTIL[fprime-util Build command]
         FPP[FPP files Component definitions]
     end
 
