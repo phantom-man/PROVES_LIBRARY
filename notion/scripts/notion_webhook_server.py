@@ -25,8 +25,9 @@ import hmac
 import hashlib
 import json
 import asyncio
+import io
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, Optional, cast
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -35,10 +36,7 @@ from fastapi.responses import JSONResponse
 from http import HTTPStatus
 from dotenv import load_dotenv
 import psycopg
-
-# Add production folder to path for imports
-project_root = Path(__file__).parent.parent.parent  # PROVES_LIBRARY/
-sys.path.insert(0, str(project_root / 'production'))
+from psycopg_pool import AsyncConnectionPool
 
 # Load environment
 load_dotenv()
@@ -46,16 +44,26 @@ load_dotenv()
 # Import our Notion sync modules
 from curator.notion_sync import NotionSync
 from curator.suggestion_sync import SuggestionSync
+from curator.config import config
 
 # Initialize Notion sync
 notion_sync = NotionSync()
 suggestion_sync = SuggestionSync()
 
+# Validate configuration
+try:
+    config.validate()
+except ValueError as e:
+    print(f"WARNING: {e}")
+
 # Database URL
-DATABASE_URL = os.getenv('NEON_DATABASE_URL')
+DATABASE_URL = config.NEON_DATABASE_URL
 
 # Webhook secret (from Notion webhook configuration)
-WEBHOOK_SECRET = os.getenv('NOTION_WEBHOOK_SECRET', '')
+WEBHOOK_SECRET = config.NOTION_WEBHOOK_SECRET
+
+# Global connection pool
+pool: Any = None
 
 # Background task for database polling
 polling_task = None
@@ -86,45 +94,43 @@ async def poll_for_unsynced_items():
     try:
         while True:
             # Poll for unsynced extractions
-            conn = psycopg.connect(DATABASE_URL)
-            with conn.cursor() as cur:
-                # Get unsynced extractions
-                cur.execute("""
-                    SELECT extraction_id
-                    FROM staging_extractions
-                    WHERE notion_page_id IS NULL
-                    LIMIT 10
-                """)
-                extraction_ids = [row[0] for row in cur.fetchall()]
+            async with pool.connection() as conn:
+                async with conn.cursor() as cur:
+                    # Get unsynced extractions
+                    await cur.execute("""
+                        SELECT extraction_id
+                        FROM staging_extractions
+                        WHERE notion_page_id IS NULL
+                        LIMIT 10
+                    """)
+                    extraction_ids = [row[0] for row in await cur.fetchall()]
 
-                # Get unsynced errors
-                cur.execute("""
-                    SELECT id
-                    FROM curator_errors
-                    WHERE notion_page_id IS NULL
-                    LIMIT 10
-                """)
-                error_ids = [row[0] for row in cur.fetchall()]
+                    # Get unsynced errors
+                    await cur.execute("""
+                        SELECT id
+                        FROM curator_errors
+                        WHERE notion_page_id IS NULL
+                        LIMIT 10
+                    """)
+                    error_ids = [row[0] for row in await cur.fetchall()]
 
-                # Get unsynced reports
-                cur.execute("""
-                    SELECT id
-                    FROM curator_reports
-                    WHERE notion_page_id IS NULL
-                    LIMIT 10
-                """)
-                report_ids = [row[0] for row in cur.fetchall()]
+                    # Get unsynced reports
+                    await cur.execute("""
+                        SELECT id
+                        FROM curator_reports
+                        WHERE notion_page_id IS NULL
+                        LIMIT 10
+                    """)
+                    report_ids = [row[0] for row in await cur.fetchall()]
 
-                # Get unsynced suggestions
-                cur.execute("""
-                    SELECT suggestion_id
-                    FROM improvement_suggestions
-                    WHERE notion_page_id IS NULL
-                    LIMIT 10
-                """)
-                suggestion_ids = [row[0] for row in cur.fetchall()]
-
-            conn.close()
+                    # Get unsynced suggestions
+                    await cur.execute("""
+                        SELECT suggestion_id
+                        FROM improvement_suggestions
+                        WHERE notion_page_id IS NULL
+                        LIMIT 10
+                    """)
+                    suggestion_ids = [row[0] for row in await cur.fetchall()]
 
             # Sync unsynced items
             for extraction_id in extraction_ids:
@@ -149,21 +155,19 @@ async def poll_for_unsynced_items():
 async def sync_extraction_to_notion(extraction_id: str):
     """Fetch extraction from DB and push to Notion"""
     try:
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT
-                    extraction_id, candidate_type, candidate_key, status,
-                    confidence_score, confidence_reason, ecosystem, evidence,
-                    created_at, lineage_verified, lineage_confidence,
-                    candidate_payload, snapshot_id, evidence_type
-                FROM staging_extractions
-                WHERE extraction_id = %s::uuid
-            """, (extraction_id,))
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("""
+                    SELECT
+                        extraction_id, candidate_type, candidate_key, status,
+                        confidence_score, confidence_reason, ecosystem, evidence,
+                        created_at, lineage_verified, lineage_confidence,
+                        candidate_payload, snapshot_id, evidence_type
+                    FROM staging_extractions
+                    WHERE extraction_id = %s::uuid
+                """, (extraction_id,))
 
-            row = cur.fetchone()
-
-        conn.close()
+                row = await cur.fetchone()
 
         if not row:
             print(f"⚠ Extraction {extraction_id} not found")
@@ -191,14 +195,13 @@ async def sync_extraction_to_notion(extraction_id: str):
         notion_page_id = notion_sync.sync_extraction(extraction_data)
 
         # Mark as synced in database
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute(
-                "SELECT mark_extraction_synced(%s::uuid, %s)",
-                (extraction_id, notion_page_id)
-            )
-            conn.commit()
-        conn.close()
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute(
+                    "SELECT mark_extraction_synced(%s::uuid, %s)",
+                    (extraction_id, notion_page_id)
+                )
+                await conn.commit()
 
         print(f"✓ Extraction {extraction_id} synced to Notion: {notion_page_id}")
 
@@ -206,30 +209,30 @@ async def sync_extraction_to_notion(extraction_id: str):
         print(f"❌ Failed to sync extraction {extraction_id}: {e}")
 
         # Mark sync failure
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute(
-                "SELECT mark_sync_failed('staging_extractions', %s, %s)",
-                (extraction_id, str(e))
-            )
-            conn.commit()
-        conn.close()
+        try:
+            async with pool.connection() as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(
+                        "SELECT mark_sync_failed('staging_extractions', %s, %s)",
+                        (extraction_id, str(e))
+                    )
+                    await conn.commit()
+        except Exception as db_err:
+            print(f"❌ Failed to mark sync failure for extraction {extraction_id}: {db_err}")
 
 
 async def sync_error_to_notion(error_id: int):
     """Fetch error from DB and push to Notion"""
     try:
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT id, url, error_message, stack_trace, created_at
-                FROM curator_errors
-                WHERE id = %s
-            """, (error_id,))
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("""
+                    SELECT id, url, error_message, stack_trace, created_at
+                    FROM curator_errors
+                    WHERE id = %s
+                """, (error_id,))
 
-            row = cur.fetchone()
-
-        conn.close()
+                row = await cur.fetchone()
 
         if not row:
             print(f"⚠ Error {error_id} not found")
@@ -239,46 +242,45 @@ async def sync_error_to_notion(error_id: int):
         notion_page_id = notion_sync.log_error(row[1], row[2], row[3])
 
         # Mark as synced
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute(
-                "SELECT mark_error_synced(%s, %s)",
-                (error_id, notion_page_id)
-            )
-            conn.commit()
-        conn.close()
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute(
+                    "SELECT mark_error_synced(%s, %s)",
+                    (error_id, notion_page_id)
+                )
+                await conn.commit()
 
         print(f"✓ Error {error_id} synced to Notion: {notion_page_id}")
 
     except Exception as e:
         print(f"❌ Failed to sync error {error_id}: {e}")
 
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute(
-                "SELECT mark_sync_failed('curator_errors', %s, %s)",
-                (str(error_id), str(e))
-            )
-            conn.commit()
-        conn.close()
+        try:
+            async with pool.connection() as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(
+                        "SELECT mark_sync_failed('curator_errors', %s, %s)",
+                        (str(error_id), str(e))
+                    )
+                    await conn.commit()
+        except Exception as db_err:
+            print(f"❌ Failed to mark sync failure for error {error_id}: {db_err}")
 
 
 async def sync_report_to_notion(report_id: int):
     """Fetch report from DB and push to Notion"""
     try:
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT
-                    id, run_date, urls_processed, urls_successful, urls_failed,
-                    total_extractions, summary, langsmith_trace_url
-                FROM curator_reports
-                WHERE id = %s
-            """, (report_id,))
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("""
+                    SELECT
+                        id, run_date, urls_processed, urls_successful, urls_failed,
+                        total_extractions, summary, langsmith_trace_url
+                    FROM curator_reports
+                    WHERE id = %s
+                """, (report_id,))
 
-            row = cur.fetchone()
-
-        conn.close()
+                row = await cur.fetchone()
 
         if not row:
             print(f"⚠ Report {report_id} not found")
@@ -299,47 +301,46 @@ async def sync_report_to_notion(report_id: int):
         notion_page_id = notion_sync.create_run_report(report_data)
 
         # Mark as synced
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute(
-                "SELECT mark_report_synced(%s, %s)",
-                (report_id, notion_page_id)
-            )
-            conn.commit()
-        conn.close()
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute(
+                    "SELECT mark_report_synced(%s, %s)",
+                    (report_id, notion_page_id)
+                )
+                await conn.commit()
 
         print(f"✓ Report {report_id} synced to Notion: {notion_page_id}")
 
     except Exception as e:
         print(f"❌ Failed to sync report {report_id}: {e}")
 
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute(
-                "SELECT mark_sync_failed('curator_reports', %s, %s)",
-                (str(report_id), str(e))
-            )
-            conn.commit()
-        conn.close()
+        try:
+            async with pool.connection() as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(
+                        "SELECT mark_sync_failed('curator_reports', %s, %s)",
+                        (str(report_id), str(e))
+                    )
+                    await conn.commit()
+        except Exception as db_err:
+            print(f"❌ Failed to mark sync failure for report {report_id}: {db_err}")
 
 
 async def sync_suggestion_to_notion(suggestion_id: str):
     """Fetch suggestion from DB and push to Notion"""
     try:
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT
-                    suggestion_id, category, title, evidence,
-                    current_state, proposed_change, impact_count,
-                    confidence, extraction_ids, status, created_at
-                FROM improvement_suggestions
-                WHERE suggestion_id = %s::uuid
-            """, (suggestion_id,))
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("""
+                    SELECT
+                        suggestion_id, category, title, evidence,
+                        current_state, proposed_change, impact_count,
+                        confidence, extraction_ids, status, created_at
+                    FROM improvement_suggestions
+                    WHERE suggestion_id = %s::uuid
+                """, (suggestion_id,))
 
-            row = cur.fetchone()
-
-        conn.close()
+                row = await cur.fetchone()
 
         if not row:
             print(f"⚠ Suggestion {suggestion_id} not found")
@@ -398,8 +399,13 @@ async def notify_queue_empty(data: Dict[str, Any]):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan context manager for startup/shutdown"""
-    global polling_task
+    global polling_task, pool
 
+    # Startup: Initialize connection pool
+    print("Initializing database connection pool...")
+    pool = AsyncConnectionPool(conninfo=cast(str, DATABASE_URL), open=False)
+    await pool.open()
+    
     # Startup: Start database polling
     polling_task = asyncio.create_task(poll_for_unsynced_items())
 
@@ -412,6 +418,11 @@ async def lifespan(app: FastAPI):
             await polling_task
         except asyncio.CancelledError:
             pass
+            
+    # Shutdown: Close connection pool
+    if pool:
+        print("Closing database connection pool...")
+        await pool.close()
 
 
 app = FastAPI(
@@ -424,8 +435,8 @@ app = FastAPI(
 
 def verify_signature(payload: bytes, signature: str) -> bool:
     """Verify Notion webhook signature using HMAC-SHA256"""
-    print(f"DEBUG: WEBHOOK_SECRET = '{WEBHOOK_SECRET}'")
-    print(f"DEBUG: WEBHOOK_SECRET is empty: {not WEBHOOK_SECRET}")
+    print(f"DEBUG: WEBHOOK_SECRET = 'REDACTED'")
+    print(f"DEBUG: WEBHOOK_SECRET is configured: {bool(WEBHOOK_SECRET)}")
 
     if not WEBHOOK_SECRET:
         print("WARNING: NOTION_WEBHOOK_SECRET not set - skipping signature verification")
@@ -434,8 +445,8 @@ def verify_signature(payload: bytes, signature: str) -> bool:
     expected_signature = f"sha256={hmac.new(WEBHOOK_SECRET.encode(), payload, hashlib.sha256).hexdigest()}"
     result = hmac.compare_digest(expected_signature, signature)
     print(f"DEBUG: Signature verification result: {result}")
-    print(f"DEBUG: Expected: {expected_signature}")
-    print(f"DEBUG: Received: {signature}")
+    # print(f"DEBUG: Expected: {expected_signature}")
+    # print(f"DEBUG: Received: {signature}")
     return result
 
 
@@ -511,7 +522,7 @@ async def handle_notion_page_updated(payload: Dict[str, Any]) -> JSONResponse:
 
     try:
         # Fetch page from Notion
-        page = notion_sync.client.pages.retrieve(page_id)
+        page = cast(Dict[str, Any], notion_sync.client.pages.retrieve(page_id))
         props = page['properties']
 
         # Determine if this is an extraction or a suggestion page
@@ -535,7 +546,7 @@ async def handle_notion_page_updated(payload: Dict[str, Any]) -> JSONResponse:
         )
 
 
-async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any], webhook_payload: Dict[str, Any] = None) -> JSONResponse:
+async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any], webhook_payload: Optional[Dict[str, Any]] = None) -> JSONResponse:
     """
     Handle extraction page updates from Notion with full audit trail.
 
@@ -560,13 +571,13 @@ async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any], we
 
         # Check idempotency: has this webhook already been processed?
         if webhook_source:
-            conn = psycopg.connect(DATABASE_URL)
-            with conn.cursor() as cur:
-                cur.execute("""
-                    SELECT webhook_already_processed(%s)
-                """, (webhook_source,))
-                already_processed = cur.fetchone()[0]
-            conn.close()
+            async with pool.connection() as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute("""
+                        SELECT webhook_already_processed(%s)
+                    """, (webhook_source,))
+                    row = await cur.fetchone()
+                    already_processed = row[0] if row else False
 
             if already_processed:
                 print(f"⚠️  Webhook {webhook_source} already processed - skipping (idempotent)")
@@ -655,35 +666,35 @@ async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any], we
             action_type, db_status = map_status_to_action(notion_status)
 
         # Record the human decision in validation_decisions (audit trail)
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT record_human_decision(
-                    %s::uuid,     -- extraction_id
-                    %s,           -- action_type
-                    %s,           -- actor_id
-                    %s,           -- reason
-                    NULL,         -- before_payload (TODO: implement for edits)
-                    NULL,         -- after_payload (TODO: implement for edits)
-                    %s            -- webhook_source
-                )
-            """, (extraction_id, action_type, actor_id, reason, webhook_source))
-            decision_id = cur.fetchone()[0]
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("""
+                    SELECT record_human_decision(
+                        %s::uuid,     -- extraction_id
+                        %s,           -- action_type
+                        %s,           -- actor_id
+                        %s,           -- reason
+                        NULL,         -- before_payload (TODO: implement for edits)
+                        NULL,         -- after_payload (TODO: implement for edits)
+                        %s            -- webhook_source
+                    )
+                """, (extraction_id, action_type, actor_id, reason, webhook_source))
+                row = await cur.fetchone()
+                decision_id = row[0] if row else None
 
-            # Update staging_extractions status
-            cur.execute("""
-                UPDATE staging_extractions
-                SET status = %s::candidate_status,
-                    updated_at = NOW(),
-                    reviewed_at = NOW(),
-                    review_decision = %s
-                WHERE extraction_id = %s::uuid
-                RETURNING extraction_id
-            """, (db_status, action_type, extraction_id))
+                # Update staging_extractions status
+                await cur.execute("""
+                    UPDATE staging_extractions
+                    SET status = %s::candidate_status,
+                        updated_at = NOW(),
+                        reviewed_at = NOW(),
+                        review_decision = %s
+                    WHERE extraction_id = %s::uuid
+                    RETURNING extraction_id
+                """, (db_status, action_type, extraction_id))
 
-            result = cur.fetchone()
-            conn.commit()
-        conn.close()
+                result = await cur.fetchone()
+                await conn.commit()
 
         if result:
             print(f"✓ Extraction {extraction_id} status updated to {db_status}")
@@ -845,19 +856,17 @@ async def handle_suggestion_page_updated(page_id: str, props: Dict[str, Any]) ->
 async def status():
     """Get sync status from database"""
     try:
-        conn = psycopg.connect(DATABASE_URL)
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT
-                    item_type,
-                    COUNT(*) as count,
-                    MIN(created_at) as oldest_unsynced
-                FROM notion_sync_status
-                GROUP BY item_type
-            """)
-            rows = cur.fetchall()
-
-        conn.close()
+        async with pool.connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("""
+                    SELECT
+                        item_type,
+                        COUNT(*) as count,
+                        MIN(created_at) as oldest_unsynced
+                    FROM notion_sync_status
+                    GROUP BY item_type
+                """)
+                rows = await cur.fetchall()
 
         status_data = {
             row[0]: {
@@ -887,8 +896,8 @@ if __name__ == "__main__":
 
     # Configure UTF-8 output for Windows console
     if sys.platform == 'win32':
-        sys.stdout.reconfigure(encoding='utf-8')
-        sys.stderr.reconfigure(encoding='utf-8')
+        cast(io.TextIOWrapper, sys.stdout).reconfigure(encoding='utf-8')
+        cast(io.TextIOWrapper, sys.stderr).reconfigure(encoding='utf-8')
 
     print("\n" + "="*80)
     print("CURATOR NOTION WEBHOOK SERVER v2.0")

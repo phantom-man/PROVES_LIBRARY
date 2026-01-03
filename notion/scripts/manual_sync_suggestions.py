@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Manually sync unsynced suggestions"""
-import os
 import psycopg
 from dotenv import load_dotenv
 from pathlib import Path
-from src.curator.suggestion_sync import SuggestionSync
+from curator.suggestion_sync import SuggestionSync
+from curator.config import config
 
 env_path = Path(__file__).parent.parent / '.env'
 load_dotenv(env_path)
 
-db_url = os.getenv('NEON_DATABASE_URL')
+db_url = config.NEON_DATABASE_URL
 sync = SuggestionSync()
 
 # Get unsynced suggestions

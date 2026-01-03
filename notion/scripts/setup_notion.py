@@ -9,10 +9,7 @@ Usage:
 Follow the prompts to provide your Notion parent page ID.
 """
 
-import sys
-sys.path.insert(0, str(__file__).rsplit('\\', 1)[0])
-
-from src.curator.notion_sync import setup_notion_databases
+from curator.notion_sync import setup_notion_databases
 
 if __name__ == "__main__":
     print("\n" + "="*80)

@@ -53,6 +53,8 @@ class ErrorLogger:
             error_entry['stack_trace'] = stack_trace
 
         try:
+            if not self.db_url:
+                raise ValueError("Database URL is not set. Please set the NEON_DATABASE_URL environment variable.")
             conn = psycopg.connect(self.db_url)
             with conn.cursor() as cur:
                 # Append error to error_log array and increment counter
@@ -113,6 +115,8 @@ class ErrorLogger:
             error_entry['stack_trace'] = stack_trace
 
         try:
+            if not self.db_url:
+                raise ValueError("Database URL is not set. Please set the NEON_DATABASE_URL environment variable.")
             conn = psycopg.connect(self.db_url)
             with conn.cursor() as cur:
                 cur.execute("""
@@ -164,6 +168,8 @@ class ErrorLogger:
             List of error records
         """
         try:
+            if not self.db_url:
+                raise ValueError("Database URL is not set. Please set the NEON_DATABASE_URL environment variable.")
             conn = psycopg.connect(self.db_url)
             with conn.cursor() as cur:
                 if table == 'all':

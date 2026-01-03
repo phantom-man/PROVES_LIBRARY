@@ -9,25 +9,26 @@ Can be run periodically or on-demand.
 import os
 import json
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, cast
 import psycopg
 from dotenv import load_dotenv
 from pathlib import Path
 from notion_client import Client
+from curator.config import config
 
 # Load environment
 env_path = Path(__file__).parent.parent / '.env' if (Path(__file__).parent.parent / '.env').exists() else Path(__file__).parent / '.env'
 load_dotenv(env_path)
 
 # Import error logger
-from src.curator.error_logger import ErrorLogger
+from curator.error_logger import ErrorLogger
 
 
 class ErrorSyncToNotion:
     """Syncs errors from database to Notion"""
 
     def __init__(self):
-        self.notion = Client(auth=os.getenv('NOTION_API_KEY'), notion_version='2025-09-03')
+        self.notion = Client(auth=config.NOTION_API_KEY, notion_version='2025-09-03')
         self.db_url = os.getenv('NEON_DATABASE_URL')
         self.errors_db_id = os.getenv('NOTION_ERRORS_DB_ID')
         self.errors_data_source_id = os.getenv('NOTION_ERRORS_DATA_SOURCE_ID')
@@ -202,7 +203,7 @@ class ErrorSyncToNotion:
         # - Date Reported: date (timestamp)
         # - Status: status
         # - Title: title
-        page = self.notion.pages.create(
+        page = cast(Dict[str, Any], self.notion.pages.create(
             parent={"type": "data_source_id", "data_source_id": self.errors_data_source_id},
             properties={
                 "Title": {"title": [{"text": {"content": title[:2000]}}]},
@@ -213,7 +214,7 @@ class ErrorSyncToNotion:
                 "Status": {"status": {"name": "New"}}
             },
             children=blocks
-        )
+        ))
 
         return page["id"]
 

@@ -11,10 +11,11 @@ Uses Notion API v2025-09-03 with webhook support.
 import os
 import json
 from datetime import datetime
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, cast
 from dotenv import load_dotenv
 from notion_client import Client
 import psycopg
+from curator.config import config
 
 # Load environment
 load_dotenv()
@@ -23,19 +24,22 @@ class NotionSync:
     """Handles all Notion integration operations"""
 
     def __init__(self):
-        self.notion_key = os.getenv('NOTION_API_KEY')
+        self.notion_key = config.NOTION_API_KEY
         if not self.notion_key:
             raise ValueError("NOTION_API_KEY not found in environment")
 
         # Use Notion API version 2025-09-03 (multi-source databases)
         self.client = Client(auth=self.notion_key, notion_version="2025-09-03")
-        self.db_url = os.getenv('NEON_DATABASE_URL')
+        
+        self.db_url = config.NEON_DATABASE_URL
+        if not self.db_url:
+            raise ValueError("NEON_DATABASE_URL not found in environment")
 
         # Database IDs (loaded from env or created)
-        self.errors_db_id = os.getenv('NOTION_ERRORS_DB_ID')
-        self.extractions_db_id = os.getenv('NOTION_EXTRACTIONS_DB_ID')
-        self.extractions_data_source_id = os.getenv('NOTION_EXTRACTIONS_DATA_SOURCE_ID')
-        self.reports_db_id = os.getenv('NOTION_REPORTS_DB_ID')
+        self.errors_db_id = config.NOTION_ERRORS_DB_ID
+        self.extractions_db_id = config.NOTION_EXTRACTIONS_DB_ID
+        self.extractions_data_source_id = config.NOTION_EXTRACTIONS_DATA_SOURCE_ID
+        self.reports_db_id = config.NOTION_REPORTS_DB_ID
 
     # =========================================================================
     # DATABASE CREATION & UPDATES
@@ -47,7 +51,7 @@ class NotionSync:
             raise ValueError("NOTION_EXTRACTIONS_DB_ID not set")
 
         try:
-            self.client.databases.update(
+            cast(Dict[str, Any], self.client.databases.update(
                 database_id=self.extractions_db_id,
                 properties={
                     "Review Decision": {
@@ -59,7 +63,7 @@ class NotionSync:
                         }
                     }
                 }
-            )
+            ))
             print("✓ Added 'Review Decision' property to Extractions database")
         except Exception as e:
             print(f"Error adding Review Decision property: {e}")
@@ -67,7 +71,7 @@ class NotionSync:
 
     def create_errors_database(self, parent_page_id: str) -> str:
         """Create the Curator Errors Log database in Notion"""
-        database = self.client.databases.create(
+        database = cast(Dict[str, Any], self.client.databases.create(
             parent={"type": "page_id", "page_id": parent_page_id},
             title=[{"type": "text", "text": {"content": "Curator Errors Log"}}],
             properties={
@@ -86,12 +90,14 @@ class NotionSync:
                 },
                 "Error ID": {"rich_text": {}}  # For tracking
             }
-        )
+        ))
+        # Ensure we handle the response correctly (sync vs async)
+        # The official notion-client is synchronous by default unless using AsyncClient
         return database["id"]
 
     def create_extractions_database(self, parent_page_id: str) -> str:
         """Create the Staging Extractions Review database in Notion"""
-        database = self.client.databases.create(
+        database = cast(Dict[str, Any], self.client.databases.create(
             parent={"type": "page_id", "page_id": parent_page_id},
             title=[{"type": "text", "text": {"content": "Staging Extractions Review"}}],
             properties={
@@ -193,12 +199,12 @@ class NotionSync:
                     ]
                 }}
             }
-        )
+        ))
         return database["id"]
 
     def create_reports_database(self, parent_page_id: str) -> str:
         """Create the Run Reports database in Notion"""
-        database = self.client.databases.create(
+        database = cast(Dict[str, Any], self.client.databases.create(
             parent={"type": "page_id", "page_id": parent_page_id},
             title=[{"type": "text", "text": {"content": "Curator Run Reports"}}],
             properties={
@@ -211,14 +217,14 @@ class NotionSync:
                 "LangSmith Trace": {"url": {}},
                 "Run ID": {"rich_text": {}}  # For tracking
             }
-        )
+        ))
         return database["id"]
 
     # =========================================================================
     # PUSH TO NOTION (Errors, Extractions, Reports)
     # =========================================================================
 
-    def log_error(self, url: str, error_message: str, stack_trace: str = None) -> str:
+    def log_error(self, url: str, error_message: str, stack_trace: Optional[str] = None) -> str:
         """Log an error to Notion"""
         if not self.errors_db_id:
             raise ValueError("NOTION_ERRORS_DB_ID not set. Run setup first.")
@@ -233,10 +239,10 @@ class NotionSync:
         if stack_trace:
             properties["Stack Trace"] = {"rich_text": [{"text": {"content": stack_trace[:2000]}}]}
 
-        page = self.client.pages.create(
+        page = cast(Dict[str, Any], self.client.pages.create(
             parent={"database_id": self.errors_db_id},
             properties=properties
-        )
+        ))
         return page["id"]
 
     def sync_extraction(self, extraction_data: Dict[str, Any]) -> str:
@@ -331,11 +337,11 @@ class NotionSync:
         )
 
         # Use data_source_id for API version 2025-09-03
-        page = self.client.pages.create(
+        page = cast(Dict[str, Any], self.client.pages.create(
             parent={"type": "data_source_id", "data_source_id": self.extractions_data_source_id},
             properties=properties,
             children=children
-        )
+        ))
         return page["id"]
 
     def _build_extraction_content_blocks(
@@ -760,10 +766,10 @@ class NotionSync:
         if report_data.get('run_id'):
             properties["Run ID"] = {"rich_text": [{"text": {"content": str(report_data['run_id'])}}]}
 
-        page = self.client.pages.create(
+        page = cast(Dict[str, Any], self.client.pages.create(
             parent={"database_id": self.reports_db_id},
             properties=properties
-        )
+        ))
         return page["id"]
 
     # =========================================================================
@@ -789,10 +795,11 @@ class NotionSync:
             }
 
         # Query database
-        results = self.client.databases.query(
+        # Cast to Any to avoid Pylance error about 'query' method
+        results = cast(Dict[str, Any], cast(Any, self.client.databases).query(
             database_id=self.extractions_db_id,
             **filter_params
-        )
+        ))
 
         # Map Notion status back to database status
         reverse_status_map = {
@@ -830,7 +837,7 @@ class NotionSync:
 
         return updates
 
-    def update_database_status(self, extraction_id: str, new_status: str, review_decision: str = None) -> bool:
+    def update_database_status(self, extraction_id: str, new_status: str, review_decision: Optional[str] = None) -> bool:
         """Update the status of an extraction in the Neon database"""
         try:
             conn = psycopg.connect(self.db_url)
@@ -921,7 +928,7 @@ class NotionSync:
 # CLI UTILITIES
 # ============================================================================
 
-def setup_notion_databases(parent_page_id: str = None):
+def setup_notion_databases(parent_page_id: Optional[str] = None):
     """
     One-time setup: Create the three Notion databases and update .env
 

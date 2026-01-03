@@ -16,10 +16,11 @@ This module analyzes extraction patterns and generates suggestions for:
 import os
 import json
 from datetime import datetime
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, cast
 from dotenv import load_dotenv
 from notion_client import Client
 import psycopg
+from curator.config import config
 
 # Load environment
 load_dotenv()
@@ -28,16 +29,16 @@ class SuggestionSync:
     """Handles bidirectional sync for improvement suggestions"""
 
     def __init__(self):
-        self.notion_key = os.getenv('NOTION_API_KEY')
+        self.notion_key = config.NOTION_API_KEY
         if not self.notion_key:
             raise ValueError("NOTION_API_KEY not found in environment")
 
         # Use Notion API version 2025-09-03
         self.client = Client(auth=self.notion_key, notion_version="2025-09-03")
-        self.db_url = os.getenv('NEON_DATABASE_URL')
+        self.db_url = config.NEON_DATABASE_URL
 
         # Suggestions database ID and data source ID
-        self.suggestions_db_id = os.getenv('NOTION_SUGGESTIONS_DB_ID')
+        self.suggestions_db_id = config.NOTION_SUGGESTIONS_DB_ID
         self.suggestions_data_source_id = os.getenv('NOTION_SUGGESTIONS_DATA_SOURCE_ID')
 
         if not self.suggestions_db_id:
@@ -95,11 +96,11 @@ class SuggestionSync:
         # Create the page
         # Use data_source_id for API version 2025-09-03
         try:
-            page = self.client.pages.create(
+            page = cast(Dict[str, Any], self.client.pages.create(
                 parent={"type": "data_source_id", "data_source_id": self.suggestions_data_source_id},
                 properties=properties,
                 children=content_blocks
-            )
+            ))
 
             page_id = page["id"]
             print(f"✓ Created Notion page for suggestion: {page_id}")
@@ -236,7 +237,7 @@ class SuggestionSync:
         self,
         suggestion_id: str,
         new_status: str,
-        review_decision: str = None
+        review_decision: Optional[str] = None
     ) -> bool:
         """Update the status of a suggestion in the Neon database"""
         try:

@@ -49,6 +49,8 @@ class GraphManager:
             query,
             (name, node_type, description, json.dumps(properties or {}), embedding)
         )
+        if result is None:
+            raise ValueError("Failed to create node: Database returned no ID")
         return result['id']
 
     def get_node(self, node_id: UUID) -> Optional[Dict[str, Any]]:
@@ -184,6 +186,8 @@ class GraphManager:
                 str(evidence_entry_id) if evidence_entry_id else None
             )
         )
+        if result is None:
+            raise ValueError("Failed to create relationship: Database returned no ID")
         return result['id']
 
     def get_relationship(self, rel_id: UUID) -> Optional[Dict[str, Any]]:
@@ -307,7 +311,7 @@ class GraphManager:
     # UTILITY FUNCTIONS
     # ============================================
 
-    def get_statistics(self) -> Dict[str, int]:
+    def get_statistics(self) -> Dict[str, Any]:
         """Get graph statistics"""
         stats = {}
 
@@ -335,7 +339,8 @@ class GraphManager:
                 (SELECT COUNT(*) FROM kg_nodes) as total_nodes,
                 (SELECT COUNT(*) FROM kg_relationships) as total_relationships
         """)
-        stats.update(totals)
+        if totals:
+            stats.update(totals)
 
         return stats
 
@@ -352,12 +357,14 @@ if __name__ == '__main__':
     print(f"  Total nodes: {stats['total_nodes']}")
     print(f"  Total relationships: {stats['total_relationships']}")
 
-    if stats['nodes_by_type']:
+    if isinstance(stats.get('nodes_by_type'), dict) and stats['nodes_by_type']:
         print(f"\n  Nodes by type:")
         for node_type, count in stats['nodes_by_type'].items():
             print(f"    {node_type}: {count}")
+    else:
+        print("\n  Nodes by type: (no data or unexpected format)")
 
-    if stats['relationships_by_type']:
+    if isinstance(stats.get('relationships_by_type'), dict) and stats['relationships_by_type']:
         print(f"\n  Relationships by type:")
         for rel_type, count in stats['relationships_by_type'].items():
             print(f"    {rel_type}: {count}")

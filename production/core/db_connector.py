@@ -159,7 +159,10 @@ if __name__ == '__main__':
     try:
         db = get_db()
         result = db.fetch_one("SELECT version() as version")
-        print(f"[YES] Connected to PostgreSQL: {result['version']}")
+        if result:
+            print(f"[YES] Connected to PostgreSQL: {result['version']}")
+        else:
+            print("[NO] Connected but returned no version info.")
 
         # Test statistics view
         stats = db.fetch_all("SELECT * FROM database_statistics ORDER BY table_name")

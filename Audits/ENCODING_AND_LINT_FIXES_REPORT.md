@@ -54,4 +54,3 @@ A comprehensive audit was conducted to identify and resolve character encoding i
 ## Conclusion
 
 The repository's maintenance scripts are now robust against encoding-related data corruption on Windows systems. The script library has been sanitized of broken versions and syntax errors.
-
