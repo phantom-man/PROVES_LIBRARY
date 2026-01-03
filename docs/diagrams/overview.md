@@ -36,8 +36,7 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 
 **What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
 
-```mermaid
----
+
 layout: article
 title: Dependency Overview
 ---
