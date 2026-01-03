@@ -6,9 +6,9 @@ Provides connection pooling and query utilities
 import os
 from typing import Optional, Any, Dict, List
 from contextlib import contextmanager
-import psycopg2
-from psycopg2.pool import SimpleConnectionPool
-from psycopg2.extras import RealDictCursor, execute_values
+import psycopg
+from psycopg.rows import dict_row
+from psycopg_pool import ConnectionPool
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -30,7 +30,7 @@ class DatabaseConnector:
             raise ValueError("Database URL not provided and NEON_DATABASE_URL not set")
 
         # Connection pool (min 1, max 10 connections)
-        self.pool = SimpleConnectionPool(1, 10, self.db_url)
+        self.pool = ConnectionPool(self.db_url, min_size=1, max_size=10)
 
     @contextmanager
     def get_connection(self):
@@ -42,11 +42,8 @@ class DatabaseConnector:
                 cur = conn.cursor()
                 ...
         """
-        conn = self.pool.getconn()
-        try:
+        with self.pool.connection() as conn:
             yield conn
-        finally:
-            self.pool.putconn(conn)
 
     @contextmanager
     def get_cursor(self, dict_cursor: bool = True):
@@ -54,7 +51,7 @@ class DatabaseConnector:
         Get a cursor (context manager)
 
         Args:
-            dict_cursor: If True, returns RealDictCursor (rows as dicts)
+            dict_cursor: If True, returns rows as dicts
 
         Usage:
             with db.get_cursor() as cur:
@@ -62,14 +59,10 @@ class DatabaseConnector:
                 rows = cur.fetchall()
         """
         with self.get_connection() as conn:
-            cursor_factory = RealDictCursor if dict_cursor else None
-            cur = conn.cursor(cursor_factory=cursor_factory)
+            row_factory = dict_row if dict_cursor else None
+            cur = conn.cursor(row_factory=row_factory)
             try:
                 yield cur
-                conn.commit()
-            except Exception as e:
-                conn.rollback()
-                raise e
             finally:
                 cur.close()
 
@@ -124,13 +117,14 @@ class DatabaseConnector:
             values: List of value tuples
         """
         with self.get_cursor(dict_cursor=False) as cur:
-            query = f"INSERT INTO {table} ({', '.join(columns)}) VALUES %s"
-            execute_values(cur, query, values)
+            placeholders = ", ".join(["%s"] * len(columns))
+            query = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
+            cur.executemany(query, values)
 
     def close(self):
         """Close all connections in the pool"""
         if self.pool:
-            self.pool.closeall()
+            self.pool.close()
 
     def __enter__(self):
         """Context manager support"""
@@ -165,10 +159,13 @@ if __name__ == '__main__':
             print("[NO] Connected but returned no version info.")
 
         # Test statistics view
-        stats = db.fetch_all("SELECT * FROM database_statistics ORDER BY table_name")
-        print("\n📊 Database Statistics:")
-        for row in stats:
-            print(f"  {row['table_name']}: {row['row_count']} rows")
+        try:
+            stats = db.fetch_all("SELECT * FROM database_statistics ORDER BY table_name")
+            print("\n📊 Database Statistics:")
+            for row in stats:
+                print(f"  {row['table_name']}: {row['row_count']} rows")
+        except Exception as e:
+            print(f"\n[WARN] Could not fetch statistics: {e}")
 
     except Exception as e:
         print(f"[NO] Connection failed: {e}")

@@ -5,21 +5,17 @@ Each agent uses this to log errors to its own table without disrupting workflow.
 Errors are stored in JSONB format and can be synced to Notion later.
 """
 
-import os
 import json
 import traceback
 from datetime import datetime
 from typing import Optional, Dict, Any
-import psycopg
-from dotenv import load_dotenv
-
-load_dotenv()
+from core.db_connector import get_db
 
 class ErrorLogger:
     """Helper class for logging errors to database tables"""
 
     def __init__(self):
-        self.db_url = os.getenv('NEON_DATABASE_URL')
+        self.db = get_db()
 
     def log_to_extraction(
         self,
@@ -53,24 +49,16 @@ class ErrorLogger:
             error_entry['stack_trace'] = stack_trace
 
         try:
-            if not self.db_url:
-                raise ValueError("Database URL is not set. Please set the NEON_DATABASE_URL environment variable.")
-            conn = psycopg.connect(self.db_url)
-            with conn.cursor() as cur:
-                # Append error to error_log array and increment counter
-                cur.execute("""
-                    UPDATE staging_extractions
-                    SET
-                        error_log = error_log || %s::jsonb,
-                        error_count = error_count + 1,
-                        last_error_at = NOW()
-                    WHERE extraction_id = %s::uuid
-                    RETURNING extraction_id
-                """, (json.dumps(error_entry), extraction_id))
-
-                result = cur.fetchone()
-                conn.commit()
-            conn.close()
+            query = """
+                UPDATE staging_extractions
+                SET
+                    error_log = error_log || %s::jsonb,
+                    error_count = error_count + 1,
+                    last_error_at = NOW()
+                WHERE extraction_id = %s::uuid
+                RETURNING extraction_id
+            """
+            result = self.db.fetch_one(query, (json.dumps(error_entry), extraction_id))
 
             if result:
                 print(f"✓ Logged error for extraction {extraction_id}: {error_type}")

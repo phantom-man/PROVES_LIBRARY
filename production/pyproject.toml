@@ -10,7 +10,6 @@ dependencies = [
     "langchain-anthropic>=1.0.0",
     "langchain-core>=0.3.0",
     "langsmith>=0.2.0",
-    "psycopg2-binary>=2.9.0",
     "psycopg[binary,pool]>=3.1.0",  # For PostgresSaver checkpointer
     "python-dotenv>=1.0.0",
 ]

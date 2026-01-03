@@ -33,12 +33,12 @@ from pathlib import Path
 from typing import List, Dict, Tuple, Set
 import httpx
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
 import psycopg
 
 # Setup paths
 sys.path.insert(0, str(Path(__file__).parent.parent))
-load_dotenv(os.path.join(Path(__file__).parent.parent, '.env'))
+
+from curator.config import config
 
 
 class SmartWebFetchAgent:
@@ -49,7 +49,7 @@ class SmartWebFetchAgent:
 
     def __init__(self):
         """Initialize with database connection."""
-        self.db_url = os.environ.get('NEON_DATABASE_URL')
+        self.db_url = config.NEON_DATABASE_URL
         if not self.db_url:
             raise ValueError("NEON_DATABASE_URL not set in environment")
 

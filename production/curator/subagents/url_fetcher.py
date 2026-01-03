@@ -2,21 +2,16 @@
 URL Fetcher Sub-Agent
 Fetches URLs from the urls_to_process database table.
 """
-import os
 import psycopg
-from dotenv import load_dotenv
 from langchain_core.tools import tool
+from curator.config import config
 
 
 def get_db_connection():
-    """Get database connection from environment."""
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
-    load_dotenv(os.path.join(project_root, '.env'))
-
-    db_url = os.environ.get('NEON_DATABASE_URL')
-    if not db_url:
+    """Get database connection from configuration."""
+    if not config.NEON_DATABASE_URL:
         raise ValueError("NEON_DATABASE_URL not set")
-    return psycopg.connect(db_url)
+    return psycopg.connect(config.NEON_DATABASE_URL)
 
 
 @tool
@@ -30,13 +25,14 @@ def fetch_next_url() -> str:
         conn = get_db_connection()
 
         with conn.cursor() as cur:
-            # Get the next pending URL
+            # Get the next pending URL with row locking to prevent race conditions
             cur.execute("""
                 SELECT url, quality_score, quality_reason, preview_summary
                 FROM urls_to_process
                 WHERE status = 'pending'
                 ORDER BY quality_score DESC, discovered_at ASC
                 LIMIT 1
+                FOR UPDATE SKIP LOCKED
             """)
 
             row = cur.fetchone()
