@@ -96,28 +96,6 @@ pie title Dependency Criticality Distribution
   "MEDIUM criticality" : 11
   "LOW criticality" : 3
 ```
-```
-    gridColor: '#FFCC80'
-    todayLineColor: '#7B1FA2'
-    classText: '#5D4037'
-    fillType0: '#FFF3E0'
-    fillType1: '#F3E5F5'
-    fillType2: '#FFF8E1'
-    fillType3: '#FFB74D'
-    fillType4: '#CE93D8'
-    fillType5: '#FFD54F'
-    fillType6: '#FF8A65'
-    fillType7: '#BA68C8'
-    attributeBackgroundColorOdd: '#FFF8E1'
-    attributeBackgroundColorEven: '#FFF3E0'
-  gantt:
-    fontSize: 24
-    barHeight: 24
-    barGap: 6
-    topPadding: 50
-    leftPadding: 75
-    gridLineStartPadding: 40
-    numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
