@@ -245,13 +245,12 @@ sequenceDiagram
 
 ### What's NOT Documented
 
-| Parameter | F-Prime Docs | PROVES Docs | Typical Value | Impact if Unknown |  |
-|-----------|---------|-------------|---------------|-------------------|  |
-| **t_rise** - Voltage rise time | [NO] | [NO] | 1-10ms | Race condition |  |
-| **t_por** - Power-on reset duration | [NO] | [NO] | 10-100ms | Device not initialized |  |
-| **t_ready** - Ready after POR | [NO] | [NO] | 1-50ms | I2C communication fails |  |
-| **t_total** - Safe delay before I2C | [NO] | [NO] | 50-200ms | **Intermittent failures** |  |
-
+| Parameter | F-Prime Docs | PROVES Docs | Typical Value | Impact if Unknown |
+|-----------|---------|-------------|---------------|------------------- |
+| **t_rise** - Voltage rise time | [NO] | [NO] | 1-10ms | Race condition |
+| **t_por** - Power-on reset duration | [NO] | [NO] | 10-100ms | Device not initialized |
+| **t_ready** - Ready after POR | [NO] | [NO] | 1-50ms | I2C communication fails |
+| **t_total** - Safe delay before I2C | [NO] | [NO] | 50-200ms | **Intermittent failures** |
 ### Where This Knowledge Lives
 
 **Currently:**
@@ -725,14 +724,13 @@ V_RIPPLE -.->|must be less than| V_MARGIN
 
 ### What's NOT Documented
 
-| Parameter | Required For | F-Prime Docs | PROVES Docs | Impact |  |
-|-----------|--------------|---------|-------------|--------|  |
-| **V_ripple** | Clean I2C signals | [NO] | [NO] | Bit errors |  |
-| **V_dropout** | Load regulation | [NO] | [NO] | Brownout |  |
-| **I_spike** | Inrush current | [NO] | [NO] | Voltage sag |  |
-| **R_ON** | Switch resistance | [NO] | [NO] | Power loss |  |
-| **V_IH, V_IL** | I2C thresholds | [NO] | [NO] | Communication errors |  |
-
+| Parameter | Required For | F-Prime Docs | PROVES Docs | Impact |
+|-----------|--------------|---------|-------------|-------- |
+| **V_ripple** | Clean I2C signals | [NO] | [NO] | Bit errors |
+| **V_dropout** | Load regulation | [NO] | [NO] | Brownout |
+| **I_spike** | Inrush current | [NO] | [NO] | Voltage sag |
+| **R_ON** | Switch resistance | [NO] | [NO] | Power loss |
+| **V_IH, V_IL** | I2C thresholds | [NO] | [NO] | Communication errors |
 ### Where This Knowledge Lives
 
 **Currently:**
@@ -993,14 +991,13 @@ stateDiagram-v2
 
 ### What's NOT Documented
 
-| Decision Point | Question | F-Prime Docs | PROVES Docs | Current Reality |  |
-|----------------|----------|---------|-------------|-----------------|  |
-| **Error Detection** | Which errors are recoverable? | Logs error | N/A | Unknown |  |
-| **Recovery Strategy** | Should power cycle on I2C error? | [NO] | [NO] | No recovery |  |
-| **Retry Count** | How many retries before giving up? | [NO] | [NO] | Give up immediately |  |
-| **Timing** | How long to wait after power cycle? | [NO] | [NO] | N/A |  |
-| **Escalation** | When to alert operator? | Logs event | N/A | Every error (noisy) |  |
-
+| Decision Point | Question | F-Prime Docs | PROVES Docs | Current Reality |
+|----------------|----------|---------|-------------|----------------- |
+| **Error Detection** | Which errors are recoverable? | Logs error | N/A | Unknown |
+| **Recovery Strategy** | Should power cycle on I2C error? | [NO] | [NO] | No recovery |
+| **Retry Count** | How many retries before giving up? | [NO] | [NO] | Give up immediately |
+| **Timing** | How long to wait after power cycle? | [NO] | [NO] | N/A |
+| **Escalation** | When to alert operator? | Logs event | N/A | Every error (noisy) |
 ### Missing Decision Tree
 
 **No documentation exists for:**
@@ -1284,14 +1281,13 @@ BUS -.->|unknown| DEV4
 
 ### What's NOT Documented
 
-| Aspect | Information Needed | F-Prime Docs | PROVES Docs | Impact if Unknown |  |
-|--------|-------------------|---------|-------------|-------------------|  |
-| **Bus Topology** | Which devices on which bus? | [NO] | [NO] | Wrong bus configured |  |
-| **Address Map** | All I2C addresses | Partial (0x68) | [NO] | Address conflicts |  |
-| **Power Sequence** | Order to enable devices | [NO] | [NO] | Bus contention |  |
-| **Simultaneity** | Can devices operate together? | [NO] | [NO] | Data corruption |  |
-| **Priority** | Which device has priority? | [NO] | [NO] | Starvation |  |
-
+| Aspect | Information Needed | F-Prime Docs | PROVES Docs | Impact if Unknown |
+|--------|-------------------|---------|-------------|------------------- |
+| **Bus Topology** | Which devices on which bus? | [NO] | [NO] | Wrong bus configured |
+| **Address Map** | All I2C addresses | Partial (0x68) | [NO] | Address conflicts |
+| **Power Sequence** | Order to enable devices | [NO] | [NO] | Bus contention |
+| **Simultaneity** | Can devices operate together? | [NO] | [NO] | Data corruption |
+| **Priority** | Which device has priority? | [NO] | [NO] | Starvation |
 ### Conflict Scenarios
 
 ```mermaid
@@ -1764,12 +1760,11 @@ F_BAREMETAL -.->|how to combine?| P_C
 
 ### What's NOT Documented
 
-| Integration | F-Prime Platform | PROVES Platform | Documented? | Challenge |  |
-|-------------|-------------|-----------------|-------------|-----------|  |
-| **Desktop Sim** | Linux + Python | CircuitPython sim | [NO] | How to mock hardware? |  |
-| **Flight Target** | Zephyr RTOS + C++ | C + registers | [NO] | How to share GPIO? |  |
-| **Lab Test** | Linux + Python | Hardware board | [NO] | How to communicate? |  |
-
+| Integration | F-Prime Platform | PROVES Platform | Documented? | Challenge |
+|-------------|-------------|-----------------|-------------|----------- |
+| **Desktop Sim** | Linux + Python | CircuitPython sim | [NO] | How to mock hardware? |
+| **Flight Target** | Zephyr RTOS + C++ | C + registers | [NO] | How to share GPIO? |
+| **Lab Test** | Linux + Python | Hardware board | [NO] | How to communicate? |
 ### Missing Integration Examples
 
 **No documentation exists for:**
@@ -1808,7 +1803,6 @@ F_BAREMETAL -.->|how to combine?| P_C
 # - Linked libraries?
 
 # - Microservice architecture?
-
    ```
 
 ### Where This Knowledge Lives
@@ -2019,14 +2013,13 @@ pie title Knowledge Gaps by Category
 
 ## Risk Matrix
 
-| Gap | Probability of Occurrence | Severity if Unknown | Overall Risk |  |
-|-----|--------------------------|---------------------|--------------|  |
-| **Power-On Timing** | 70% | Critical | 🔴 **EXTREME** |  |
-| **Voltage Stability** | 40% | Critical | 🔴 **HIGH** |  |
-| **Error Recovery** | 90% | Medium | 🟡 **HIGH** |  |
-| **Bus Conflicts** | 30% | High | 🟡 **MEDIUM** |  |
-| **Platform Integration** | 60% | Medium | 🟡 **MEDIUM** |  |
-
+| Gap | Probability of Occurrence | Severity if Unknown | Overall Risk |
+|-----|--------------------------|---------------------|-------------- |
+| **Power-On Timing** | 70% | Critical | 🔴 **EXTREME** |
+| **Voltage Stability** | 40% | Critical | 🔴 **HIGH** |
+| **Error Recovery** | 90% | Medium | 🟡 **HIGH** |
+| **Bus Conflicts** | 30% | High | 🟡 **MEDIUM** |
+| **Platform Integration** | 60% | Medium | 🟡 **MEDIUM** |
 ### Time to Discover
 
 ```mermaid
@@ -2296,6 +2289,9 @@ gantt
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
+
+
+
 
 
 
