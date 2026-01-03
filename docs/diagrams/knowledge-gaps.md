@@ -884,23 +884,6 @@ config:
     useMaxWidth: true
     rightAngles: false
     showSequenceNumbers: false
-  state:
-    curve: 'linear'
-    dividerMargin: 10
-    sizeUnit: 5
-    padding: 8
-    textHeight: 10
-    titleShift: -15
-    noteMargin: 10
-    forkWidth: 70
-    forkHeight: 7
-    miniPadding: 2
-    fontSizeFactor: 5.02
-    fontSize: 24
-    labelHeight: 16
-    edgeLengthFactor: 20
-    compositeTitleSize: 35
-    radius: 5
   class:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
@@ -962,31 +945,31 @@ config:
     height: 60
     boxMargin: 10
 ---
-stateDiagram-v2
-    [*] --> Normal: System boot
+flowchart TB
+    START(( )) -->|System boot| Normal
 
-    Normal --> I2C_Error: I2C read fails
-    I2C_Error --> Log_Warning: F-Prime logs event
+    Normal -->|I2C read fails| I2C_Error
+    I2C_Error -->|F-Prime logs event| Log_Warning
 
-    state "KNOWLEDGE GAP" as GAP {
-        Log_Warning --> Should_Power_Cycle: Decision point
-        Should_Power_Cycle --> Power_Off: Yes
-        Should_Power_Cycle --> Give_Up: No
+    subgraph GAP ["KNOWLEDGE GAP"]
+        Log_Warning -->|Decision point| Should_Power_Cycle
+        Should_Power_Cycle -->|Yes| Power_Off
+        Should_Power_Cycle -->|No| Give_Up
 
         Power_Off --> Wait_Discharge
         Wait_Discharge --> Power_On
         Power_On --> Wait_Stabilize
         Wait_Stabilize --> Retry_I2C
 
-        Retry_I2C --> Normal: Success
-        Retry_I2C --> Try_Again: Fail (retry < max)
+        Retry_I2C -->|Success| Normal
+        Retry_I2C -->|Fail retry < max| Try_Again
         Try_Again --> Power_Off
-        Retry_I2C --> Give_Up: Fail (retry >= max)
-    }
+        Retry_I2C -->|Fail retry >= max| Give_Up
+    end
 
-    Give_Up --> Degraded_Mode: Continue without IMU
+    Give_Up -->|Continue without IMU| Degraded_Mode
 
-    Log_Warning --> [*]: Currently No recovery implemented
+    Log_Warning -.->|Currently No recovery implemented| END(( ))
 
     style GAP fill:#ffebee
     style Log_Warning fill:#fff9c4
@@ -2299,6 +2282,7 @@ gantt
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
+
 
 
 
