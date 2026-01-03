@@ -225,20 +225,23 @@ Now, let's implement the FastAPI application with our webhook endpoint. Update `
 import json
 import hmac
 import hashlib
-from fastapi import FastAPI, Request, Depends, Header, HTTPException, status
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, Request, Depends, Header, HTTPException, status, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.exc import IntegrityError
 from app.database import get_db, engine, Base
 from app.models import WebhookEvent
 from app.config import settings
 
-app = FastAPI(title="Webhook Receiver")
-
 # Create database tables if they don't exist
-@app.on_event("startup")
-async def startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    yield
+
+app = FastAPI(title="Webhook Receiver", lifespan=lifespan)
 
 @app.get("/")
 async def root():
@@ -254,6 +257,7 @@ async def view_webhook_events(limit: int = 10, db: AsyncSession = Depends(get_db
 @app.post("/webhooks/github")
 async def github_webhook(
     request: Request,
+    background_tasks: BackgroundTasks,
     x_github_event: str = Header(None),
     x_github_delivery: str = Header(None),
     x_hub_signature_256: str = Header(None),
@@ -288,14 +292,18 @@ async def github_webhook(
         processed=False
     )
 
-    db.add(webhook_event)
-    await db.commit()
-    await db.refresh(webhook_event)
+    try:
+        db.add(webhook_event)
+        await db.commit()
+        await db.refresh(webhook_event)
+    except IntegrityError:
+        await db.rollback()
+        return {"status": "ignored", "reason": "duplicate_delivery"}
 
-    # Process the webhook event (we'll implement this later)
-    await process_webhook_event(webhook_event.id, db)
+    # Process the webhook event in the background
+    background_tasks.add_task(process_webhook_event, webhook_event.id, db)
 
-    return {"status": "success", "event_id": webhook_event.id}
+    return {"status": "accepted", "event_id": webhook_event.id}
 
 # Placeholder functions to be implemented
 def verify_signature(body, signature):
