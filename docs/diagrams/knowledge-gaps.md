@@ -784,6 +784,7 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ---
 config:
   theme: base
+  curve: 'linear'
   fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
@@ -2298,6 +2299,7 @@ gantt
 **Gaps Found:** 5 major categories, 17 specific missing items
 **Estimated Risk:** 🔴 EXTREME (multiple critical gaps)
 **Date:** December 20, 2024
+
 
 
 
