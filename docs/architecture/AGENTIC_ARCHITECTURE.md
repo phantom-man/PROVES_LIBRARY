@@ -3,7 +3,7 @@
 ## System Overview
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -105,8 +105,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     subgraph Query[User Query Layer]
         User[University Team Query]
@@ -248,7 +248,7 @@ POST /graph/cascade
 ### Hybrid RAG: Graph + Vector
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -350,8 +350,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart LR
     Query[User Query] --> Router[Query Router]
     Router -->|Structural query| Graph[Graph Query Engine]
@@ -513,7 +513,7 @@ class AgentState(TypedDict):
 ### Example: Cascade Analysis Workflow
 
 ```mermaid
----\
+---
 config:
   theme: base
   fontSize: 16
@@ -615,8 +615,8 @@ config:
     actorMargin: 50
     boxMargin: 10
     boxTextMargin: 5
-    noteMargin: 10\
----\
+    noteMargin: 10
+---
 flowchart TB
     START(( )) --> Router
 
