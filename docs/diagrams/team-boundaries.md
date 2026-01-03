@@ -1443,15 +1443,15 @@ sequenceDiagram
 
 ### FRAMES Interface Strength Model
 
-| Interface | Strength | Evidence | Knowledge Flow | Risk |  |  |  |  |  |  |  |  |  |  |
-| --------- | -------- | -------- | -------------- | ---- |  |  |  |  |  |  |  |  |  |  |
-| **F-Prime Core ↔ F-Prime Docs** | 🟢 STRONG | Versioned, maintained, comprehensive | High | Low |  |  |  |  |  |  |  |  |  |  |
-| **F-Prime Docs ↔ F-Prime Users** | 🟢 STRONG | Public, searchable, with examples | High | Low |  |  |  |  |  |  |  |  |  |  |
-| **F-Prime ↔ PROVES** | 🔴 **WEAK** | No cross-references, no integration guide | **Very Low** | **EXTREME** |  |  |  |  |  |  |  |  |  |  |
-| **PROVES Lead ↔ PROVES Docs** | 🟡 MEDIUM | Active but growing, some gaps | Medium | Medium |  |  |  |  |  |  |  |  |  |  |
-| **PROVES ↔ University Teams** | 🔴 **WEAK** | Ad-hoc, tribal knowledge | **Low** | **HIGH** |  |  |  |  |  |  |  |  |  |  |
-| **Uni Team A ↔ Uni Team B** | 🔴 **WEAK** | Student turnover, minimal handoff | **Very Low** | **EXTREME** |  |  |  |  |  |  |  |  |  |  |
-| **PROVES ↔ External Users** | 🔴 **WEAK** | Minimal support, self-service | **Very Low** | **HIGH** |  |  |  |  |  |  |  |  |  |  |
+| Interface | Strength | Evidence | Knowledge Flow | Risk |
+| --------- | -------- | -------- | -------------- | ---- |
+| **F-Prime Core ↔ F-Prime Docs** | 🟢 STRONG | Versioned, maintained, comprehensive | High | Low |
+| **F-Prime Docs ↔ F-Prime Users** | 🟢 STRONG | Public, searchable, with examples | High | Low |
+| **F-Prime ↔ PROVES** | 🔴 **WEAK** | No cross-references, no integration guide | **Very Low** | **EXTREME** |
+| **PROVES Lead ↔ PROVES Docs** | 🟡 MEDIUM | Active but growing, some gaps | Medium | Medium |
+| **PROVES ↔ University Teams** | 🔴 **WEAK** | Ad-hoc, tribal knowledge | **Low** | **HIGH** |
+| **Uni Team A ↔ Uni Team B** | 🔴 **WEAK** | Student turnover, minimal handoff | **Very Low** | **EXTREME** |
+| **PROVES ↔ External Users** | 🔴 **WEAK** | Minimal support, self-service | **Very Low** | **HIGH** |
 
 ### Scoring Criteria
 
@@ -2260,14 +2260,14 @@ flowchart TB
 
 ### How to Measure Interface Strength Improvement
 
-| Metric | Current | Target | Method |  |  |  |  |  |  |  |  |  |  |
-| ------ | ------- | ------ | ------ |  |  |  |  |  |  |  |  |  |  |
-| **Documentation Coverage** | 68% | 95% | % dependencies documented |  |  |  |  |  |  |  |  |  |  |
-| **Cross-Team References** | 0 | 50+ | # doc links between F-Prime ↔ PROVES |  |  |  |  |  |  |  |  |  |  |
-| **Knowledge Retention** | 10% | 80% | % knowledge captured before graduation |  |  |  |  |  |  |  |  |  |  |
-| **Integration Failures** | 70% | <10% | % new teams that encounter power issue |  |  |  |  |  |  |  |  |  |  |
-| **Time to Answer** | Days | Minutes | Time to find integration knowledge |  |  |  |  |  |  |  |  |  |  |
-| **Interface Strength** | 2/10 | 8/10 | FRAMES scoring system |  |  |  |  |  |  |  |  |  |  |
+| Metric | Current | Target | Method |
+| ------ | ------- | ------ | ------ |
+| **Documentation Coverage** | 68% | 95% | % dependencies documented |
+| **Cross-Team References** | 0 | 50+ | # doc links between F-Prime ↔ PROVES |
+| **Knowledge Retention** | 10% | 80% | % knowledge captured before graduation |
+| **Integration Failures** | 70% | <10% | % new teams that encounter power issue |
+| **Time to Answer** | Days | Minutes | Time to find integration knowledge |
+| **Interface Strength** | 2/10 | 8/10 | FRAMES scoring system |
 
 ---
 
