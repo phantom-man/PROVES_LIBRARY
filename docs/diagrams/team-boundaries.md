@@ -138,27 +138,27 @@ config:
 ---
 flowchart TB
     subgraph "NASA/JPL"
-        spacer1[ ] :spacer
+        spacer1[ ] :::spacer
         JPL_CORE[F-Prime Core Team ⭐ Permanent Staff]
         JPL_DOC[Documentation Team]
         JPL_REL[Release Engineering]
     end
 
     subgraph "PROVES Maintainers"
-        spacer2[ ] :spacer
+        spacer2[ ] :::spacer
         PROVES_LEAD[PROVES Kit Lead 👤 Faculty/Staff]
         PROVES_DEV[Core Developers 👥 3-5 people]
     end
 
     subgraph "University Teams"
-        spacer3[ ] :spacer
+        spacer3[ ] :::spacer
         UNI_A_2020[University A 2020 Mission 👥 8 students]
         UNI_B_2022[University B 2022 Mission 👥 6 students]
         UNI_C_2024[University C 2024 Mission 👥 10 students]
     end
 
     subgraph "External Users"
-        spacer4[ ] :spacer
+        spacer4[ ] :::spacer
         USER_1[Commercial User 1]
         USER_2[Hobbyist Users]
         USER_3[New Universities]
@@ -319,19 +319,19 @@ config:
 ---
 flowchart LR
     subgraph "F-Prime Knowledge"
-        spacer5[ ] :spacer
+        spacer5[ ] :::spacer
         F_PUB["Public Documentation [YES] Versioned [YES] Comprehensive"]
         F_CODE["GitHub Repository [YES] nasa/fprime [YES] Well-maintained"]
         F_COM["Community Forums [YES] Active support"]
     end
 
     subgraph "Interface"
-        spacer6[ ] :spacer
+        spacer6[ ] :::spacer
         INT["✗ No Integration Docs ✗ No Cross-References ✗ No Joint Testing ✗ No Shared Examples"]
     end
 
     subgraph "PROVES Knowledge"
-        spacer7[ ] :spacer
+        spacer7[ ] :::spacer
         P_PUB["Public Documentation [WARNING] Growing [WARNING] Gaps exist"]
         P_CODE["GitHub Repository [YES] proveskit/pysquared [WARNING] Active but small team"]
         P_COM["Community [WARNING] Mostly university teams"]
@@ -496,11 +496,11 @@ config:
 flowchart TB
     START[Integration Knowledge Needed]
 
-    DOC_F{Check F-Prime Docs} :diamond
-    DOC_P{Check PROVES Docs} :diamond
+    DOC_F{Check F-Prime Docs} :::diamond
+    DOC_P{Check PROVES Docs} :::diamond
 
     TRIBAL[Ask Experienced Engineer]
-    WHO{Who to Ask?} :diamond
+    WHO{Who to Ask?} :::diamond
 
     JPL_ENG["JPL Engineer [NO] Doesn't know PROVES"]
     PROVES_ENG["PROVES Maintainer [WARNING] Knows integration"]
@@ -1140,7 +1140,7 @@ config:
 flowchart LR
     subgraph LIFECYCLE["Mission Lifecycle"]
         direction TB
-        spacer8[ ] :spacer
+        spacer8[ ] :::spacer
         DESIGN[Design Decisions]
         IMPL[Implementation]
         TEST[Testing & Debugging]
@@ -1155,7 +1155,7 @@ flowchart LR
 
     subgraph CAPTURED["Captured 30%"]
         direction TB
-        spacer9[ ] :spacer
+        spacer9[ ] :::spacer
         CODE["Code Repository ✓"]
         SCHEMA["Schematics ✓"]
         FORMAL_DOC["Formal Docs ⚠"]
@@ -1163,7 +1163,7 @@ flowchart LR
 
     subgraph PARTIAL["Partial 20%"]
         direction TB
-        spacer10[ ] :spacer
+        spacer10[ ] :::spacer
         ISSUES["GitHub Issues ⚠"]
         CHAT["Chat Logs ⚠"]
         EMAIL["Email Threads ⚠"]
@@ -1171,7 +1171,7 @@ flowchart LR
 
     subgraph LOST["Lost 50%"]
         direction TB
-        spacer11[ ] :spacer
+        spacer11[ ] :::spacer
         TRIBAL["Tribal Knowledge ✗"]
         WORKAROUND["Workarounds ✗"]
         FAILURES["Failure Lessons ✗"]
@@ -1503,11 +1503,11 @@ config:
 flowchart TB
     subgraph "Traditional Approach"
         direction TB
-        spacer12[" "] :spacer
+        spacer12[" "] :::spacer
         TRAD_TEAM[Team Knowledge]
         TRAD_GRAD[Graduation]
         TRAD_LOSS[Knowledge Lost]
-        TRAD_SPACER2[" "] :spacer
+        TRAD_SPACER2[" "] :::spacer
 
         TRAD_TEAM --> TRAD_GRAD
         TRAD_GRAD --> TRAD_LOSS
@@ -1515,7 +1515,7 @@ flowchart TB
 
     subgraph "Knowledge Sources"
         direction TB
-        spacer13[" "] :spacer
+        spacer13[" "] :::spacer
         SRC_CODE[Code + Comments]
         SRC_ISSUES[GitHub Issues]
         SRC_CHAT[Chat/Email]
@@ -1524,7 +1524,7 @@ flowchart TB
 
     subgraph "PROVES Processing"
         direction TB
-        spacer14[" "] :spacer
+        spacer14[" "] :::spacer
         LIB_CAPTURE[Continuous Capture]
         LIB_AGENTS[Curator Agents]
         LIB_GRAPH[Knowledge Graph]
@@ -1541,7 +1541,7 @@ flowchart TB
 
     subgraph "Preserved Knowledge"
         direction TB
-        spacer15[" "] :spacer
+        spacer15[" "] :::spacer
         PRES_TECH[Technical Dependencies]
         PRES_ORG[Organizational Context]
         PRES_WHY[Design Rationale]

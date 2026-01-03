@@ -297,9 +297,9 @@ config:
 flowchart TB
     START[New developer integrates IMU]
 
-    CASE1{Does developer add delay?} :diamond
-    CASE2{What delay value?} :diamond
-    CASE3{Test coverage?} :diamond
+    CASE1{Does developer add delay?} :::diamond
+    CASE2{What delay value?} :::diamond
+    CASE3{Test coverage?} :::diamond
 
     TOO_SHORT[Delay too short 50ms]
     WORKS_BENCH["✓ Works on bench warm start"]
@@ -460,7 +460,7 @@ config:
 ---
 flowchart TB
     subgraph "Power Supply Characteristics"
-        spacer25[ ] :spacer
+        spacer25[ ] :::spacer
         V_NOM[Nominal Voltage 3.3V]
         V_RIPPLE[Ripple ??? mV]
         V_DROPOUT[Dropout ??? mV]
@@ -468,14 +468,14 @@ flowchart TB
     end
 
     subgraph "I2C Bus Requirements"
-        spacer26[ ] :spacer
+        spacer26[ ] :::spacer
         V_IH[V_IH Input High ??? V minimum]
         V_IL[V_IL Input Low ??? V maximum]
         V_MARGIN[Noise Margin ???]
     end
 
     subgraph "Load Switch Characteristics"
-        spacer27[ ] :spacer
+        spacer27[ ] :::spacer
         R_ON[R_ON ??? mΩ]
         I_MAX[I_MAX ??? mA]
         T_SWITCH[Switch time ??? μs]
@@ -858,7 +858,7 @@ config:
 ---
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
-        spacer28[ ] :spacer
+        spacer28[ ] :::spacer
         BUS["I2C Bus /dev/i2c-1 SDA/SCL"]
 
         DEV1[Device 1 IMU Addr 0x68]
@@ -868,14 +868,14 @@ flowchart TB
     end
 
     subgraph "Power Control"
-        spacer29[ ] :spacer
+        spacer29[ ] :::spacer
         LSM1[IMU_ENABLE]
         LSM2[MAG_ENABLE]
         LSM3[CAM_ENABLE]
     end
 
     subgraph "Questions"
-        spacer30[ ] :spacer
+        spacer30[ ] :::spacer
         Q1[Are devices on same bus?]
         Q2[Can addresses conflict?]
         Q3[Power-on sequence?]
@@ -1198,21 +1198,21 @@ config:
 ---
 flowchart LR
     subgraph "F-Prime Framework"
-        spacer31[ ] :spacer
+        spacer31[ ] :::spacer
         F_LINUX[LinuxI2cDriver Linux]
         F_ZEPHYR[ZephyrI2cDriver Zephyr RTOS]
         F_BAREMETAL[Custom Driver Bare Metal]
     end
 
     subgraph "PROVES Kit"
-        spacer32[ ] :spacer
+        spacer32[ ] :::spacer
         P_CIRCUITPY[CircuitPython board.IMU_ENABLE]
         P_MICROPYTHON[MicroPython ???]
         P_C[C/C++ ???]
     end
 
     subgraph "Integration Patterns"
-        spacer33[ ] :spacer
+        spacer33[ ] :::spacer
         INT1[F-Prime Linux + PROVES CircuitPython]
         INT2[F-Prime Zephyr + PROVES C]
         INT3[F-Prime Bare Metal + ???]

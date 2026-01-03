@@ -124,7 +124,7 @@ config:
 ---
 flowchart TB
     subgraph Molecule ["Truth Graph as Molecular Structure"]
-        spacer24[ ] :spacer
+        spacer24[ ] :::spacer
         A[Power Manager]
         B[I2C Bus]
         C[IMU Sensor]

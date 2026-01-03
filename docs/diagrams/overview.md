@@ -264,17 +264,17 @@ config:
 flowchart TB
 %% System Build/Config/Device Flowchart
 subgraph BUILD ["Build System - Compiles the code"]
-  spacer34[ ] :spacer
+  spacer34[ ] :::spacer
   FPUTIL[fprime-util Build command]
   FPP[FPP files Component definitions]
 end
 subgraph TOPO ["System Configuration - How components connect"]
-  spacer35[ ] :spacer
+  spacer35[ ] :::spacer
   TOPO_FILE[topology.fpp - Defines which components exist]
   CONFIG[configureTopology function - Sets up connections at startup]
 end
 subgraph DEVICE ["Hardware Configuration - Device settings"]
-  spacer36[ ] :spacer
+  spacer36[ ] :::spacer
   ADDR[I2C Address 0x68 - How to find the IMU on the bus]
   REGS[IMU Register Addresses - RESET 0x00, CONFIG 0x01, DATA 0x10]
   VALS[Register Values - What to write to configure the sensor]
@@ -412,13 +412,13 @@ config:
 flowchart TB
     LSM[LoadSwitchManager - Main power control class - Written in Python]
     subgraph TOOLS ["Software Tools It Uses"]
-      spacer37[ ] :spacer
+      spacer37[ ] :::spacer
       DIO[digitalio.DigitalInOut - Controls GPIO pins]
       LOGGER[Logger - Records events]
       STATE[switch_states dict - Tracks on/off status]
     end
     subgraph DEVICES ["Hardware It Powers"]
-      spacer38[ ] :spacer
+      spacer38[ ] :::spacer
       RADIO[Radio - board.RADIO_ENABLE]
       IMU[IMU Sensor - board.IMU_ENABLE]
       MAG[Magnetometer - board.MAG_ENABLE]

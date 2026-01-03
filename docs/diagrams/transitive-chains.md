@@ -137,43 +137,43 @@ config:
 ---
 flowchart TB
     subgraph "Layer 1 Application"
-        spacer39[ ] :spacer
+        spacer39[ ] :::spacer
         APP[Application Component Requests IMU data]
     end
 
     subgraph "Layer 2 Device Manager"
-        spacer40[ ] :spacer
+        spacer40[ ] :::spacer
         DM[ImuManager.read]
         PORT[busWriteRead_out port]
     end
 
     subgraph "Layer 3 Bus Driver"
-        spacer41[ ] :spacer
+        spacer41[ ] :::spacer
         BD[LinuxI2cDriver.writeRead]
         DEV["/dev/i2c-1 device"]
     end
 
     subgraph "Layer 4 Hardware Bus"
-        spacer42[ ] :spacer
+        spacer42[ ] :::spacer
         I2C[I2C Physical Bus SDA/SCL pins]
         PULLUP[Pull-up Resistors 4.7kΩ]
     end
 
     subgraph "Layer 5 Device"
-        spacer43[ ] :spacer
+        spacer43[ ] :::spacer
         IMU[MPU6050 IMU Address 0x68]
         REG[Device Registers DATA_REG 0x10]
     end
 
     subgraph "Layer 6 Power (PROVES Kit)"
-        spacer44[ ] :spacer
+        spacer44[ ] :::spacer
         PWR[3.3V Power Supply]
         LSM[LoadSwitchManager turn_on]
         PIN[board.IMU_ENABLE GPIO Pin]
     end
 
     subgraph "Layer 7 Board Configuration"
-        spacer45[ ] :spacer
+        spacer45[ ] :::spacer
         BOARD[Board Definition Pin Mapping]
         LOGIC[enable_logic Active High/Low]
     end
@@ -539,8 +539,8 @@ config:
 flowchart TB
     START[main calls configureTopology]
 
-    CASE1{Does code call LSM.turn_on?} :diamond
-    CASE2{Sufficient delay before bus.open?} :diamond
+    CASE1{Does code call LSM.turn_on?} :::diamond
+    CASE2{Sufficient delay before bus.open?} :::diamond
 
     FAIL1["✗ Power never enabled, I2C device doesn't exist, open returns I2C_OPEN_ERR"]
     FAIL2["✗ Voltage not stable, I2C init races with power-on, Intermittent failures"]
@@ -691,17 +691,17 @@ flowchart TB
     START[RateGroup.run every 100ms]
 
     subgraph "F-Prime System"
-        spacer46[ ] :spacer
+        spacer46[ ] :::spacer
         SCHED[Svc.Sched port]
         RUN[ImuManager.run_handler]
         READ[ImuManager.read]
-        STATUS{Check Status} :diamond
+        STATUS{Check Status} :::diamond
         TLM[tlmWrite_ImuData]
         ERR[log_WARNING_HI_ImuReadError]
     end
 
     subgraph "What SHOULD Happen (Not Implemented)"
-        spacer47[ ] :spacer
+        spacer47[ ] :::spacer
         DETECT[Detect power failure]
         POWER_OFF[LSM.turn_off]
         DELAY1[Wait 500ms]
@@ -711,7 +711,7 @@ flowchart TB
     end
 
     subgraph "What ACTUALLY Happens"
-        spacer48[ ] :spacer
+        spacer48[ ] :::spacer
         CONT[Continue without IMU data Silent degradation]
     end
 
@@ -883,33 +883,33 @@ config:
 ---
 flowchart LR
     subgraph "User Commands"
-        spacer49[ ] :spacer
+        spacer49[ ] :::spacer
         USER[Developer runs fprime-util build]
     end
 
     subgraph "F Prime Build System"
-        spacer50[ ] :spacer
+        spacer50[ ] :::spacer
         FPP[FPP Compiler]
         CMAKE[CMake]
         GCC[GCC/Clang]
     end
 
     subgraph "Source Files"
-        spacer51[ ] :spacer
+        spacer51[ ] :::spacer
         FPP_SRC[ImuManager.fpp]
         CPP_SRC[ImuManager.cpp]
         TOPO[topology.fpp]
     end
 
     subgraph "Generated Code"
-        spacer52[ ] :spacer
+        spacer52[ ] :::spacer
         AC_HPP[ImuManagerComponentAc.hpp]
         AC_CPP[ImuManagerComponentAc.cpp]
         TOPO_CPP[TopologyAc.cpp]
     end
 
     subgraph "Dependencies"
-        spacer53[ ] :spacer
+        spacer53[ ] :::spacer
         DRV_I2C[Drv.I2c interface]
         SVC_SCHED[Svc.Sched port]
         FW_BUF[Fw.Buffer]

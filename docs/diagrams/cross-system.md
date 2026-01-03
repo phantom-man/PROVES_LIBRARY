@@ -159,21 +159,21 @@ config:
 ---
 flowchart LR
     subgraph "F-Prime System (NASA/JPL)"
-        spacer16[ ] :spacer
+        spacer16[ ] :::spacer
         IM[ImuManager I2C Device Manager]
         I2C[I2C Bus Driver LinuxI2cDriver]
         STATUS[I2cStatus Error Codes]
     end
 
     subgraph "PROVES Kit (University Teams)"
-        spacer17[ ] :spacer
+        spacer17[ ] :::spacer
         LSM[LoadSwitchManager Power Control]
         IMU_PIN[board.IMU_ENABLE GPIO Pin]
         LOGIC[enable_logic Active High/Low]
     end
 
     subgraph "Hardware"
-        spacer18[ ] :spacer
+        spacer18[ ] :::spacer
         IMU_HW[MPU6050 IMU I2C Address 0x68]
         PWR[Power Supply 3.3V]
     end
@@ -523,20 +523,20 @@ config:
 ---
 flowchart TB
     subgraph "F-Prime Configuration"
-        spacer19[ ] :spacer
+        spacer19[ ] :::spacer
         IM_ADDR[ImuManager Address 0x68]
         BUS["I2C Bus /dev/i2c-1 Shared Resource"]
     end
 
     subgraph "PROVES Kit Power"
-        spacer20[ ] :spacer
+        spacer20[ ] :::spacer
         IMU_SW[IMU Switch board.IMU_ENABLE]
         MAG_SW[Magnetometer Switch board.MAG_ENABLE]
         CAM_SW[Camera Switch board.CAMERA_ENABLE]
     end
 
     subgraph "Potential Conflicts"
-        spacer21[ ] :spacer
+        spacer21[ ] :::spacer
         MAG_HW[Magnetometer I2C Address ???]
         CAM_HW[Camera I2C Address ???]
         IMU_HW[IMU MPU6050 I2C Address 0x68]
@@ -708,7 +708,7 @@ config:
 ---
 flowchart TB
     START[F-Prime I2C Read Operation]
-    READ{I2C Status} :diamond
+    READ{I2C Status} :::diamond
     ERROR[I2cStatus I2C_READ_ERR]
     LOG[log_WARNING_HI_ImuReadError]
     CONTINUE[Continue without IMU data]
@@ -895,14 +895,14 @@ config:
 ---
 flowchart LR
     subgraph "NASA/JPL Team"
-        spacer22[ ] :spacer
+        spacer22[ ] :::spacer
         F_TEAM[F-Prime Core Team]
         F_DOC[Official Docs]
         F_VER[Versioned Releases]
     end
 
     subgraph "University Teams"
-        spacer23[ ] :spacer
+        spacer23[ ] :::spacer
         PROVES_MAINT[PROVES Kit Maintainers]
         UNI_A[University A 2020 Mission]
         UNI_B[University B 2022 Mission]
