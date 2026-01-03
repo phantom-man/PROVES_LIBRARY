@@ -56,7 +56,7 @@ def ensure_webhook_server_running():
     try:
         # Create log file for webhook server output
         webhook_log = project_root / 'webhook_server.log'
-        log_file = open(webhook_log, 'w')
+        log_file = open(webhook_log, 'w', encoding='utf-8')
 
         if sys.platform == 'win32':
             # Windows: use CREATE_NEW_PROCESS_GROUP to detach

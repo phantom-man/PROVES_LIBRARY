@@ -34,7 +34,7 @@ class SourceRegistry:
             self._data = {}
             return
         
-        with open(self.registry_path, 'r') as f:
+        with open(self.registry_path, 'r', encoding='utf-8') as f:
             self._data = yaml.safe_load(f)
         
         self._loaded = True

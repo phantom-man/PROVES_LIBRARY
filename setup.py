@@ -90,7 +90,7 @@ class SetupManager:
             print("[ERROR] .env.example not found")
             return False
 
-        env_content = self.env_example.read_text()
+        env_content = self.env_example.read_text(encoding='utf-8')
 
         print("\nConfigure your environment variables:")
         print("(Press Enter to skip optional values)\n")
@@ -152,7 +152,7 @@ class SetupManager:
                 env_content += f"\n# Notion Integration\nNOTION_API_KEY={notion_key}\n"
 
         # Write .env file
-        self.env_file.write_text(env_content)
+        self.env_file.write_text(env_content, encoding='utf-8')
         print(f"\n[OK] Environment file created at {self.env_file}")
         return True
 
@@ -163,7 +163,7 @@ class SetupManager:
         # Load .env to check database choice
         env_vars = {}
         if self.env_file.exists():
-            for line in self.env_file.read_text().split('\n'):
+            for line in self.env_file.read_text(encoding='utf-8').split('\n'):
                 if '=' in line and not line.startswith('#'):
                     key, value = line.split('=', 1)
                     env_vars[key.strip()] = value.strip()

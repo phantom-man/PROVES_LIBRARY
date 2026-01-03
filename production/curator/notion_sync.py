@@ -961,7 +961,7 @@ def setup_notion_databases(parent_page_id: str = None):
 
     print(f"\nUpdating {env_path}...")
 
-    with open(env_path, 'r') as f:
+    with open(env_path, 'r', encoding='utf-8') as f:
         env_content = f.read()
 
     env_content = env_content.replace(
@@ -977,7 +977,7 @@ def setup_notion_databases(parent_page_id: str = None):
         f'NOTION_REPORTS_DB_ID={reports_db_id}'
     )
 
-    with open(env_path, 'w') as f:
+    with open(env_path, 'w', encoding='utf-8') as f:
         f.write(env_content)
 
     print("✓ .env file updated")
