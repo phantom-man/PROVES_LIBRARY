@@ -1,8 +1,8 @@
-# Mermaid Diagram Syntax Rules
+﻿# Mermaid Diagram Syntax Rules
 
 Comprehensive rules compiled from official Mermaid documentation (v10+).
 
-## ðŸŽ¨ ACTIVE THEME CONFIGURATION
+## 🎨 ACTIVE THEME CONFIGURATION
 
 **Current Active Theme: FALL** (default)
 
@@ -22,7 +22,7 @@ To change the active theme, update the "Current Active Theme" line above to one 
 
 See "Seasonal Theme Presets" section below for complete copy-paste configurations.
 
-## âš ï¸ VALIDATION REQUIREMENTS
+## ⚠️ VALIDATION REQUIREMENTS
 
 **MANDATORY: Run validation before committing any diagram changes or updates to this file.**
 
@@ -83,22 +83,22 @@ state Diagrams vs Flowcharts
 **AVOID stateDiagram-v2 if straight lines are required.**
 
 - stateDiagram-v2 uses the dagre renderer which defaults to curved splines and **ignores** curve: 'linear' configuration.
-- If you need straight lines (orthogonal or linear), use lowchart instead.
-- **Rule:** Convert existing stateDiagram-v2 to lowchart if curved lines are undesirable.
-- **Data Processing:** When processing data for use in mermaid diagrams, process it in a way that produces lowchart syntax instead of stateDiagram-v2 to ensure control over line curvature.
+- If you need straight lines (orthogonal or linear), use flowchart instead.
+- **Rule:** Convert existing stateDiagram-v2 to flowchart if curved lines are undesirable.
+- **Data Processing:** When processing data for use in mermaid diagrams, process it in a way that produces flowchart syntax instead of stateDiagram-v2 to ensure control over line curvature.
 
 Based on production issues discovered:
 
-- **HTML tags** â†’ Remove or replace with markdown
-- **Double colons** â†’ Remove or replace with single space
-- **Colons in subgraph labels** â†’ Remove from label text
-- **Colons in sequence note text** â†’ Keep only first colon (label separator)
-- **Forward slashes unquoted** â†’ Wrap in double quotes
-- **Square brackets inside node labels** â†’ Wrap entire label in quotes
-- **Parentheses in pie/gantt labels** â†’ Wrap entire label in quotes
-- **State transition colons** â†’ Keep only label separator colon
-- **Incomplete `mermaid` examples** â†’ Convert to plain blocks
-- **YAML indentation errors** â†’ Config sections must be at 2-space indent (flowchart:, sequence:, state:, etc.)
+- **HTML tags** → Remove or replace with markdown
+- **Double colons** → Remove or replace with single space
+- **Colons in subgraph labels** → Remove from label text
+- **Colons in sequence note text** → Keep only first colon (label separator)
+- **Forward slashes unquoted** → Wrap in double quotes
+- **Square brackets inside node labels** → Wrap entire label in quotes
+- **Parentheses in pie/gantt labels** → Wrap entire label in quotes
+- **State transition colons** → Keep only label separator colon
+- **Incomplete `mermaid` examples** → Convert to plain blocks
+- **YAML indentation errors** → Config sections must be at 2-space indent (flowchart:, sequence:, state:, etc.)
 
 ### MANDATORY PRE-COMMIT TESTING
 
@@ -460,31 +460,31 @@ echo "âœ“ Diagram validation passed"
 
 #### Colons (`:`) - Multiple Breaking Contexts
 
-- âŒ**Colons in subgraph labels break parsing**: `subgraph "Layer 1: App"` â†’ FAILS
-- âœ…**Remove colons from subgraph labels**: `subgraph "Layer 1 App"` â†’ WORKS
-- âŒ**Double colons in text ALWAYS break**: `Status::OK` â†’ FAILS
-- âœ…**Remove double colons**: `Status OK`or`Status_OK` â†’ WORKS
-- âŒ**Colons in sequence note text after first colon**: `Note over A: Step 1: Details` â†’ FAILS
-- âœ…**Remove colons from note content**: `Note over A: Step 1 Details` â†’ WORKS
-- âœ…**Single colon separating label from text is OK**: `Note over A: Some text` â†’ WORKS
-|- âœ…**Colons OK in link text**: `A -->|Status: OK| B` â†’ WORKS|
+- âŒ**Colons in subgraph labels break parsing**: `subgraph "Layer 1: App"` → FAILS
+- âœ…**Remove colons from subgraph labels**: `subgraph "Layer 1 App"` → WORKS
+- âŒ**Double colons in text ALWAYS break**: `Status::OK` → FAILS
+- âœ…**Remove double colons**: `Status OK`or`Status_OK` → WORKS
+- âŒ**Colons in sequence note text after first colon**: `Note over A: Step 1: Details` → FAILS
+- âœ…**Remove colons from note content**: `Note over A: Step 1 Details` → WORKS
+- âœ…**Single colon separating label from text is OK**: `Note over A: Some text` → WORKS
+|- âœ…**Colons OK in link text**: `A -->|Status: OK| B` → WORKS|
 
 #### Square Brackets (`[]`) - Breaking in Node Labels
 
-- âŒ**Brackets inside node text break parsing**: `NODE[Status [YES] OK]` â†’ FAILS
-- âœ…**Quote labels with nested brackets**: `NODE["Status [YES] OK"]` â†’ WORKS
-- âŒ**Multiple bracket markers unquoted**: `NODE[Doc [WARNING] Incomplete]` â†’ FAILS
-- âœ…**Quote all bracket-containing text**: `NODE["Doc [WARNING] Incomplete"]` â†’ WORKS
+- âŒ**Brackets inside node text break parsing**: `NODE[Status [YES] OK]` → FAILS
+- âœ…**Quote labels with nested brackets**: `NODE["Status [YES] OK"]` → WORKS
+- âŒ**Multiple bracket markers unquoted**: `NODE[Doc [WARNING] Incomplete]` → FAILS
+- âœ…**Quote all bracket-containing text**: `NODE["Doc [WARNING] Incomplete"]` → WORKS
 - âœ…**Outer brackets define node - inner brackets need quotes**
 
 #### Forward Slashes (`/`) - Breaking in Node Labels
 
-- âŒ **File paths without quotes break parsing**: `DEV[/dev/i2c-1]` â†’ FAILS
-- âœ… **Quote all paths with slashes**: `DEV["/dev/i2c-1"]` â†’ WORKS
-- âŒ **URLs without quotes can break**: `NODE[http://example.com]` â†’ FAILS
-- âœ… **Quote URLs in node labels**: `NODE["http://example.com"]` â†’ WORKS
-- âœ… **Slashes in shape syntax are OK**: `A[/Parallelogram/]` â†’ WORKS (defined shape)
-- âš ï¸ **Slashes in plain text or tables are OK** (not in diagram code)
+- âŒ **File paths without quotes break parsing**: `DEV[/dev/i2c-1]` → FAILS
+- âœ… **Quote all paths with slashes**: `DEV["/dev/i2c-1"]` → WORKS
+- âŒ **URLs without quotes can break**: `NODE[http://example.com]` → FAILS
+- âœ… **Quote URLs in node labels**: `NODE["http://example.com"]` → WORKS
+- âœ… **Slashes in shape syntax are OK**: `A[/Parallelogram/]` → WORKS (defined shape)
+- ⚠️ **Slashes in plain text or tables are OK** (not in diagram code)
 
 #### Quotes - When Required
 
@@ -614,7 +614,7 @@ flowchart TD
 ```
 
 - âœ… Must have space between id and bracket
-- âŒ **NO colons in labels**: `subgraph "Layer 1: App"`â†’ BREAKS - use`subgraph "Layer 1 App"`
+- âŒ **NO colons in labels**: `subgraph "Layer 1: App"`→ BREAKS - use`subgraph "Layer 1 App"`
 - âœ… Labels can be quoted for special chars: `subgraph "System/Network"`
 - âœ… Plain text labels work: `subgraph id`or`subgraph "Text Label"`
 
@@ -1945,7 +1945,7 @@ Each diagram type supports its own configuration options for spacing, sizing, an
 ```yaml
 flowchart:
   curve: 'linear'            # Connection style: 'linear', 'basis', 'cardinal', 'catmullRom' (MUST be quoted)
-  htmlLabels: false          # âš ï¸ CRITICAL: Set to FALSE for proper text handling
+  htmlLabels: false          # ⚠️ CRITICAL: Set to FALSE for proper text handling
   padding: 25                # Padding around subgraph content (increased from 15)
   nodeSpacing: 60            # Horizontal space between nodes
   rankSpacing: 80            # Vertical space between ranks/levels (increased from 50)
@@ -3000,7 +3000,7 @@ Without explicit colors, sections and tasks may render with white/default backgr
 
 - `darkMode`(boolean) - Affects color calculations (default:`false`)
 
-## ðŸŽ¨ Seasonal Theme Presets
+## 🎨 Seasonal Theme Presets
 
 **ACTIVE THEME: FALL** (default)
 
@@ -4666,7 +4666,7 @@ sequenceDiagram
     Note over Alice,Bob: Text
 ```
 
-- âš ï¸ **CRITICAL**: Text after first colon cannot contain more colons
+- ⚠️ **CRITICAL**: Text after first colon cannot contain more colons
 - âŒ **BREAKS**: `Note over A: Step 1: Initialize device`
 - âœ… **WORKS**: `Note over A: Step 1 Initialize device`
 - âœ… **Single colon separating label is OK**: `Note over A: Any text here`
@@ -4913,7 +4913,7 @@ stateDiagram-v2
     State2 --> [*]
 ```
 
-- âš ï¸ **CRITICAL**: Transition labels after colon cannot contain more colons
+- ⚠️ **CRITICAL**: Transition labels after colon cannot contain more colons
 - âŒ **BREAKS**: `State1 --> State2: Currently: No recovery`
 - âœ… **WORKS**: `State1 --> State2: Currently No recovery`
 - âœ… **Single colon for label is OK**: `State1 --> State2: Any text`
@@ -5933,15 +5933,15 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **No HTML tags**: Search for `<br/>`, `<span>`, `<div>` in flowchart nodes
 - [ ] **No unquoted paths**: Search for `/dev/`, `/sys/`, file paths without quotes
 - [ ] **No unquoted brackets**: Search for `[YES]`, `[NO]`, `[WARNING]` inside node labels
-- [ ] **No colons in subgraph labels**: `subgraph "Layer 1: App"` â†’ FAILS
+- [ ] **No colons in subgraph labels**: `subgraph "Layer 1: App"` → FAILS
 - [ ] **No colons in node labels**: Except in link text
-- [ ] **No double colons**: `Status::OK` â†’ FAILS
+- [ ] **No double colons**: `Status::OK` → FAILS
 - [ ] **Quote special characters**: Parentheses, slashes, brackets, special symbols need quotes
 - [ ] **Word "end" capitalized or quoted**
 
 #### 2. Sequence Diagram Validation
 
-- [ ] **No colons in note text**: `Note over A: Step 1: Details`â†’ FAILS (use`Step 1 Details`)
+- [ ] **No colons in note text**: `Note over A: Step 1: Details`→ FAILS (use`Step 1 Details`)
 - [ ] **`<br/>` allowed**: Line breaks are OK in sequence diagrams
 - [ ] **No double colons in messages**
 
@@ -5949,19 +5949,19 @@ Run these checks BEFORE committing any Mermaid diagrams:
 
 - [ ] **ALWAYS quote all labels**: Even simple labels like `HIGH` need quotes
 - [ ] **Proper syntax**: `"Label text" : value` (always with quotes)
-- [ ] **Quote labels with parentheses**: `Direct (visible) : 15` â†’ FAILS without quotes
+- [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS without quotes
 - [ ] **Quote labels with special chars**: Spaces, colons, symbols all need quotes
 - [ ] **Use descriptive labels**: Avoid short labels starting with quotes that may be hidden by legend box
 
 #### 4. State Diagram Validation
 
-- [ ] **No colons in transition labels**: `State1 --> State2: Text: More` â†’ FAILS
-- [ ] **Single colon for label OK**: `State1 --> State2: Text` â†’ WORKS
+- [ ] **No colons in transition labels**: `State1 --> State2: Text: More` → FAILS
+- [ ] **Single colon for label OK**: `State1 --> State2: Text` → WORKS
 - [ ] **Same rule as sequence notes**: Text after colon cannot have more colons
 
 #### 5. Gantt Chart Validation
 
-- [ ] **No colons in task descriptions**: `Gap: Team leaves`â†’ FAILS (use`Gap Team leaves`)
+- [ ] **No colons in task descriptions**: `Gap: Team leaves`→ FAILS (use`Gap Team leaves`)
 - [ ] **Colon delimiter required**: `Task name :milestone, crit, 2024-01, 0d` (colon after name is syntax)
 - [ ] **Avoid colons before delimiter colon**: Having `Task: Name :milestone` confuses parser
 - [ ] **Check dateFormat**: Must be valid format
@@ -6058,7 +6058,7 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 - **Colons in state transition labels**
   - âŒ `State1 --> State2: Currently: No recovery`
   - âœ… `State1 --> State2: Currently No recovery`
-  - âš ï¸ Same rule as sequence notes
+  - ⚠️ Same rule as sequence notes
 
 - **Double colons**
   - âŒ `I2cStatus::OK`
@@ -6067,12 +6067,12 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 - **Gantt task names with colons**
   - âŒ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
   - âœ… `Gap Team leaves :milestone, crit, 2021-05, 0d`
-  - âš ï¸ Colon in task description before delimiter confuses parser
+  - ⚠️ Colon in task description before delimiter confuses parser
 
 - **Quadrant chart labels without quotes**
   - âŒ `FÃ‚Â´ Core Docs: [0.1, 0.9]`
   - âœ… `"FÃ‚Â´ Core Docs": [0.1, 0.9]`
-  - âš ï¸ Always quote data point labels, especially with colons or special chars
+  - ⚠️ Always quote data point labels, especially with colons or special chars
 
 ---
 
@@ -7181,7 +7181,7 @@ def sanitize_for_mermaid(text):
 
 ### Data Structure Conversion
 
-#### Hierarchical Data â†’ Flowchart
+#### Hierarchical Data → Flowchart
 
 ```python
 # Input: Tree structure
@@ -7219,7 +7219,7 @@ def tree_to_flowchart(data, parent=None):
     return '\n'.join(lines)
 ```
 
-#### Tabular Data â†’ Gantt Chart
+#### Tabular Data → Gantt Chart
 
 ```python
 # Input: List of tasks
@@ -7252,7 +7252,7 @@ def tasks_to_gantt(tasks):
     return '\n'.join(lines)
 ```
 
-#### Percentage Data â†’ Pie Chart
+#### Percentage Data → Pie Chart
 
 ```python
 # Input: Category percentages
@@ -7270,7 +7270,7 @@ def dict_to_pie(data, title="Distribution"):
     return '\n'.join(lines)
 ```
 
-#### Coordinate Data â†’ Quadrant Chart
+#### Coordinate Data → Quadrant Chart
 
 ```python
 # Input: Items with x,y scores
