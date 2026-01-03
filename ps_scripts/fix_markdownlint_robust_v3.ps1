@@ -20,7 +20,9 @@ param(
 function Backup-File {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$file)
-    $backupDir = Join-Path -Path (Split-Path $file -Parent) -ChildPath ".backups"
+    $parent = Split-Path $file -Parent
+    if ([string]::IsNullOrEmpty($parent)) { $parent = "." }
+    $backupDir = Join-Path -Path $parent -ChildPath ".backups"
     if (!(Test-Path $backupDir)) { New-Item -ItemType Directory -Path $backupDir | Out-Null }
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
     $backupFile = Join-Path $backupDir ("$(Split-Path $file -Leaf).$timestamp.bak")
